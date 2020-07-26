@@ -25,3 +25,10 @@
 - [CSE 351 Reference Sheet (Final,pdf format)](https://courses.cs.washington.edu/courses/cse351/20su/exams/ref-final.pdf)
 
 - [CSE 351 Reference Sheet (Midterm,pdf format)](https://courses.cs.washington.edu/courses/cse351/20su/exams/ref-mt.pdf)
+
+- [CMU-15213-Lab](https://github.com/yinfredyue/CMU-15213-Lab)
+
+- [cmu-15213](https://github.com/tinylcy/cmu-15213)
+
+
+
