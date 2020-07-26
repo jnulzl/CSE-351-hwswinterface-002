@@ -30,5 +30,7 @@
 
 - [cmu-15213](https://github.com/tinylcy/cmu-15213)
 
+- [15-213/18-213: Introduction to Computer Systems (ICS)](http://www.cs.cmu.edu/~213/)
+
 
 
