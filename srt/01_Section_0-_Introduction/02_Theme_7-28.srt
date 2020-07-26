@@ -1,0 +1,585 @@
+1
+00:00:00,0 --> 00:00:04,158
+[MUSIC] So what is this class about? 
+Well, this class is about the hardware, 
+
+2
+00:00:04,158 --> 00:00:08,349
+software interface. 
+But to understand that, first let's see 
+
+3
+00:00:08,349 --> 00:00:11,819
+what's hardware. 
+Well, hardware is the part of the 
+
+4
+00:00:11,819 --> 00:00:17,556
+computer made of atoms, it's the physical 
+part of your, computing device. 
+
+5
+00:00:17,556 --> 00:00:19,866
+Okay. 
+In software, it's this thing made of bits 
+
+6
+00:00:19,866 --> 00:00:22,994
+which is the program that runs on top of 
+your hardware. 
+
+7
+00:00:22,994 --> 00:00:25,214
+Okay. 
+But for that to happen effectively there 
+
+8
+00:00:25,214 --> 00:00:28,798
+are many many layers of abstractions 
+between the hardware and the software, 
+
+9
+00:00:28,798 --> 00:00:31,800
+okay? 
+And this will be called the hardware 
+
+10
+00:00:31,800 --> 00:00:34,615
+software interface. 
+And the reason we want you to understand 
+
+11
+00:00:34,615 --> 00:00:37,810
+what the hardware software interface is 
+is that it's going to help you understand 
+
+12
+00:00:37,810 --> 00:00:41,471
+better how computers work. 
+It's going to make you a more effective 
+
+13
+00:00:41,471 --> 00:00:45,10
+programmer, it's going to make you better 
+at writing efficient codes. 
+
+14
+00:00:45,10 --> 00:00:50,736
+And it's just going to make you a better 
+computer science, scientist. 
+
+15
+00:00:50,736 --> 00:00:54,48
+So, let's look at these three pieces of 
+code here. 
+
+16
+00:00:54,48 --> 00:00:58,140
+So, here we have a simple statement that 
+does a conditional and performs an 
+
+17
+00:00:58,140 --> 00:01:02,64
+assignment. 
+And this is written in, you know, a 
+
+18
+00:01:02,64 --> 00:01:08,176
+language like C or Java, okay? 
+Now, this piece of code here is also a, 
+
+19
+00:01:08,176 --> 00:01:12,888
+well it's also a program. 
+And this is written in what we call the 
+
+20
+00:01:12,888 --> 00:01:16,550
+assembly language, okay? 
+The assembly language is just a much 
+
+21
+00:01:16,550 --> 00:01:20,807
+lower level language that's pretty to 
+close to hardware. 
+
+22
+00:01:20,807 --> 00:01:26,820
+And it just happens to be an abstraction, 
+a simple way of looking at machine code. 
+
+23
+00:01:26,820 --> 00:01:30,251
+Okay, so the machine code is just a 
+sequence of 0's and 1's. 
+
+24
+00:01:30,251 --> 00:01:34,602
+Processors only understand 0's and 1's it 
+interprets them in different ways. 
+
+25
+00:01:34,602 --> 00:01:39,556
+Now, so what's in common between these 
+three pieces of codes? 
+
+26
+00:01:39,556 --> 00:01:43,582
+Well all of them we're exactly the same 
+thing their equivalent but you'd rather 
+
+27
+00:01:43,582 --> 00:01:47,711
+write in this language here because it's 
+much easier. 
+
+28
+00:01:47,711 --> 00:01:51,371
+it's much more natural for humans to 
+write, okay, so it's much more human 
+
+29
+00:01:51,371 --> 00:01:55,584
+friendly. 
+But as I said before the hardware likes 
+
+30
+00:01:55,584 --> 00:01:59,230
+bit strings. 
+So 0s and 1s. 
+
+31
+00:01:59,230 --> 00:02:02,942
+So a digital computer likes 0s and 1s 
+because it's very easy to represent with 
+
+32
+00:02:02,942 --> 00:02:06,770
+electronic sequence because 0s is a low 
+voltage and 1 can, can be represented as 
+
+33
+00:02:06,770 --> 00:02:11,184
+a high voltage, okay? 
+So and the, the, the machine machine 
+
+34
+00:02:11,184 --> 00:02:14,160
+structure is actually much shorter than 
+the number of bits we would need to 
+
+35
+00:02:14,160 --> 00:02:17,734
+represent the characters in the assembly 
+language. 
+
+36
+00:02:17,734 --> 00:02:21,49
+It's a, much, it's a much more dense 
+encoding of the assembly language, the 
+
+37
+00:02:21,49 --> 00:02:24,290
+assembly instructions that we see here. 
+Okay? 
+
+38
+00:02:24,290 --> 00:02:28,940
+There's a very direct correspondence 
+between these, simple assembly 
+
+39
+00:02:28,940 --> 00:02:33,650
+instructions, and some of the bits in 
+machine code. 
+
+40
+00:02:33,650 --> 00:02:36,960
+Now let's look at a hard or soft 
+interface from a historical perspective. 
+
+41
+00:02:36,960 --> 00:02:40,498
+So at first the hardware, the hard or 
+soft interface was very, very simple 
+
+42
+00:02:40,498 --> 00:02:45,387
+because in because hardware was simple. 
+Hardware was very, very primitive when 
+
+43
+00:02:45,387 --> 00:02:47,160
+computers started. 
+Okay. 
+
+44
+00:02:47,160 --> 00:02:50,466
+So humans was were able to write code 
+directly to hardware without any 
+
+45
+00:02:50,466 --> 00:02:54,26
+abstraction at all. 
+But then people got [INAUDIBLE] and that 
+
+46
+00:02:54,26 --> 00:02:58,144
+means that software was very primitive. 
+Because the the soft improvements 
+
+47
+00:02:58,144 --> 00:03:02,148
+reflected the hardware pretty closely. 
+But then people got really excited about 
+
+48
+00:03:02,148 --> 00:03:04,66
+computers. 
+It's like hey,computers can do all these 
+
+49
+00:03:04,66 --> 00:03:06,396
+things. 
+So they decided, they end up writing more 
+
+50
+00:03:06,396 --> 00:03:11,37
+and more complex pieces of code. 
+That meant that humans could no longer, 
+
+51
+00:03:11,37 --> 00:03:16,586
+you know keep up with the complexity of 
+writing machine code directly. 
+
+52
+00:03:16,586 --> 00:03:21,10
+So, uh,the assembly language was 
+invented. 
+
+53
+00:03:21,10 --> 00:03:24,121
+The assembly language, as I said before 
+is a very very simple computer 
+
+54
+00:03:24,121 --> 00:03:27,653
+programming language. 
+That's pretty close what a hardware can 
+
+55
+00:03:27,653 --> 00:03:30,968
+do in terms of it's primitives and one 
+assembly instruction translates to one 
+
+56
+00:03:30,968 --> 00:03:33,356
+machine instruction. 
+Okay? 
+
+57
+00:03:33,356 --> 00:03:36,467
+So but the big difference is that the 
+assembly language is much easier for 
+
+58
+00:03:36,467 --> 00:03:39,833
+humans to read because they have, first 
+of all, they have characters strings as 
+
+59
+00:03:39,833 --> 00:03:44,76
+opposed to just bits. 
+Okay so humans can understand much, much 
+
+60
+00:03:44,76 --> 00:03:46,744
+easier so it's much easier to read and 
+write. 
+
+61
+00:03:46,744 --> 00:03:49,175
+And you can also use symbolic names for 
+values. 
+
+62
+00:03:49,175 --> 00:03:53,590
+And you can use thing like writes their 
+names, a, b and so on, okay. 
+
+63
+00:03:53,590 --> 00:03:57,282
+So now there's a piece of code here 
+called Assembler. 
+
+64
+00:03:57,282 --> 00:04:01,767
+That takes a program written in Assembly 
+and generates zeros and ones Machine 
+
+65
+00:04:01,767 --> 00:04:06,957
+code, which is what the hardware likes. 
+But even then that, that wasn't enough 
+
+66
+00:04:06,957 --> 00:04:10,180
+because you know, programs were getting 
+more and more complex. 
+
+67
+00:04:10,180 --> 00:04:13,964
+We needed yet another level of 
+abstraction that's much higher level. 
+
+68
+00:04:13,964 --> 00:04:16,649
+Okay? 
+So this is thing so these languages such 
+
+69
+00:04:16,649 --> 00:04:21,0
+as languages like C and java they're 
+much, much higher level. 
+
+70
+00:04:21,0 --> 00:04:26,36
+You can write statements like you know, a 
+equals b plus c for example. 
+
+71
+00:04:26,36 --> 00:04:29,34
+Okay? 
+And one statement in, this high level 
+
+72
+00:04:29,34 --> 00:04:34,534
+language can translate to many, many, 
+assembly language instructions. 
+
+73
+00:04:34,534 --> 00:04:38,378
+Okay? 
+So, but now, we have yet another, another 
+
+74
+00:04:38,378 --> 00:04:43,592
+component in our path from the user to 
+the hardware here, which is a C compiler. 
+
+75
+00:04:43,592 --> 00:04:47,602
+Okay. 
+The C Compiler takes C code and generates 
+
+76
+00:04:47,602 --> 00:04:52,688
+assembly code. 
+[UNKNOWN] this is assembly. 
+
+77
+00:04:52,688 --> 00:04:55,706
+Okay. 
+So and that's much high lever that means 
+
+78
+00:04:55,706 --> 00:04:59,260
+you must have much more productive at 
+writing code for that. 
+
+79
+00:04:59,260 --> 00:05:03,870
+So now, let's look at the entire lifetime 
+of a computer program. 
+
+80
+00:05:03,870 --> 00:05:08,250
+And computer program has three basic 
+steps in it's life time. 
+
+81
+00:05:08,250 --> 00:05:12,804
+There's coding time which is the time 
+that humans spent writing the program 
+
+82
+00:05:12,804 --> 00:05:18,642
+high level language like C. 
+Compile time is the time it takes to get 
+
+83
+00:05:18,642 --> 00:05:25,670
+your C program, and generates machine 
+code executed by the hardware. 
+
+84
+00:05:25,670 --> 00:05:28,312
+Okay? 
+And when the hardware's executing the 
+
+85
+00:05:28,312 --> 00:05:31,460
+code, we call that run time. 
+Okay? 
+
+86
+00:05:31,460 --> 00:05:35,420
+So, now compare time is something that 
+happens just once, and if you execute 
+
+87
+00:05:35,420 --> 00:05:40,655
+Your program many, many, many times. 
+That means that it can advertise a cost 
+
+88
+00:05:40,655 --> 00:05:44,559
+of compilation a lot, because, you know, 
+if you spend some time compiling the 
+
+89
+00:05:44,559 --> 00:05:48,742
+program you're going to execute so many 
+times. 
+
+90
+00:05:48,742 --> 00:05:52,550
+It doesn't matter if you spend a little 
+bit more time doing compilation, okay? 
+
+91
+00:05:52,550 --> 00:05:56,348
+And in fact, during this process here. 
+During the compilation process, the 
+
+92
+00:05:56,348 --> 00:06:00,40
+compiler can spend a little bit more time 
+generating the code. 
+
+93
+00:06:00,40 --> 00:06:02,772
+In order to do optimizations that are 
+going to make. 
+
+94
+00:06:02,772 --> 00:06:07,700
+You program faster without having the 
+programmer improve the code itself. 
+
+95
+00:06:07,700 --> 00:06:11,620
+Although if you do want to generate 
+really fast codes, you do want to 
+
+96
+00:06:11,620 --> 00:06:16,850
+regenerate, you do want to start with 
+good algorithms first. 
+
+97
+00:06:16,850 --> 00:06:18,540
+Okay? 
+So a big thing in this class then is how 
+
+98
+00:06:18,540 --> 00:06:22,254
+to hardware software interface, okay? 
+So just, so that includes how to 
+
+99
+00:06:22,254 --> 00:06:27,260
+hardware, you know, with 0s and 1s and 
+processor executing instruction. 
+
+100
+00:06:27,260 --> 00:06:32,160
+Relates to software In other words your, 
+your for example your Java program. 
+
+101
+00:06:32,160 --> 00:06:34,343
+And the other big, the other part of this 
+thing is that computer's about 
+
+102
+00:06:34,343 --> 00:06:37,250
+abstractions. 
+Computer systems are complex. 
+
+103
+00:06:37,250 --> 00:06:40,66
+In order for humans to understand and 
+design effective computer systems, we 
+
+104
+00:06:40,66 --> 00:06:41,850
+need abstractions. 
+Okay. 
+
+105
+00:06:41,850 --> 00:06:45,190
+So, computer's a lot about abstractions 
+but, we can't really forget reality. 
+
+106
+00:06:45,190 --> 00:06:47,558
+Well, the goal of an abstraction is to 
+abstract reality and make it simpler to 
+
+107
+00:06:47,558 --> 00:06:49,922
+think about. 
+But we don't to completely ignore reality 
+
+108
+00:06:49,922 --> 00:06:52,674
+because that leads to inefficiencies and 
+leads to other problems. 
+
+109
+00:06:52,674 --> 00:06:55,823
+Okay. 
+So, what, we also going to talk about 
+
+110
+00:06:55,823 --> 00:07:00,170
+what are the abstractions that, that we 
+use and what do you need to know about 
+
+111
+00:07:00,170 --> 00:07:04,571
+them, okay. 
+So well, you know when they break down 
+
+112
+00:07:04,571 --> 00:07:09,330
+and you have to peek under the hood. 
+You also want to know because it will 
+
+113
+00:07:09,330 --> 00:07:13,230
+help [INAUDIBLE] bacause it helps with 
+what kind of bugs can they cause and how 
+
+114
+00:07:13,230 --> 00:07:17,584
+you find them and so on. 
+But knowing the hardware and software 
+
+115
+00:07:17,584 --> 00:07:19,650
+interface ultimately is going to make you 
+better programmers. 
+
+116
+00:07:19,650 --> 00:07:23,670
+It's going to help you begin to 
+understand important concepts that have 
+
+117
+00:07:23,670 --> 00:07:28,823
+evolved er, in building ever more complex 
+computer systems. 
+

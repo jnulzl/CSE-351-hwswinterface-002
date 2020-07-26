@@ -1,0 +1,1110 @@
+1
+00:00:00,1 --> 00:00:01,924
+Okay, now we are ready to start a new 
+section. 
+
+2
+00:00:01,924 --> 00:00:07,976
+We just saw in the previous section 
+Introduction to Architecture and Machine 
+
+3
+00:00:07,976 --> 00:00:13,850
+Code and how it relates to C, and now we 
+are ready to start assembly programming, 
+
+4
+00:00:13,850 --> 00:00:20,10
+okay? 
+So this actually is going to teach you 
+
+5
+00:00:20,10 --> 00:00:26,240
+about movie movie instructions. 
+Not movie instructions, move instructions 
+
+6
+00:00:26,240 --> 00:00:30,2
+that move data between registers and 
+memory and between registers themselves 
+
+7
+00:00:30,2 --> 00:00:34,568
+and what their operands. 
+we are also going to see the various ways 
+
+8
+00:00:34,568 --> 00:00:39,610
+we have available to address memory to 
+specify memory locations. 
+
+9
+00:00:39,610 --> 00:00:43,108
+then we can look at an example called 
+swap, that just exchanges two pieces of 
+
+10
+00:00:43,108 --> 00:00:46,530
+data in memory, and both in 32 and 
+64-bits. 
+
+11
+00:00:46,530 --> 00:00:50,818
+So that's going to be an opportunity for 
+you to see the difference between 32-bit 
+
+12
+00:00:50,818 --> 00:00:55,443
+assembly, and x86, and x86-64. 
+Then we're going to look at arithmetic 
+
+13
+00:00:55,443 --> 00:00:59,80
+operations, how to use condition codes, 
+how to do branches. 
+
+14
+00:00:59,80 --> 00:01:02,618
+how to write loops with assembly, and 
+then we're going to end with switch 
+
+15
+00:01:02,618 --> 00:01:06,12
+statements. 
+So if we recall from last section, we 
+
+16
+00:01:06,12 --> 00:01:08,730
+there's three basic kinds of 
+instructions. 
+
+17
+00:01:08,730 --> 00:01:13,353
+Instructions that move data between 
+memory and registers, instructions that 
+
+18
+00:01:13,353 --> 00:01:18,450
+perform arithmetic operations, like 
+addition for example. 
+
+19
+00:01:18,450 --> 00:01:22,232
+And it could have as operands both a 
+memory or or registers, and then the 
+
+20
+00:01:22,232 --> 00:01:27,94
+instructions that transfer control. 
+Instructions that change the flow of 
+
+21
+00:01:27,94 --> 00:01:30,88
+execution of your program in the 
+processor, okay? 
+
+22
+00:01:30,88 --> 00:01:33,41
+So, now let's start. 
+We're going to see now is instructions 
+
+23
+00:01:33,41 --> 00:01:35,990
+that move data between registers and 
+memory. 
+
+24
+00:01:35,990 --> 00:01:39,830
+There's two basic types of instructions. 
+One is called the of that type. 
+
+25
+00:01:39,830 --> 00:01:43,286
+One is called load. 
+A load takes an address as a parameter, 
+
+26
+00:01:43,286 --> 00:01:47,434
+goes to memory, gets that, the data 
+stored in that address and puts it into 
+
+27
+00:01:47,434 --> 00:01:51,830
+the register, okay? 
+A store does the opposite. 
+
+28
+00:01:51,830 --> 00:01:55,275
+A store takes a register as a parameter 
+as well and also an address and takes the 
+
+29
+00:01:55,275 --> 00:01:59,809
+data off the register. 
+And stores in the specified memory 
+
+30
+00:01:59,809 --> 00:02:05,520
+address and recall that memory is just, 
+is index just like an array, okay? 
+
+31
+00:02:05,520 --> 00:02:09,90
+You have an array or a table, and it has 
+multiple entries. 
+
+32
+00:02:09,90 --> 00:02:11,550
+So you're going to access that using an 
+index. 
+
+33
+00:02:11,550 --> 00:02:15,390
+And the point of an index in an array or 
+in a table, the memory is an address, an, 
+
+34
+00:02:15,390 --> 00:02:21,3
+a memory location. 
+Okay, so we saw briefly that the last 
+
+35
+00:02:21,3 --> 00:02:27,936
+section, that there are eight general 
+purpose registers in IA32. 
+
+36
+00:02:27,936 --> 00:02:34,130
+Of the eight registers, six of them, 
+these six here are general purpose. 
+
+37
+00:02:34,130 --> 00:02:38,260
+And these two here, the esp and ebp have 
+spectial meaning, and we're going to see 
+
+38
+00:02:38,260 --> 00:02:42,790
+how they're special in a, in a little 
+bit. 
+
+39
+00:02:42,790 --> 00:02:46,330
+So there are multiple types of 
+instructions to move data. 
+
+40
+00:02:46,330 --> 00:02:48,890
+They all start with these three letters 
+here mov. 
+
+41
+00:02:48,890 --> 00:02:53,44
+Then this x here which in fact could be 
+one of these three b, w, or l depending 
+
+42
+00:02:53,44 --> 00:02:58,938
+on the amount of data that's being moved. 
+If you use movl, l says for long words so 
+
+43
+00:02:58,938 --> 00:03:02,550
+you're going to be moving 4-bytes worth 
+of data, okay? 
+
+44
+00:03:02,550 --> 00:03:06,970
+If you use movw you're going to be moving 
+two bytes worth of data, and if you use 
+
+45
+00:03:06,970 --> 00:03:11,50
+movb you're going to be using, you're 
+going to be moving 1-byte worth of data, 
+
+46
+00:03:11,50 --> 00:03:16,41
+okay? 
+now in move instructions takes two 
+
+47
+00:03:16,41 --> 00:03:21,404
+operands, where the data comes from and 
+where the data goes to. 
+
+48
+00:03:21,404 --> 00:03:27,346
+So now let's, let's look at the specific 
+instructions. 
+
+49
+00:03:27,346 --> 00:03:31,254
+Movl source, and destination, so move 
+data from the source to the destination. 
+
+50
+00:03:31,254 --> 00:03:32,718
+And these are operands, these are the 
+source, this is a source operand and 
+
+51
+00:03:32,718 --> 00:03:37,36
+destination operand. 
+And here's the type of operands, that you 
+
+52
+00:03:37,36 --> 00:03:44,283
+could have in a move instruction. 
+The first one's called Immediate, think 
+
+53
+00:03:44,283 --> 00:03:49,5
+of it as a constant. 
+This is a constant data, constant integer 
+
+54
+00:03:49,5 --> 00:03:55,150
+data imbedded in the instructions itself. 
+For example, you could have x 400 as one 
+
+55
+00:03:55,150 --> 00:04:00,58
+of, as one of your operands and it only 
+makes sense to be a source. 
+
+56
+00:04:00,58 --> 00:04:02,830
+This is doesn't make to have a constant, 
+it doesn't make sense to have a constant 
+
+57
+00:04:02,830 --> 00:04:06,618
+as a destination. 
+So a constant can only be a source of 
+
+58
+00:04:06,618 --> 00:04:11,504
+your move operation, okay? 
+So now the other type of operand is a 
+
+59
+00:04:11,504 --> 00:04:14,722
+register, okay? 
+It could be any of the eight registers 
+
+60
+00:04:14,722 --> 00:04:19,733
+here that we have, okay? 
+In for example, if we do mov eax comma 
+
+61
+00:04:19,733 --> 00:04:26,558
+edx, what are we going to be doing? 
+This'll eax, and edx are are operands, so 
+
+62
+00:04:26,558 --> 00:04:30,284
+eax in this case is going to be the 
+source, and edx is going to be the 
+
+63
+00:04:30,284 --> 00:04:35,106
+destination. 
+And we're going to get the contents in 
+
+64
+00:04:35,106 --> 00:04:40,234
+eax, in stored in, in edx, okay? 
+So as I said before, esp and ebp, are 
+
+65
+00:04:40,234 --> 00:04:45,968
+reserved for special use, but they can 
+still be used as operands. 
+
+66
+00:04:45,968 --> 00:04:51,682
+Now, the third and final type of operant 
+in moving structures is memory. 
+
+67
+00:04:51,682 --> 00:04:56,236
+So, since we're talking about movl and we 
+move 4-bytes of data that means that an 
+
+68
+00:04:56,236 --> 00:05:01,135
+address there is, which is be specifying 
+the beginning of this four wide, 4-bytes 
+
+69
+00:05:01,135 --> 00:05:06,726
+word, that's going to be used as an 
+operand. 
+
+70
+00:05:06,726 --> 00:05:10,970
+Okay, in the one way it is an operand, is 
+to use to specify memory operand. 
+
+71
+00:05:10,970 --> 00:05:14,6
+Here's an example. 
+It's to put, for example, a register IN 
+
+72
+00:05:14,6 --> 00:05:20,110
+parenthesis, when you're doing that you 
+see that eax contains and address. 
+
+73
+00:05:20,110 --> 00:05:25,240
+And now the operant for your move 
+abrasion is the data containing the 
+
+74
+00:05:25,240 --> 00:05:31,130
+address that is stored in riser eax. 
+But as we'll see later there are many 
+
+75
+00:05:31,130 --> 00:05:34,370
+many types of address modes many ways of 
+specifying addresses. 
+
+76
+00:05:34,370 --> 00:05:40,242
+This is just one of them and so, the many 
+combinations of moving structures. 
+
+77
+00:05:40,242 --> 00:05:47,382
+So for example, continuing with our movl 
+instruction, so the source can either be 
+
+78
+00:05:47,382 --> 00:05:55,530
+an immediate value, a registered value or 
+a memory value, okay? 
+
+79
+00:05:55,530 --> 00:05:59,373
+Suppose that you have an immediate as a, 
+as a source operand, and then you can 
+
+80
+00:05:59,373 --> 00:06:04,340
+have a register as a destination operand. 
+Here's what we have, we have four is a 
+
+81
+00:06:04,340 --> 00:06:07,352
+con, that's an example here. 
+Have an example here. 
+
+82
+00:06:07,352 --> 00:06:12,472
+four is a constant, so it is a source 
+operand eax is the register and what it 
+
+83
+00:06:12,472 --> 00:06:19,205
+is going to do, it is going to store 
+value x4 in register eax. 
+
+84
+00:06:19,205 --> 00:06:23,605
+Now, we can also have memory as a 
+destination, so if we do movl, this 
+
+85
+00:06:23,605 --> 00:06:29,365
+constant minus 147 in decimal here, and 
+store to eax in parentheses and as I just 
+
+86
+00:06:29,365 --> 00:06:34,85
+told you, the previous slide This says 
+that now we're going to store it in a 
+
+87
+00:06:34,85 --> 00:06:43,250
+memory location specified by the address 
+stored in register eax. 
+
+88
+00:06:43,250 --> 00:06:47,400
+Now, I'll continue our examples here. 
+We could have register as a source and a 
+
+89
+00:06:47,400 --> 00:06:50,550
+register as a destination, that's the 
+simplest case, that's a simple case, 
+
+90
+00:06:50,550 --> 00:06:54,303
+right. 
+And here we have, we're going to get the 
+
+91
+00:06:54,303 --> 00:07:00,812
+contents of eax and copy to register edx. 
+Now, we can go from register to memory. 
+
+92
+00:07:00,812 --> 00:07:05,622
+So, for example, we can get the contents 
+of eax and store into, remember this is 
+
+93
+00:07:05,622 --> 00:07:10,506
+in parentheses, so, into the memory 
+location specified by the asterisk stored 
+
+94
+00:07:10,506 --> 00:07:18,340
+in register edx. 
+Finally, we could have memory as a source 
+
+95
+00:07:18,340 --> 00:07:23,160
+operand and registered as a destination 
+operand. 
+
+96
+00:07:23,160 --> 00:07:26,346
+This will be a type of load, you're 
+loading memory into, loading memory 
+
+97
+00:07:26,346 --> 00:07:30,332
+dating to a register. 
+Okay, so here we're going to get the 
+
+98
+00:07:30,332 --> 00:07:35,196
+contents of the location specified by 
+register or eax in store it in register 
+
+99
+00:07:35,196 --> 00:07:39,818
+edx. 
+You cannot do memory-memory transfer with 
+
+100
+00:07:39,818 --> 00:07:45,120
+a single instruction. 
+So, how would you do that, then? 
+
+101
+00:07:45,120 --> 00:07:50,218
+Well, you move it to a register. 
+You could get data from memory to a 
+
+102
+00:07:50,218 --> 00:07:53,708
+register. 
+That's step number one, and then you can 
+
+103
+00:07:53,708 --> 00:07:59,180
+get data from a register. 
+So memory, that will be step number two. 
+
+104
+00:07:59,180 --> 00:08:02,540
+That's how you move data from memory to 
+memory. 
+
+105
+00:08:02,540 --> 00:08:06,516
+So now let's see what's the C Analog of 
+all of these operations. 
+
+106
+00:08:06,516 --> 00:08:10,836
+So again, I have for example variable 
+eight that happens to be mapped in a 
+
+107
+00:08:10,836 --> 00:08:14,634
+register. 
+and we store constant hex four and 
+
+108
+00:08:14,634 --> 00:08:18,885
+another example here. 
+For example, I have this, this pointer 
+
+109
+00:08:18,885 --> 00:08:22,770
+p_a. 
+We're going to de-reference the pointer 
+
+110
+00:08:22,770 --> 00:08:29,230
+and say we're going to store the constant 
+minus 147 into the register, into the 
+
+111
+00:08:29,230 --> 00:08:37,140
+location specified by pointer p_a. 
+Okay, so now since memory. 
+
+112
+00:08:37,140 --> 00:08:40,624
+That means that since this is a pointer, 
+it's on the left-hand side, it's going to 
+
+113
+00:08:40,624 --> 00:08:43,746
+be the destination. 
+That's why here in the destination, we 
+
+114
+00:08:43,746 --> 00:08:48,792
+have a memory operand. 
+And if we look at the, the address held 
+
+115
+00:08:48,792 --> 00:08:56,790
+by pointer p_a, that's what's contained 
+in register eax. 
+
+116
+00:08:56,790 --> 00:09:00,560
+So now these other three cases here are 
+also pretty simple. 
+
+117
+00:09:00,560 --> 00:09:05,450
+They've had two register, two variables 
+mapped into register, var d and var_a. 
+
+118
+00:09:05,450 --> 00:09:09,737
+We're just copying the value from var_a 
+to var_d. 
+
+119
+00:09:09,737 --> 00:09:13,769
+And then here I have if I have var_a, 
+which could be stored in a register is 
+
+120
+00:09:13,769 --> 00:09:18,860
+stored in a register. 
+And I copy to a pointer, same thing here. 
+
+121
+00:09:18,860 --> 00:09:24,908
+Pointer p_d syncs memory since restoring 
+pointers point somewhere in memory, the 
+
+122
+00:09:24,908 --> 00:09:30,620
+destination often has to be memory. 
+And finally, here what we're doing is 
+
+123
+00:09:30,620 --> 00:09:34,160
+loading data in this last example here. 
+We're loading data from memory so we have 
+
+124
+00:09:34,160 --> 00:09:37,931
+a pointer here on the right-hand side. 
+Inter-registering, in this case is 
+
+125
+00:09:37,931 --> 00:09:42,100
+[INAUDIBLE] these happen to be matched to 
+a register. 
+
+126
+00:09:42,100 --> 00:09:47,468
+So let's look at the various ways we have 
+to address memory. 
+
+127
+00:09:47,468 --> 00:09:52,417
+So these are the basic addressing modes. 
+There are many others, but the first one 
+
+128
+00:09:52,417 --> 00:09:57,586
+is called indirect access. 
+Indirect just says that now the the 
+
+129
+00:09:57,586 --> 00:10:02,968
+register, contains an address, and then 
+we're going to use that we're going, to 
+
+130
+00:10:02,968 --> 00:10:09,370
+use the contents of the register as an 
+address to memory. 
+
+131
+00:10:09,370 --> 00:10:12,746
+So memory, as, as we said memory was just 
+like an array, okay? 
+
+132
+00:10:12,746 --> 00:10:16,894
+So, that means that I will have an index 
+here, and inside this index, is the 
+
+133
+00:10:16,894 --> 00:10:23,24
+contents of the register specified inside 
+the address expression. 
+
+134
+00:10:23,24 --> 00:10:28,24
+An example here so before, probably I'm 
+repeating this for the third time. 
+
+135
+00:10:28,24 --> 00:10:33,544
+Now this register ecx holds an address 
+using the parentheses here, we say now we 
+
+136
+00:10:33,544 --> 00:10:40,195
+want the contents of memory whose address 
+is stored in ECX. 
+
+137
+00:10:40,195 --> 00:10:44,334
+Now this is a basic one. 
+The other type of addressing, we'll just 
+
+138
+00:10:44,334 --> 00:10:47,245
+call it displacement. 
+And the way we specify is we have the 
+
+139
+00:10:47,245 --> 00:10:51,80
+little you know a constant outside our 
+parenthesis here. 
+
+140
+00:10:51,80 --> 00:10:55,790
+Now all it does is it adds that constant 
+to the base register. 
+
+141
+00:10:55,790 --> 00:11:00,551
+So register R specifies a memory address, 
+but the final memory address is obtained 
+
+142
+00:11:00,551 --> 00:11:06,350
+by adding the con consultant register 
+with with this constant D. 
+
+143
+00:11:06,350 --> 00:11:11,370
+For example, here what we're doing is 
+we're getting these the contents of ebp. 
+
+144
+00:11:11,370 --> 00:11:19,610
+Okay, so the contents of ebp, epb we're 
+adding eight. 
+
+145
+00:11:19,610 --> 00:11:26,678
+Okay, and we are using that as the 
+address to memory, and we're storing that 
+
+146
+00:11:26,678 --> 00:11:30,808
+into edx. 
+Easy, right? 
+
+147
+00:11:30,808 --> 00:11:37,10
+So now let's use this basic addressing 
+modes in example. 
+
+148
+00:11:37,10 --> 00:11:39,576
+So you have this C function called swap 
+that does default. 
+
+149
+00:11:39,576 --> 00:11:48,221
+It takes two pointers as a parameter and 
+it gets the contents of XP, stores and, 
+
+150
+00:11:48,221 --> 00:11:58,627
+and stores into a temporary variable c0. 
+It gets the contents of y, of the pointer 
+
+151
+00:11:58,627 --> 00:12:03,710
+yp and stores into, into temporary 
+variable t1. 
+
+152
+00:12:03,710 --> 00:12:06,920
+And then stores t1 into xp and t0 into 
+yp. 
+
+153
+00:12:06,920 --> 00:12:11,120
+So just swapping the contents pointed, 
+swapping the locations pointed by these 
+
+154
+00:12:11,120 --> 00:12:15,896
+pointers. 
+Now, as you see here, so okay, now this, 
+
+155
+00:12:15,896 --> 00:12:20,270
+this, this is the assembly version of our 
+C code, the C code we just saw. 
+
+156
+00:12:20,270 --> 00:12:23,900
+And so we have three basic pieces here. 
+One's called a set up. 
+
+157
+00:12:23,900 --> 00:12:28,524
+It's getting and rerading the parameters 
+and, and, and setting up the stack and so 
+
+158
+00:12:28,524 --> 00:12:31,526
+on. 
+We have the body, that is the body of the 
+
+159
+00:12:31,526 --> 00:12:34,58
+function. 
+The body of the execution, and then we 
+
+160
+00:12:34,58 --> 00:12:38,990
+have the finish up, where we restore the 
+stack to its original location. 
+
+161
+00:12:38,990 --> 00:12:43,509
+We restore register values and and then 
+return to the caller. 
+
+162
+00:12:46,350 --> 00:12:52,750
+So let's see how, how stack works. 
+Now, we have our the body, let's focus on 
+
+163
+00:12:52,750 --> 00:12:56,990
+the body here, that's the body of of our 
+swap function. 
+
+164
+00:12:56,990 --> 00:13:03,730
+And we have six assembly instructions. 
+So let's go now step by step. 
+
+165
+00:13:03,730 --> 00:13:08,176
+And the registers we're using here, 
+here's the mapping of register to values. 
+
+166
+00:13:08,176 --> 00:13:13,663
+So, yp here happens to be mapped into 
+register ecx, xp here happens to be 
+
+167
+00:13:13,663 --> 00:13:21,718
+mapped into register edx. 
+Now t0 was mapped into register eax. 
+
+168
+00:13:21,718 --> 00:13:26,614
+And t1 was mapped into register ebx. 
+And this mapping is a choice of the 
+
+169
+00:13:26,614 --> 00:13:29,655
+compiler, okay? 
+The compiler chooses how to map the 
+
+170
+00:13:29,655 --> 00:13:33,811
+variables into, into registers. 
+Okay, so now on the, on the right hand 
+
+171
+00:13:33,811 --> 00:13:38,980
+side here we have what each one of these 
+assembly instructions is representing. 
+
+172
+00:13:38,980 --> 00:13:46,228
+And this is the state of our stack in the 
+beginning of our execution. 
+
+173
+00:13:46,228 --> 00:13:52,298
+Okay, so now we are ready to, to, to see 
+how this gets executed step by step. 
+
+174
+00:13:52,298 --> 00:13:56,514
+Okay, so now, we have, here we have our 
+registers that's that, when we begin 
+
+175
+00:13:56,514 --> 00:14:01,385
+executing. 
+And recall that both x, yp, and xp are 
+
+176
+00:14:01,385 --> 00:14:06,2
+addresses, right? 
+So, they're pointers, that means that 
+
+177
+00:14:06,2 --> 00:14:10,354
+the, they can't, they're pointers, so 
+they're variables that hold addresses and 
+
+178
+00:14:10,354 --> 00:14:15,938
+the addresses the address of yp is 120 
+which is right here. 
+
+179
+00:14:15,938 --> 00:14:22,100
+So and that means that yp points to this 
+location and xp is 124. 
+
+180
+00:14:22,100 --> 00:14:27,180
+That means that xp points to this 
+location here. 
+
+181
+00:14:27,180 --> 00:14:33,646
+And our registers and our ebp or stack 
+pointer, is located in address 104. 
+
+182
+00:14:33,646 --> 00:14:36,451
+So, ebp points to here. 
+Now we're going to see that a lot of the 
+
+183
+00:14:36,451 --> 00:14:38,911
+values are relative, a lot of memory 
+locations are relative to the stack 
+
+184
+00:14:38,911 --> 00:14:42,990
+pointer. 
+Let's execute a versus structure now. 
+
+185
+00:14:42,990 --> 00:14:45,358
+When we execute this move here, what are 
+we doing? 
+
+186
+00:14:45,358 --> 00:14:50,450
+Well, we are storing the, the contents of 
+yp as a pointer into ecx. 
+
+187
+00:14:50,450 --> 00:14:57,15
+So, since yp is stored 12-bytes away from 
+ebp, we're going to use as a source for 
+
+188
+00:14:57,15 --> 00:15:04,885
+print a displacements address mode. 
+So, the way the address is obtained is by 
+
+189
+00:15:04,885 --> 00:15:08,980
+getting ebp adding 12 and we're going to 
+use that memory that adds up and then 
+
+190
+00:15:08,980 --> 00:15:13,629
+store it in this address, that's what 
+happens. 
+
+191
+00:15:13,629 --> 00:15:24,158
+So we've got 120 And store it, store it 
+in ecx. 
+
+192
+00:15:24,158 --> 00:15:28,903
+Great, so what we did there, we just got 
+then the address of yp, and stored in 
+
+193
+00:15:28,903 --> 00:15:32,596
+ecx. 
+The same thing for xp, but now note that 
+
+194
+00:15:32,596 --> 00:15:36,725
+this changed to 8 now, because xp's 
+stored 8 bytes away. 
+
+195
+00:15:36,725 --> 00:15:40,600
+From EBP. 
+Great. 
+
+196
+00:15:40,600 --> 00:15:45,144
+So now I read the X codes at one twenty 
+four which is the address held by pointer 
+
+197
+00:15:45,144 --> 00:15:49,480
+XP. 
+So what, what we want to do now is store 
+
+198
+00:15:49,480 --> 00:15:55,900
+the contents of the pointer YP. 
+Into register eax. 
+
+199
+00:15:55,900 --> 00:16:01,50
+But remember, that we had just put yp 
+into ecx, so now ecx holds an address. 
+
+200
+00:16:01,50 --> 00:16:04,300
+That means if we just use ecx as, as an 
+address, we're actually getting the data 
+
+201
+00:16:04,300 --> 00:16:08,571
+pointed by YP. 
+And since yp was high out /g, add this 
+
+202
+00:16:08,571 --> 00:16:13,378
+one to any, that is pointing right here. 
+Okay? 
+
+203
+00:16:13,378 --> 00:16:17,228
+When we execute this instruction we're 
+getting the contents pointed by yp, that 
+
+204
+00:16:17,228 --> 00:16:21,10
+happens to be stored in ecx, and loading 
+it into eax. 
+
+205
+00:16:21,10 --> 00:16:26,4
+That's what happened here, okay? 
+All right, so now that's the next step, 
+
+206
+00:16:26,4 --> 00:16:29,998
+we're doing the same thing for xp now. 
+Were getting the contents of the address 
+
+207
+00:16:29,998 --> 00:16:36,142
+pointed by xp and loading into ebx. 
+But the point of xp was stored in 
+
+208
+00:16:36,142 --> 00:16:43,461
+register edx so we use a memory. 
+Memory Source over here to get that in 
+
+209
+00:16:43,461 --> 00:16:48,280
+stored in edx and so we get and that 
+happens to be. 
+
+210
+00:16:48,280 --> 00:16:53,990
+We have edx right which is yes. 
+So edx is a destination, edx is 124. 
+
+211
+00:16:53,990 --> 00:16:56,372
+That's an address so we're going to use 
+that. 
+
+212
+00:16:56,372 --> 00:16:59,728
+So, we got this as the address here. 
+We got that contents there, and store it 
+
+213
+00:16:59,728 --> 00:17:02,884
+in edx, because that's the destination 
+register. 
+
+214
+00:17:02,884 --> 00:17:07,428
+So, what are we going to do now? 
+Well, now we're going to get the contents 
+
+215
+00:17:07,428 --> 00:17:11,396
+of eax, which was contents of ip and 
+store in xp because we're swapping it, 
+
+216
+00:17:11,396 --> 00:17:15,653
+right? 
+And we still have the address of xp in 
+
+217
+00:17:15,653 --> 00:17:18,372
+edx. 
+So, now we have this as the destination 
+
+218
+00:17:18,372 --> 00:17:21,578
+operand. 
+So when, when, when we do that, well 
+
+219
+00:17:21,578 --> 00:17:26,760
+what's going to happen, this gets updated 
+with the, with the contents of eax. 
+
+220
+00:17:26,760 --> 00:17:30,360
+And same thing happens when we're storing 
+to yp. 
+
+221
+00:17:30,360 --> 00:17:34,140
+And note that we just left the addresses 
+of the pointers into, into the register, 
+
+222
+00:17:34,140 --> 00:17:38,633
+because we use them to read them, and 
+then later to write to them. 
+

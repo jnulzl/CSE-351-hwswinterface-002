@@ -1,0 +1,24 @@
+#!/usr/bin/sudo bash
+
+rm -f /usr/local/bin/logboot*
+
+echo "[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Emacs
+Comment=
+Icon=emacs
+Exec=emacs
+Path=
+Terminal=false
+StartupNotify=false
+" > /home/auser/.config/xfce4/panel/launcher-17/13479260382.desktop
+
+echo "You may ignore any 'BAD PASSWORD' message"
+echo "Pick a password for the root account..."
+passwd root
+echo
+echo "Pick a password for your 'auser' account..."
+passwd auser
+echo
+echo "Setup is complete!"

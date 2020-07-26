@@ -1,0 +1,199 @@
+1
+00:00:05,315 --> 00:00:06,719
+[MUSIC]. 
+Well, we've come to the end of the 
+
+2
+00:00:06,719 --> 00:00:09,160
+course. 
+And we'd really like to thank you all for 
+
+3
+00:00:09,160 --> 00:00:13,430
+having made it this far with us. 
+this has been an incredible learning 
+
+4
+00:00:13,430 --> 00:00:17,647
+experience for us on how to deliver this 
+kind of material. 
+
+5
+00:00:17,647 --> 00:00:26,120
+Over Coursera and over the over the video 
+format and Distance Learning. 
+
+6
+00:00:26,120 --> 00:00:30,710
+And we hope that you learned a lot about 
+the computer systems we've been talking 
+
+7
+00:00:30,710 --> 00:00:34,840
+about as well. 
+the course might, might not, this course 
+
+8
+00:00:34,840 --> 00:00:37,235
+format may not have been as new to some 
+of you. 
+
+9
+00:00:37,235 --> 00:00:40,280
+you might have done other courses like 
+this before. 
+
+10
+00:00:40,280 --> 00:00:46,540
+we'd be very interested to hear about 
+your experience and, and how, what you 
+
+11
+00:00:46,540 --> 00:00:52,110
+thought of how we ran this. 
+for us, it's brand new, so we have a lot 
+
+12
+00:00:52,110 --> 00:00:54,218
+more to learn than you do about that 
+aspect. 
+
+13
+00:00:54,218 --> 00:00:59,210
+and 
+Well, thank you very much for putting up 
+
+14
+00:00:59,210 --> 00:01:01,970
+with us all of the way through. 
+ >> And well. 
+
+15
+00:01:01,970 --> 00:01:06,649
+We also hope that you, you learned how, 
+your programs run in a computer system. 
+
+16
+00:01:06,649 --> 00:01:08,927
+Have a better idea how, how computers 
+work. 
+
+17
+00:01:08,927 --> 00:01:13,148
+And we hope that, this, course has 
+spurred your interest in learning more 
+
+18
+00:01:13,148 --> 00:01:16,498
+about programming in C. 
+And learning more about, and, and other 
+
+19
+00:01:16,498 --> 00:01:20,470
+programming languages. 
+And in learning more about how operating 
+
+20
+00:01:20,470 --> 00:01:24,280
+systems work and computer architecture 
+and, and so on. 
+
+21
+00:01:24,280 --> 00:01:28,980
+We also hope that the, the labs and 
+assignments were more rewarding than 
+
+22
+00:01:28,980 --> 00:01:32,090
+frustrating. 
+We know some of them were quite time 
+
+23
+00:01:32,090 --> 00:01:36,150
+intensive, but we really hope that they 
+gave you a much better understanding of 
+
+24
+00:01:36,150 --> 00:01:40,440
+how things work. 
+So in case that you noticed that Gaitan 
+
+25
+00:01:40,440 --> 00:01:44,130
+and I wore the same shirt throughout the 
+entire course. 
+
+26
+00:01:44,130 --> 00:01:50,000
+So and as a gift for you at the end of 
+the course, we decided to show you how we 
+
+27
+00:01:50,000 --> 00:01:54,630
+normally dress. 
+ >> So as you can see we like dressing 
+
+28
+00:01:54,630 --> 00:01:58,590
+pretty differently. 
+Luis is very formal, loves dressing up. 
+
+29
+00:01:58,590 --> 00:02:01,760
+ >> And this is his regalia from the 
+University of Illinois. 
+
+30
+00:02:01,760 --> 00:02:07,430
+And I'm a little less formal. 
+ >> Right as you can see guys, Gaitan 
+
+31
+00:02:07,430 --> 00:02:10,120
+really likes football. 
+But most importantly you see that his 
+
+32
+00:02:10,120 --> 00:02:14,490
+number is 32, which is a power of 2. 
+Really to, you know, as homage to his 
+
+33
+00:02:14,490 --> 00:02:19,385
+Computer Science devoted life. 
+[LAUGH] And I'm sure you saw this number 
+
+34
+00:02:19,385 --> 00:02:22,640
+32 in the course a lot. 
+And you're going to continue seeing the 
+
+35
+00:02:22,640 --> 00:02:27,310
+number 32, in doing Computer Science. 
+ >> Well, so, again we'd like to thank 
+
+36
+00:02:27,310 --> 00:02:33,180
+you for taking the course with us. 
+And we hope it was valuable for you, it 
+
+37
+00:02:33,180 --> 00:02:37,070
+certainly was for us. 
+And we look forward to maybe seeing you 
+
+38
+00:02:37,070 --> 00:02:42,381
+again sometime soon. 
+so from Seattle, take care, and keep on 
+
+39
+00:02:42,381 --> 00:02:45,620
+programming. 
+ >> Thank you very much, keep on 
+
+40
+00:02:45,620 --> 00:02:46,190
+programming. 
+

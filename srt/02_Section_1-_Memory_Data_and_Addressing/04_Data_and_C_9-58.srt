@@ -1,0 +1,644 @@
+1
+00:00:00,0 --> 00:00:06,179
+[MUSIC]. 
+
+2
+00:00:06,179 --> 00:00:09,775
+Okay, now, that we've seen how to 
+organize an address data in memory, we're 
+
+3
+00:00:09,775 --> 00:00:13,429
+going to look at how we manipulate that 
+data, in a language like C, that let's us 
+
+4
+00:00:13,429 --> 00:00:17,962
+directly manipulate the contents of 
+memory. 
+
+5
+00:00:17,962 --> 00:00:22,518
+Okay, in the C language, just like in 
+many programming languages, we have many 
+
+6
+00:00:22,518 --> 00:00:26,973
+variable declarations. 
+In this case at the top here, we're 
+
+7
+00:00:26,973 --> 00:00:31,998
+looking at two variables, x and y. 
+They're both of type integer, and that's 
+
+8
+00:00:31,998 --> 00:00:36,882
+how we describe them in C. 
+Int x,y And the semicolon to end that 
+
+9
+00:00:36,882 --> 00:00:41,150
+declaration statement. 
+So, this is going to go and find two 
+
+10
+00:00:41,150 --> 00:00:44,918
+locations in memory, in which to store 
+our two integers. 
+
+11
+00:00:44,918 --> 00:00:49,225
+given that they're two integers, they'll 
+take up one word each or four bytes, per 
+
+12
+00:00:49,225 --> 00:00:53,20
+number. 
+Now, we can also declare pointers in C, 
+
+13
+00:00:53,20 --> 00:00:58,710
+or addresses, of variables, and we do 
+that using the star. 
+
+14
+00:00:58,710 --> 00:01:02,926
+A so in this case you'll see a statement 
+that stays in star PTR well PTR is the 
+
+15
+00:01:02,926 --> 00:01:07,320
+name of a variable that points to an 
+integer. 
+
+16
+00:01:07,320 --> 00:01:11,478
+So it doesn't actually have the value of 
+the integer it points to the place in 
+
+17
+00:01:11,478 --> 00:01:18,470
+memory where that integer is so it will 
+store an address rather than a value. 
+
+18
+00:01:18,470 --> 00:01:21,610
+And this is again or because we're 
+interpreting it that way. 
+
+19
+00:01:21,610 --> 00:01:24,314
+And we're telling C that that's what 
+we'll be doing. 
+
+20
+00:01:24,314 --> 00:01:29,0
+Okay, so now we can, also we have an 
+assignment statement to a pointer. 
+
+21
+00:01:29,0 --> 00:01:32,906
+And in order to get an address to go put 
+into a pointer, we have the ampersand 
+
+22
+00:01:32,906 --> 00:01:37,138
+operator. 
+So, you'll notice here in this third 
+
+23
+00:01:37,138 --> 00:01:42,880
+statement, ptr equals ampersand x. 
+That ampersand x means I don't want the 
+
+24
+00:01:42,880 --> 00:01:48,904
+value of x, I want the address of x. 
+And let's put that into the ptr variable 
+
+25
+00:01:48,904 --> 00:01:54,980
+which, of course, points to an integer so 
+this type matches. 
+
+26
+00:01:54,980 --> 00:01:58,700
+We've gotten the address of an integer 
+and putting it into the pointer to an 
+
+27
+00:01:58,700 --> 00:02:00,677
+integer. 
+Okay. 
+
+28
+00:02:00,677 --> 00:02:08,293
+Now to use the value that a pointer 
+points to we also have a second use for 
+
+29
+00:02:08,293 --> 00:02:15,778
+the star operator. 
+in these examples, this first statement, 
+
+30
+00:02:15,778 --> 00:02:21,354
+you'll notice that we, doing what we just 
+did before, we're getting the address of 
+
+31
+00:02:21,354 --> 00:02:28,54
+x, putting it into ptr. 
+Our next statement then, can add 1 to the 
+
+32
+00:02:28,54 --> 00:02:35,890
+value pointed to by the pointer, ptr. 
+What this is, what this construct says is 
+
+33
+00:02:35,890 --> 00:02:43,709
+take the value in the pointer ptr, 
+interpret it as an address. 
+
+34
+00:02:43,709 --> 00:02:47,720
+Go there in memory and get the value 
+that's stored there. 
+
+35
+00:02:47,720 --> 00:02:52,70
+And then we're going to add 1 to that 
+value and put the result in y. 
+
+36
+00:02:52,70 --> 00:02:55,802
+This is the same as if we had written y 
+equals x plus 1. 
+
+37
+00:02:55,802 --> 00:02:58,570
+Okay. 
+So so far, doesn't seem too useful. 
+
+38
+00:02:58,570 --> 00:03:03,610
+But let's take a look at the next line. 
+In this case, we can say that ptr points 
+
+39
+00:03:03,610 --> 00:03:07,60
+to y, now. 
+The address of y. 
+
+40
+00:03:07,60 --> 00:03:11,834
+And when we use that same statement 
+again, add 1 to whatever ptr is pointing 
+
+41
+00:03:11,834 --> 00:03:16,853
+to. 
+Then that's the same as saying y equals y 
+
+42
+00:03:16,853 --> 00:03:21,5
+plus 1 now instead of x. 
+But you notice this statement didn't 
+
+43
+00:03:21,5 --> 00:03:23,572
+change at all. 
+It stayed the same. 
+
+44
+00:03:23,572 --> 00:03:27,49
+This is going to allows us to do more 
+general functions in C than we would have 
+
+45
+00:03:27,49 --> 00:03:30,469
+otherwise been able to do if we were 
+restricted to only use the name of the 
+
+46
+00:03:30,469 --> 00:03:33,860
+variables. 
+Okay. 
+
+47
+00:03:33,860 --> 00:03:36,369
+Last example on this slide. 
+star ampersand x. 
+
+48
+00:03:36,369 --> 00:03:39,286
+What is that equivalent to? 
+Well again, &x is just the address of x. 
+
+49
+00:03:39,286 --> 00:03:45,324
+Okay. 
+But when we dereference that address, 
+
+50
+00:03:45,324 --> 00:03:56,428
+using the star, we now get the value at 
+that address. 
+
+51
+00:03:56,428 --> 00:04:01,444
+Well, what is the value with that 
+address, well that's just x. 
+
+52
+00:04:01,444 --> 00:04:11,68
+So, in fact star ampersand x is the same 
+as writing just x, okay. 
+
+53
+00:04:11,68 --> 00:04:14,180
+Good. 
+Now lets go on to some more interesting 
+
+54
+00:04:14,180 --> 00:04:18,549
+examples. 
+Well for one thing we can add values to 
+
+55
+00:04:18,549 --> 00:04:22,740
+pointers. 
+So in this case we're using a pointer as 
+
+56
+00:04:22,740 --> 00:04:28,50
+if it were a variable. 
+And just saying add one to that value. 
+
+57
+00:04:28,50 --> 00:04:33,20
+But in reality pointer is being 
+interpreted by c as being an address. 
+
+58
+00:04:33,20 --> 00:04:36,150
+So, when we say add 1, C says wait a 
+minute. 
+
+59
+00:04:36,150 --> 00:04:40,664
+You are pointing to an integer that's 
+what ptr is a variable that points to 
+
+60
+00:04:40,664 --> 00:04:44,111
+integers. 
+So, if you are adding 1 to that you 
+
+61
+00:04:44,111 --> 00:04:49,240
+really don't mean you want to add 1, you 
+really mean you want to add 4. 
+
+62
+00:04:49,240 --> 00:04:53,16
+And why 4 because that's the size of an 
+int you are not going to want to just add 
+
+63
+00:04:53,16 --> 00:04:58,565
+1 to that address and point to the next 
+byte that doesn't make much sense. 
+
+64
+00:04:58,565 --> 00:05:02,165
+You probably want to point to the next 
+integer or the thing following that 
+
+65
+00:05:02,165 --> 00:05:06,733
+integer in memory, so we are going to add 
+4 instead for you, okay. 
+
+66
+00:05:06,733 --> 00:05:10,753
+Well this can be very useful, but it also 
+can be quite dangerous when we don't know 
+
+67
+00:05:10,753 --> 00:05:14,780
+exactly what is following that Variable 
+in memory. 
+
+68
+00:05:14,780 --> 00:05:18,330
+So if we know what's immediately after x, 
+that's great. 
+
+69
+00:05:18,330 --> 00:05:21,573
+Maybe it's the value y. 
+But there is no guarantee that, in fact, 
+
+70
+00:05:21,573 --> 00:05:25,136
+y was placed in that location in memory. 
+Alright. 
+
+71
+00:05:25,136 --> 00:05:29,900
+Just remember that, and we'll be coming 
+back to that several more times. 
+
+72
+00:05:29,900 --> 00:05:32,14
+Alright. 
+In general, what we haven't C is in, is 
+
+73
+00:05:32,14 --> 00:05:35,654
+an assignment statement, is a left-hand 
+side and a right-hand side, on the two 
+
+74
+00:05:35,654 --> 00:05:40,422
+sides of the equal sign. 
+The left-hand side has to evaluate to a 
+
+75
+00:05:40,422 --> 00:05:43,994
+memory location, a place where we can put 
+a value. 
+
+76
+00:05:43,994 --> 00:05:47,690
+And, the right-hand side, has to evaluate 
+to a value, the value we're going to go 
+
+77
+00:05:47,690 --> 00:05:51,122
+put there. 
+And because we also have pointer 
+
+78
+00:05:51,122 --> 00:05:54,920
+variables, that value could be an 
+address. 
+
+79
+00:05:54,920 --> 00:05:58,390
+So, let's look at a series of examples 
+here that'll highlight this. 
+
+80
+00:05:58,390 --> 00:06:02,296
+What I'm showing here on this slide, is 
+again a memory map that goes from 
+
+81
+00:06:02,296 --> 00:06:07,665
+location 0 to location 24 hex. 
+I've placed the variable x at the 
+
+82
+00:06:07,665 --> 00:06:12,842
+location 4, and the variable y at the 
+location 18. 
+
+83
+00:06:12,842 --> 00:06:18,884
+you'll notice that y is initially this 
+hex value. 
+
+84
+00:06:18,884 --> 00:06:29,50
+that corresponds to 3CD02700. 
+And you'll notice that it's in reverse 
+
+85
+00:06:29,50 --> 00:06:33,350
+byte order in the memory here. 
+And the reason I've done that is because 
+
+86
+00:06:33,350 --> 00:06:37,440
+from now on we're going to be talking 
+about little endian machines. 
+
+87
+00:06:37,440 --> 00:06:40,575
+And so we're going to but the least 
+significant byte in the first byte 
+
+88
+00:06:40,575 --> 00:06:44,348
+position and the most significant byte in 
+the last. 
+
+89
+00:06:44,348 --> 00:06:49,984
+So, you'll be seeing a lot of these 
+reverse order bytes for our integers. 
+
+90
+00:06:49,984 --> 00:06:54,676
+Okay, so that's the value of y stored 
+there and the value of x is 0. 
+
+91
+00:06:54,676 --> 00:06:58,430
+let's take a look at a sample statement 
+and see. 
+
+92
+00:06:58,430 --> 00:07:01,978
+This case, we're saying x is equal to y 
+plus three. 
+
+93
+00:07:01,978 --> 00:07:03,960
+Well, let's take a look at the right hand 
+side. 
+
+94
+00:07:03,960 --> 00:07:09,470
+It says go get the value of y and add 
+the, the number 3 to it. 
+
+95
+00:07:09,470 --> 00:07:13,374
+And then we're going to take that result 
+and go put it where x is stored. 
+
+96
+00:07:13,374 --> 00:07:17,930
+Okay, the memory location of x on the 
+left hand side. 
+
+97
+00:07:17,930 --> 00:07:21,728
+So what we expect to see happen then is 
+to take this value here. 
+
+98
+00:07:21,728 --> 00:07:29,130
+Add 3, and have it appear up here. 
+Okay, and that is, in fact, what happens. 
+
+99
+00:07:29,130 --> 00:07:32,670
+You'll notice, that that least 
+significant byte is the one that had the, 
+
+100
+00:07:32,670 --> 00:07:36,825
+the, that changed, when we added the 3. 
+Okay. 
+
+101
+00:07:36,825 --> 00:07:41,95
+Another example, this time you'll notice 
+our declaration is a little bit 
+
+102
+00:07:41,95 --> 00:07:45,902
+different. 
+We've declared now rather than the, an 
+
+103
+00:07:45,902 --> 00:07:49,444
+integer x. 
+An integer pointer x. 
+
+104
+00:07:49,444 --> 00:07:55,870
+So, we're going to interpret the values 
+stored at x at location 4 as an address. 
+
+105
+00:07:55,870 --> 00:07:59,776
+In this case, you'll notice, our 
+assignment statement also looks a little 
+
+106
+00:07:59,776 --> 00:08:02,540
+different. 
+Now we have to get an address to go put 
+
+107
+00:08:02,540 --> 00:08:04,644
+there. 
+Well, what we're going to do is get the 
+
+108
+00:08:04,644 --> 00:08:08,780
+address of y. 
+And add 3 to that or are we really adding 
+
+109
+00:08:08,780 --> 00:08:12,710
+3? 
+Well, remember because C knows this is an 
+
+110
+00:08:12,710 --> 00:08:17,810
+address to an integer, instead of adding 
+3 it is going to add 12, 4 times 3, 
+
+111
+00:08:17,810 --> 00:08:26,688
+because that's the size of an integer. 
+So it's going to go Get that address of y 
+
+112
+00:08:26,688 --> 00:08:31,640
+18. 
+And then add 12 which in hex is just c. 
+
+113
+00:08:31,640 --> 00:08:37,965
+The result of 24 is now going to be 
+stored at the variable x which is a 
+
+114
+00:08:37,965 --> 00:08:44,615
+pointer variable. 
+So it can store addresses and so we see 
+
+115
+00:08:44,615 --> 00:08:49,692
+the number 24 appear at that address. 
+for x. 
+
+116
+00:08:49,692 --> 00:08:55,266
+Okay lets move on to another example. 
+In this case we're saying lets take the 
+
+117
+00:08:55,266 --> 00:08:59,522
+value stored at x interpret it as an 
+address. 
+
+118
+00:08:59,522 --> 00:09:04,559
+Okay. 
+Go to that location in memory and put the 
+
+119
+00:09:04,559 --> 00:09:08,200
+value of y there. 
+Let's try that again. 
+
+120
+00:09:08,200 --> 00:09:10,906
+On the right hand side, you see just the 
+value of y. 
+
+121
+00:09:10,906 --> 00:09:15,580
+That's that hex value stored at location 
+18. 
+
+122
+00:09:15,580 --> 00:09:22,678
+And we're going to go and place it not at 
+x, as we did in the previous example. 
+
+123
+00:09:22,678 --> 00:09:27,750
+But at the address pointed to by x, that 
+extra star in the front is a de-ference. 
+
+124
+00:09:27,750 --> 00:09:32,158
+It is saying don't interpret that x is 
+the address but rather go to that 
+
+125
+00:09:32,158 --> 00:09:36,758
+location, find the address and then go 
+there. 
+
+126
+00:09:36,758 --> 00:09:41,129
+In this case what's that x. 
+Well, it's that at that number 24 that we 
+
+127
+00:09:41,129 --> 00:09:47,560
+put there previously that address. 
+so we're going to go and place the value 
+
+128
+00:09:47,560 --> 00:09:52,120
+at the address 24. 
+So we'll see it appear at this last 
+
+129
+00:09:52,120 --> 00:09:58,93
+location in memory. 
+And that's in fact what happens. 
+

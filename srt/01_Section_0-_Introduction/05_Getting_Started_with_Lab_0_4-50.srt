@@ -1,0 +1,285 @@
+1
+00:00:05,870 --> 00:00:09,469
+Okay in this video we're going to look at 
+how we go about submitting our first 
+
+2
+00:00:09,469 --> 00:00:14,436
+programming assignment, lab zero. 
+In the previous video we showed you how 
+
+3
+00:00:14,436 --> 00:00:18,660
+to install the virtual machine you'll be 
+using, so lets go back to that VM player 
+
+4
+00:00:18,660 --> 00:00:25,410
+icon and double click on that. 
+to get our VM started up again. 
+
+5
+00:00:25,410 --> 00:00:31,450
+And this time you'll see that it'll be 
+listed in the set of VMs available. 
+
+6
+00:00:31,450 --> 00:00:34,930
+And we can just double-click that and get 
+it to start playing. 
+
+7
+00:00:34,930 --> 00:00:40,800
+And again, just dismiss those windows 
+that pop up. 
+
+8
+00:00:40,800 --> 00:00:43,907
+And it'll go through the installation 
+process again. 
+
+9
+00:00:43,907 --> 00:00:50,900
+Since we started it from scratch again. 
+And we'll get to our 
+
+10
+00:00:50,900 --> 00:00:53,674
+When this is completed we'll get to our 
+log in screen. 
+
+11
+00:00:53,674 --> 00:01:00,743
+for our happy user. 
+I will. 
+
+12
+00:01:02,470 --> 00:01:07,930
+Click on the happy user, type in my 
+password, that I set up previously and 
+
+13
+00:01:07,930 --> 00:01:14,922
+we'll get started in our virtual machine. 
+So, to get started on this first 
+
+14
+00:01:14,922 --> 00:01:19,542
+programming assignment, we're going to go 
+to the course materials folder. 
+
+15
+00:01:19,542 --> 00:01:26,030
+Since we already updated the virtual 
+machine, previously. 
+
+16
+00:01:26,030 --> 00:01:30,830
+We will see that labs, there's a lab zero 
+folder already set up now. 
+
+17
+00:01:30,830 --> 00:01:34,275
+Every time you do update course, we will 
+download a few more files that'll help 
+
+18
+00:01:34,275 --> 00:01:40,348
+you with the next homework assignment. 
+So, let's open up lab zero and we'll see 
+
+19
+00:01:40,348 --> 00:01:46,179
+that there's a C file called Arrays.C. 
+We can edit that file using the Emacs 
+
+20
+00:01:46,179 --> 00:01:50,480
+editor, although you can set up to use 
+any editor you like. 
+
+21
+00:01:50,480 --> 00:01:55,472
+There's many available here under the 
+Applications menu or the Accessories 
+
+22
+00:01:55,472 --> 00:01:59,684
+menu. 
+So, I'm just going to up to our menu bar 
+
+23
+00:01:59,684 --> 00:02:03,520
+and click Emacs. 
+Once Emacs comes up. 
+
+24
+00:02:03,520 --> 00:02:09,000
+I can go and open an existing file. 
+And navigate to course materials. 
+
+25
+00:02:09,000 --> 00:02:12,526
+Lab zero Arrays.C. 
+And here we'll see the contents of that 
+
+26
+00:02:12,526 --> 00:02:17,960
+file inside of Emacs. 
+And I can. 
+
+27
+00:02:17,960 --> 00:02:22,580
+Now edit this file following the 
+instructions for the homework assignment. 
+
+28
+00:02:22,580 --> 00:02:26,932
+Once I'm done, once I'm done with all of 
+the things that I have to do for lab zero 
+
+29
+00:02:26,932 --> 00:02:31,546
+and I've finished my edits to the 
+Arrays.C file. 
+
+30
+00:02:31,546 --> 00:02:36,154
+I can save it from Emacs and then go to a 
+terminal window by just clicking on the 
+
+31
+00:02:36,154 --> 00:02:44,450
+terminal icon. 
+And navigate to the lab zero directory. 
+
+32
+00:02:44,450 --> 00:02:50,783
+I can do that Linux by using the 
+directory listing command, ls. 
+
+33
+00:02:50,783 --> 00:02:55,332
+and then the change directory command. 
+In this case, I'm changing the directory 
+
+34
+00:02:55,332 --> 00:03:00,004
+to course materials. 
+then listing its contents and changing 
+
+35
+00:03:00,004 --> 00:03:04,590
+the directory again to lab zero, where we 
+see the Arrays.C file. 
+
+36
+00:03:04,590 --> 00:03:08,710
+At this point I can type submit homework, 
+lab zero. 
+
+37
+00:03:08,710 --> 00:03:12,415
+Submit homework-homework is a little 
+utility we've provided to help you with 
+
+38
+00:03:12,415 --> 00:03:17,950
+the submission process. 
+And it asks me for my email address that 
+
+39
+00:03:17,950 --> 00:03:24,830
+I will need for my submission, if I can 
+spell it correctly. 
+
+40
+00:03:24,830 --> 00:03:30,310
+And then, for my submission password. 
+The submission password is not your 
+
+41
+00:03:30,310 --> 00:03:37,628
+Coursera password, but a single use 
+password that's generated on the website. 
+
+42
+00:03:37,628 --> 00:03:44,362
+for your particular username. 
+So, if I go to programming assignments, 
+
+43
+00:03:44,362 --> 00:03:48,374
+at the very top here I will see my 
+submission log in, my email address I'm 
+
+44
+00:03:48,374 --> 00:03:54,030
+using, and a submission password. 
+I can generate new passwords by just 
+
+45
+00:03:54,030 --> 00:03:56,830
+clicking on this. 
+And then I have to make sure to use the 
+
+46
+00:03:56,830 --> 00:04:00,054
+most current one. 
+so I'm going to use this one right now 
+
+47
+00:04:00,054 --> 00:04:02,480
+and go type that into the my virtual 
+machine. 
+
+48
+00:04:02,480 --> 00:04:11,420
+I can take that password and type it in 
+here. 
+
+49
+00:04:11,420 --> 00:04:16,457
+You will not see it being echoed to the 
+screen so be careful in typing it in and 
+
+50
+00:04:16,457 --> 00:04:20,519
+making sure that you have all the . 
+. 
+
+51
+00:04:20,519 --> 00:04:24,232
+. 
+capital letters and lower case letters, 
+
+52
+00:04:24,232 --> 00:04:28,116
+correct? 
+And then you can confirm that is in fact 
+
+53
+00:04:28,116 --> 00:04:35,430
+the file that you want to upload and, you 
+can officially get credit for, this lab. 
+
+54
+00:04:35,430 --> 00:04:38,292
+We allow you to do up to three 
+submissions and then we'll take the 
+
+55
+00:04:38,292 --> 00:04:42,232
+maximum score across the three. 
+And that will be the general policy for 
+
+56
+00:04:42,232 --> 00:04:44,619
+all the homework assignments in the 
+course. 
+
+57
+00:04:45,640 --> 00:04:50,943
+And you'll, be following essentially the 
+same procedure for each one. 
+

@@ -1,0 +1,929 @@
+1
+00:00:00,001 --> 00:00:06,121
+[MUSIC] Okay, let's continue our 
+discussion of how manipulate data and 
+
+2
+00:00:06,121 --> 00:00:12,826
+memory in the C language. 
+our next topic is going to be how we talk 
+
+3
+00:00:12,826 --> 00:00:17,386
+about arrays. 
+basically arrays are adjacent locations 
+
+4
+00:00:17,386 --> 00:00:21,280
+in memory that store the same type of 
+data object. 
+
+5
+00:00:21,280 --> 00:00:26,248
+So here I'm in this example declaring an 
+array of integers. 
+
+6
+00:00:26,248 --> 00:00:33,082
+it's name is big_array and there is 128 
+integers in that array. 
+
+7
+00:00:33,082 --> 00:00:35,475
+that number between those square 
+brackets. 
+
+8
+00:00:35,475 --> 00:00:40,815
+this is going to allocate 512 bytes of 
+adjacent memory starting at some 
+
+9
+00:00:40,815 --> 00:00:43,639
+location. 
+What location? 
+
+10
+00:00:43,639 --> 00:00:46,518
+Doesn't really matter. 
+The one I'm showing here is pretty 
+
+11
+00:00:46,518 --> 00:00:51,280
+arbitrary but it will be easy for us to 
+use in our examples. 
+
+12
+00:00:51,280 --> 00:00:54,990
+but basically the compiler will take care 
+of that and will decide where in memory 
+
+13
+00:00:54,990 --> 00:01:00,050
+that data will go. 
+now our pointer arithmetic can be used 
+
+14
+00:01:00,050 --> 00:01:04,060
+for indexing in this array. 
+So let's take a look at some examples 
+
+15
+00:01:04,060 --> 00:01:06,837
+here. 
+First of all, let me start with just 
+
+16
+00:01:06,837 --> 00:01:12,688
+declaring a pointer to an integer type. 
+and we're going to call that pointer 
+
+17
+00:01:12,688 --> 00:01:15,220
+array_ptr. 
+Okay? 
+
+18
+00:01:15,220 --> 00:01:20,252
+Now, the very next statement says, let's 
+take big array, and assign it to array 
+
+19
+00:01:20,252 --> 00:01:24,055
+ptr. 
+Well, because that's an array, and I've 
+
+20
+00:01:24,055 --> 00:01:28,172
+declared it as, as such. 
+C knows that I don't mean the value big 
+
+21
+00:01:28,172 --> 00:01:31,480
+array, because there's 128 different 
+values. 
+
+22
+00:01:31,480 --> 00:01:36,155
+What I really mean is. 
+The address of the first location of that 
+
+23
+00:01:36,155 --> 00:01:39,412
+array. 
+So what's going to be assigned to that 
+
+24
+00:01:39,412 --> 00:01:43,060
+pointer is the address of that first 
+location. 
+
+25
+00:01:43,060 --> 00:01:46,880
+That is exactly what the second statement 
+is going to do. 
+
+26
+00:01:46,880 --> 00:01:51,290
+You'll notice in this case what I've said 
+is go to the zeroth element of the array, 
+
+27
+00:01:51,290 --> 00:01:55,882
+the first one. 
+And get me its address by using the 
+
+28
+00:01:55,882 --> 00:01:59,272
+ampersand. 
+So, of course, that, that will be the 
+
+29
+00:01:59,272 --> 00:02:02,816
+same address. 
+In the next case, I have now used an 
+
+30
+00:02:02,816 --> 00:02:06,774
+index of 3. 
+That really corresponds to the 4th 
+
+31
+00:02:06,774 --> 00:02:12,020
+integer in the array. 
+There is one at index 0, one at index 1. 
+
+32
+00:02:12,020 --> 00:02:16,010
+One at index 2. 
+And the fourth one at index 3. 
+
+33
+00:02:16,010 --> 00:02:19,200
+So how far down the, the array is that 
+one? 
+
+34
+00:02:19,200 --> 00:02:22,940
+Well, this is where that pointer 
+arithmetic becomes important. 
+
+35
+00:02:22,940 --> 00:02:27,924
+Since integers are of size 4 bytes. 
+What I really mean is at 12 bytes passed 
+
+36
+00:02:27,924 --> 00:02:33,480
+the start of the address is where that 
+fourth element will begin. 
+
+37
+00:02:33,480 --> 00:02:38,150
+So the address that I just generate here 
+is ff000c. 
+
+38
+00:02:38,150 --> 00:02:44,355
+That c corresponds to 12 in decimal. 
+3 times 4 bytes. 
+
+39
+00:02:44,355 --> 00:02:48,970
+Okay? 
+Now, that's exactly the same thing as the 
+
+40
+00:02:48,970 --> 00:02:52,526
+next statement. 
+And why is that? 
+
+41
+00:02:52,526 --> 00:02:58,034
+Because, in this case, what I've done is 
+first taken a, a, a pointer to the first 
+
+42
+00:02:58,034 --> 00:03:01,380
+element. 
+And then said, add 3. 
+
+43
+00:03:01,380 --> 00:03:04,979
+But remember, c knows that if we're 
+adding to a pointer, we don't mean just 
+
+44
+00:03:04,979 --> 00:03:09,837
+add the value 3. 
+But rather, the 3 times the size of the 
+
+45
+00:03:09,837 --> 00:03:15,078
+data element. 
+Or in this case, an int 3 times 4. 
+
+46
+00:03:15,078 --> 00:03:20,410
+Okay, so now you can kind of see why C 
+does this in this pointer arithmetic. 
+
+47
+00:03:20,410 --> 00:03:25,160
+What about the next statement? 
+Here, I'm just saying big array plus 3. 
+
+48
+00:03:25,160 --> 00:03:29,093
+Well again, that's the s-, same situation 
+as the very first line, where we've taken 
+
+49
+00:03:29,093 --> 00:03:33,370
+big array to indicate just the first 
+address of the array. 
+
+50
+00:03:33,370 --> 00:03:38,280
+And the plus 3, again, is to an address. 
+We're adding 3 to an address. 
+
+51
+00:03:38,280 --> 00:03:40,872
+So we're going to multiply that by the 
+size of the data item. 
+
+52
+00:03:40,872 --> 00:03:44,160
+Alright, in this next example is a bit 
+more complex. 
+
+53
+00:03:44,160 --> 00:03:47,698
+You'll notice that it's using 2D 
+reference stars, one on the left hand 
+
+54
+00:03:47,698 --> 00:03:53,040
+side and one on the right hand side. 
+The one on the right hand side is saying 
+
+55
+00:03:53,040 --> 00:03:57,840
+get the value at array pointer, and use 
+that as an address, and go get the value 
+
+56
+00:03:57,840 --> 00:04:02,900
+there. 
+Well, what is the array pointer been set 
+
+57
+00:04:02,900 --> 00:04:06,700
+to? 
+Well, we had just set it to this address 
+
+58
+00:04:06,700 --> 00:04:11,551
+that ended in 0c. 
+So we're going to go into that location, 
+
+59
+00:04:11,551 --> 00:04:16,383
+get the value stored there, add 1 to it. 
+Okay, and then where are we going to go 
+
+60
+00:04:16,383 --> 00:04:19,330
+put it. 
+Where are we going to put the result? 
+
+61
+00:04:19,330 --> 00:04:23,173
+Well, the result, it says, to go put in 
+this, at the same place where we got the 
+
+62
+00:04:23,173 --> 00:04:28,292
+value. 
+So it says, go to the address pointed to 
+
+63
+00:04:28,292 --> 00:04:36,126
+by address by array_ptr. 
+That star in front, again, is saying the 
+
+64
+00:04:36,126 --> 00:04:43,460
+reference, the value in array ptr and go 
+to that location. 
+
+65
+00:04:43,460 --> 00:04:50,790
+Well again the value in array _ptr is 0c, 
+so we going to go to that location again. 
+
+66
+00:04:50,790 --> 00:04:54,158
+So what does this accomplish? 
+Well, what this has accomplished is to 
+
+67
+00:04:54,158 --> 00:04:59,390
+increment the value stored in that fourth 
+element of the array. 
+
+68
+00:04:59,390 --> 00:05:04,370
+At index 3. 
+but it does not change the value of the 
+
+69
+00:05:04,370 --> 00:05:08,720
+array_ptr variable. 
+That stayed the same. 
+
+70
+00:05:08,720 --> 00:05:13,188
+And it's still pointing to that address 
+0c. 
+
+71
+00:05:13,188 --> 00:05:17,590
+Okay, what about our next statement. 
+You'll notice here we're trying to 
+
+72
+00:05:17,590 --> 00:05:23,560
+reference the 130th element of the array. 
+well, our array was only 128. 
+
+73
+00:05:23,560 --> 00:05:26,990
+What happens here? 
+Well turns out C doesn't care. 
+
+74
+00:05:26,990 --> 00:05:31,080
+It just applies the same point of 
+arithmetic rules it did before. 
+
+75
+00:05:31,080 --> 00:05:35,606
+In this case multiplying 130 by 4 and 
+adding that to the starting address of 
+
+76
+00:05:35,606 --> 00:05:42,660
+the array, and will just give us an 
+address that points to that location. 
+
+77
+00:05:42,660 --> 00:05:44,990
+That turns out to be out of the bounds of 
+our array. 
+
+78
+00:05:44,990 --> 00:05:48,720
+We've gone too past the end of the array. 
+But C doesn't check for that. 
+
+79
+00:05:48,720 --> 00:05:52,900
+And will see later on, other languages 
+do, but C does not. 
+
+80
+00:05:52,900 --> 00:05:57,609
+And that's one of the dangers in using C. 
+Now, the general rule here is that if I 
+
+81
+00:05:57,609 --> 00:06:04,190
+have an expression that looks like this. 
+that is the same as saying bigger A plus 
+
+82
+00:06:04,190 --> 00:06:09,095
+I because just bigger A by itself is the 
+starting address. 
+
+83
+00:06:09,095 --> 00:06:14,120
+And plus i gets multiplied by the size of 
+the element of the array before its added 
+
+84
+00:06:14,120 --> 00:06:19,650
+to that address. 
+So that it implicitly computes this 
+
+85
+00:06:19,650 --> 00:06:24,359
+expression. 
+Which you'll notice is the same thing by 
+
+86
+00:06:24,359 --> 00:06:29,104
+saying the starting address of the array 
+plus i times the size of the element of 
+
+87
+00:06:29,104 --> 00:06:34,168
+the array. 
+Okay, and in C we can use the size of 
+
+88
+00:06:34,168 --> 00:06:41,132
+function to tell us what size the element 
+of the array is. 
+
+89
+00:06:41,132 --> 00:06:47,630
+Okay, let's take a look now at strings 
+rather than intergers. 
+
+90
+00:06:47,630 --> 00:06:52,364
+A C-style string, a character string, is 
+represented by an array of light. 
+
+91
+00:06:52,364 --> 00:06:57,815
+Each byte has a code in it two digit hex 
+code and one of the more popular ones is 
+
+92
+00:06:57,815 --> 00:07:03,760
+the ASCII code that uses one byte for 
+each character. 
+
+93
+00:07:03,760 --> 00:07:08,830
+And here you see a map of most of the 
+characters in the ASCII character set. 
+
+94
+00:07:08,830 --> 00:07:13,978
+And the way C's, indicates the end of a 
+string, is with a byte that only had the 
+
+95
+00:07:13,978 --> 00:07:18,956
+value 0 in it. 
+So a string like Harry Potter for example 
+
+96
+00:07:18,956 --> 00:07:23,430
+would be represented by the following 
+sequence of bytes. 
+
+97
+00:07:23,430 --> 00:07:27,912
+You'll notice that there is a byte for 
+the space, between the two names. 
+
+98
+00:07:27,912 --> 00:07:33,530
+the, the value, the code for a blank is 
+32x. 
+
+99
+00:07:33,530 --> 00:07:37,138
+And, a 0 at the end, signifying the end 
+of the string. 
+
+100
+00:07:37,138 --> 00:07:40,743
+So, the string, Harry Potter, is a 13 
+byte array. 
+
+101
+00:07:40,743 --> 00:07:45,607
+There are 12 characters including the 
+blank, plus, a 0 at the end, to indicate 
+
+102
+00:07:45,607 --> 00:07:49,750
+the end. 
+Now, the reason we put a 0 at the end, 
+
+103
+00:07:49,750 --> 00:07:57,260
+often referred to as a null 0, is, so 
+that we can tell the end of the string. 
+
+104
+00:07:57,260 --> 00:08:00,844
+Alright, how would be compute the string 
+length if we were given the starting 
+
+105
+00:08:00,844 --> 00:08:04,910
+point of the string? 
+We would move 1 byte at a time down the 
+
+106
+00:08:04,910 --> 00:08:09,280
+string and checking for 0. 
+When we find the 0, we would know we were 
+
+107
+00:08:09,280 --> 00:08:11,697
+at the end. 
+And that's how we would compute the 
+
+108
+00:08:11,697 --> 00:08:15,400
+string length. 
+Okay. 
+
+109
+00:08:15,400 --> 00:08:18,780
+Because we're dealing with 1 byte at a 
+time, we don't have to worry about issues 
+
+110
+00:08:18,780 --> 00:08:23,598
+of little Indian, or big Indian, when we 
+think about character strings. 
+
+111
+00:08:23,598 --> 00:08:27,360
+So, if we had the character string 1, 2, 
+3, 4, 5, it would actually be represented 
+
+112
+00:08:27,360 --> 00:08:33,140
+in precisely the same in little Indian 
+machines, or big Indian machines. 
+
+113
+00:08:33,140 --> 00:08:37,556
+Now, later on we'll learn about unicode 
+characters that have more bytes per 
+
+114
+00:08:37,556 --> 00:08:41,224
+character. 
+unicode is a newer standard than ASCII 
+
+115
+00:08:41,224 --> 00:08:45,633
+that allows us to represent all the 
+character sets around the world. 
+
+116
+00:08:45,633 --> 00:08:49,345
+And we need a lot more codes to do that 
+for all the different alphabets that 
+
+117
+00:08:49,345 --> 00:08:53,272
+exist. 
+So they can reach up to 4 bytes per 
+
+118
+00:08:53,272 --> 00:08:59,605
+character and Java has, Java as well as C 
+have libraries for unicode. 
+
+119
+00:08:59,605 --> 00:09:04,160
+But Java commonly uses 2 btyes per 
+character that's sort of it's default. 
+
+120
+00:09:04,160 --> 00:09:08,300
+So we'll see later the complexity of this 
+but for now strings are 1 bit per 
+
+121
+00:09:08,300 --> 00:09:12,115
+character. 
+Okay let's take a look at the C function 
+
+122
+00:09:12,115 --> 00:09:16,140
+that we can use to print out data that we 
+store in memory. 
+
+123
+00:09:16,140 --> 00:09:23,180
+By printing it out one character at a 
+time or 1 byte at a time as 2x digits. 
+
+124
+00:09:23,180 --> 00:09:28,940
+Alright, so here's a simple function 
+written in C and it's called show bytes. 
+
+125
+00:09:28,940 --> 00:09:35,160
+It doesn't return a value so we've put a 
+void in front of it to indicate that. 
+
+126
+00:09:35,160 --> 00:09:38,480
+And then it takes two arguments. 
+The first one is the address of the 
+
+127
+00:09:38,480 --> 00:09:42,732
+starting location and memory. 
+So, you'll notice it has a star there 
+
+128
+00:09:42,732 --> 00:09:48,860
+because it says this is a pointer to to a 
+location a memory is not a value. 
+
+129
+00:09:48,860 --> 00:09:51,604
+And to what it kind of thing is it 
+pointing, well it's pointing to 
+
+130
+00:09:51,604 --> 00:09:57,310
+character. 
+And then see a char is a 1 byte quantity. 
+
+131
+00:09:57,310 --> 00:10:01,770
+So in this case, we're just saying we're 
+point to a byte in memory, right. 
+
+132
+00:10:01,770 --> 00:10:05,670
+And then the second argument is an 
+integer that is the length of, of bytes 
+
+133
+00:10:05,670 --> 00:10:10,030
+that we want to print, the number of 
+bytes we want. 
+
+134
+00:10:10,030 --> 00:10:14,440
+Okay, the body of the function is just 
+the simple four loop that goes from 1 to 
+
+135
+00:10:14,440 --> 00:10:18,290
+length or 0 to length minus 1 and 
+increments the index by 1 each time 
+
+136
+00:10:18,290 --> 00:10:23,116
+around. 
+That is what that i plus plus indicates 
+
+137
+00:10:23,116 --> 00:10:27,008
+increment by 1. 
+The body of the loop is a, is a simple 
+
+138
+00:10:27,008 --> 00:10:32,338
+print statement that, we'll see the 
+format of in a second, but it prints two 
+
+139
+00:10:32,338 --> 00:10:37,810
+values. 
+The first is an address, the second a 
+
+140
+00:10:37,810 --> 00:10:40,890
+data value. 
+You'll notice that we're using start, 
+
+141
+00:10:40,890 --> 00:10:43,540
+that pointer. 
+So this is going to be an address. 
+
+142
+00:10:43,540 --> 00:10:48,757
+Then we're adding i, the index to it. 
+Since we're doing pointer arithmetic, 
+
+143
+00:10:48,757 --> 00:10:52,453
+what do we multiple i by? 
+Well, since it's only pointing to a 
+
+144
+00:10:52,453 --> 00:10:56,864
+character. 
+We multiply by 1 because characters are 1 
+
+145
+00:10:56,864 --> 00:11:00,045
+byte. 
+And then we print the data stored at that 
+
+146
+00:11:00,045 --> 00:11:05,770
+address by de-referencing that address. 
+That's why we have the star on this side. 
+
+147
+00:11:05,770 --> 00:11:09,102
+So here we have the address. 
+And here we have the data at that 
+
+148
+00:11:09,102 --> 00:11:13,560
+address. 
+Our print format screen says that we 
+
+149
+00:11:13,560 --> 00:11:20,973
+start off by printing a pointer. 
+Okay, that would be that first element 
+
+150
+00:11:20,973 --> 00:11:24,780
+here, that address. 
+So we're going to print a pointer. 
+
+151
+00:11:24,780 --> 00:11:31,092
+Then we're going to insert a tab. 
+Then we're going to print the, the number 
+
+152
+00:11:31,092 --> 00:11:35,995
+0 and the letter x. 
+And we're going to do that to conform to 
+
+153
+00:11:35,995 --> 00:11:42,659
+C notation for hexadecimal values. 
+And then the percent 0.2x is a special 
+
+154
+00:11:42,659 --> 00:11:49,199
+notation for saying, print the 
+hexadecimal value of 2 digits, followed 
+
+155
+00:11:49,199 --> 00:11:55,173
+by a new line. 
+That hexadecimal value of 2 digits is 
+
+156
+00:11:55,173 --> 00:12:00,870
+just the value stored at that address. 
+Okay, the second element here in our 
+
+157
+00:12:00,870 --> 00:12:04,180
+print state. 
+Okay, so that's a pretty nice little 
+
+158
+00:12:04,180 --> 00:12:07,696
+function. 
+And we can call it from with anything 
+
+159
+00:12:07,696 --> 00:12:12,824
+actually, even integers not just not just 
+characters. 
+
+160
+00:12:12,824 --> 00:12:16,541
+Because, when we call it here showing an 
+example of another function that's 
+
+161
+00:12:16,541 --> 00:12:21,390
+going to show integers. 
+We can call show bytes by casting the 
+
+162
+00:12:21,390 --> 00:12:27,118
+address of the integer as a character, 
+address. 
+
+163
+00:12:27,118 --> 00:12:30,050
+Okay? 
+This is C casting. 
+
+164
+00:12:30,050 --> 00:12:33,344
+What we've done is said, we have an 
+address here, but it's the address of an 
+
+165
+00:12:33,344 --> 00:12:36,591
+integer. 
+Can you please treat that as the address 
+
+166
+00:12:36,591 --> 00:12:39,828
+of a character and then pass it to the 
+function? 
+
+167
+00:12:39,828 --> 00:12:42,931
+Okay? 
+And then the length here is just the size 
+
+168
+00:12:42,931 --> 00:12:46,852
+of the integer. 
+So here we would expect to see 4 bytes 
+
+169
+00:12:46,852 --> 00:12:51,270
+that are going to be printed out by the 
+function. 
+
+170
+00:12:51,270 --> 00:12:54,530
+Let's take a look at some sample 
+executions of this function. 
+
+171
+00:12:54,530 --> 00:13:01,534
+Here we see the function in integer 
+1,2,3,4,5 being placed in a, and when we 
+
+172
+00:13:01,534 --> 00:13:08,538
+call will we'll first print out that 
+statement and then call the function, 
+
+173
+00:13:08,538 --> 00:13:15,422
+show int. 
+So here's that first print statement, 
+
+174
+00:13:15,422 --> 00:13:20,370
+directly from above that prints out the 
+value. 
+
+175
+00:13:20,370 --> 00:13:25,060
+And then you'll see that inside of show 
+int, we've of course called show bytes. 
+
+176
+00:13:25,060 --> 00:13:31,822
+And it went for 4 bytes printing out each 
+one in turn, successful bytes at cc, cd, 
+
+177
+00:13:31,822 --> 00:13:36,178
+ce and cf. 
+And the rest of that address, you know, 
+
+178
+00:13:36,178 --> 00:13:40,710
+is pretty arbritrary. 
+Again, it's just where that that integer 
+
+179
+00:13:40,710 --> 00:13:42,974
+a happened to be. 
+And the, the integers. 
+
+180
+00:13:42,974 --> 00:13:47,460
+the, the values that got printed are 39, 
+30, 0, and 0x. 
+
+181
+00:13:47,460 --> 00:13:54,390
+Which we know, from previous examples, 
+are the rep-, the hex representation of 
+
+182
+00:13:54,390 --> 00:13:57,780
+that value. 
+Okay? 
+
+183
+00:13:57,780 --> 00:14:00,570
+So this is indicating that our machine is 
+little Indian. 
+
+184
+00:14:00,570 --> 00:14:03,460
+Because we saw the least significant byte 
+first. 
+
+185
+00:14:03,460 --> 00:14:07,660
+And that's how we can write a simple 
+program to check the[UNKNOWN] of our 
+
+186
+00:14:07,660 --> 00:14:09,213
+machine. 
+

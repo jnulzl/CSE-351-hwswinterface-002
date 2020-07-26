@@ -1,0 +1,643 @@
+1
+23:59:59,500 --> 00:00:05,374
+[MUSIC]. 
+
+2
+00:00:05,374 --> 00:00:07,682
+Hello again. 
+Now that, that we know how to implement 
+
+3
+00:00:07,682 --> 00:00:11,200
+conditionals and loops in assembly. 
+Let's see how we implement a little more 
+
+4
+00:00:11,200 --> 00:00:15,352
+complex control structure. 
+we talk, we're going to talk about switch 
+
+5
+00:00:15,352 --> 00:00:18,488
+statements. 
+And the way switch statements work in C 
+
+6
+00:00:18,488 --> 00:00:20,860
+is as follows. 
+You have an example here. 
+
+7
+00:00:20,860 --> 00:00:24,655
+If I say switch x, what I'm saying is now 
+there's going to be a bunch of options 
+
+8
+00:00:24,655 --> 00:00:27,900
+that depending on the value of x, I'm 
+going to execute a different piece of 
+
+9
+00:00:27,900 --> 00:00:31,090
+code. 
+Okay? 
+
+10
+00:00:31,090 --> 00:00:34,933
+So here in our example if x happens to be 
+set to 1, we execute this piece of code 
+
+11
+00:00:34,933 --> 00:00:38,047
+here. 
+And then this break statement just says 
+
+12
+00:00:38,047 --> 00:00:40,790
+that this piece of code is going to be 
+executed. 
+
+13
+00:00:40,790 --> 00:00:44,820
+And then we're going to stop and continue 
+executing past the end of the switch 
+
+14
+00:00:44,820 --> 00:00:49,450
+statements. 
+There are some other cases called fall 
+
+15
+00:00:49,450 --> 00:00:52,570
+through cases that do not have a break 
+statement. 
+
+16
+00:00:52,570 --> 00:00:57,380
+For example, if x is happened to be set 
+to 2. 
+
+17
+00:00:57,380 --> 00:01:00,130
+This piece of code is going to be 
+executed and is going to continue 
+
+18
+00:01:00,130 --> 00:01:04,550
+executing through the next block, until 
+it see's the next break statement. 
+
+19
+00:01:04,550 --> 00:01:09,774
+Then [INAUDIBLE] jumps it out of the 
+switch and continues executing. 
+
+20
+00:01:09,774 --> 00:01:12,743
+Okay? 
+And now so if you have any missing values 
+
+21
+00:01:12,743 --> 00:01:17,216
+in a set cases, for example if x happens 
+to be set to 4, since there's no value, 
+
+22
+00:01:17,216 --> 00:01:23,710
+no case for 4 here. 
+What gets executed is the default value. 
+
+23
+00:01:23,710 --> 00:01:28,169
+So the default block of codes. 
+So, the way to think about the default 
+
+24
+00:01:28,169 --> 00:01:33,270
+set is there, if the value that you're 
+switching on is not in any of the case. 
+
+25
+00:01:33,270 --> 00:01:40,070
+You have to view the default case. 
+And why could implement this with branch 
+
+26
+00:01:40,070 --> 00:01:46,005
+instructions that we say earlier. 
+It gets really complicated quickly, so 
+
+27
+00:01:46,005 --> 00:01:50,190
+another way of oftentimes and this is 
+using what we call a jump table. 
+
+28
+00:01:50,190 --> 00:01:53,752
+And a jump table works as follows. 
+Say here we have our example we have an 
+
+29
+00:01:53,752 --> 00:01:58,915
+example of a switch statement. 
+Now we going to have a table that has 
+
+30
+00:01:58,915 --> 00:02:06,930
+roughly as many entries as the number of 
+cases in our, in our switch statement. 
+
+31
+00:02:06,930 --> 00:02:08,590
+The number of cases now in the switch 
+statement. 
+
+32
+00:02:09,790 --> 00:02:13,246
+It's, now in each one of these entries 
+the table points to the address of a code 
+
+33
+00:02:13,246 --> 00:02:17,298
+block. 
+Which is course, corresponds to the code 
+
+34
+00:02:17,298 --> 00:02:20,850
+block that has to be executed, based on 
+the case value. 
+
+35
+00:02:20,850 --> 00:02:26,760
+So, for example, if our x happens to be 
+val 1. 
+
+36
+00:02:26,760 --> 00:02:30,750
+we're going to jump, we're going to look 
+at the jump table, get the corresponding 
+
+37
+00:02:30,750 --> 00:02:33,740
+address. 
+And select the tag1 and that's the code 
+
+38
+00:02:33,740 --> 00:02:37,247
+that we're going to execute. 
+We're going to execute this piece of code 
+
+39
+00:02:37,247 --> 00:02:40,206
+here. 
+now what we are going to think about this 
+
+40
+00:02:40,206 --> 00:02:44,213
+is the following. 
+You could have a variable called target 
+
+41
+00:02:44,213 --> 00:02:48,490
+which holds the target address for a 
+given option. 
+
+42
+00:02:48,490 --> 00:02:52,210
+We're going to look up our jump table, 
+which is just an array of instruction 
+
+43
+00:02:52,210 --> 00:02:55,550
+addresses. 
+We're going to index that array with x 
+
+44
+00:02:55,550 --> 00:03:00,807
+and we're going to get the value storing 
+target and we're going to jump on it. 
+
+45
+00:03:00,807 --> 00:03:04,284
+We're going to do a Go To and use that as 
+[UNKNOWN] Go To and to jump to that 
+
+46
+00:03:04,284 --> 00:03:09,618
+address, go to that address. 
+So, these are the way of looking at this 
+
+47
+00:03:09,618 --> 00:03:13,086
+more visually. 
+I have another switch statements in 
+
+48
+00:03:13,086 --> 00:03:18,181
+fourteen other cases I have the 
+corresponding vision of memory. 
+
+49
+00:03:18,181 --> 00:03:22,789
+Just in the color matching there and then 
+our jump table is going to map back to 
+
+50
+00:03:22,789 --> 00:03:27,762
+the corresponding 
+To the corresponding memory region that 
+
+51
+00:03:27,762 --> 00:03:30,571
+implements that block of code 
+corresponding to the, to the case 
+
+52
+00:03:30,571 --> 00:03:33,470
+statement. 
+So, now 1 is green, so that means that 
+
+53
+00:03:33,470 --> 00:03:36,070
+the [INAUDIBLE] 1 here has to point to 
+green. 
+
+54
+00:03:36,070 --> 00:03:39,282
+That's this one. 
+And same, same thing for orange and so 
+
+55
+00:03:39,282 --> 00:03:41,710
+on. 
+Okay? 
+
+56
+00:03:41,710 --> 00:03:45,420
+Now notice an interesting case here, 
+which is the default case. 
+
+57
+00:03:45,420 --> 00:03:49,450
+The default case, as I said before, gets 
+executed if none of the value if, if the 
+
+58
+00:03:49,450 --> 00:03:53,604
+value of x doesn't happen to, happens to 
+be none of the values explicitly defined 
+
+59
+00:03:53,604 --> 00:03:59,790
+by cases, okay? 
+So, here it happens to be 0, right? 
+
+60
+00:03:59,790 --> 00:04:03,982
+We're going to jump to the default case, 
+and also happens to be four. 
+
+61
+00:04:03,982 --> 00:04:10,730
+We're going to jump to the default case. 
+Okay? 
+
+62
+00:04:10,730 --> 00:04:15,050
+And we can use a jump table as long as 
+the value is lower than six. 
+
+63
+00:04:15,050 --> 00:04:22,760
+For any other value that's greater than 
+six, we go to execute the default code. 
+
+64
+00:04:22,760 --> 00:04:27,163
+The default block. 
+for this jump table, just a list of 
+
+65
+00:04:27,163 --> 00:04:29,815
+addresses. 
+And he's how we get setup. 
+
+66
+00:04:29,815 --> 00:04:35,275
+in assembly, you would see a declaration 
+of long words that point, that happen to 
+
+67
+00:04:35,275 --> 00:04:42,429
+be the same value as the label that maps 
+to the address of the code block. 
+
+68
+00:04:43,750 --> 00:04:49,490
+So now this, for example, if we take 
+.L61, that's where the default code block 
+
+69
+00:04:49,490 --> 00:04:54,413
+starts. 
+So, the corresponding structured address 
+
+70
+00:04:54,413 --> 00:05:00,840
+is going to be stored here, and same 
+thing for the other case values. 
+
+71
+00:05:00,840 --> 00:05:03,380
+So, let's see how we use this table in 
+assembly now. 
+
+72
+00:05:05,160 --> 00:05:11,403
+so here we have the jump table. 
+And what we're going to do, is we're 
+
+73
+00:05:11,403 --> 00:05:17,200
+going to, depending on the value of x, 
+which is loaded in edx here. 
+
+74
+00:05:17,200 --> 00:05:20,542
+We're going to find the corresponding 
+entry. 
+
+75
+00:05:20,542 --> 00:05:26,330
+And the way this is done, this is done 
+using a indirect jump. 
+
+76
+00:05:26,330 --> 00:05:31,221
+The indirect jump says that, instead of 
+jumping to specific address, it jumps to 
+
+77
+00:05:31,221 --> 00:05:37,284
+an address containing an address. 
+So, the way this works is this .L62 here, 
+
+78
+00:05:37,284 --> 00:05:43,608
+is the base address of our, jump table. 
+Now the value of edx gets multiplied by 
+
+79
+00:05:43,608 --> 00:05:46,630
+four and [UNKNOWN] because a long word is 
+four bites. 
+
+80
+00:05:46,630 --> 00:05:53,749
+So, if the x is say four, we're going to 
+add zero, we're going to add four, one, 
+
+81
+00:05:53,749 --> 00:06:01,824
+two, three, four. 
+And that's the value that's going to be, 
+
+82
+00:06:01,824 --> 00:06:04,780
+jumped to. 
+'Kay? 
+
+83
+00:06:04,780 --> 00:06:09,202
+So, another thing to note, here, is that 
+we are comparing whether x happens to be 
+
+84
+00:06:09,202 --> 00:06:15,467
+greater than six. 
+And if it greater than six, it jumps 
+
+85
+00:06:15,467 --> 00:06:21,620
+straight to default. 
+So, now lets see how the code blocks are 
+
+86
+00:06:21,620 --> 00:06:25,705
+implemented. 
+So here, suppose that we have we're 
+
+87
+00:06:25,705 --> 00:06:32,041
+interested in case two here. 
+And in case two happens to be mapped to 
+
+88
+00:06:32,041 --> 00:06:36,946
+label .L57. 
+It means that this is where, the assembly 
+
+89
+00:06:36,946 --> 00:06:42,590
+codes that implements the block for case 
+two is located. 
+
+90
+00:06:42,590 --> 00:06:46,970
+So, we have a division here, so that's 
+why we must have a division instruction. 
+
+91
+00:06:46,970 --> 00:06:50,270
+And note that this a fall through case, 
+so it's going to be in case x is 2, is 
+
+92
+00:06:50,270 --> 00:06:54,911
+going to be executing. 
+And it's going to continue executing 
+
+93
+00:06:54,911 --> 00:07:00,110
+through the next case block, until the 
+break statement. 
+
+94
+00:07:00,110 --> 00:07:04,898
+And the break statement here is 
+implemented by essentially just finishing 
+
+95
+00:07:04,898 --> 00:07:09,044
+the execution. 
+Returning from the function in which the 
+
+96
+00:07:09,044 --> 00:07:15,246
+switch block is inserted. 
+And note here that the default case also, 
+
+97
+00:07:15,246 --> 00:07:20,809
+after this there is a return. 
+So, if you look at here in label .L61 
+
+98
+00:07:20,809 --> 00:07:26,610
+you're going to see here. 
+That after, right after being done with 
+
+99
+00:07:26,610 --> 00:07:31,170
+the corresponding code block, we also 
+leave and return from the function. 
+
+100
+00:07:33,090 --> 00:07:36,935
+So, here's the, the rest of the code 
+block for our example. 
+
+101
+00:07:36,935 --> 00:07:42,647
+again you see, the important thing to 
+notice here is that, you have returns 
+
+102
+00:07:42,647 --> 00:07:50,112
+after every single block that had breaks. 
+And for both case five and, and case six, 
+
+103
+00:07:50,112 --> 00:07:55,904
+they're both mapped to case L60, which is 
+the label right here. 
+
+104
+00:07:55,904 --> 00:08:00,940
+Now let's look at how these labels are 
+defined now. 
+
+105
+00:08:00,940 --> 00:08:05,227
+If you look at the object code, they, you 
+see that they become an instruction 
+
+106
+00:08:05,227 --> 00:08:09,425
+[INAUDIBLE] before as chosen by the 
+linker, okay? 
+
+107
+00:08:09,425 --> 00:08:13,455
+And there'll be one of those for each one 
+of the the case values in our switch 
+
+108
+00:08:13,455 --> 00:08:17,160
+statement. 
+So, if you go look at entire table you 
+
+109
+00:08:17,160 --> 00:08:21,970
+see there will be one address for case 
+statement. 
+
+110
+00:08:21,970 --> 00:08:27,940
+And those have two as we saw before put 
+points at a code block. 
+
+111
+00:08:27,940 --> 00:08:32,158
+So now we can look at each one of those 
+you see mapped to a block of codes 
+
+112
+00:08:32,158 --> 00:08:39,475
+corresponding to the code inserted in 
+the, in the case block for that value. 
+
+113
+00:08:39,475 --> 00:08:44,659
+so here's our, our, our list of 
+instruction addresses for the jump table, 
+
+114
+00:08:44,659 --> 00:08:49,600
+and each one of them points to a block of 
+code. 
+
+115
+00:08:49,600 --> 00:08:51,170
+And notice that we have some repeated 
+ones. 
+
+116
+00:08:51,170 --> 00:08:54,866
+Remember that some, some of the cases 
+has, for example, follow through or cases 
+
+117
+00:08:54,866 --> 00:08:58,109
+that are not defined. 
+So, in this case here it's, it's the 
+
+118
+00:08:58,109 --> 00:09:01,550
+default value. 
+For value four, if you remember it has to 
+
+119
+00:09:01,550 --> 00:09:05,910
+go through the default case, so it points 
+there. 
+
+120
+00:09:05,910 --> 00:09:10,860
+So the same thing for value zero. 
+Now let me ask you a question. 
+
+121
+00:09:10,860 --> 00:09:14,330
+Would you implement this one with a jump 
+table? 
+
+122
+00:09:15,560 --> 00:09:17,060
+Well, look at the size of this value 
+here. 
+
+123
+00:09:17,060 --> 00:09:19,210
+Probably not. 
+This table would be very, very, very 
+
+124
+00:09:19,210 --> 00:09:21,420
+large. 
+Okay? 
+
+125
+00:09:21,420 --> 00:09:26,740
+So, jump jump tables are, are, are used 
+normally when you have few case values 
+
+126
+00:09:26,740 --> 00:09:33,458
+and you can build a small table for it. 
+In this case here, it would be much more 
+
+127
+00:09:33,458 --> 00:09:36,979
+efficient to just implement this with 
+branch instructions. 
+
+128
+00:09:38,160 --> 00:09:42,480
+So, now we conclude our exodus six 
+assembly programming section. 
+
+129
+00:09:42,480 --> 00:09:44,020
+And I'll see you next time. 
+

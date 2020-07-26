@@ -1,0 +1,774 @@
+1
+23:59:59,500 --> 00:00:04,511
+[MUSIC]. 
+
+2
+00:00:04,511 --> 00:00:07,368
+All right. 
+now that we know a lot about memory 
+
+3
+00:00:07,368 --> 00:00:10,280
+allocation and we know some of its 
+basics, we know some details, 
+
+4
+00:00:10,280 --> 00:00:15,312
+implementations and so on. 
+let's talk about something called garbage 
+
+5
+00:00:15,312 --> 00:00:17,329
+collection. 
+We're trying to make a lot of this 
+
+6
+00:00:17,329 --> 00:00:18,589
+automatic. 
+Right. 
+
+7
+00:00:18,589 --> 00:00:21,751
+So far, we have assumed that applications 
+are going to malloc and then free 
+
+8
+00:00:21,751 --> 00:00:26,290
+whenever they don't need it anymore. 
+But it turns out that's, that can be a 
+
+9
+00:00:26,290 --> 00:00:31,730
+pain and a big source of, of memory 
+problems like leaks and so on, okay? 
+
+10
+00:00:31,730 --> 00:00:35,939
+So that's why a garbage collection was 
+invented, so it's it provides automatic 
+
+11
+00:00:35,939 --> 00:00:40,590
+reclamation, reclamation of heap 
+allocated storage. 
+
+12
+00:00:40,590 --> 00:00:44,900
+So, for example, suppose that here's a 
+function foo that has a pointer p. 
+
+13
+00:00:44,900 --> 00:00:48,786
+It allocates this malloc, allocates, and 
+then when this function returns, this 
+
+14
+00:00:48,786 --> 00:00:52,210
+pointer's going to be gone. 
+So there's nothing that points to the 
+
+15
+00:00:52,210 --> 00:00:55,039
+allocated block anymore. 
+That means that the, the block piece is 
+
+16
+00:00:55,039 --> 00:00:57,912
+now garbage, because nobody can reference 
+it, 'kay? 
+
+17
+00:00:57,912 --> 00:01:02,340
+So and so you can just go and 
+automatically free it and garbage 
+
+18
+00:01:02,340 --> 00:01:07,658
+collection does that. 
+This is automatic freeing of blocks that 
+
+19
+00:01:07,658 --> 00:01:12,220
+are no longer useful, that we know are no 
+longer useful, okay? 
+
+20
+00:01:12,220 --> 00:01:15,730
+So this is very common in functional 
+languages, scripting languages, and 
+
+21
+00:01:15,730 --> 00:01:20,723
+modern objective-orientated languages. 
+So like, things like lists, ML, Java, 
+
+22
+00:01:20,723 --> 00:01:25,720
+just common Java, Perl, Mathematica, 
+Python and so on, 'kay? 
+
+23
+00:01:25,720 --> 00:01:29,308
+So there are also variants of garbage 
+collectors called conservative garbage 
+
+24
+00:01:29,308 --> 00:01:33,439
+collectors for C and C++. 
+They had to be conservative because C and 
+
+25
+00:01:33,439 --> 00:01:37,543
+C++ are very flexible in how they support 
+pointers and then makes implementing 
+
+26
+00:01:37,543 --> 00:01:43,040
+garbage collection hard. 
+So they have to be conservative, okay? 
+
+27
+00:01:43,040 --> 00:01:47,490
+It works but it can, it can't you might 
+not be able to collect all garbage. 
+
+28
+00:01:47,490 --> 00:01:50,700
+So let's answer some of the core 
+questions of garbage collection. 
+
+29
+00:01:50,700 --> 00:01:54,070
+The first one is knowing when memory can 
+be freed. 
+
+30
+00:01:54,070 --> 00:01:56,754
+So in general, it's very hard to know 
+what's going to be used in the future, 
+
+31
+00:01:56,754 --> 00:02:00,488
+since it depends on conditions and so on. 
+So we have to have a way of knowing that 
+
+32
+00:02:00,488 --> 00:02:05,934
+it's never going to be used again. 
+But so we can know when certain blocks 
+
+33
+00:02:05,934 --> 00:02:09,890
+are no longer reachable. 
+There's nothing that point to them. 
+
+34
+00:02:09,890 --> 00:02:13,010
+So if, if you have blocks in your heap, 
+but we know there are no pointers to 
+
+35
+00:02:13,010 --> 00:02:17,820
+those blocks, then we know for sure that 
+those blocks can be collected. 
+
+36
+00:02:17,820 --> 00:02:21,835
+Okay, can, it can be freed. 
+But for that, the allocator needs to know 
+
+37
+00:02:21,835 --> 00:02:26,190
+what is a pointer, what's not a pointer. 
+How can he do this? 
+
+38
+00:02:26,190 --> 00:02:30,063
+Well, it needs language support. 
+You need to, or you need, you need to be 
+
+39
+00:02:30,063 --> 00:02:34,050
+disciplined on how you use pointers. 
+Okay? 
+
+40
+00:02:34,050 --> 00:02:36,954
+So there will be some support, either the 
+program is going to declare what's 
+
+41
+00:02:36,954 --> 00:02:41,230
+pointer, what's that pointer, what the 
+language supports it and so on, okay? 
+
+42
+00:02:41,230 --> 00:02:44,545
+So, we're going to make some assumptions 
+about pointers in the rest of this of 
+
+43
+00:02:44,545 --> 00:02:48,374
+this video. 
+First memory allocator can distinguish 
+
+44
+00:02:48,374 --> 00:02:52,616
+pointers from non-pointers, okay? 
+So all pointers point to the start of a 
+
+45
+00:02:52,616 --> 00:02:57,250
+block, in the heap, and the application 
+cannot hide pointers. 
+
+46
+00:02:57,250 --> 00:03:00,550
+For example, it cannot cast them to int 
+and then back again to hide pointers, 
+
+47
+00:03:00,550 --> 00:03:02,644
+'kay? 
+So that's what I mentioned before, 
+
+48
+00:03:02,644 --> 00:03:07,146
+disciplined use of pointers, 'kay? 
+There are many garbage collection 
+
+49
+00:03:07,146 --> 00:03:10,136
+algorithms. 
+Now, one of the classic point, classic 
+
+50
+00:03:10,136 --> 00:03:14,420
+ones is market sweep, which is going to, 
+we're going to see in this video now. 
+
+51
+00:03:14,420 --> 00:03:18,728
+it doesn't move blocks around it just 
+collect them, 'kay? 
+
+52
+00:03:18,728 --> 00:03:22,944
+unless if, if, if you compact, then the 
+effect is moving it but we're not 
+
+53
+00:03:22,944 --> 00:03:28,649
+going to be looking at that. 
+So anyways, there is a bunch of of, of 
+
+54
+00:03:28,649 --> 00:03:32,200
+algorithms and note that it started long 
+time ago, 1960, so it's been, it's been a 
+
+55
+00:03:32,200 --> 00:03:36,188
+problem for a while. 
+If interesting and learn, we're going to 
+
+56
+00:03:36,188 --> 00:03:39,539
+give you a basic overview in this video. 
+But if you do want to learn more, there's 
+
+57
+00:03:39,539 --> 00:03:43,461
+this really nice book Garbage Collection: 
+Algorithms for Automatic Dynamic Memory 
+
+58
+00:03:43,461 --> 00:03:46,814
+by Jones and Lin. 
+It's a really cool book, if you're 
+
+59
+00:03:46,814 --> 00:03:49,700
+interested in that, I definitely 
+encourage you to read it. 
+
+60
+00:03:49,700 --> 00:03:52,828
+So let's get started with the basics. 
+First of all, we're going to look at 
+
+61
+00:03:52,828 --> 00:03:55,600
+memory as a graph, as a directed graph, 
+'kay? 
+
+62
+00:03:55,600 --> 00:03:58,816
+So, each allocated heap block is a node 
+in the graph and each pointer is a notch 
+
+63
+00:03:58,816 --> 00:04:04,950
+in the graph. 
+Okay? 
+
+64
+00:04:04,950 --> 00:04:07,830
+So, and locations that are not in the 
+heap that contain pointers into the heap 
+
+65
+00:04:07,830 --> 00:04:10,340
+are called root nodes. 
+They're these things that are outside the 
+
+66
+00:04:10,340 --> 00:04:11,530
+heap. 
+So these are the heap nodes. 
+
+67
+00:04:11,530 --> 00:04:15,320
+So you do the, the root nodes. 
+Okay? 
+
+68
+00:04:15,320 --> 00:04:19,163
+So, green nodes here are reachable, 
+meaning that there is a pointer from the 
+
+69
+00:04:19,163 --> 00:04:25,180
+roots to them, and the other ones are not 
+the ones we rather not reachable. 
+
+70
+00:04:25,180 --> 00:04:27,530
+'Kay? 
+So, and we define reachable as follows. 
+
+71
+00:04:27,530 --> 00:04:32,049
+A node is reachable if there's a path 
+from any root node to to that node, 'kay? 
+
+72
+00:04:32,049 --> 00:04:35,388
+So for example, so this one is green 
+because there's a path, this one is green 
+
+73
+00:04:35,388 --> 00:04:40,030
+because there's a path, through here. 
+But now, this one, these ones are not 
+
+74
+00:04:40,030 --> 00:04:45,340
+reachable, because there's no way to get 
+from any of the root nodes to them, 'kay? 
+
+75
+00:04:45,340 --> 00:04:48,085
+So these ones are, are the ones that 
+we're going to consider garbage, are the 
+
+76
+00:04:48,085 --> 00:04:52,400
+ones that we're going to collect. 
+'Kay? 
+
+77
+00:04:52,400 --> 00:04:55,480
+So, let's see it how mark-and-sweep 
+works. 
+
+78
+00:04:55,480 --> 00:04:57,730
+It's one of the classic, simplest, 
+algorithms that, that do that. 
+
+79
+00:04:57,730 --> 00:05:00,453
+And that could be built on top of malloc 
+and free package. 
+
+80
+00:05:00,453 --> 00:05:03,489
+So we, we allocate using malloc, until we 
+run out of space and then you do garbage 
+
+81
+00:05:03,489 --> 00:05:05,300
+collection. 
+'Kay? 
+
+82
+00:05:05,300 --> 00:05:07,890
+And when, when you're out of space, 
+here's what we're going to do. 
+
+83
+00:05:07,890 --> 00:05:10,996
+We're going to use an extra mark bit in 
+the head of each block. 
+
+84
+00:05:10,996 --> 00:05:13,480
+Okay? 
+And then we have this mark phase that 
+
+85
+00:05:13,480 --> 00:05:19,720
+starts a lot of the roots and sets the 
+mark page on each reachable block, 'kay? 
+
+86
+00:05:19,720 --> 00:05:23,130
+And once we do that, over the entire 
+heap, we can sweep, scan over all blocks 
+
+87
+00:05:23,130 --> 00:05:26,540
+in the heap and free the ones that are 
+not marked, because we know that those 
+
+88
+00:05:26,540 --> 00:05:31,588
+are not reachable, okay? 
+So here's an example. 
+
+89
+00:05:31,588 --> 00:05:35,020
+Visual example. 
+here's what we have before mark. 
+
+90
+00:05:35,020 --> 00:05:40,740
+We have a root another points here, okay? 
+So from there, we're going to traverse. 
+
+91
+00:05:40,740 --> 00:05:44,800
+Now we, we're going to, we're going to 
+traverse this and mark the free block. 
+
+92
+00:05:44,800 --> 00:05:47,600
+So from here, we can reach here, so we 
+mark this one, okay? 
+
+93
+00:05:47,600 --> 00:05:50,430
+So from this one, we can reach this one, 
+so can mark this one. 
+
+94
+00:05:50,430 --> 00:05:54,115
+And, from so since it points here, from 
+this one, we can reach here so we marked 
+
+95
+00:05:54,115 --> 00:05:58,070
+this one, 'kay? 
+Once that's done, we're going to have the 
+
+96
+00:05:58,070 --> 00:06:02,100
+sweep phase, which we know that these 
+here were not, this was not marked and 
+
+97
+00:06:02,100 --> 00:06:07,600
+this was not marked, so we can go ahead 
+and free both of them. 
+
+98
+00:06:07,600 --> 00:06:11,042
+Pretty simple, right? 
+So, let's think of this as a simple 
+
+99
+00:06:11,042 --> 00:06:14,025
+implementation. 
+But we need assumptions for that. 
+
+100
+00:06:14,025 --> 00:06:18,505
+First, this new, this function new here 
+with n returns a pointer to a new block 
+
+101
+00:06:18,505 --> 00:06:24,000
+with all locations cleared. 
+[INAUDIBLE] and read b,i reads location i 
+
+102
+00:06:24,000 --> 00:06:29,849
+of block b into a register, 'kay? 
+And writes b,i and v, write v into 
+
+103
+00:06:29,849 --> 00:06:35,370
+location i of block b. 
+So, it does is, it just add, no, location 
+
+104
+00:06:35,370 --> 00:06:38,354
+i to block b. 
+This is v, okay? 
+
+105
+00:06:38,354 --> 00:06:44,567
+And each block is going to have a header 
+word that's pointed by b minus 1, 'kay? 
+
+106
+00:06:44,567 --> 00:06:47,710
+So having these restriction here, you 
+know? 
+
+107
+00:06:47,710 --> 00:06:50,356
+So if, if we're going to use this 
+function, if applications use this 
+
+108
+00:06:50,356 --> 00:06:53,737
+function, now we can actually keep track 
+of what is pointers, and where allocation 
+
+109
+00:06:53,737 --> 00:06:58,400
+was being used, and so on, okay? 
+So the functions used by the garbage 
+
+110
+00:06:58,400 --> 00:07:02,915
+collection is going to be as follows. 
+We're going to check whether certain p is 
+
+111
+00:07:02,915 --> 00:07:06,406
+a pointer to a block, okay? 
+So whether something, whether p, so if 
+
+112
+00:07:06,406 --> 00:07:09,606
+you pass p as a parameter, this returns 
+through if p happens to be a pointer to a 
+
+113
+00:07:09,606 --> 00:07:13,900
+block. 
+Length of p just tells us the size of the 
+
+114
+00:07:13,900 --> 00:07:17,484
+block not including the header, and get 
+roots, returns all of the roots in the 
+
+115
+00:07:17,484 --> 00:07:21,998
+system. 
+Root again, roots are all of the pointers 
+
+116
+00:07:21,998 --> 00:07:27,414
+that are outside the heap, 'kay? 
+Alright, so let's see how this works. 
+
+117
+00:07:27,414 --> 00:07:32,715
+So, this is the mark phase we started 
+with we started with the pointer p, 'kay? 
+
+118
+00:07:32,715 --> 00:07:36,185
+So if it's, if p is not a pointer, it 
+just return, okay? 
+
+119
+00:07:36,185 --> 00:07:39,241
+So also, if its already marked, we return 
+as well. 
+
+120
+00:07:39,241 --> 00:07:41,222
+Okay? 
+But now, we go if, if we are here, it, 
+
+121
+00:07:41,222 --> 00:07:45,215
+because it is a pointer hasn't been 
+marked so we mark it. 
+
+122
+00:07:45,215 --> 00:07:50,655
+And not only that, we're going to go over 
+the entire block pointed by p and we're 
+
+123
+00:07:50,655 --> 00:07:55,160
+going to go call mark it. 
+So parts of it are going to be pointers, 
+
+124
+00:07:55,160 --> 00:07:57,930
+parts of this block is not going to be 
+pointers. 
+
+125
+00:07:57,930 --> 00:08:00,074
+Okay? 
+So we, we recur, so this is going to mark 
+
+126
+00:08:00,074 --> 00:08:04,290
+the entire graph, so we're going to 
+traverse entire heap and mark it a, and, 
+
+127
+00:08:04,290 --> 00:08:09,066
+and mark whatever is a pointer and and so 
+on. 
+
+128
+00:08:09,066 --> 00:08:12,673
+Okay? 
+Now sweep is going to use length to find 
+
+129
+00:08:12,673 --> 00:08:14,890
+the next block. 
+Okay? 
+
+130
+00:08:14,890 --> 00:08:19,630
+So we're going to start with p, and we 
+know, we know where, where it ends. 
+
+131
+00:08:19,630 --> 00:08:23,269
+Okay? 
+So while p has not reach the end, if the 
+
+132
+00:08:23,269 --> 00:08:30,224
+mark bit is set, we clear the mark bit. 
+Now, if the allocated bit is set, so but 
+
+133
+00:08:30,224 --> 00:08:34,613
+it, it, if it's not marked, and the 
+allocate bit is set, we're going to go 
+
+134
+00:08:34,613 --> 00:08:38,542
+and free it. 
+Because we know it's allocated, but it's 
+
+135
+00:08:38,542 --> 00:08:40,225
+not marked. 
+It means it's not reachable. 
+
+136
+00:08:40,225 --> 00:08:41,940
+Okay? 
+Great. 
+
+137
+00:08:41,940 --> 00:08:45,095
+So now we're going to go to, to, to the 
+next pointer, we're just adding length. 
+
+138
+00:08:45,095 --> 00:08:50,890
+'Kay? 
+That's pretty cool, pretty simple. 
+
+139
+00:08:50,890 --> 00:08:54,994
+Now, how would we make that work in C? 
+Well, the challenge of doing this in C is 
+
+140
+00:08:54,994 --> 00:08:58,474
+that, remember that we need this 
+function, say the, whether certain 
+
+141
+00:08:58,474 --> 00:09:04,190
+location's a pointer. 
+So in C, anything can be positive. 
+
+142
+00:09:04,190 --> 00:09:06,668
+That, that's a little bit complicated. 
+So we have to keep track of when you put 
+
+143
+00:09:06,668 --> 00:09:08,838
+pointers. 
+You have to, to somehow tell a run-time 
+
+144
+00:09:08,838 --> 00:09:11,185
+system that a system location is a 
+pointer. 
+
+145
+00:09:11,185 --> 00:09:14,900
+Okay? 
+So but also in C, a pointer can point to, 
+
+146
+00:09:14,900 --> 00:09:19,187
+to the middle of an allocated block. 
+So that makes it tricky to find allocated 
+
+147
+00:09:19,187 --> 00:09:22,420
+allocated blocks in the mark phase. 
+Okay. 
+
+148
+00:09:22,420 --> 00:09:24,820
+So the way to solve this as I said by 
+calling the run-time system, call the 
+
+149
+00:09:24,820 --> 00:09:28,560
+information and so on. 
+but the, the upshot is that we can make 
+
+150
+00:09:28,560 --> 00:09:32,315
+it work somehow, but it's going to be 
+conservative. 
+
+151
+00:09:32,315 --> 00:09:36,635
+It might miss, blocks if everything that 
+it marks, everything that it decides that 
+
+152
+00:09:36,635 --> 00:09:40,490
+can be collected, indeed can be 
+collected. 
+
+153
+00:09:40,490 --> 00:09:44,450
+However, you might miss some unreachable 
+blocks and not free those. 
+
+154
+00:09:44,450 --> 00:09:49,665
+So, it's not it might miss something. 
+But it's it should work reasonably well. 
+
+155
+00:09:49,665 --> 00:09:51,300
+'Kay? 
+See you soon. 
+

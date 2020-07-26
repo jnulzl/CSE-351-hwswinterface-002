@@ -1,0 +1,564 @@
+1
+00:00:06,720 --> 00:00:12,831
+Okay, so we just saw how a stack can be 
+used to keep track of the return address 
+
+2
+00:00:12,831 --> 00:00:18,791
+in a procedure call. 
+Let's take this a little bit further now 
+
+3
+00:00:18,791 --> 00:00:22,405
+and look at stack-based languages in 
+general. 
+
+4
+00:00:22,405 --> 00:00:25,450
+Alright, that's the next part of this 
+section. 
+
+5
+00:00:25,450 --> 00:00:29,060
+So, stack-based languages are really 
+common. 
+
+6
+00:00:29,060 --> 00:00:32,560
+that's in fact the majority of the 
+languages we use today. 
+
+7
+00:00:32,560 --> 00:00:38,120
+they're languages that support recursion, 
+namely a procedure that calls itself. 
+
+8
+00:00:38,120 --> 00:00:42,530
+so these are languages like C, Pascal, if 
+you remember the, from the old days, and 
+
+9
+00:00:42,530 --> 00:00:47,141
+Java as well. 
+to make it possible to support recursion 
+
+10
+00:00:47,141 --> 00:00:52,720
+in a programming language code must be 
+what we call re-entrant. 
+
+11
+00:00:52,720 --> 00:00:58,600
+Meaning that we can have simultaneous 
+instantiation of a single procedure. 
+
+12
+00:00:58,600 --> 00:01:01,002
+What does that mean? 
+That means that we've just called a 
+
+13
+00:01:01,002 --> 00:01:03,987
+procedure and in the middle of executing 
+it. 
+
+14
+00:01:03,987 --> 00:01:07,757
+And then that procedure can call itself 
+again and start executing a new copy of 
+
+15
+00:01:07,757 --> 00:01:11,229
+itself. 
+And that one can call itself again and 
+
+16
+00:01:11,229 --> 00:01:14,720
+execute a new copy of itself and so 
+forth. 
+
+17
+00:01:14,720 --> 00:01:17,892
+So that's a, you can imagine is an 
+interesting problem to try to keep track 
+
+18
+00:01:17,892 --> 00:01:21,516
+of all of that. 
+And in order to make that happen, what we 
+
+19
+00:01:21,516 --> 00:01:25,236
+need to do is to make sure to have a 
+place to store the information for each 
+
+20
+00:01:25,236 --> 00:01:30,572
+instantiation of that procedure. 
+And what information do we need to hold 
+
+21
+00:01:30,572 --> 00:01:34,481
+on to? 
+Well that's called the procedures state. 
+
+22
+00:01:34,481 --> 00:01:39,241
+And that includes the arguments we called 
+it with any local variables it has to 
+
+23
+00:01:39,241 --> 00:01:44,810
+work on, and of course a return address 
+or return pointer. 
+
+24
+00:01:44,810 --> 00:01:49,098
+to where it should go in the procedure 
+that called it, including potentially 
+
+25
+00:01:49,098 --> 00:01:52,647
+itself. 
+and to do that we're going to extend this 
+
+26
+00:01:52,647 --> 00:01:54,420
+stack discipline. 
+Okay. 
+
+27
+00:01:54,420 --> 00:01:58,884
+So bascially the state for a given 
+procedure is all this stuff above the 
+
+28
+00:01:58,884 --> 00:02:04,027
+three check marks there. 
+That are things I need for a limited 
+
+29
+00:02:04,027 --> 00:02:08,230
+amount of time while that procedure is 
+executing. 
+
+30
+00:02:08,230 --> 00:02:13,896
+And then when it returns I can remove 
+that state, I don't need it anymore. 
+
+31
+00:02:13,896 --> 00:02:19,730
+so the callee fortunately always returns 
+before it's caller. 
+
+32
+00:02:19,730 --> 00:02:24,422
+Because we're returning back to the 
+caller and then continuing the execution 
+
+33
+00:02:24,422 --> 00:02:28,587
+where we left off in the caller 
+procedure. 
+
+34
+00:02:28,587 --> 00:02:32,865
+So one last definition we're going to 
+call these allocations on the stack 
+
+35
+00:02:32,865 --> 00:02:37,795
+frames, procedure frames, or stack frames 
+in general. 
+
+36
+00:02:37,795 --> 00:02:44,185
+And for each procedure instantiation we 
+will have all the state in one of these 
+
+37
+00:02:44,185 --> 00:02:48,530
+frames. 
+So let's take a look at an example of a 
+
+38
+00:02:48,530 --> 00:02:55,209
+call chain, a string of procedure calls. 
+Alright so here we have some fun funny 
+
+39
+00:02:55,209 --> 00:03:01,626
+functions the function yoo which calls 
+the function who. 
+
+40
+00:03:01,626 --> 00:03:07,054
+Okay, and we can see in the that we 
+somehow started with the function the 
+
+41
+00:03:07,054 --> 00:03:12,383
+procedure yoo and it then calls who, 
+okay? 
+
+42
+00:03:12,383 --> 00:03:19,435
+Now the procedure who in its turn calls 
+amI twice. 
+
+43
+00:03:19,435 --> 00:03:23,760
+and in between It probably does some 
+other things, okay? 
+
+44
+00:03:23,760 --> 00:03:28,362
+So were going to call amI then return 
+back to this point and do some other 
+
+45
+00:03:28,362 --> 00:03:35,170
+stuff and then call amI again. 
+so here we see the two calls to amI. 
+
+46
+00:03:35,170 --> 00:03:43,033
+That happen one after the other in who. 
+But the function amI is a recursive 
+
+47
+00:03:43,033 --> 00:03:48,139
+procedure that calls itself. 
+So heres the definition of amI and yoo 
+
+48
+00:03:48,139 --> 00:03:53,650
+see that inside it calls itself again. 
+Alright you have already seen factorial 
+
+49
+00:03:53,650 --> 00:03:58,822
+functions that do this for example. 
+So amI here you noticed in the first 
+
+50
+00:03:58,822 --> 00:04:06,846
+call, called itself once and then that 
+copy of amI call itself again. 
+
+51
+00:04:06,846 --> 00:04:13,272
+But then it stopped and returned and 
+returned and then may the second call to 
+
+52
+00:04:13,272 --> 00:04:18,748
+amI here. 
+And then amI returned again back up to 
+
+53
+00:04:18,748 --> 00:04:23,662
+who and then who returned up to U and 
+then U returned to wherever it was called 
+
+54
+00:04:23,662 --> 00:04:29,498
+from okay. 
+So here we see that chain descending down 
+
+55
+00:04:29,498 --> 00:04:36,865
+the tree of cause that we have here and 
+basically following that a path. 
+
+56
+00:04:36,865 --> 00:04:40,556
+Okay. 
+So, let's see how this looks on the 
+
+57
+00:04:40,556 --> 00:04:43,992
+stack. 
+Okay, so, let's take a, review that stack 
+
+58
+00:04:43,992 --> 00:04:49,003
+frame concept again. 
+In the Linux IA32 architecture. 
+
+59
+00:04:49,003 --> 00:04:54,533
+the contents of a stack frame includes 
+the local variables, arguments to the 
+
+60
+00:04:54,533 --> 00:05:01,690
+function any information about return 
+addresses that it needs to go to. 
+
+61
+00:05:01,690 --> 00:05:04,590
+And then maybe some temporary scratch 
+space. 
+
+62
+00:05:04,590 --> 00:05:09,440
+This this function might need. 
+Maybe things like it's another version of 
+
+63
+00:05:09,440 --> 00:05:12,990
+local variables if you will. 
+But maybe more temporary. 
+
+64
+00:05:12,990 --> 00:05:16,090
+All right. 
+So here's the previous frame on the 
+
+65
+00:05:16,090 --> 00:05:17,910
+stack. 
+Okay. 
+
+66
+00:05:17,910 --> 00:05:22,518
+And when we call a function, we create a 
+new frame for it by adjusting the stack 
+
+67
+00:05:22,518 --> 00:05:26,838
+pointer to create a space for all of 
+these things that are going to have to go 
+
+68
+00:05:26,838 --> 00:05:32,580
+into that frame, okay. 
+What we're going to do is since we have a 
+
+69
+00:05:32,580 --> 00:05:35,940
+pointer to the top of it in the stack 
+pointer We're also going to use another 
+
+70
+00:05:35,940 --> 00:05:42,782
+special register called the base pointer. 
+you've seen this alread ebp, the Extended 
+
+71
+00:05:42,782 --> 00:05:49,145
+Base Pointer register, to point to the 
+bottom of that stack frame. 
+
+72
+00:05:49,145 --> 00:05:52,967
+Okay. 
+So the management then of these frames is 
+
+73
+00:05:52,967 --> 00:05:57,741
+such that when a procedure is first 
+entered, we run it's setup code that 
+
+74
+00:05:57,741 --> 00:06:04,444
+creates the stuff in this frame. 
+And when we return before we do that we 
+
+75
+00:06:04,444 --> 00:06:08,866
+run some finish code, that sort of cleans 
+up what's in this frame before changing 
+
+76
+00:06:08,866 --> 00:06:16,630
+the stack pointer. 
+to go back to the previous frame Alright? 
+
+77
+00:06:16,630 --> 00:06:22,000
+So again lets take a look at how our 
+example is going to do this. 
+
+78
+00:06:22,000 --> 00:06:25,091
+right? 
+So here remember it is our call chain, 
+
+79
+00:06:25,091 --> 00:06:30,658
+that went through this. 
+Sequence of things calls going down, 
+
+80
+00:06:30,658 --> 00:06:35,145
+returns coming back up. 
+So here we are in the middle of a 
+
+81
+00:06:35,145 --> 00:06:39,350
+procedure yoo, and we're about to call 
+who, right. 
+
+82
+00:06:39,350 --> 00:06:43,254
+So, here's our yoo, yoo stack frame on 
+the stack, there's a base pointer to the 
+
+83
+00:06:43,254 --> 00:06:46,980
+bottom of it, stack pointer to the top of 
+it. 
+
+84
+00:06:48,730 --> 00:06:54,640
+That helps us define that size of that 
+stack, the size of that frame, okay? 
+
+85
+00:06:54,640 --> 00:07:00,293
+But now we've just called who, and we've 
+put a new frame on the stack, okay? 
+
+86
+00:07:00,293 --> 00:07:05,051
+And of course, our base pointer got 
+adjusted and our stack pointer got 
+
+87
+00:07:05,051 --> 00:07:09,216
+adjusted. 
+And you'll recall from some of the 
+
+88
+00:07:09,216 --> 00:07:13,910
+previous examples you might've seen 
+assembly language examples. 
+
+89
+00:07:13,910 --> 00:07:18,332
+You might've seen the old ebp saved away 
+first before we did this, so we can reuse 
+
+90
+00:07:18,332 --> 00:07:23,506
+that registry, okay? 
+The next that's going to happen is we're 
+
+91
+00:07:23,506 --> 00:07:27,010
+going to call is amI.Okay. 
+And here we go. 
+
+92
+00:07:27,010 --> 00:07:29,840
+Another stack frame is put onto the 
+stack. 
+
+93
+00:07:29,840 --> 00:07:33,800
+Again, we've had to save that, that 
+previous value of ebp that was there, 
+
+94
+00:07:33,800 --> 00:07:40,480
+because we had to change that again, so, 
+we've had to find a place to put that. 
+
+95
+00:07:40,480 --> 00:07:43,518
+we're going to go along and execute amI 
+now. 
+
+96
+00:07:43,518 --> 00:07:47,605
+And it's going to call itself So we're 
+going to say another stack frame from amI 
+
+97
+00:07:47,605 --> 00:07:52,160
+appear on the stack, again with updated 
+pointers. 
+
+98
+00:07:53,240 --> 00:07:57,690
+And, yet a thrid one as it calls itself 
+yet again. 
+
+99
+00:07:57,690 --> 00:08:00,504
+Okay. 
+So now we're at the bottom here of our 
+
+100
+00:08:00,504 --> 00:08:07,985
+call chain and we're about to execute our 
+first return in the thridy copy of amI. 
+
+101
+00:08:07,985 --> 00:08:13,565
+So when we do that we remove its stack 
+frame, put the ebp and esp back to where 
+
+102
+00:08:13,565 --> 00:08:19,608
+they were for the previous instantiation 
+of amI. 
+
+103
+00:08:19,608 --> 00:08:23,225
+Okay. 
+And we're now going to return from that 
+
+104
+00:08:23,225 --> 00:08:30,660
+one and remove that from the stack by 
+adjusting the, the pointers again. 
+
+105
+00:08:30,660 --> 00:08:35,450
+So we have a new value for ebp, a new 
+value for esp, okay? 
+
+106
+00:08:35,450 --> 00:08:41,920
+And now our next thing is to return from 
+this instance of amI back to who. 
+
+107
+00:08:41,920 --> 00:08:46,928
+And when we do that, we'll eliminate the 
+last of those frames for amI. 
+
+108
+00:08:46,928 --> 00:08:51,472
+And we're now back at the frame for who 
+with its base pointer and stack pointer 
+
+109
+00:08:51,472 --> 00:08:55,520
+at either end. 
+So we're now in the middle of the 
+
+110
+00:08:55,520 --> 00:09:00,206
+procedure, who and where about to do our 
+second call to amI where so that another 
+
+111
+00:09:00,206 --> 00:09:07,107
+copy of amI's stack frame on the stack. 
+We'll return from that, back to who, and 
+
+112
+00:09:07,107 --> 00:09:11,610
+then done with who, so will return back 
+to yoo. 
+
+113
+00:09:11,610 --> 00:09:14,430
+And just have that left on the stack. 
+

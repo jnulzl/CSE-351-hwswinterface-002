@@ -1,0 +1,879 @@
+1
+00:00:00,000 --> 00:00:05,243
+[MUSIC]. 
+
+2
+00:00:05,243 --> 00:00:08,771
+To close this section we're going to work 
+through an a full example of what a 
+
+3
+00:00:08,771 --> 00:00:13,366
+memory system might look like. 
+This will be a fairly small virtual 
+
+4
+00:00:13,366 --> 00:00:18,334
+memory system but one that should serve 
+as a good example of what goes on in in 
+
+5
+00:00:18,334 --> 00:00:24,578
+real systems. 
+Right, so here's our very simple memory 
+
+6
+00:00:24,578 --> 00:00:27,587
+system. 
+We're going to have 14 bit virtual 
+
+7
+00:00:27,587 --> 00:00:33,200
+address and a 12 bit physical address. 
+Not all that many bits but you get the 
+
+8
+00:00:33,200 --> 00:00:36,764
+idea. 
+just think about replacing that with 32 
+
+9
+00:00:36,764 --> 00:00:43,122
+and 64 for the virtual address. 
+the page size in this case is going to be 
+
+10
+00:00:43,122 --> 00:00:46,629
+64 bytes. 
+Also a very tiny page size, not what we 
+
+11
+00:00:46,629 --> 00:00:50,290
+typically see. 
+As it would be, it would be more 
+
+12
+00:00:50,290 --> 00:00:54,080
+something on the order of eight kBs for 
+example. 
+
+13
+00:00:54,080 --> 00:00:58,980
+So, if we have these values, then here is 
+our 14 bit virtual address and here's our 
+
+14
+00:00:58,980 --> 00:01:05,868
+12 bit physical address. 
+Given that we have 64 byte page size, our 
+
+15
+00:01:05,868 --> 00:01:14,530
+virtual page offset will be six bits as 
+will be our physical page offset. 
+
+16
+00:01:14,530 --> 00:01:16,750
+Because those pages are exactly the same 
+size. 
+
+17
+00:01:16,750 --> 00:01:22,980
+The remaining bits are the virtual page 
+number and the physical page number. 
+
+18
+00:01:22,980 --> 00:01:32,260
+Eight and six bits respectively. 
+The page table for this system is going 
+
+19
+00:01:32,260 --> 00:01:37,936
+to have three columns: a virtual page 
+number, the corresponding physical page 
+
+20
+00:01:37,936 --> 00:01:43,784
+number and then a valid bit; signifying 
+whether that particular entry is valid or 
+
+21
+00:01:43,784 --> 00:01:51,670
+not. 
+here on this diagram I'm only showing the 
+
+22
+00:01:51,670 --> 00:01:56,326
+first 16 entries. 
+Of course there would be 256 total 
+
+23
+00:01:56,326 --> 00:02:02,122
+entries for the page table because our 
+VPN, our virtual page number is eight 
+
+24
+00:02:02,122 --> 00:02:07,819
+bits. 
+So we would have two to the eight entries 
+
+25
+00:02:07,819 --> 00:02:13,280
+in our page table, or 256. 
+Now, you can see that if we had a much, 
+
+26
+00:02:13,280 --> 00:02:20,275
+much larger virtual address base. 
+the number of page table entries could be 
+
+27
+00:02:20,275 --> 00:02:23,130
+huge. 
+And in fact that's a whole another 
+
+28
+00:02:23,130 --> 00:02:26,850
+discussion of what do we do when we have 
+very, very large page tables that we 
+
+29
+00:02:26,850 --> 00:02:32,940
+couldn't actually even fit in memory. 
+in the physical memory. 
+
+30
+00:02:32,940 --> 00:02:41,392
+So we'll defer that discussion however. 
+For now though keep in mind that this is 
+
+31
+00:02:41,392 --> 00:02:44,948
+only 16 out of 256. 
+So that there's many more entries going 
+
+32
+00:02:44,948 --> 00:02:47,470
+all the way to FF for our virtual 
+address. 
+
+33
+00:02:47,470 --> 00:02:52,537
+For our virtual page number. 
+Okay. 
+
+34
+00:02:52,537 --> 00:03:00,250
+Our TLB for this simple memory system is 
+going to be four way associative. 
+
+35
+00:03:00,250 --> 00:03:04,924
+That's actually pretty typical for TLBs. 
+We want to have some flexibility of of 
+
+36
+00:03:04,924 --> 00:03:09,478
+how we can store these page table entries 
+in the cache ,so we, we do not use direct 
+
+37
+00:03:09,478 --> 00:03:16,030
+map caches typically for TLB. 
+and this case there's only 16 entries 
+
+38
+00:03:16,030 --> 00:03:21,524
+this is also a very very tiny TLB. 
+a more typical number would have been 256 
+
+39
+00:03:21,524 --> 00:03:27,324
+or maybe 1K of entries. 
+but again, here we only have 16 and four 
+
+40
+00:03:27,324 --> 00:03:33,934
+way set associative, meaning that there's 
+four entries per set. 
+
+41
+00:03:33,934 --> 00:03:41,043
+that means we'll be using two bits for 
+our set index in our cache. 
+
+42
+00:03:41,043 --> 00:03:46,917
+And the remaining bits, in this case, the 
+remaining six bits of the virtual page 
+
+43
+00:03:46,917 --> 00:03:52,485
+number are for the tag. 
+And you notice that we're only using the 
+
+44
+00:03:52,485 --> 00:03:57,035
+bits of the virtual page number for this 
+TLB because the virtual page offset will 
+
+45
+00:03:57,035 --> 00:04:01,420
+not enter into things. 
+We're not translating that. 
+
+46
+00:04:01,420 --> 00:04:04,626
+We're not looking anything up for that. 
+That just goes straight down to the 
+
+47
+00:04:04,626 --> 00:04:08,387
+physical page number. 
+So the TLB only needs to cache the 
+
+48
+00:04:08,387 --> 00:04:15,430
+virtual page numbers and their 
+corresponding physical page number. 
+
+49
+00:04:15,430 --> 00:04:19,590
+So here at the bottom you then see 
+typical contents for this TLB. 
+
+50
+00:04:19,590 --> 00:04:26,520
+It has these four sets four entries four 
+entries per set for a total of 16 some of 
+
+51
+00:04:26,520 --> 00:04:34,105
+which are valid, some are invalid. 
+And for the ones that are valid we have a 
+
+52
+00:04:34,105 --> 00:04:38,600
+corresponding physical page number. 
+Okay? 
+
+53
+00:04:38,600 --> 00:04:42,758
+And of course, the tag to, to check the, 
+the high order six bits of the virtual 
+
+54
+00:04:42,758 --> 00:04:48,960
+page number to also make sure is the same 
+as the one we're trying to access. 
+
+55
+00:04:50,700 --> 00:04:57,710
+Just like any basic cache would do. 
+the, the last part of our sample example 
+
+56
+00:04:57,710 --> 00:05:05,440
+system is the system cache. 
+the main memory to CPU cache. 
+
+57
+00:05:05,440 --> 00:05:09,870
+And in this case, this will be using 
+physical addresses. 
+
+58
+00:05:09,870 --> 00:05:15,038
+So we'll be taking our physical address 
+and breaking it up into the bits we need 
+
+59
+00:05:15,038 --> 00:05:22,143
+for this for these cache accesses. 
+there will be a block offset of only two 
+
+60
+00:05:22,143 --> 00:05:27,323
+bits because our, we're going to use a 
+block size of four bytes. 
+
+61
+00:05:27,323 --> 00:05:29,652
+Okay? 
+We only need two bits to index into that 
+
+62
+00:05:29,652 --> 00:05:34,926
+block. 
+we will then have four bytes for the set 
+
+63
+00:05:34,926 --> 00:05:39,452
+index. 
+and that's because this particular cache 
+
+64
+00:05:39,452 --> 00:05:43,910
+only has a total of 16 lines and it's 
+direct mapped. 
+
+65
+00:05:43,910 --> 00:05:48,880
+that means that the remaining part of the 
+physical address those last six high 
+
+66
+00:05:48,880 --> 00:05:55,659
+order bits will be the tagged component. 
+And here you see some sample contents for 
+
+67
+00:05:55,659 --> 00:06:00,920
+that cache and here we're showing the 
+entire cache as well. 
+
+68
+00:06:00,920 --> 00:06:05,945
+Okay, so when we out all of those 
+together here's our system cache, here's 
+
+69
+00:06:05,945 --> 00:06:11,600
+our TLB and here is the first 16 entries 
+of our page table. 
+
+70
+00:06:11,600 --> 00:06:19,750
+Remember the page table has a total of 
+256 entries, only showing 16 here. 
+
+71
+00:06:19,750 --> 00:06:24,664
+Now you might want to save this page and 
+have it open in another window as we do 
+
+72
+00:06:24,664 --> 00:06:30,826
+some example address translations, using 
+the data that we've put into these tables 
+
+73
+00:06:30,826 --> 00:06:38,420
+and caches shown on this slide. 
+So keep this one around have it open in 
+
+74
+00:06:38,420 --> 00:06:43,390
+another window. 
+Alright, so let's take a look at our 
+
+75
+00:06:43,390 --> 00:06:47,955
+first example. 
+we're going to go to the address 03D4 in 
+
+76
+00:06:47,955 --> 00:06:55,404
+hex and see what what happens. 
+first we need to map it to a physical 
+
+77
+00:06:55,404 --> 00:07:01,920
+address and then access our cache. 
+So what, how do we do that? 
+
+78
+00:07:01,920 --> 00:07:06,555
+Well let's take that virtual address and 
+break it up into its components. 
+
+79
+00:07:06,555 --> 00:07:09,389
+Okay. 
+the lower the six bits are that offset, 
+
+80
+00:07:09,389 --> 00:07:13,784
+that virtual page offset. 
+the high order eight bits are the virtual 
+
+81
+00:07:13,784 --> 00:07:18,750
+page number. 
+those bits are further divided into the 
+
+82
+00:07:18,750 --> 00:07:25,658
+TLB index and the TLB tag. 
+And you can see in this case that our TLB 
+
+83
+00:07:25,658 --> 00:07:31,862
+index is three and our TLB tag is zero 
+three. 
+
+84
+00:07:31,862 --> 00:07:39,040
+So that's what that first part of our 
+construct will be. 
+
+85
+00:07:39,040 --> 00:07:44,330
+Now is this a TLB hit or not? 
+Well, if we go to that particular set in 
+
+86
+00:07:44,330 --> 00:07:48,980
+the TLB and look for that tag, if that 
+tag is present, we would like to know if 
+
+87
+00:07:48,980 --> 00:07:56,790
+that's a valid entry or not. 
+And we'll see that in fact, if we're to 
+
+88
+00:07:56,790 --> 00:08:02,730
+refer back to our TLB contents, that is a 
+hit and it is not a page fault because 
+
+89
+00:08:02,730 --> 00:08:10,248
+that is a valid entry. 
+So let's take a look at that real quick, 
+
+90
+00:08:10,248 --> 00:08:16,358
+and you'll notice that in set three, here 
+we have the tag 03 and in fact there is a 
+
+91
+00:08:16,358 --> 00:08:22,820
+valid bit. 
+So that's why that worked out. 
+
+92
+00:08:22,820 --> 00:08:29,390
+We can now pick out the [INAUDIBLE] the 
+physical page number as being zero D. 
+
+93
+00:08:29,390 --> 00:08:34,374
+That is now our physical page number. 
+Okay, now that we have that, we have 
+
+94
+00:08:34,374 --> 00:08:38,300
+everything we need to put our physical 
+address together. 
+
+95
+00:08:38,300 --> 00:08:41,840
+And here it is. 
+Here's the zero D. 
+
+96
+00:08:42,990 --> 00:08:47,280
+Okay, and then of course we're just 
+moving the virtual physical the virtual 
+
+97
+00:08:47,280 --> 00:08:51,990
+page offset down to the physical page 
+offset. 
+
+98
+00:08:51,990 --> 00:08:57,790
+we can now break things up into our 
+components for the system cache. 
+
+99
+00:08:57,790 --> 00:09:06,990
+And we see here that those correspond to 
+zero block off set index into set five. 
+
+100
+00:09:06,990 --> 00:09:10,360
+And the tag of zero D. 
+Okay. 
+
+101
+00:09:10,360 --> 00:09:13,880
+Now that's purely coincidental in this 
+case that the tag is the same as the 
+
+102
+00:09:13,880 --> 00:09:18,391
+physical page number. 
+That's just the way these these num, this 
+
+103
+00:09:18,391 --> 00:09:21,995
+number of bits for each of the components 
+worked out, but that would not be what 
+
+104
+00:09:21,995 --> 00:09:26,770
+would be happen in very case. 
+Now is this a hit? 
+
+105
+00:09:26,770 --> 00:09:30,710
+Well, let's go look at the at the cache 
+that we have. 
+
+106
+00:09:30,710 --> 00:09:36,180
+And whether in set five we have a valid 
+entry with the tag 0D. 
+
+107
+00:09:36,180 --> 00:09:42,652
+And what we'll see is that in fact we do. 
+And then we want the particular byte at 
+
+108
+00:09:42,652 --> 00:09:46,765
+offset zero, and that byte is the byte 
+36. 
+
+109
+00:09:46,765 --> 00:09:51,455
+Okay, and you should make sure to verify 
+that on that example page that I asked 
+
+110
+00:09:51,455 --> 00:09:58,430
+you to save earlier. 
+Alright, let's do another example. 
+
+111
+00:09:58,430 --> 00:10:04,618
+In this case the address 0B8F, and you 
+can see here we've already broken it down 
+
+112
+00:10:04,618 --> 00:10:12,103
+to our TLB index and TLB tag. 
+And of course we go and look at this and 
+
+113
+00:10:12,103 --> 00:10:18,079
+it's not in the TLB, so we have a TLB 
+miss, and that means that we don't know 
+
+114
+00:10:18,079 --> 00:10:24,818
+what to do at this point. 
+We don't have our table entry, our page 
+
+115
+00:10:24,818 --> 00:10:30,470
+table entry so we don't even know if this 
+page is in memory or not. 
+
+116
+00:10:30,470 --> 00:10:33,672
+Hence the question mark here. 
+And we, of course don't have any handle 
+
+117
+00:10:33,672 --> 00:10:38,182
+on a physical page number. 
+So what we're going to have to do is go 
+
+118
+00:10:38,182 --> 00:10:46,310
+and read that page table entry bring it 
+into the TLB cache, to resolve this. 
+
+119
+00:10:46,310 --> 00:10:48,855
+Okay, and until we do that we really 
+can't go any further. 
+
+120
+00:10:48,855 --> 00:10:55,520
+Let's take a look at a third example. 
+This time the address 0020 hex. 
+
+121
+00:10:55,520 --> 00:11:02,530
+And, again here we're looking at a TLB 
+index of zero and a TLB tag of zero zero. 
+
+122
+00:11:02,530 --> 00:11:07,138
+If we go look in the TLB we'll see that 
+this is also a TLB miss the valid bit is 
+
+123
+00:11:07,138 --> 00:11:14,179
+set to 0 for this particular entry. 
+but unlike the previous example, we have 
+
+124
+00:11:14,179 --> 00:11:20,365
+the page table to go look things up in. 
+so if we take care of that and access the 
+
+125
+00:11:20,365 --> 00:11:25,370
+page table for this first page table 
+entry, namely the one starting for 
+
+126
+00:11:25,370 --> 00:11:32,613
+virtual page number zero. 
+we go there and we see that in fact it's 
+
+127
+00:11:32,613 --> 00:11:36,640
+not a page fault. 
+The page is in memory, we just didn't 
+
+128
+00:11:36,640 --> 00:11:41,705
+happen to have it cached in the TLB. 
+And that that page number the physical 
+
+129
+00:11:41,705 --> 00:11:45,080
+page number corresponding to this is, 28 
+hex. 
+
+130
+00:11:46,090 --> 00:11:49,960
+so that gives us enough to put together 
+our physical address. 
+
+131
+00:11:49,960 --> 00:11:57,526
+here's our two and eight from the page 
+table entry, and the physical page offset 
+
+132
+00:11:57,526 --> 00:12:04,053
+carry down. 
+and then if we go to our cache and look 
+
+133
+00:12:04,053 --> 00:12:14,960
+at the set eight with the tag 28 we'll 
+see that in fact we have a miss. 
+
+134
+00:12:14,960 --> 00:12:18,820
+And we're going to have to go to memory 
+to read that location. 
+
+135
+00:12:18,820 --> 00:12:22,789
+So this is a case where we got a TLB miss 
+but, we were able to read the page table 
+
+136
+00:12:22,789 --> 00:12:29,614
+entry quickly we had that available. 
+And once we've got the physical address, 
+
+137
+00:12:29,614 --> 00:12:35,800
+we now have a miss in the cache and have 
+to go and bring that in from memory. 
+
+138
+00:12:37,660 --> 00:12:39,716
+Okay. 
+So these are, those are a few examples 
+
+139
+00:12:39,716 --> 00:12:43,840
+and there's many more available in the 
+text and so on. 
+
+140
+00:12:43,840 --> 00:12:47,589
+I encourage you to take a look at that. 
+To summarize this section. 
+
+141
+00:12:47,589 --> 00:12:51,477
+the programmer's view of murtual, virtual 
+memory is that each process has it's own 
+
+142
+00:12:51,477 --> 00:12:55,257
+private linear address space that cannot 
+be corrupted by other processes although 
+
+143
+00:12:55,257 --> 00:13:00,410
+we might be sharing some parts of it with 
+other processes. 
+
+144
+00:13:00,410 --> 00:13:05,560
+Mostly read only sections like library 
+code for example. 
+
+145
+00:13:05,560 --> 00:13:09,816
+the system view of virtual memory is that 
+we're using memory efficiently by caching 
+
+146
+00:13:09,816 --> 00:13:13,400
+virtual memory pages, so we're making 
+good use of that small physical memory 
+
+147
+00:13:13,400 --> 00:13:18,870
+that we have. 
+and it's efficient only because locality 
+
+148
+00:13:18,870 --> 00:13:23,225
+works that remember when we're accessing 
+one part of memory, we're likely to 
+
+149
+00:13:23,225 --> 00:13:29,755
+access other parts of memory near by. 
+this level of indirection that we use to 
+
+150
+00:13:29,755 --> 00:13:34,253
+implement virtual memory simplifies 
+memory management. 
+
+151
+00:13:34,253 --> 00:13:38,742
+And sharing and provides a good way for 
+providing for protection by inter 
+
+152
+00:13:38,742 --> 00:13:43,044
+positioning this place to check 
+permissions. 
+
+153
+00:13:43,044 --> 00:13:47,532
+by looking at the page table entries and 
+seeing which bits are set, how we can 
+
+154
+00:13:47,532 --> 00:13:52,193
+access these different memory pages. 
+Okay. 
+
+155
+00:13:52,193 --> 00:13:57,955
+So the, to complete the summary of our 
+memory systems, we have L1 and L2 memory 
+
+156
+00:13:57,955 --> 00:14:03,518
+caches. 
+these are purely a speed up technique for 
+
+157
+00:14:03,518 --> 00:14:08,892
+main memory to CPU. 
+it's totally invisible to the application 
+
+158
+00:14:08,892 --> 00:14:13,010
+programmer, and even to the operating 
+system for the most part. 
+
+159
+00:14:13,010 --> 00:14:17,410
+It's implemented completely in hardware. 
+that's how processors are designed to 
+
+160
+00:14:17,410 --> 00:14:22,230
+support these caches directly. 
+virtual memory on the other hand needs 
+
+161
+00:14:22,230 --> 00:14:27,051
+the operating system to step in. 
+It would, needs the operating system to 
+
+162
+00:14:27,051 --> 00:14:32,210
+create and kill processes, switch between 
+processes, to help it with protection and 
+
+163
+00:14:32,210 --> 00:14:39,680
+to help it with getting pages from disk 
+and bringing it into physical memory. 
+
+164
+00:14:39,680 --> 00:14:43,901
+the software that is involved in the 
+virtual memory system allocates and 
+
+165
+00:14:43,901 --> 00:14:49,440
+shares these pieces of physical memory 
+among the processes. 
+
+166
+00:14:49,440 --> 00:14:55,180
+it has to maintain these page table 
+entries and how they should be shared. 
+
+167
+00:14:55,180 --> 00:15:00,500
+And has to handle exceptions how to find 
+victim pages in a replacement algorithm 
+
+168
+00:15:00,500 --> 00:15:05,540
+for determining the best way to allocate 
+that small physical memory to best handle 
+
+169
+00:15:05,540 --> 00:15:11,080
+the needs of these large virtual memory 
+spaces. 
+
+170
+00:15:12,130 --> 00:15:16,120
+And this is all done through hardware 
+defined mapping tables that are made to 
+
+171
+00:15:16,120 --> 00:15:19,711
+be as fast as possible because of course, 
+we need to use them for every memory 
+
+172
+00:15:19,711 --> 00:15:24,818
+access. 
+So that hardware is really critical to 
+
+173
+00:15:24,818 --> 00:15:30,312
+making virtual memory practical. 
+And we do a lot of acceleration of that 
+
+174
+00:15:30,312 --> 00:15:33,496
+process. 
+an example of that is the Translation 
+
+175
+00:15:33,496 --> 00:15:38,473
+Look-aside Buffer. 
+A super specialized little cache just to 
+
+176
+00:15:38,473 --> 00:15:43,623
+aid with the virtual memory address 
+translation problem. 
+

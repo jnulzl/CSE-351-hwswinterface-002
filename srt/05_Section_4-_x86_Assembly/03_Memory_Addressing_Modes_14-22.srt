@@ -1,0 +1,945 @@
+1
+00:00:00,002 --> 00:00:04,160
+What we've viewed so far in the previous 
+examples for memory addressing was the 
+
+2
+00:00:04,160 --> 00:00:09,100
+simplest form, which we have an address 
+for it in our registry. 
+
+3
+00:00:09,100 --> 00:00:16,268
+And we just tell memory to return us the 
+value of the location stored in, in the 
+
+4
+00:00:16,268 --> 00:00:21,464
+registry. 
+Now we're going to see in, that so 
+
+5
+00:00:21,464 --> 00:00:25,551
+because in addressing mode. 
+Now we're going to see the complete 
+
+6
+00:00:25,551 --> 00:00:28,240
+addressing modes supported by x86. 
+Okay? 
+
+7
+00:00:28,240 --> 00:00:32,595
+So in these are the add, these are how 
+addresses are used for accessing memory 
+
+8
+00:00:32,595 --> 00:00:38,538
+in a moving structure, them we saw a lot 
+of them in the previous example. 
+
+9
+00:00:38,538 --> 00:00:43,620
+So that means the most general form of 
+addressing more than a[INAUDIBLE] six is 
+
+10
+00:00:43,620 --> 00:00:49,087
+of the following form, okay you have D is 
+a constant displacement that's added to, 
+
+11
+00:00:49,087 --> 00:00:57,105
+to, to the final address, okay, in this 
+is a constant that has to be one. 
+
+12
+00:00:57,105 --> 00:01:01,470
+Two or four bytes. 
+That's a constant displacement. 
+
+13
+00:01:01,470 --> 00:01:03,770
+That doesn't mean that it can be only off 
+by four bytes. 
+
+14
+00:01:03,770 --> 00:01:09,402
+It means that the displacement distance 
+itself has to be a value of one, two or 
+
+15
+00:01:09,402 --> 00:01:13,120
+four bytes. 
+Okay. 
+
+16
+00:01:13,120 --> 00:01:17,928
+So now. 
+The other primary here, our b, is a base 
+
+17
+00:01:17,928 --> 00:01:22,326
+register. 
+It's called a base register because we 
+
+18
+00:01:22,326 --> 00:01:27,040
+adding, we're adding 
+to that reference point. 
+
+19
+00:01:27,040 --> 00:01:30,892
+that's the base register where our, our 
+address starts to be completed from. 
+
+20
+00:01:30,892 --> 00:01:36,200
+Ri, also called the index register, is 
+used for things like arrays. 
+
+21
+00:01:36,200 --> 00:01:42,640
+That's why we have a multiplication here 
+by the contents of Ri. 
+
+22
+00:01:42,640 --> 00:01:47,544
+And that's multiplied by a constant 
+called S, which is the scale. 
+
+23
+00:01:47,544 --> 00:01:50,200
+Kay. 
+And this value can be one, two, four or 
+
+24
+00:01:50,200 --> 00:01:52,320
+eight. 
+Why those numbers? 
+
+25
+00:01:52,320 --> 00:01:56,020
+Well those numbers because we want to 
+officially support. 
+
+26
+00:01:56,020 --> 00:02:00,927
+Arrays are value of these size, of these 
+sizes, 'kay. 
+
+27
+00:02:00,927 --> 00:02:04,939
+So, but they're many special cases, on 
+how to use this, complete addressing 
+
+28
+00:02:04,939 --> 00:02:07,726
+mode. 
+For example, if you just use, in 
+
+29
+00:02:07,726 --> 00:02:11,691
+parenthesis, Rb, Ri, the final memory 
+address is going to be the contents of Rb 
+
+30
+00:02:11,691 --> 00:02:16,590
+added. 
+With the contents of Ri. 
+
+31
+00:02:16,590 --> 00:02:20,230
+And that's because in this case, S, 
+variable S is just set to the, the 
+
+32
+00:02:20,230 --> 00:02:24,680
+constant S is set to one. 
+The scale is set to one. 
+
+33
+00:02:24,680 --> 00:02:34,280
+Now we can also use D Rb, Ri, and that's 
+just going to do Rb plus Ri, plus D. 
+
+34
+00:02:34,280 --> 00:02:36,100
+And the, the scale here is just set to 
+one. 
+
+35
+00:02:36,100 --> 00:02:38,850
+That's the special case. 
+Okay? 
+
+36
+00:02:38,850 --> 00:02:42,390
+And also, you could have no displacement 
+at all, we're not adding anything, right? 
+
+37
+00:02:42,390 --> 00:02:44,752
+So it's in this displacing is in fact 
+will be zero. 
+
+38
+00:02:44,752 --> 00:02:50,140
+Okay? 
+So it adds rb, with the scale, multiplied 
+
+39
+00:02:50,140 --> 00:02:55,540
+by register Ri. 
+So let's see some quick examples here. 
+
+40
+00:02:55,540 --> 00:02:58,309
+We have two registers in our example. 
+EDX and ECX. 
+
+41
+00:02:58,309 --> 00:03:05,740
+EDX is set to F000 hex and ECX is set to 
+100. 
+
+42
+00:03:05,740 --> 00:03:09,559
+So now we're going to be exercising all 
+these addressing modes here, let's start 
+
+43
+00:03:09,559 --> 00:03:14,447
+with the first one. 
+this first one here our. 
+
+44
+00:03:14,447 --> 00:03:22,788
+So our d, the displacement is, 0x8. 
+and we're adding this to the contents of 
+
+45
+00:03:22,788 --> 00:03:25,122
+edx. 
+So, are we going to say that well, that's 
+
+46
+00:03:25,122 --> 00:03:27,710
+the value of edx? 
+That's the constant the final addition is 
+
+47
+00:03:27,710 --> 00:03:29,920
+just an addition of these two. 
+Okay? 
+
+48
+00:03:29,920 --> 00:03:34,020
+Now, the next one, is using this fall, 
+this form here. 
+
+49
+00:03:34,020 --> 00:03:36,950
+Right? 
+Which is just going to be rb plus ri, in 
+
+50
+00:03:36,950 --> 00:03:43,188
+this case just edx plus ecx, that's what 
+we get here, f100. 
+
+51
+00:03:43,188 --> 00:03:49,606
+Now, the third example here, is using a a 
+scale factor, okay. 
+
+52
+00:03:49,606 --> 00:03:54,304
+So, and what it's going to do is, it's 
+going to get Edx, and add it to four 
+
+53
+00:03:54,304 --> 00:04:00,544
+times, because we have four here. 
+Ecx, which is 100. 
+
+54
+00:04:00,544 --> 00:04:07,405
+So, in the end we get f400. 
+So, now the final example here is d is 
+
+55
+00:04:07,405 --> 00:04:12,869
+set to 0x80. 
+We do not have Rb, so Rb is empty. 
+
+56
+00:04:14,130 --> 00:04:16,761
+But we have our RI and we have a scale, 
+too. 
+
+57
+00:04:16,761 --> 00:04:19,923
+So, what's this going to do? 
+Well, it's going to do two times the 
+
+58
+00:04:19,923 --> 00:04:22,658
+contents of edx, okay? 
+That's here. 
+
+59
+00:04:22,658 --> 00:04:30,464
+Added with the displacement, and we get 
+the final address, 1e080. 
+
+60
+00:04:30,464 --> 00:04:38,190
+there's an instruction in X86 called leal 
+that get a source. 
+
+61
+00:04:38,190 --> 00:04:42,606
+So it's source operand is an address mode 
+expression is any of the expressions that 
+
+62
+00:04:42,606 --> 00:04:46,244
+I just showed you. 
+And so what the this function does is it 
+
+63
+00:04:46,244 --> 00:04:49,440
+evaluates that address mode expression, 
+and puts the resulting address into the 
+
+64
+00:04:49,440 --> 00:04:52,989
+destination operand, into the destination 
+register. 
+
+65
+00:04:52,989 --> 00:04:56,116
+For example If I use this, what is it 
+going to do? 
+
+66
+00:04:56,116 --> 00:05:10,810
+Well, eax is going to get, is going to 
+give us eax equals edx + 4 times ecx. 
+
+67
+00:05:10,810 --> 00:05:13,598
+Isn't that cool? 
+So, and you can use that to actually 
+
+68
+00:05:13,598 --> 00:05:16,001
+compute addresses. 
+Right? 
+
+69
+00:05:16,001 --> 00:05:18,481
+So to go with that, this is without a 
+memory reference, so if you have this in 
+
+70
+00:05:18,481 --> 00:05:21,161
+your c code,[INAUDIBLE] showed you this 
+when he talked about pointers, and what 
+
+71
+00:05:21,161 --> 00:05:24,980
+do you want to do here? 
+You want to get the address, of 
+
+72
+00:05:24,980 --> 00:05:28,116
+the[INAUDIBLE] element of the, of array 
+x. 
+
+73
+00:05:28,116 --> 00:05:30,117
+Okay? 
+See, so you just want to get the address, 
+
+74
+00:05:30,117 --> 00:05:33,031
+you're not doing a memory, you're not 
+doing a memory access, so in this case 
+
+75
+00:05:33,031 --> 00:05:36,628
+you're going to be using this layout 
+instruction. 
+
+76
+00:05:36,628 --> 00:05:39,922
+But this instruction is it, it can 
+actually be used to compute any 
+
+77
+00:05:39,922 --> 00:05:46,520
+expression of the form, any arithmetic 
+expression of the form x plus k times i. 
+
+78
+00:05:46,520 --> 00:05:49,912
+Now I'll tell a bit about some other 
+arithmetic operations, then we're going 
+
+79
+00:05:49,912 --> 00:05:54,670
+to put everything together into a large 
+example, okay, a larger example. 
+
+80
+00:05:54,670 --> 00:05:55,615
+So here we're doing, we have a bunch of 
+instructions, the first one does a 
+
+81
+00:05:55,615 --> 00:05:56,665
+arithmetic addition okay, so it takes two 
+operands as far from this destination and 
+
+82
+00:05:56,665 --> 00:05:58,070
+you get destination equals destination 
+plus the source. 
+
+83
+00:05:58,070 --> 00:06:06,966
+Okay, the sub is very similar except that 
+it does subtraction and imull, same 
+
+84
+00:06:06,966 --> 00:06:14,762
+thing, except that it does 
+multiplication. 
+
+85
+00:06:14,762 --> 00:06:20,861
+So now we're going to see instructions 
+that actually does shifts. 
+
+86
+00:06:20,861 --> 00:06:27,125
+So just shifts the shifts bit wise, okay. 
+So shll is doing a shift arithmetic and 
+
+87
+00:06:27,125 --> 00:06:31,589
+it's called shift arithmetic because it 
+preserves the sign bit, it does something 
+
+88
+00:06:31,589 --> 00:06:39,173
+special with the sign bit, okay. 
+So this, L means left, that's why it's 
+
+89
+00:06:39,173 --> 00:06:45,449
+shifting to the left. 
+So gets the destination value shifts left 
+
+90
+00:06:45,449 --> 00:06:50,852
+by the foruth operan and stores it back 
+itno the destination register. 
+
+91
+00:06:50,852 --> 00:06:57,282
+Now SARL does the same thing but notice R 
+because it shifts to the right. 
+
+92
+00:06:57,282 --> 00:07:03,209
+Okay. 
+And this shrl, is shifting to, shifting 
+
+93
+00:07:03,209 --> 00:07:08,900
+to the right, okay. 
+Except that this is shift logical 
+
+94
+00:07:08,900 --> 00:07:12,342
+community does not do anything with the 
+sine bits. 
+
+95
+00:07:12,342 --> 00:07:16,689
+'Kay, so the xorl instruction it just 
+does an xor of the destination with the 
+
+96
+00:07:16,689 --> 00:07:21,170
+source and stores it back to, to the 
+destination. 
+
+97
+00:07:21,170 --> 00:07:24,718
+And does, a bitwise and, or does a 
+bitwise or. 
+
+98
+00:07:24,718 --> 00:07:30,890
+'Kay, so then watch out for the argument 
+order. 
+
+99
+00:07:30,890 --> 00:07:34,884
+That's actually very important. 
+Yeah, because the, the, argument order, 
+
+100
+00:07:34,884 --> 00:07:38,644
+affects your results. 
+Especially for subtraction. 
+
+101
+00:07:38,644 --> 00:07:41,751
+Hm? 
+So it knows that there's no distinction 
+
+102
+00:07:41,751 --> 00:07:45,603
+here, between signed, and unsigned ints. 
+Why is that? 
+
+103
+00:07:46,810 --> 00:07:50,754
+Well, it's because remember that if you 
+use two complements you can do arithmetic 
+
+104
+00:07:50,754 --> 00:07:55,046
+without regards[INAUDIBLE] you simply can 
+just[INAUDIBLE] or[INAUDIBLE] but most of 
+
+105
+00:07:55,046 --> 00:07:58,526
+these do have to worry about if you're 
+doing shifts arithmetic or shifts 
+
+106
+00:07:58,526 --> 00:08:06,500
+logically because of the sign difference. 
+Here's some, some other arithmetic 
+
+107
+00:08:06,500 --> 00:08:10,072
+operations. 
+This is a unarlal unary instructions 
+
+108
+00:08:10,072 --> 00:08:15,418
+because it takes single operand. 
+Incl just increments by 1, Decl, 
+
+109
+00:08:15,418 --> 00:08:20,794
+decrements by 1 and then neg-o Just 
+changes the signment, okay just, just, it 
+
+110
+00:08:20,794 --> 00:08:25,980
+changes the sign. 
+And, not just a bitwise not, of the 
+
+111
+00:08:25,980 --> 00:08:30,024
+contents of the register. 
+And now you, you should look at the, the 
+
+112
+00:08:30,024 --> 00:08:33,294
+text book, for more instructions like 
+mov, and so on. 
+
+113
+00:08:33,294 --> 00:08:36,538
+Divisions. 
+Okay so now let's put everything together 
+
+114
+00:08:36,538 --> 00:08:41,132
+in a, in an example, that uses leal, and 
+some other instructions as well. 
+
+115
+00:08:41,132 --> 00:08:44,606
+Okay? 
+So recall that now we have the setup, 
+
+116
+00:08:44,606 --> 00:08:47,770
+that's just saving the, the stack 
+pointer. 
+
+117
+00:08:47,770 --> 00:08:51,220
+And then finish is just restoring the 
+stack pointer and returning. 
+
+118
+00:08:51,220 --> 00:08:54,330
+Okay? 
+This is, this is, and this is the C code 
+
+119
+00:08:54,330 --> 00:09:00,238
+that we are implementing here. 
+Let's see how this, this works. 
+
+120
+00:09:00,238 --> 00:09:06,510
+First of all, this is our stack so you, 
+you know where our parameters are. 
+
+121
+00:09:06,510 --> 00:09:08,050
+We have three parameters. 
+Kay. 
+
+122
+00:09:08,050 --> 00:09:12,280
+So this is IE 32 that means the 
+parameters are stored onto the stack. 
+
+123
+00:09:12,280 --> 00:09:17,230
+Well these two instructions here are 
+doing they're just reading X and Y and 
+
+124
+00:09:17,230 --> 00:09:21,722
+putting it into EAX and EDX. 
+Okay? 
+
+125
+00:09:21,722 --> 00:09:25,843
+And that's what this one here is doing. 
+This one is using the leal instruction, 
+
+126
+00:09:25,843 --> 00:09:29,720
+this is the leal instruction. 
+What it's going to do, it's just going to 
+
+127
+00:09:29,720 --> 00:09:35,446
+add edx with eax and put it in ecx, okay? 
+Recall that leal just evaluates 
+
+128
+00:09:35,446 --> 00:09:41,074
+expressions of any, any expression looks 
+like an address. 
+
+129
+00:09:41,074 --> 00:09:46,208
+expression, okay. 
+And now we use it again here, when we're 
+
+130
+00:09:46,208 --> 00:09:49,989
+multiplying. 
+So, now we're executing this, this 
+
+131
+00:09:49,989 --> 00:09:54,698
+statement. 
+And this layout, this instruction gets a, 
+
+132
+00:09:54,698 --> 00:09:59,208
+d, x. 
+Okay, and it adds it with two times e to 
+
+133
+00:09:59,208 --> 00:10:04,470
+the x and is stored in e to the x. 
+Okay? 
+
+134
+00:10:04,470 --> 00:10:09,270
+So that's why we get e dx equals y plus 
+two times y which is the same thing as 
+
+135
+00:10:09,270 --> 00:10:17,328
+three times y. 
+Now we're shifting arithmetic left here 
+
+136
+00:10:17,328 --> 00:10:21,000
+by 4. 
+Hm, what does that mean to, to, to shift 
+
+137
+00:10:21,000 --> 00:10:24,518
+by 4. 
+4 bits is the same as multiplying by 2 to 
+
+138
+00:10:24,518 --> 00:10:31,786
+the 4 which is 16. 
+That's why now we get 16 times 3. 
+
+139
+00:10:31,786 --> 00:10:36,325
+It equals 48. 
+That's why we're now effectively storing 
+
+140
+00:10:36,325 --> 00:10:41,266
+48 times y into dx, because before we 
+had, we had 3y, we multiply that by 16, 
+
+141
+00:10:41,266 --> 00:10:47,470
+now we have 48 multiplied by y, and 
+storing into dx. 
+
+142
+00:10:47,470 --> 00:10:51,160
+And the next instruction, now is just, 
+what is it doing. 
+
+143
+00:10:51,160 --> 00:10:58,260
+It's implementing this one here 'Kay? 
+So, he does t5 equals t3 plus t4. 
+
+144
+00:10:58,260 --> 00:11:01,650
+But what he did was just inline this one. 
+It's executing this one together as well, 
+
+145
+00:11:01,650 --> 00:11:05,050
+'kay? 
+It's just putting it here, 'kay? 
+
+146
+00:11:05,050 --> 00:11:08,495
+That's why now what we're doing is four, 
+that's the square number here, adding 
+
+147
+00:11:08,495 --> 00:11:12,380
+four. 
+OK, which was a four here. 
+
+148
+00:11:12,380 --> 00:11:20,540
+With T4, there was a, computed by the 
+previous instruction. 
+
+149
+00:11:20,540 --> 00:11:24,882
+And adding it with X, it just happens to 
+be stored in EAX. 
+
+150
+00:11:24,882 --> 00:11:30,269
+And then storing back in EAX. 
+And then finally. 
+
+151
+00:11:30,269 --> 00:11:39,609
+We are in this instruction here. 
+This instruction is just implementing the 
+
+152
+00:11:39,609 --> 00:11:43,244
+final stack in our arith, arith function, 
+okay? 
+
+153
+00:11:43,244 --> 00:11:46,949
+So things to note here is that, note that 
+the instructions are in the different 
+
+154
+00:11:46,949 --> 00:11:52,106
+order than what appeared in the C code. 
+Okay, so we see like at this, this orange 
+
+155
+00:11:52,106 --> 00:11:56,322
+instruction happens to implement that 
+relates to these two instructions in c 
+
+156
+00:11:56,322 --> 00:12:00,636
+code, that these two statements in the c 
+code. 
+
+157
+00:12:00,636 --> 00:12:06,444
+And also, green comes before blue in c, 
+but blue comes before green in, in there, 
+
+158
+00:12:06,444 --> 00:12:12,267
+in the assembly code. 
+Okay, and also it's interesting to note 
+
+159
+00:12:12,267 --> 00:12:17,870
+that some expressions require multiple 
+instructions, and some instructions. 
+
+160
+00:12:17,870 --> 00:12:24,610
+Like this one that I just showed here, 
+covers multiple expressions, okay? 
+
+161
+00:12:24,610 --> 00:12:28,930
+And you get the same exact code when you 
+compile this. 
+
+162
+00:12:28,930 --> 00:12:31,060
+Why is that? 
+Because the compiler is going to have to 
+
+163
+00:12:31,060 --> 00:12:34,723
+create temporary variables. 
+Anyways. 
+
+164
+00:12:34,723 --> 00:12:39,584
+So, let me show you another example now. 
+This example is implementing this logical 
+
+165
+00:12:39,584 --> 00:12:43,874
+function that evaluates all of these, 
+that executes all of these expressions 
+
+166
+00:12:43,874 --> 00:12:47,830
+here. 
+And again, here what this is like the, 
+
+167
+00:12:47,830 --> 00:12:51,055
+the previous example. 
+We're just reading a parameter from the 
+
+168
+00:12:51,055 --> 00:12:53,045
+stack. 
+Now, this function has two parameters, x, 
+
+169
+00:12:53,045 --> 00:12:57,230
+and y. 
+this instruction is just loading the x 
+
+170
+00:12:57,230 --> 00:13:02,774
+parameter, which is 8 from EVP into EAX. 
+Okay? 
+
+171
+00:13:02,774 --> 00:13:05,060
+And that's what the first instruction's 
+doing now. 
+
+172
+00:13:05,060 --> 00:13:09,040
+This first instruction here, this x or is 
+implementing this. 
+
+173
+00:13:09,040 --> 00:13:11,122
+A statement here. 
+And look how interesting. 
+
+174
+00:13:11,122 --> 00:13:14,832
+This, this instruction is an interesting 
+example because it has a register operand 
+
+175
+00:13:14,832 --> 00:13:19,446
+as well as a memory operand, okay? 
+And this memory operand happens to point 
+
+176
+00:13:19,446 --> 00:13:25,594
+to er, where Y was located. 
+So that's why this instruction implements 
+
+177
+00:13:25,594 --> 00:13:30,284
+X, X or Y. 
+Now this instruction here is just 
+
+178
+00:13:30,284 --> 00:13:35,892
+shifting EAX right by 17 bits. 
+So it's implementing this expression 
+
+179
+00:13:35,892 --> 00:13:40,090
+here, this, this statement here. 
+And and we're shifting right so it 
+
+180
+00:13:40,090 --> 00:13:44,840
+chooses, it chooses the compiler chose 
+the shift right instruction. 
+
+181
+00:13:44,840 --> 00:13:50,620
+And finally this instruction here is 
+implementing these two statements, but 
+
+182
+00:13:50,620 --> 00:13:56,060
+there's something interesting here going 
+on, right? 
+
+183
+00:13:56,060 --> 00:14:00,190
+What the compiler did is note that this 
+expression here is a constant expression. 
+
+184
+00:14:00,190 --> 00:14:03,318
+But instead of inserting instructions to 
+evaluate that, the compiler evaluates 
+
+185
+00:14:03,318 --> 00:14:06,400
+that at compile time, but uses a single 
+number that represents that instruction 
+
+186
+00:14:06,400 --> 00:14:11,370
+using, that, that represents that 
+statement and uses it in the instruction. 
+
+187
+00:14:11,370 --> 00:14:14,702
+So you don't have to do this in during 
+execution time, which is what our compile 
+
+188
+00:14:14,702 --> 00:14:18,040
+time wants, because we know it's not 
+going to change. 
+
+189
+00:14:18,040 --> 00:14:22,313
+Then that code, that's, that's a, that's 
+going to be much faster. 
+

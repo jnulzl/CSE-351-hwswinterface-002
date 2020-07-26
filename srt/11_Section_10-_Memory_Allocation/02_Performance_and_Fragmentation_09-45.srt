@@ -1,0 +1,758 @@
+1
+23:59:59,500 --> 00:00:04,821
+[MUSIC]. 
+
+2
+00:00:04,821 --> 00:00:07,680
+Okay. 
+Let's now start digging into how memory 
+
+3
+00:00:07,680 --> 00:00:09,713
+locators work. 
+Okay. 
+
+4
+00:00:09,713 --> 00:00:13,070
+Let's, let's start with the assumptions 
+made in this lecture. 
+
+5
+00:00:13,070 --> 00:00:15,275
+Okay. 
+So first of all, memory is word 
+
+6
+00:00:15,275 --> 00:00:17,140
+addressed. 
+Okay. 
+
+7
+00:00:17,140 --> 00:00:19,100
+So each. 
+So each word, you know, each word can 
+
+8
+00:00:19,100 --> 00:00:23,682
+hold a pointer. 
+And a block size, the allocator of free 
+
+9
+00:00:23,682 --> 00:00:29,280
+block size is going to be a size that's 
+multiple of words, okay? 
+
+10
+00:00:29,280 --> 00:00:35,142
+For example if, if here we have our heap. 
+So we'll have for example, have an 
+
+11
+00:00:35,142 --> 00:00:37,958
+allocated block here that happens to be 
+four words, and have a free block here 
+
+12
+00:00:37,958 --> 00:00:41,170
+that happens to be two words. 
+And so on. 
+
+13
+00:00:41,170 --> 00:00:44,008
+'Kay, another free block here, and so on, 
+and this, this is a free block, and this 
+
+14
+00:00:44,008 --> 00:00:48,640
+is an allocated block. 
+Okay. 
+
+15
+00:00:48,640 --> 00:00:51,770
+So let me give an example, okay. 
+So that's the order we're going to make 
+
+16
+00:00:51,770 --> 00:00:55,270
+these calls. 
+First, when we call malloc, this is our 
+
+17
+00:00:55,270 --> 00:01:00,058
+heap, okay, this is our heap, and then 
+when malloc says, I want a block of size 
+
+18
+00:01:00,058 --> 00:01:05,790
+4. 
+We're going to allocate four words, okay? 
+
+19
+00:01:05,790 --> 00:01:09,155
+Now, now it could say allocate five, I'm 
+going to allocate another five words. 
+
+20
+00:01:09,155 --> 00:01:12,560
+and now I can allocate six, I counted six 
+words. 
+
+21
+00:01:12,560 --> 00:01:16,403
+Then now we're going to free p2 and note 
+that we're passing some parameter, a 
+
+22
+00:01:16,403 --> 00:01:20,580
+pointer that was earlier returned by 
+malloc. 
+
+23
+00:01:20,580 --> 00:01:22,482
+'Kay. 
+So that's, so when we do that, this block 
+
+24
+00:01:22,482 --> 00:01:27,220
+is now free. 
+Now we have some holes in our heap. 
+
+25
+00:01:27,220 --> 00:01:30,340
+And when I allocate 2, we have two 
+options, could go there or there. 
+
+26
+00:01:30,340 --> 00:01:34,000
+We just chose to allocate it here, and so 
+on. 
+
+27
+00:01:34,000 --> 00:01:37,696
+One important question is that when we 
+were implementing this allocator, what 
+
+28
+00:01:37,696 --> 00:01:41,740
+information, what information does it 
+need to keep track of? 
+
+29
+00:01:41,740 --> 00:01:44,720
+Well, it needs to keep track of where the 
+heap is, where it starts. 
+
+30
+00:01:44,720 --> 00:01:46,215
+Right? 
+And the word ends so it is the size of 
+
+31
+00:01:46,215 --> 00:01:50,765
+the heap. 
+And that's what keeps, it needs to keep 
+
+32
+00:01:50,765 --> 00:01:56,420
+track of what are, what parts of the, 
+the, the heap are allocated. 
+
+33
+00:01:56,420 --> 00:01:59,632
+Like this allocated, allocated and 
+allocated, and what part is free, 'kay. 
+
+34
+00:01:59,632 --> 00:02:03,856
+And it also needs a data structure to, in 
+order to find blocks we need to allocate 
+
+35
+00:02:03,856 --> 00:02:08,080
+it and you need to also be able to know 
+what, what parts of course know parts of 
+
+36
+00:02:08,080 --> 00:02:15,220
+the heap are free. 
+So you are allocating it there and so on. 
+
+37
+00:02:15,220 --> 00:02:17,000
+Let's look at what constraints the 
+allocators have. 
+
+38
+00:02:17,000 --> 00:02:23,120
+So first from the application point of 
+view it can issue an arbitrary sequence 
+
+39
+00:02:23,120 --> 00:02:27,780
+of mallocs in free requests. 
+Okay. 
+
+40
+00:02:27,780 --> 00:02:31,900
+So and free requests must be made only to 
+a previous malloc block. 
+
+41
+00:02:31,900 --> 00:02:36,509
+I've said this two or three times already 
+because it's actually really important. 
+
+42
+00:02:36,509 --> 00:02:40,059
+And allocators, from the allocator point 
+of view, the first thing it's important 
+
+43
+00:02:40,059 --> 00:02:44,640
+to know is that they really can't control 
+the number size of allocated block. 
+
+44
+00:02:44,640 --> 00:02:46,050
+This is something that the application 
+does. 
+
+45
+00:02:46,050 --> 00:02:49,390
+The application does the requests and the 
+allocator just serves those requests. 
+
+46
+00:02:49,390 --> 00:02:51,790
+So it doesn't really know what the 
+application is going to need. 
+
+47
+00:02:51,790 --> 00:02:53,500
+In the future. 
+'Kay. 
+
+48
+00:02:53,500 --> 00:02:57,468
+And we want it to be able to respond 
+immediately to Malloc Requests. 
+
+49
+00:02:57,468 --> 00:03:01,130
+'Kay? 
+So in other words, it cannot reorder or 
+
+50
+00:03:01,130 --> 00:03:05,090
+buffer requests. 
+So a synchronous call. 
+
+51
+00:03:05,090 --> 00:03:09,160
+When you call Malloc, when it returns, it 
+has to have done the job. 
+
+52
+00:03:09,160 --> 00:03:11,680
+It can't just reorder them. 
+It has to prompty respond immediately. 
+
+53
+00:03:11,680 --> 00:03:15,155
+Right, it have to be So otherwise it 
+creates a, a big problem. 
+
+54
+00:03:15,155 --> 00:03:20,280
+Of course we only want to allocate blocks 
+from free memory. 
+
+55
+00:03:20,280 --> 00:03:23,360
+If you allocate blocks from allocated 
+memory, it's going to be a big mess. 
+
+56
+00:03:23,360 --> 00:03:25,910
+You're going to be over writing data from 
+the application. 
+
+57
+00:03:25,910 --> 00:03:29,494
+That is not going to be a good thing, for 
+sure, contains bugs, and hard to find and 
+
+58
+00:03:29,494 --> 00:03:33,040
+so on. 
+So blocks can't, cannot overlap. 
+
+59
+00:03:34,570 --> 00:03:39,503
+So and also it has to align blocks. 
+And by alignment, it means that the 
+
+60
+00:03:39,503 --> 00:03:43,645
+pointers at the beginning of the block 
+has to be a multiple of a certain number. 
+
+61
+00:03:43,645 --> 00:03:46,476
+'Kay? 
+For example the GNU malloc library 
+
+62
+00:03:46,476 --> 00:03:50,118
+allocates blocks in an eight byte 
+criminality. 
+
+63
+00:03:50,118 --> 00:03:52,836
+Okay? 
+So this just is just satisfy a bunch of 
+
+64
+00:03:52,836 --> 00:03:58,087
+alignment requirements. 
+And, of course, once an allocated block 
+
+65
+00:03:58,087 --> 00:04:03,024
+has been allocated it can not move. 
+And so in other words compaction is not 
+
+66
+00:04:03,024 --> 00:04:05,520
+allowed. 
+Why? 
+
+67
+00:04:05,520 --> 00:04:08,850
+Well imagine the following, you call 
+malloc, you get a pointer. 
+
+68
+00:04:08,850 --> 00:04:11,602
+And now you assume that the data is in 
+that pointer and then the allocator just 
+
+69
+00:04:11,602 --> 00:04:15,090
+moves it around. 
+If you don't update the pointer then 
+
+70
+00:04:15,090 --> 00:04:18,260
+you're going to be pointing to stale data 
+and that's going to be again a big mess. 
+
+71
+00:04:18,260 --> 00:04:21,360
+Okay, so allocators have to follow a very 
+strict discipline. 
+
+72
+00:04:22,480 --> 00:04:27,438
+And now from the performance point of 
+view there's two components, the first 
+
+73
+00:04:27,438 --> 00:04:31,270
+one is throughput Okay? 
+Instead it means the following. 
+
+74
+00:04:31,270 --> 00:04:35,230
+Given sequence of malloc and free 
+requests. 
+
+75
+00:04:36,510 --> 00:04:40,290
+Their goal is to maximize throughput 
+okay? 
+
+76
+00:04:40,290 --> 00:04:44,180
+So their goal is to maximize that. 
+And the other component by the way of 
+
+77
+00:04:44,180 --> 00:04:47,930
+performance is peak memory utilization. 
+We want to use memory, we want have as 
+
+78
+00:04:47,930 --> 00:04:50,250
+few holes as possible. 
+We want to use as much memory as 
+
+79
+00:04:50,250 --> 00:04:52,250
+possible. 
+Okay. 
+
+80
+00:04:52,250 --> 00:04:54,918
+So, and this goal is often conflicting 
+because if you want to maximize 
+
+81
+00:04:54,918 --> 00:04:58,360
+throughput you want to do things very, 
+very fast. 
+
+82
+00:04:58,360 --> 00:05:02,254
+Therefore you can't afford to do very 
+sophisticated, do a lot of work in 
+
+83
+00:05:02,254 --> 00:05:06,410
+managing memory to increase big 
+utilization. 
+
+84
+00:05:06,410 --> 00:05:11,838
+So in the throughput here is a number of 
+completed request per unit time. 
+
+85
+00:05:11,838 --> 00:05:15,864
+For example, you want to do 5000 mallocs 
+in a 5000 free calls in 10 seconds, 
+
+86
+00:05:15,864 --> 00:05:20,022
+that's throughput and what we are doing 
+here is it will be a total of 10, total 
+
+87
+00:05:20,022 --> 00:05:24,378
+of 100 operations per second, because we 
+had 10000 operation than in 10 seconds 
+
+88
+00:05:24,378 --> 00:05:34,475
+1000 operations per second. 
+The other performance goal of allocators 
+
+89
+00:05:34,475 --> 00:05:37,360
+is peak memory utilization, okay. 
+Let me tell you what it is now. 
+
+90
+00:05:37,360 --> 00:05:44,295
+So again we have our sequence of requests 
+from R0 to Rn minus 1 and the aggregate 
+
+91
+00:05:44,295 --> 00:05:52,511
+payload Pk is the total useful memory 
+provided by the malloc. 
+
+92
+00:05:52,511 --> 00:05:53,305
+Blocks. 
+Kay? 
+
+93
+00:05:53,305 --> 00:05:57,081
+So, the, that's the payload P of a malloc 
+block is isn't the number of bytes 
+
+94
+00:05:57,081 --> 00:06:01,990
+requested by the application. 
+Kay? 
+
+95
+00:06:01,990 --> 00:06:07,244
+So, say the aggregate payload Pk is the 
+total by, the total number of bytes that 
+
+96
+00:06:07,244 --> 00:06:12,718
+malloc provided but it's requested by the 
+application. 
+
+97
+00:06:12,718 --> 00:06:17,536
+At request Rk OK and now we define the 
+heap size the current heap size is hk and 
+
+98
+00:06:17,536 --> 00:06:22,573
+its monotonically nondecreasing, it only 
+grows as we need more heap space and this 
+
+99
+00:06:22,573 --> 00:06:27,026
+is done by the system called sbrk as I 
+mentioned before and now, now that we 
+
+100
+00:06:27,026 --> 00:06:35,990
+know we defined the current heap size and 
+the aggregate payload. 
+
+101
+00:06:35,990 --> 00:06:37,940
+'Kay. 
+Which is the, the aggregate number of 
+
+102
+00:06:37,940 --> 00:06:42,860
+useful bytes in a, in a sequence of 
+[UNKNOWN] and free requests. 
+
+103
+00:06:42,860 --> 00:06:47,084
+What we want to do is if I'm peak memory 
+utilization as the maximum of the payload 
+
+104
+00:06:47,084 --> 00:06:51,678
+up to request K. 
+Right, that's the peak memory utilization 
+
+105
+00:06:51,678 --> 00:06:56,214
+at the moment when you call a certain 
+request here RK. 
+
+106
+00:06:56,214 --> 00:06:59,520
+Okay? 
+And so the pigment memory utilization is 
+
+107
+00:06:59,520 --> 00:07:03,765
+the fraction of the heap that was useful 
+in the past. 
+
+108
+00:07:03,765 --> 00:07:06,825
+Okay, remember that the heap never 
+decreases so that's why we, we, we're 
+
+109
+00:07:06,825 --> 00:07:09,943
+using max. 
+Okay, so the pigment memory utilization 
+
+110
+00:07:09,943 --> 00:07:14,085
+is the maximum aggregate payloads divided 
+by the size of the heap. 
+
+111
+00:07:14,085 --> 00:07:17,044
+Okay? 
+And the goal is to actually maximize this 
+
+112
+00:07:17,044 --> 00:07:19,217
+number. 
+We want to make the heap as useful as 
+
+113
+00:07:19,217 --> 00:07:22,500
+possible, do whatever allocated leap as 
+useful as possible. 
+
+114
+00:07:22,500 --> 00:07:24,010
+Okay? 
+Why is this hard? 
+
+115
+00:07:24,010 --> 00:07:27,762
+This is hard because something called 
+fragmentation all the wholes that appear 
+
+116
+00:07:27,762 --> 00:07:30,946
+in our heap okay. 
+And by the way managing that has an 
+
+117
+00:07:30,946 --> 00:07:33,760
+effect on throughput because it has 
+overheads. 
+
+118
+00:07:33,760 --> 00:07:36,780
+It takes work by the memory allocator to, 
+to provide that. 
+
+119
+00:07:36,780 --> 00:07:40,838
+So let's go towards fragmentation now. 
+There is two types of fragmentation from 
+
+120
+00:07:40,838 --> 00:07:44,714
+internal fragmentation and external 
+fragmentation An internal fragmentation 
+
+121
+00:07:44,714 --> 00:07:48,647
+is the fragmentation within a block, and 
+the reason we have that is that, this is 
+
+122
+00:07:48,647 --> 00:07:55,358
+for example, here's our block, 'kay? 
+And the actual payload is just a part of 
+
+123
+00:07:55,358 --> 00:07:58,852
+this block. 
+The payload, that's what, that's what 
+
+124
+00:07:58,852 --> 00:08:02,895
+useful to the application, and it's 
+smaller than the block size. 
+
+125
+00:08:02,895 --> 00:08:05,874
+'Kay? 
+So all of these parts here they are not 
+
+126
+00:08:05,874 --> 00:08:08,986
+useful. 
+These are, they are the source of 
+
+127
+00:08:08,986 --> 00:08:12,140
+internal fragmentation. 
+'Kay? 
+
+128
+00:08:12,140 --> 00:08:15,090
+So, and this is caused by overhead of 
+maintaining, in space overhead in 
+
+129
+00:08:15,090 --> 00:08:18,970
+maintaining the heap data structures. 
+Like you know, things like markers 
+
+130
+00:08:18,970 --> 00:08:23,190
+whether the block is free or not, 
+pointers among the blocks, and so on. 
+
+131
+00:08:23,190 --> 00:08:25,899
+Also the padding for alignment purposes, 
+we just had earlier that one of the 
+
+132
+00:08:25,899 --> 00:08:30,200
+requirements of dynamic memory locators 
+that they need to provide aligned blocks. 
+
+133
+00:08:30,200 --> 00:08:33,470
+Kay? 
+And also this internal fragmentation is 
+
+134
+00:08:33,470 --> 00:08:37,680
+caused by, by explicit policy decisions. 
+Kay? 
+
+135
+00:08:37,680 --> 00:08:41,780
+So, you could return a big block to 
+satisfy a small request. 
+
+136
+00:08:41,780 --> 00:08:45,730
+Why would you do that? 
+Because of performance reasons, okay? 
+
+137
+00:08:45,730 --> 00:08:49,756
+So and one interesting thing about 
+internal fragmentation is that depends 
+
+138
+00:08:49,756 --> 00:08:54,950
+only on the pattern of previous requests 
+so it's easy to measure, okay? 
+
+139
+00:08:54,950 --> 00:08:57,920
+So now what's external fragmentation. 
+Well it's external because it's external 
+
+140
+00:08:57,920 --> 00:09:00,984
+to the block. 
+So that means that it's, it occurs when 
+
+141
+00:09:00,984 --> 00:09:06,664
+there is enough aggrogate heap memory. 
+But no single free block that's large 
+
+142
+00:09:06,664 --> 00:09:10,280
+enough. 
+So let me give you an example here. 
+
+143
+00:09:10,280 --> 00:09:13,160
+So suppose that we had the sequence of 
+mallocs, here, and then we had the free, 
+
+144
+00:09:13,160 --> 00:09:16,140
+so we have, you know, five free here and 
+two free. 
+
+145
+00:09:16,140 --> 00:09:20,920
+And what if I all, if I allocate six, I'm 
+not going to do that. 
+
+146
+00:09:22,210 --> 00:09:25,443
+So what happens, so actually I have is 5 
+free here and I have 2 free here, so I 
+
+147
+00:09:25,443 --> 00:09:29,750
+have a total of 7 free. 
+But, none of them are large enough to 
+
+148
+00:09:29,750 --> 00:09:34,340
+honor this, this request of 6, so what 
+will happen now. 
+
+149
+00:09:34,340 --> 00:09:38,180
+Well, nothing we can so in, by the way 
+this is actually depend on the pattern of 
+
+150
+00:09:38,180 --> 00:09:41,360
+future request. 
+Its actually difficult to measure. 
+
+151
+00:09:41,360 --> 00:09:44,688
+Where the fir-, external fragmentation is 
+a problem or not. 
+
+152
+00:09:44,688 --> 00:09:45,421
+See you soon. 
+

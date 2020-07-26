@@ -1,0 +1,1140 @@
+1
+00:00:00,0 --> 00:00:05,313
+[MUSIC] So we just heard from Gaetano how 
+to encode integers and floats. 
+
+2
+00:00:05,313 --> 00:00:09,779
+And now in this new section we're 
+going to start looking at machine codes. 
+
+3
+00:00:09,779 --> 00:00:13,811
+Okay, so by machine code recall, we saw 
+in the, in the first section, are this 
+
+4
+00:00:13,811 --> 00:00:19,789
+zeros, and ones that tell the computer 
+what to do when executing the program. 
+
+5
+00:00:19,789 --> 00:00:24,73
+Okay, and that's going to, we also going 
+to start looking at an introduction to 
+
+6
+00:00:24,73 --> 00:00:28,288
+assembly language. 
+And what you have to understand, in terms 
+
+7
+00:00:28,288 --> 00:00:32,500
+of basic machine organization, in order 
+to learn about assembly programming. 
+
+8
+00:00:32,500 --> 00:00:36,384
+And learn how a computer work works down 
+a little bit lower level. 
+
+9
+00:00:36,384 --> 00:00:38,542
+Okay? 
+So here's what we're going to see in this 
+
+10
+00:00:38,542 --> 00:00:40,910
+section. 
+We're going to see what instruction set 
+
+11
+00:00:40,910 --> 00:00:44,210
+architecture is, which is the heart of 
+software interface. 
+
+12
+00:00:44,210 --> 00:00:46,480
+It's the contract between hard and 
+software. 
+
+13
+00:00:46,480 --> 00:00:49,600
+We going to look at briefly at the 
+history of Intel processors and 
+
+14
+00:00:49,600 --> 00:00:52,811
+architectures. 
+And then we're going to see how C in 
+
+15
+00:00:52,811 --> 00:00:56,402
+assembly code machine code relates, and 
+it's going to start looking at x86 
+
+16
+00:00:56,402 --> 00:01:00,617
+basics. 
+So, we saw this picture in the very first 
+
+17
+00:01:00,617 --> 00:01:05,258
+section, and if you recall, this is the 
+lifetime. 
+
+18
+00:01:05,258 --> 00:01:09,772
+The, the , the life time of a program 
+starts with coding time when you write 
+
+19
+00:01:09,772 --> 00:01:13,875
+the code. 
+Compile time, when you translate from the 
+
+20
+00:01:13,875 --> 00:01:18,222
+high level language all the way down to 
+machine code, 0s and 1s that compose what 
+
+21
+00:01:18,222 --> 00:01:21,850
+the computer understands. 
+Okay? 
+
+22
+00:01:21,850 --> 00:01:26,561
+And then run time is what happens when 
+you actually executing the program. 
+
+23
+00:01:26,561 --> 00:01:29,320
+Okay? 
+Now also recall that, what makes programs 
+
+24
+00:01:29,320 --> 00:01:33,15
+fast is well, your algorithm, how you 
+write your code. 
+
+25
+00:01:33,15 --> 00:01:35,242
+Okay? 
+what the compiler does in other words, 
+
+26
+00:01:35,242 --> 00:01:38,731
+how the compiler translates from C code 
+to the 
+
+27
+00:01:38,731 --> 00:01:42,282
+To the hardware, software interface, to 
+DISA, the instructions that are chosen 
+
+28
+00:01:42,282 --> 00:01:45,362
+with the compiler. 
+And then the assembler converts that to 
+
+29
+00:01:45,362 --> 00:01:50,925
+0s and 1s, to, to machine code. 
+And then, you know, depending on how the 
+
+30
+00:01:50,925 --> 00:02:00,30
+hardware executes it, it's going to make 
+your program run faster, okay. 
+
+31
+00:02:00,30 --> 00:02:03,840
+So just, just to review, repeat what I 
+just said. 
+
+32
+00:02:03,840 --> 00:02:07,500
+You know, the, the time required to 
+execute a program depends well, on the 
+
+33
+00:02:07,500 --> 00:02:11,209
+program itself. 
+What algorithm you've used, how the 
+
+34
+00:02:11,209 --> 00:02:16,990
+compiler translates that code written by 
+the program into assembly instructions. 
+
+35
+00:02:16,990 --> 00:02:20,214
+It also depends on the instructions of 
+that architecture, which is a set of 
+
+36
+00:02:20,214 --> 00:02:23,126
+basic instructions offered by the 
+processor to the compiler, or to 
+
+37
+00:02:23,126 --> 00:02:27,697
+whoever's writing assembly code. 
+And then, ultimately, of course, the 
+
+38
+00:02:27,697 --> 00:02:31,700
+program performance is also a function of 
+the actual hardware implementation. 
+
+39
+00:02:31,700 --> 00:02:35,730
+How's the hardware itself how the 
+hardware itself is organized to execute 
+
+40
+00:02:35,730 --> 00:02:39,634
+those instructions. 
+Okay, so now let's spend a little bit 
+
+41
+00:02:39,634 --> 00:02:43,370
+more time on understanding exactly what 
+the ISA is. 
+
+42
+00:02:43,370 --> 00:02:45,610
+OKay? 
+So the ISA defines three things, three 
+
+43
+00:02:45,610 --> 00:02:48,960
+important things. 
+The first one is a system state. 
+
+44
+00:02:48,960 --> 00:02:53,420
+What defines the state of your system, 
+okay, of your imperial system. 
+
+45
+00:02:53,420 --> 00:02:57,629
+That includes the contents of registers, 
+which is as Gaetano told you you know, a 
+
+46
+00:02:57,629 --> 00:03:01,492
+basic unit of storaging inside the CPU 
+itself. 
+
+47
+00:03:01,492 --> 00:03:04,806
+Okay? 
+It includes the program counter, which 
+
+48
+00:03:04,806 --> 00:03:10,283
+tells what instruction's being executed 
+at that time in the, in the processor. 
+
+49
+00:03:10,283 --> 00:03:13,494
+And also, it includes all of the contents 
+of memory. 
+
+50
+00:03:13,494 --> 00:03:17,947
+Everything that's stored in registries, 
+memory and including the program counter 
+
+51
+00:03:17,947 --> 00:03:22,380
+is part of the system state. 
+Okay? 
+
+52
+00:03:22,380 --> 00:03:25,728
+So the ISA also defines the instructions 
+that you execute, that the CPU can 
+
+53
+00:03:25,728 --> 00:03:30,284
+execute in the most basic level. 
+Think of that as very, very simple 
+
+54
+00:03:30,284 --> 00:03:34,956
+instructions, things that do like, an add 
+or a subtraction or say, a load from 
+
+55
+00:03:34,956 --> 00:03:39,605
+memory. 
+Okay that gets there from memory in to a 
+
+56
+00:03:39,605 --> 00:03:44,870
+register as another example, of a, of an 
+instruction, okay? 
+
+57
+00:03:44,870 --> 00:03:49,225
+And finally, the ISA also defines what 
+exactly happens when these instructions 
+
+58
+00:03:49,225 --> 00:03:52,410
+are executed. 
+Because one, one of these, when one of 
+
+59
+00:03:52,410 --> 00:03:55,660
+these basic instructions are executed, it 
+changes the state of your computer 
+
+60
+00:03:55,660 --> 00:03:57,502
+system. 
+Okay? 
+
+61
+00:03:57,502 --> 00:04:02,482
+So, and how this state Changes his 
+function of, also function of what the 
+
+62
+00:04:02,482 --> 00:04:05,560
+ISA specifies. 
+Okay? 
+
+63
+00:04:05,560 --> 00:04:09,370
+So here are the major decisions when 
+designing an ISA. 
+
+64
+00:04:09,370 --> 00:04:12,908
+First of all, obviously, what 
+instructions are available like: add, 
+
+65
+00:04:12,908 --> 00:04:17,359
+subtract, multiplication, floating point 
+operations and so on. 
+
+66
+00:04:17,359 --> 00:04:18,460
+Okay? 
+And what do they do? 
+
+67
+00:04:18,460 --> 00:04:23,35
+Exactly how they change the system state, 
+and also how they are encoded. 
+
+68
+00:04:23,35 --> 00:04:26,870
+Because if you recall, when say you have 
+an add instruction in assembly, it 
+
+69
+00:04:26,870 --> 00:04:31,59
+becomes some sequences of zeros and ones, 
+that's, that's what the computer actually 
+
+70
+00:04:31,59 --> 00:04:35,572
+understands. 
+And encoding is actually this mapping 
+
+71
+00:04:35,572 --> 00:04:39,928
+between the instruction in the ISA and 
+the actual bit sequence that determines 
+
+72
+00:04:39,928 --> 00:04:44,692
+that instru-, that that encodes that 
+instruction. 
+
+73
+00:04:44,692 --> 00:04:48,506
+So the ISA also tells how many registers 
+your computer has. 
+
+74
+00:04:48,506 --> 00:04:52,286
+You know, how many, you know, explicit 
+units of storage you have inside your 
+
+75
+00:04:52,286 --> 00:04:54,116
+processor. 
+Okay? 
+
+76
+00:04:54,116 --> 00:04:58,170
+So how many you have available, and also, 
+how wide they are. 
+
+77
+00:04:58,170 --> 00:05:02,988
+Right, for example, are they 32 bits, are 
+they 64 bits, or are they smaller, like 
+
+78
+00:05:02,988 --> 00:05:07,609
+in case of a very simple processors and 
+so on. 
+
+79
+00:05:07,609 --> 00:05:10,22
+Okay? 
+And finally, the ISA also defines 
+
+80
+00:05:10,22 --> 00:05:16,98
+something very important, which is, how 
+do you specify a location in memory? 
+
+81
+00:05:16,98 --> 00:05:18,492
+Okay? 
+So how do you specify an address in your 
+
+82
+00:05:18,492 --> 00:05:21,990
+assembly code, or how in, in your 
+instructions? 
+
+83
+00:05:21,990 --> 00:05:23,286
+Okay? 
+How do you tell instructions what 
+
+84
+00:05:23,286 --> 00:05:25,500
+addresses they should be manipulating. 
+Okay? 
+
+85
+00:05:25,500 --> 00:05:29,829
+It's also called you know, what are the 
+addressing modes supported. 
+
+86
+00:05:29,829 --> 00:05:34,307
+Okay? 
+So let me write it here, addressing 
+
+87
+00:05:34,307 --> 00:05:38,967
+modes. 
+The, all the ways that it can specify an 
+
+88
+00:05:38,967 --> 00:05:43,203
+instructions in an address in your 
+program. 
+
+89
+00:05:45,560 --> 00:05:50,823
+So now x86 is one type of ISA. 
+Okay? 
+
+90
+00:05:50,823 --> 00:05:52,590
+so it's very, very popular. 
+Okay? 
+
+91
+00:05:52,590 --> 00:05:56,878
+So that's and in fact it's so popular 
+that x86, which is, you, you probably 
+
+92
+00:05:56,878 --> 00:06:01,550
+know, Intel Intel Corporation makes x86 
+processors, or processors that implement 
+
+93
+00:06:01,550 --> 00:06:07,62
+x86 ISA. 
+And these processors completelly dominate 
+
+94
+00:06:07,62 --> 00:06:11,80
+the server, desktop and laptop markets 
+for now. 
+
+95
+00:06:11,80 --> 00:06:14,15
+And they actually had a very 
+revolutionary design. 
+
+96
+00:06:14,15 --> 00:06:17,319
+You know, in fact if you have code 
+written 8086 all the way when it was 
+
+97
+00:06:17,319 --> 00:06:21,614
+designed in 1978, in fact very close to 
+when I was born. 
+
+98
+00:06:21,614 --> 00:06:30,8
+so code written for the 8086, still runs 
+in the most modern Intel x86 processors. 
+
+99
+00:06:30,8 --> 00:06:33,583
+Since we had very, very, evolutionary 
+design, and more features were added as 
+
+100
+00:06:33,583 --> 00:06:37,528
+time, as time went on. 
+An x86 ISA is something that we, is a 
+
+101
+00:06:37,528 --> 00:06:41,880
+type of[UNKNOWN] that we call CISC which 
+stands for Complex Instruction Set 
+
+102
+00:06:41,880 --> 00:06:44,280
+Computer. 
+Okay? 
+
+103
+00:06:44,280 --> 00:06:47,871
+What that says is that the instructions, 
+the basic, the basic instructions 
+
+104
+00:06:47,871 --> 00:06:51,90
+specified by the x86 ISA are very rich. 
+Okay? 
+
+105
+00:06:51,90 --> 00:06:55,980
+They can do things like you know, move a, 
+move a string in memory. 
+
+106
+00:06:55,980 --> 00:06:58,710
+They do things that are much more basic 
+than just a simple add or subtraction or 
+
+107
+00:06:58,710 --> 00:07:03,462
+move a little bit of data here and there. 
+These things are much richer than that. 
+
+108
+00:07:03,462 --> 00:07:05,296
+Okay? 
+So, and we call it CISC, that is a 
+
+109
+00:07:05,296 --> 00:07:10,330
+Complex Instruction Set Computer. 
+As opposed to RISC, which stands for 
+
+110
+00:07:10,330 --> 00:07:14,260
+Reduced Instruction Set Computers. 
+Okay? 
+
+111
+00:07:14,260 --> 00:07:17,328
+A RISC machine has much fewer 
+instructions, and instructions are much 
+
+112
+00:07:17,328 --> 00:07:19,750
+much simpler. 
+Okay? 
+
+113
+00:07:19,750 --> 00:07:22,700
+So, in more advanced computer 
+architecture courses, you will see that 
+
+114
+00:07:22,700 --> 00:07:26,894
+this has a lot of implications of how the 
+hardware itself is designed. 
+
+115
+00:07:26,894 --> 00:07:29,100
+Okay? 
+But it's a little bit out of the scope of 
+
+116
+00:07:29,100 --> 00:07:33,300
+this class to give you the details of why 
+whether an ISA being RISC or CISC how, 
+
+117
+00:07:33,300 --> 00:07:39,718
+why and how it affects computer design. 
+So, le, let's look at some numbers here 
+
+118
+00:07:39,718 --> 00:07:44,45
+just to, to give an idea of how amazing 
+this evolution was. 
+
+119
+00:07:44,45 --> 00:07:46,556
+Okay? 
+So if you go back to 1978, when the 8086 
+
+120
+00:07:46,556 --> 00:07:51,320
+was introduced. 
+That processor had 29,000 transistors, 
+
+121
+00:07:51,320 --> 00:07:57,484
+and it ran on between five and ten MHz. 
+That's the cycle time of the processor, 
+
+122
+00:07:57,484 --> 00:08:00,673
+between five and ten Million cycles per 
+second. 
+
+123
+00:08:00,673 --> 00:08:02,660
+Okay? 
+At that time that was the first 16 bit 
+
+124
+00:08:02,660 --> 00:08:05,631
+processor. 
+That means that the word size was 16 bits 
+
+125
+00:08:05,631 --> 00:08:09,880
+or two bytes, and it was the basis for 
+the I, the IBM PC and DOS. 
+
+126
+00:08:09,880 --> 00:08:13,520
+It really popularized personal computing. 
+That's a very very important processor. 
+
+127
+00:08:13,520 --> 00:08:18,76
+And the total address space, a maximum 
+memory you could you could address was 
+
+128
+00:08:18,76 --> 00:08:20,856
+one MB. 
+Can you imagine that? 
+
+129
+00:08:20,856 --> 00:08:25,232
+It can't even hold a photograph. 
+[LAUGH] But and then another major step 
+
+130
+00:08:25,232 --> 00:08:30,230
+was that the, the 386 that was introduced 
+in 19, seven years later in 1985. 
+
+131
+00:08:30,230 --> 00:08:34,719
+And it had ten times as many transistors, 
+it ran about you know three times faster 
+
+132
+00:08:34,719 --> 00:08:39,430
+in it's clock's frequency. 
+But it was significant for a number of 
+
+133
+00:08:39,430 --> 00:08:40,450
+things. 
+Okay? 
+
+134
+00:08:40,450 --> 00:08:44,46
+It was the first 32-bit microprocessor. 
+Okay? 
+
+135
+00:08:44,46 --> 00:08:48,608
+It was referred to as the IA-32. 
+you had a flat addressing mode. 
+
+136
+00:08:48,608 --> 00:08:51,872
+In that, it didn't have to divide the 
+me-, the, the memory into regions called 
+
+137
+00:08:51,872 --> 00:08:56,242
+segments and addressed them individually. 
+You had a single address that could point 
+
+138
+00:08:56,242 --> 00:08:58,994
+anywhere in memory. 
+So, that made the process of managing 
+
+139
+00:08:58,994 --> 00:09:01,766
+memory and accessing memory much, much 
+simpler. 
+
+140
+00:09:01,766 --> 00:09:04,550
+Okay? 
+So, and this machine is also capable of, 
+
+141
+00:09:04,550 --> 00:09:08,100
+capable of running an operating system 
+called Unix. 
+
+142
+00:09:08,100 --> 00:09:11,160
+Which is very similar to what we call 
+Linux today. 
+
+143
+00:09:11,160 --> 00:09:13,424
+Okay? 
+And so it's very similar, Linux is a type 
+
+144
+00:09:13,424 --> 00:09:15,630
+of Unix Operating system. 
+Okay? 
+
+145
+00:09:15,630 --> 00:09:21,740
+And and today, a 32 bit Linux GCC 
+targets, targets the 386 by default. 
+
+146
+00:09:21,740 --> 00:09:25,530
+So the 386 are very, very important 
+architecture as well. 
+
+147
+00:09:25,530 --> 00:09:28,180
+Now let's jump 20 years later and look at 
+what happened. 
+
+148
+00:09:28,180 --> 00:09:32,212
+Now with the Pentium 4, when, when it was 
+introduced in 2005, had 230 million 
+
+149
+00:09:32,212 --> 00:09:37,565
+instructions. 
+We're talking about a 10,000, 10,000 fold 
+
+150
+00:09:37,565 --> 00:09:42,700
+increase in the number of transistors. 
+Okay? 
+
+151
+00:09:42,700 --> 00:09:46,634
+And, you know? 
+A sim-, in about, about a a huge increase 
+
+152
+00:09:46,634 --> 00:09:50,380
+in, in frequency as well. 
+Okay? 
+
+153
+00:09:50,380 --> 00:09:55,72
+And then the Pentium 4F was the first 64 
+bit processor as,as also introduced by 
+
+154
+00:09:55,72 --> 00:09:59,580
+first 64 bit x86 processor, introduced by 
+Intel. 
+
+155
+00:09:59,580 --> 00:10:04,750
+It's also referred to x86-64. 
+The AMD was actually involved in, in 
+
+156
+00:10:04,750 --> 00:10:10,842
+defining what the x86-64 looks like, 
+which we're going to see in a second. 
+
+157
+00:10:10,842 --> 00:10:14,742
+A little bit more history of Intel 
+processors, the 486 was introduced in 
+
+158
+00:10:14,742 --> 00:10:18,368
+1989, was also a very important 
+processor. 
+
+159
+00:10:18,368 --> 00:10:22,80
+Then there was a series of Pentium 
+processors that hit the that had a lot of 
+
+160
+00:10:22,80 --> 00:10:25,580
+evolutions. 
+In-, including like around this time, 
+
+161
+00:10:25,580 --> 00:10:29,430
+they were starting to worry about power 
+consumption as well. 
+
+162
+00:10:29,430 --> 00:10:34,734
+So and then, it was a Core 2 Duo, you 
+know, which was a dual core processor. 
+
+163
+00:10:34,734 --> 00:10:39,640
+A processor that had multiple multiple 
+compute cores in the same chip. 
+
+164
+00:10:39,640 --> 00:10:43,876
+And then, more recently, we had the i7, 
+that for example, here we have a dipex. 
+
+165
+00:10:43,876 --> 00:10:47,750
+It's a picture of the actual silicon of 
+the i7, and it has four cores. 
+
+166
+00:10:47,750 --> 00:10:51,782
+It is essentially, you know, these are 
+exactly, each, each one of these boxes 
+
+167
+00:10:51,782 --> 00:10:55,668
+here, okay. 
+Are each, each one of these boxes is a 
+
+168
+00:10:55,668 --> 00:11:00,204
+processor, and you have four of them on a 
+chip, and they all share a bunch of cache 
+
+169
+00:11:00,204 --> 00:11:04,748
+memory. 
+That we, we are going to see exactly what 
+
+170
+00:11:04,748 --> 00:11:08,346
+that means in the later sections of this 
+class. 
+
+171
+00:11:08,346 --> 00:11:10,700
+Okay? 
+So, and along this history, there are a 
+
+172
+00:11:10,700 --> 00:11:13,880
+lot of other things that were introduced 
+along the way. 
+
+173
+00:11:13,880 --> 00:11:16,464
+One was support for multimedia 
+operations. 
+
+174
+00:11:16,464 --> 00:11:19,803
+Essentially, multimedia operation tends 
+to have a lot of fine grain pair at 
+
+175
+00:11:19,803 --> 00:11:23,990
+instruction level, we called it vector 
+type of parellism. 
+
+176
+00:11:23,990 --> 00:11:28,150
+So, in order to take advantage of that 
+Intel introducedt an exception the ISA 
+
+177
+00:11:28,150 --> 00:11:31,789
+called SIMD. 
+Which stands for Single Instruction 
+
+178
+00:11:31,789 --> 00:11:36,59
+Multiple Data, and that that's that 
+instruction actually operates in multiple 
+
+179
+00:11:36,59 --> 00:11:41,11
+data items simultaneously. 
+So taking advantage parallels that the 
+
+180
+00:11:41,11 --> 00:11:43,650
+application has. 
+Okay. 
+
+181
+00:11:43,650 --> 00:11:47,249
+So and also, along this way like in this 
+ISA evolution, not only the ISA 
+
+182
+00:11:47,249 --> 00:11:50,872
+architecture evolution. 
+There were instructions that were 
+
+183
+00:11:50,872 --> 00:11:53,507
+introduced to do more efficient condition 
+operations. 
+
+184
+00:11:53,507 --> 00:11:55,191
+Okay? 
+We'll see later, in this class, that 
+
+185
+00:11:55,191 --> 00:11:58,23
+there are these instructions called 
+branches that changes the flow of 
+
+186
+00:11:58,23 --> 00:12:02,0
+execution to the processor. 
+And these instructions can be very, very 
+
+187
+00:12:02,0 --> 00:12:04,740
+expensive. 
+So in part of the innovation that happens 
+
+188
+00:12:04,740 --> 00:12:09,320
+in this evolution of microprocessor was 
+to make some of that much cheaper. 
+
+189
+00:12:09,320 --> 00:12:11,672
+And then, obviously, as I mentioned 
+before, there are lots of cores 
+
+190
+00:12:11,672 --> 00:12:14,190
+introduced along the way. 
+Okay? 
+
+191
+00:12:14,190 --> 00:12:18,610
+So if you're interested in learning more 
+about the specifics of of Intel's 
+
+192
+00:12:18,610 --> 00:12:22,520
+architecture. 
+You can go to the automated relational 
+
+193
+00:12:22,520 --> 00:12:27,320
+knowledge base great name. 
+that's available in Intel website. 
+
+194
+00:12:27,320 --> 00:12:30,380
+And also you can look at the list of 
+Intel micro processors in Wikipedia, 
+
+195
+00:12:30,380 --> 00:12:33,770
+which is great to get more information as 
+well. 
+
+196
+00:12:33,770 --> 00:12:38,570
+But now, let's not forget about AMD, a 
+company called Advanced Micro Devices 
+
+197
+00:12:38,570 --> 00:12:43,42
+that made clones of x86. 
+By clones it means other processors that 
+
+198
+00:12:43,42 --> 00:12:46,354
+had completly different hardware, but 
+also implemented this same instructor set 
+
+199
+00:12:46,354 --> 00:12:49,470
+of architecture. 
+That's one example of the beauty of 
+
+200
+00:12:49,470 --> 00:12:51,877
+abstractions. 
+See it had the same abstraction call the 
+
+201
+00:12:51,877 --> 00:12:54,706
+instruction, the instruction for that 
+architecture, the[INAUDIBLE] interface 
+
+202
+00:12:54,706 --> 00:12:57,722
+was the same. 
+The implementation underneath doesn't 
+
+203
+00:12:57,722 --> 00:13:01,800
+really affect the software as long as the 
+ISA stays this, the same. 
+
+204
+00:13:01,800 --> 00:13:06,486
+And so AMD came up with completely 
+different hardware that implemented x86 
+
+205
+00:13:06,486 --> 00:13:11,940
+ISA, and it had some advantage at first. 
+You know, they were a lot cheaper and 
+
+206
+00:13:11,940 --> 00:13:16,134
+were a tiny bit slower but it made sense 
+in terms of, of, of price performance. 
+
+207
+00:13:16,134 --> 00:13:18,590
+OKay. 
+Typically just followed behind Intel but 
+
+208
+00:13:18,590 --> 00:13:22,67
+then AMD just got really, really 
+aggressive in terms of taking advantage 
+
+209
+00:13:22,67 --> 00:13:25,487
+of new secret design techniques and they 
+designed very, very, very fast 
+
+210
+00:13:25,487 --> 00:13:29,935
+processors. 
+And you know one great example is the AMD 
+
+211
+00:13:29,935 --> 00:13:33,520
+Opteron which is really, really tough 
+competitor. 
+
+212
+00:13:33,520 --> 00:13:37,545
+To the Pentium 4. 
+And AMD, was also instrumented, was also 
+
+213
+00:13:37,545 --> 00:13:43,956
+instrumental in developing the x86-64. 
+Which is a 64 bit extension of uh,of the 
+
+214
+00:13:43,956 --> 00:13:49,556
+x86 ISA, that later on actually became a 
+good part of what x86-64 looks today, 
+
+215
+00:13:49,556 --> 00:13:55,854
+even for Intel processors. 
+It has really, really interesting you 
+
+216
+00:13:55,854 --> 00:13:59,160
+know, quote, unquote collaboration 
+between two companies that are 
+
+217
+00:13:59,160 --> 00:14:01,800
+essentially competitors. 
+Okay? 
+
+218
+00:14:01,800 --> 00:14:07,400
+So now to to end this mod-, first module 
+of the section, just to tell, we are 
+
+219
+00:14:07,400 --> 00:14:12,200
+going to cover now this section in, in 
+x86 program, which will be the, the 
+
+220
+00:14:12,200 --> 00:14:19,191
+following section. 
+we are going to look at what's called 
+
+221
+00:14:19,191 --> 00:14:24,193
+IA-32, which is the traditional 32 bit, 
+32 bit ISA. 
+
+222
+00:14:24,193 --> 00:14:30,600
+And um,[INAUDIBLE] here, 32-bit[LAUGH] , 
+32-bit ISA. 
+
+223
+00:14:30,600 --> 00:14:36,616
+And then we're going to also talk about 
+the 64-bit version of the x86 ISA. 
+
+224
+00:14:36,616 --> 00:14:38,468
+Okay? 
+And keep in mind that all lab 
+
+225
+00:14:38,468 --> 00:14:41,780
+assignment's actually going to use 
+x86-64. 
+
+226
+00:14:41,780 --> 00:14:44,647
+But in teaching you assembly programming, 
+it, it, it's going to be larger 
+
+227
+00:14:44,647 --> 00:14:48,530
+transparent to you. 
+We you're going to know when it matters, 
+
+228
+00:14:48,530 --> 00:14:51,53
+okay? 
+Thank you and see you soon. 
+

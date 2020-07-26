@@ -1,0 +1,664 @@
+1
+00:00:00,666 --> 00:00:05,622
+[MUSIC]. 
+
+2
+00:00:05,622 --> 00:00:09,150
+The last part of this section is to 
+discuss alignment of our data structures 
+
+3
+00:00:09,150 --> 00:00:13,890
+in memory. 
+let's see what we mean by that. 
+
+4
+00:00:13,890 --> 00:00:19,094
+A structure contains multiple elements. 
+In this case, we have a struct that has a 
+
+5
+00:00:19,094 --> 00:00:25,485
+single byte first element. 
+then two ints in an array as the second 
+
+6
+00:00:25,485 --> 00:00:29,193
+element. 
+And finally, a double floating point 
+
+7
+00:00:29,193 --> 00:00:33,631
+number as its third element. 
+So, what we would see and expect to see 
+
+8
+00:00:33,631 --> 00:00:37,840
+in memory is a starting address for our 
+struct, the first byte being that 
+
+9
+00:00:37,840 --> 00:00:42,946
+character C. 
+Then the next 8 bytes being the two ints 
+
+10
+00:00:42,946 --> 00:00:47,088
+in the array I. 
+And then, the third part, the next 8 
+
+11
+00:00:47,088 --> 00:00:53,500
+bytes, the double floating point number. 
+And we would expect this struct to occupy 
+
+12
+00:00:53,500 --> 00:00:58,987
+17 bytes of of memory. 
+In reality we have to align this 
+
+13
+00:00:58,987 --> 00:01:02,371
+structure. 
+And what we mean by alignment, is taking 
+
+14
+00:01:02,371 --> 00:01:06,592
+a data type that's of K bytes, like an 
+int is of size 4 bytes and making sure 
+
+15
+00:01:06,592 --> 00:01:12,990
+that it starts at an address divisible by 
+that by that number. 
+
+16
+00:01:12,990 --> 00:01:18,320
+So what we want to do is make sure ints 
+start at addresses divisible by four. 
+
+17
+00:01:18,320 --> 00:01:23,010
+And double started addresses divisible by 
+eight. 
+
+18
+00:01:23,010 --> 00:01:26,358
+So you'll see that, in fact, our struct 
+will end up looking more like this in 
+
+19
+00:01:26,358 --> 00:01:29,852
+memory. 
+where we have to pad an extra three 
+
+20
+00:01:29,852 --> 00:01:34,604
+wasted bytes that we're not going to use 
+just in order to get the integer to line 
+
+21
+00:01:34,604 --> 00:01:41,935
+up at an address divisible by four. 
+Similarly, we're going to have to pad an 
+
+22
+00:01:41,935 --> 00:01:47,635
+extra four bytes here to get the to get 
+the the double float to be at an address, 
+
+23
+00:01:47,635 --> 00:01:56,030
+start at an address divisible by eight. 
+Okay, and those are totally wasted space. 
+
+24
+00:01:56,030 --> 00:02:00,650
+that's called internal fragmentation 
+uh,unused fragments of memory at the 
+
+25
+00:02:00,650 --> 00:02:05,138
+inside of our struct that we don't see in 
+the declaration at all but that the 
+
+26
+00:02:05,138 --> 00:02:11,650
+compiler puts in, in order to meet this 
+alignment requirement. 
+
+27
+00:02:11,650 --> 00:02:16,400
+why what is the basic alignment 
+principle? 
+
+28
+00:02:16,400 --> 00:02:22,304
+as I said, it that data type of size that 
+requires K bytes start at an address that 
+
+29
+00:02:22,304 --> 00:02:27,646
+is in fact a multiple of K. 
+this is an absolute requirement on some 
+
+30
+00:02:27,646 --> 00:02:31,190
+machines. 
+it's comple It's very much advised on the 
+
+31
+00:02:31,190 --> 00:02:34,101
+IA32, although not requ not required all 
+the time there. 
+
+32
+00:02:34,101 --> 00:02:38,625
+we're going to assume it is, and always 
+do things that way. 
+
+33
+00:02:38,625 --> 00:02:42,281
+But what is the motivation for this 
+alignment? 
+
+34
+00:02:42,281 --> 00:02:47,449
+well the reason for the alignment is 
+because we want to access physical memory 
+
+35
+00:02:47,449 --> 00:02:53,300
+and be able to get an entire piece of 
+data in one access. 
+
+36
+00:02:53,300 --> 00:02:56,639
+So for example, imagine that we had a 4 
+bytes int, and the first two bytes were 
+
+37
+00:02:56,639 --> 00:03:01,203
+in one worded memory, and the next 2 
+bytes were in a separate word. 
+
+38
+00:03:01,203 --> 00:03:04,375
+We wouldn't want to have to read two 
+words and then shuffle bytes around in 
+
+39
+00:03:04,375 --> 00:03:09,644
+order to get our int. 
+so we'd like to make that be an efficient 
+
+40
+00:03:09,644 --> 00:03:14,425
+single memory read that would read the 4 
+bytes directly. 
+
+41
+00:03:14,425 --> 00:03:18,085
+We're going to see this alignment issue 
+come up also in virtual memory which 
+
+42
+00:03:18,085 --> 00:03:22,143
+would be discussing a little bit later in 
+the course. 
+
+43
+00:03:22,143 --> 00:03:27,332
+But for now the thing to remember is that 
+the program it doesn't worry about this. 
+
+44
+00:03:27,332 --> 00:03:30,931
+The compiler takes care of this 
+alignment, and that's why we're provided 
+
+45
+00:03:30,931 --> 00:03:34,707
+with the special function in C called 
+size of which returns the, the size, 
+
+46
+00:03:34,707 --> 00:03:38,483
+given a data type as an argument returns 
+the size of that data type and bytes in 
+
+47
+00:03:38,483 --> 00:03:45,186
+the number of bytes of memory. 
+And that's important because depending on 
+
+48
+00:03:45,186 --> 00:03:48,318
+the architecture we're on, we'll have 
+slightly different alignment 
+
+49
+00:03:48,318 --> 00:03:51,936
+requirements, and the size of the struct 
+might actually vary, because we have to 
+
+50
+00:03:51,936 --> 00:03:57,240
+insert different amounts of unused bytes 
+in different places. 
+
+51
+00:03:57,240 --> 00:04:02,520
+So, size of lets us get to the size of 
+the struct as the compiler decided it had 
+
+52
+00:04:02,520 --> 00:04:08,089
+to be. 
+So in the case of IA32 a single byte, a c 
+
+53
+00:04:08,089 --> 00:04:11,566
+a char eh, of course has no restriction 
+on where it's placed in the memory, 
+
+54
+00:04:11,566 --> 00:04:17,966
+because a char is a single byte. 
+And we can always have an address to any 
+
+55
+00:04:17,966 --> 00:04:22,060
+byte. 
+a two byte short int, on the other hand, 
+
+56
+00:04:22,060 --> 00:04:26,722
+the a addresses lowered a bit must be a 
+zero, meaning that that address is 
+
+57
+00:04:26,722 --> 00:04:32,513
+divisible by two. 
+For things that are 4 bytes in size like 
+
+58
+00:04:32,513 --> 00:04:37,842
+ints and floats, and pointers, pointers 
+to any type of data any address well then 
+
+59
+00:04:37,842 --> 00:04:42,149
+the lower 2 bits have to both be zero, 
+because those addresses have to be 
+
+60
+00:04:42,149 --> 00:04:49,031
+divisible by four. 
+Similarly for doubles the address has to 
+
+61
+00:04:49,031 --> 00:04:53,100
+be divisible by eight or have end in 
+three zeros. 
+
+62
+00:04:53,100 --> 00:04:59,464
+Now it turns out that on some IA32 
+architectures doubles can only only have 
+
+63
+00:04:59,464 --> 00:05:06,198
+required to align to 4 bytes 
+But for our part, we'll always kind of 
+
+64
+00:05:06,198 --> 00:05:13,115
+consider that perfect alignment eight 
+byte things on eight byte multiples. 
+
+65
+00:05:13,115 --> 00:05:20,000
+Okay, how do we satisfy alignment with 
+structures? 
+
+66
+00:05:20,000 --> 00:05:24,654
+Here's our example from before, remember? 
+The, the one byte character, two ints in 
+
+67
+00:05:24,654 --> 00:05:31,250
+an array, followed by a double float. 
+in our 64-bit architectures the value K, 
+
+68
+00:05:31,250 --> 00:05:36,178
+the alignment requirement that we have to 
+meet, is eight. 
+
+69
+00:05:36,178 --> 00:05:42,020
+Because that, it goes for the largest 
+element in the struct. 
+
+70
+00:05:42,020 --> 00:05:45,570
+In this case, that double float is eight 
+bytes. 
+
+71
+00:05:45,570 --> 00:05:50,460
+so everything m, must be aligned to those 
+eight byte boundaries. 
+
+72
+00:05:50,460 --> 00:05:55,765
+So our struct must start at a multiple of 
+eight byte address. 
+
+73
+00:05:55,765 --> 00:05:59,845
+we can put that initial character there 
+but then have to waste 3 bytes, so we can 
+
+74
+00:05:59,845 --> 00:06:06,428
+start our int at a multiple of four. 
+then again those four wasted bytes, so we 
+
+75
+00:06:06,428 --> 00:06:11,146
+can start our float at a multiple of 
+eight for its address. 
+
+76
+00:06:11,146 --> 00:06:15,370
+So, in 64-bit architectures we end up 
+with this. 
+
+77
+00:06:15,370 --> 00:06:17,900
+What would happen in a 32-bit 
+architecture? 
+
+78
+00:06:17,900 --> 00:06:22,235
+Well in this case, the double is only 4 
+bytes, so K is equal to 4. 
+
+79
+00:06:22,235 --> 00:06:25,167
+That is the largest data type that we 
+use. 
+
+80
+00:06:25,167 --> 00:06:29,254
+And we can actually arrange things a 
+little bit differently, because you 
+
+81
+00:06:29,254 --> 00:06:33,743
+notice that now we do not need to add the 
+extra 4 bytes there to move the float to 
+
+82
+00:06:33,743 --> 00:06:39,954
+an 8-byte boundary. 
+We can leave it on a 4-byte boundary 
+
+83
+00:06:39,954 --> 00:06:45,847
+without wasting those 4 bytes. 
+So you'll see, you see here why sizeof is 
+
+84
+00:06:45,847 --> 00:06:51,430
+an important function. 
+In this case sizeof would return 24. 
+
+85
+00:06:51,430 --> 00:06:55,980
+In this case sizeof would return 20 as 
+the size of the struct. 
+
+86
+00:06:55,980 --> 00:07:00,518
+In neither case is it 17 however. 
+We always need these 3 bytes here in 
+
+87
+00:07:00,518 --> 00:07:06,002
+order to make our integers line up. 
+Let's take a look at another example that 
+
+88
+00:07:06,002 --> 00:07:09,750
+shuttles around the elements of the 
+struct. 
+
+89
+00:07:09,750 --> 00:07:14,358
+again here is our original struct, and we 
+can do a different definition where we 
+
+90
+00:07:14,358 --> 00:07:18,518
+put the largest element first, the double 
+first, then the ints and then the 
+
+91
+00:07:18,518 --> 00:07:26,260
+smallest elements last the, the single 
+byte character in this case. 
+
+92
+00:07:26,260 --> 00:07:30,816
+So, that instead of having this 24 byte 
+struct, we can actually arrange for 
+
+93
+00:07:30,816 --> 00:07:36,072
+something that looks like this. 
+You notice it loo, that it appears to be 
+
+94
+00:07:36,072 --> 00:07:39,154
+much more compact. 
+We don't have those wasted bytes, and in 
+
+95
+00:07:39,154 --> 00:07:42,735
+fact, we don't have that internal 
+fragmentation in this case. 
+
+96
+00:07:42,735 --> 00:07:46,621
+However, as we think about maybe having 
+an array of these structs and having them 
+
+97
+00:07:46,621 --> 00:07:50,565
+follow each other, well they all have to 
+start at boundaries that are divisible by 
+
+98
+00:07:50,565 --> 00:07:56,456
+eight. 
+so to do that we end up having to add 
+
+99
+00:07:56,456 --> 00:08:01,591
+some padding at the end of the struct in 
+fact we will have to add 7 bytes at the 
+
+100
+00:08:01,591 --> 00:08:07,845
+end of the struct. 
+So, we end up having the same size struct 
+
+101
+00:08:07,845 --> 00:08:12,395
+anyway in this case, but in general we'll 
+do better if we put the largest elements 
+
+102
+00:08:12,395 --> 00:08:16,939
+first. 
+Okay but you can see here in the array, 
+
+103
+00:08:16,939 --> 00:08:21,554
+since we have to hit addresses that are 
+divisible by eight, we end up with an 
+
+104
+00:08:21,554 --> 00:08:25,956
+extra 7 bytes of external fragmentation, 
+some extra bytes at the end of the 
+
+105
+00:08:25,956 --> 00:08:32,024
+struct. 
+All right, let's take a look at how 
+
+106
+00:08:32,024 --> 00:08:36,590
+elements of the array of structs are 
+accessed. 
+
+107
+00:08:36,590 --> 00:08:41,700
+in this case we want to access an element 
+'I' of the array and then the J of or the 
+
+108
+00:08:41,700 --> 00:08:48,150
+J element of that particular struct. 
+so first we're going to need an offset 
+
+109
+00:08:48,150 --> 00:08:53,030
+that gets us to the right array element, 
+the right struct. 
+
+110
+00:08:53,030 --> 00:08:57,720
+That'll be 12 times I the index to get us 
+to the right struct, and then we need an 
+
+111
+00:08:57,720 --> 00:09:02,628
+offset within the struct. 
+and that offset is going to be an 
+
+112
+00:09:02,628 --> 00:09:07,794
+additional eight, because in this case 
+that's where J will fall. 
+
+113
+00:09:07,794 --> 00:09:12,908
+Remember, in this case we have a 2-byte 
+integer to start. 
+
+114
+00:09:12,908 --> 00:09:18,280
+some 2 bytes of padding in order to make 
+sure that our float that is only four 
+
+115
+00:09:18,280 --> 00:09:24,370
+bytes now starts at an address divisible 
+by four. 
+
+116
+00:09:24,370 --> 00:09:30,450
+which puts J at plus eight from the 
+starting address. 
+
+117
+00:09:30,450 --> 00:09:34,403
+And of course, we end up having to put an 
+extra 2 bytes to the next, between that 
+
+118
+00:09:34,403 --> 00:09:40,180
+and the next struck so that the next 
+struct can start on a four byte boundary. 
+
+119
+00:09:40,180 --> 00:09:48,115
+That's how we can an overall size of 12, 
+alright, and why we multiply the index by 
+
+120
+00:09:48,115 --> 00:09:52,356
+12. 
+The code for the, the summary code we 
+
+121
+00:09:52,356 --> 00:09:56,440
+might see for some functions for 
+accessing these arrays. 
+
+122
+00:09:56,440 --> 00:10:00,856
+here we have a function get_j, which 
+given an index goes to that element of 
+
+123
+00:10:00,856 --> 00:10:06,825
+the array and gets the J element of the, 
+the struct at that position. 
+
+124
+00:10:06,825 --> 00:10:11,070
+the way this is computed is using just 
+two instructions. 
+
+125
+00:10:11,070 --> 00:10:14,654
+You'll notice that the first one, this 
+LEAL, is simply used to get three times 
+
+126
+00:10:14,654 --> 00:10:18,286
+the index. 
+So that we can then multiply it by four 
+
+127
+00:10:18,286 --> 00:10:22,506
+to get 12 times the index. 
+remember we can't just do that multiply 
+
+128
+00:10:22,506 --> 00:10:25,524
+by 12 directly. 
+Those multipliers have to be powers of 
+
+129
+00:10:25,524 --> 00:10:29,472
+two. 
+so we first compose a partial result 
+
+130
+00:10:29,472 --> 00:10:33,756
+that's three times the index, then 
+multiply that further by four and add the 
+
+131
+00:10:33,756 --> 00:10:42,086
+offset from the start of the array A. 
+That's the starting point of the, the 
+
+132
+00:10:42,086 --> 00:10:47,640
+entire array. 
+And then, an additional eight to get us 
+
+133
+00:10:47,640 --> 00:10:53,099
+to the J element of the struct the offset 
+within the struct. 
+

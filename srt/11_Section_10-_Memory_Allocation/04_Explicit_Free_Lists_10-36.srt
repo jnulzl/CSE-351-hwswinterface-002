@@ -1,0 +1,859 @@
+1
+00:00:00,005 --> 00:00:09,458
+Okay, now that we know how implicit free 
+lists work, let's look at explicit free 
+
+2
+00:00:09,458 --> 00:00:14,330
+lists. 
+So in implicit free lists the reason we 
+
+3
+00:00:14,330 --> 00:00:17,814
+call it implicit was because we had the, 
+a list we could you know, traverse entire 
+
+4
+00:00:17,814 --> 00:00:22,570
+heap and we, we knew implicitly. 
+In obeys in the bit that was a bit that 
+
+5
+00:00:22,570 --> 00:00:26,082
+tells whether it's allocated or not, 
+whether the block is free or not. 
+
+6
+00:00:26,082 --> 00:00:29,640
+So it was implicit because it had to 
+traverse it to figure it out. 
+
+7
+00:00:29,640 --> 00:00:36,160
+Now with explicit free lists we're going 
+to link free blocks to get explicitly. 
+
+8
+00:00:36,160 --> 00:00:39,284
+How do we do that? 
+Well, instead of just having the size and 
+
+9
+00:00:39,284 --> 00:00:43,127
+a bit saying it's allocated or not, like 
+we had an implicit free list for each 
+
+10
+00:00:43,127 --> 00:00:47,354
+block. 
+What we're going to do is, since in free 
+
+11
+00:00:47,354 --> 00:00:51,130
+blocks, we do not have the payload and 
+the padding. 
+
+12
+00:00:51,130 --> 00:00:53,949
+We're going to use pointers. 
+We're going to use, we're going to put 
+
+13
+00:00:53,949 --> 00:00:58,550
+pointers there. 
+One that points to the next free block. 
+
+14
+00:00:58,550 --> 00:01:02,660
+And one that points to the previous one. 
+'Kay? 
+
+15
+00:01:02,660 --> 00:01:07,414
+So and by the way, we still going to need 
+boundary texts for coalescing. 
+
+16
+00:01:07,414 --> 00:01:10,740
+'Kay? 
+We'll see, we'll see examples of that. 
+
+17
+00:01:10,740 --> 00:01:13,610
+now, and logically it's a doubly-linked 
+list, as I said. 
+
+18
+00:01:13,610 --> 00:01:17,040
+And we have pointed to it previous, we 
+going to point it to the next one. 
+
+19
+00:01:17,040 --> 00:01:20,090
+So, logically, it feels like, you know, 
+organizing some order here. 
+
+20
+00:01:20,090 --> 00:01:23,306
+But physically you know, when you look at 
+how it's in memory, it could be really in 
+
+21
+00:01:23,306 --> 00:01:26,872
+any order, okay? 
+So you have one and then the other and so 
+
+22
+00:01:26,872 --> 00:01:29,844
+on. 
+So let's see how allocating from, from 
+
+23
+00:01:29,844 --> 00:01:34,040
+explicit lists look like, okay? 
+So, for instance, here we have, this is 
+
+24
+00:01:34,040 --> 00:01:37,559
+before the allocation and we have a 
+pointer to the next block. 
+
+25
+00:01:37,559 --> 00:01:40,890
+And these are all free blocks, okay? 
+These are all free blocks. 
+
+26
+00:01:40,890 --> 00:01:44,510
+And this is pointing in one direction, 
+and pointing in the other direction. 
+
+27
+00:01:44,510 --> 00:01:47,890
+And when we allocate. 
+Say that we finally choose this one. 
+
+28
+00:01:47,890 --> 00:01:50,140
+So we choose this one. 
+So, now, that's what we going to return 
+
+29
+00:01:50,140 --> 00:01:53,072
+to malloc. 
+And this part's allocated, and whatever 
+
+30
+00:01:53,072 --> 00:01:56,610
+is free is going to be split and now we 
+going to insert this block back into 
+
+31
+00:01:56,610 --> 00:02:00,030
+this. 
+We going to update the pointers here so 
+
+32
+00:02:00,030 --> 00:02:03,840
+we include this one here in the, in the 
+explicit free lists. 
+
+33
+00:02:03,840 --> 00:02:07,130
+'Kay, that's how we allocate it. 
+It's pretty simple right? 
+
+34
+00:02:07,130 --> 00:02:10,436
+Well freeing is a little bit more 
+complicated because now there's an 
+
+35
+00:02:10,436 --> 00:02:15,024
+insertion policy, right? 
+Remember that the blocks should actually 
+
+36
+00:02:15,024 --> 00:02:18,370
+be mainly actual order in this list, 
+alright? 
+
+37
+00:02:18,370 --> 00:02:22,860
+So thinking, where are we going to put 
+the block once we free something? 
+
+38
+00:02:22,860 --> 00:02:27,610
+Is very, very important, 'kay? 
+So so to summarize, the insertion 
+
+39
+00:02:27,610 --> 00:02:32,730
+policy's where in the free list you put a 
+newly freed block. 
+
+40
+00:02:32,730 --> 00:02:36,662
+And there's two basic policies. 
+The first one is called LIFO, 
+
+41
+00:02:36,662 --> 00:02:39,240
+last-in-first-out. 
+Policy. 
+
+42
+00:02:39,240 --> 00:02:43,280
+So did we insert a free block at the 
+beginning of the free list always, okay? 
+
+43
+00:02:43,280 --> 00:02:45,674
+The pro is that it's pretty simple is 
+constant time because you always have a 
+
+44
+00:02:45,674 --> 00:02:50,359
+pointer at the beginning of the list. 
+But the con is that studies suggest that 
+
+45
+00:02:50,359 --> 00:02:55,080
+fragmentation is worse than just ordering 
+by address which is the other policy. 
+
+46
+00:02:55,080 --> 00:02:59,172
+Address order, what it does is just links 
+them in a way such that addresses of the 
+
+47
+00:02:59,172 --> 00:03:03,760
+previous block, is lower than the others, 
+the current one and slower than the next 
+
+48
+00:03:03,760 --> 00:03:08,560
+one and so on, so it's just address 
+order. 
+
+49
+00:03:08,560 --> 00:03:12,218
+The con is that requires linear time 
+search when blocks are free because it 
+
+50
+00:03:12,218 --> 00:03:16,112
+has to find the way the timing goes, but, 
+studies suggest that fragmentation is 
+
+51
+00:03:16,112 --> 00:03:19,300
+lower. 
+And that's an interesting question. 
+
+52
+00:03:19,300 --> 00:03:22,420
+And by the way, memory location in 
+general is just full of heuristics. 
+
+53
+00:03:22,420 --> 00:03:24,213
+Okay? 
+It's just very hard to make sure that, 
+
+54
+00:03:24,213 --> 00:03:26,460
+very hard to make a provably best 
+allocator. 
+
+55
+00:03:26,460 --> 00:03:29,710
+It's nearly impossible, potentially even 
+impossible. 
+
+56
+00:03:29,710 --> 00:03:35,357
+So, this is just full of of heuristics. 
+Okay, so let's see how the LIFO policy 
+
+57
+00:03:35,357 --> 00:03:38,140
+works. 
+Okay? 
+
+58
+00:03:38,140 --> 00:03:42,185
+So we have the first case here. 
+So the first case is we have a free 
+
+59
+00:03:42,185 --> 00:03:45,596
+block, and there's nothing. 
+It's a, a, we free a block in the middle 
+
+60
+00:03:45,596 --> 00:03:48,448
+of something allocated, and what we're 
+going to do is we're just going to free 
+
+61
+00:03:48,448 --> 00:03:52,230
+it and up. 
+And since we're doing LIFO, last in first 
+
+62
+00:03:52,230 --> 00:03:55,683
+out, it's going to be. 
+There's, there's going to be sort of the 
+
+63
+00:03:55,683 --> 00:03:59,099
+beginning of the list. 
+So now the root points to this new free 
+
+64
+00:03:59,099 --> 00:04:01,348
+block. 
+And then we update the pointers 
+
+65
+00:04:01,348 --> 00:04:04,125
+accordingly. 
+The, the old one, now, the old first one, 
+
+66
+00:04:04,125 --> 00:04:08,170
+just points backs to the one that was 
+just inserted. 
+
+67
+00:04:08,170 --> 00:04:10,120
+Pretty simple, right? 
+Okay. 
+
+68
+00:04:10,120 --> 00:04:12,916
+So let's see the other case. 
+The other case here is that we are 
+
+69
+00:04:12,916 --> 00:04:16,036
+freeing something, and right before it we 
+have, right before it we have a block 
+
+70
+00:04:16,036 --> 00:04:19,210
+that's free. 
+So what are we going to do? 
+
+71
+00:04:19,210 --> 00:04:23,876
+Well, we're going to merge it, okay? 
+And but now note that the resulting 
+
+72
+00:04:23,876 --> 00:04:30,200
+block, the resulting block here is the 
+one that gets inserted in the beginning 
+
+73
+00:04:30,200 --> 00:04:36,070
+of the list. 
+So now the root points here, okay? 
+
+74
+00:04:36,070 --> 00:04:39,450
+Because we just got this old block here 
+and extended it with the one that we just 
+
+75
+00:04:39,450 --> 00:04:42,162
+freed. 
+Simple, right? 
+
+76
+00:04:42,162 --> 00:04:44,820
+Great. 
+Let's see one more case here. 
+
+77
+00:04:44,820 --> 00:04:48,590
+Now suppose that what we could, what we 
+do, we're going to free a block and right 
+
+78
+00:04:48,590 --> 00:04:52,160
+next to it, after it, we have a free 
+block. 
+
+79
+00:04:52,160 --> 00:04:54,700
+We're going to the same what we did, as, 
+as we did before. 
+
+80
+00:04:54,700 --> 00:04:57,120
+We're going to merge into a larger block. 
+Okay? 
+
+81
+00:04:57,120 --> 00:05:01,540
+We're going to merge this whole thing 
+into a larger free block. 
+
+82
+00:05:01,540 --> 00:05:05,128
+And then we're going to update the links 
+accordingly, such accordingly, such that 
+
+83
+00:05:05,128 --> 00:05:08,950
+the root now points to this newly formed 
+larger block. 
+
+84
+00:05:08,950 --> 00:05:12,184
+We removed the older block here because 
+it really, it's just part of a larger one 
+
+85
+00:05:12,184 --> 00:05:15,676
+now. 
+And we're going to update the pointers 
+
+86
+00:05:15,676 --> 00:05:17,845
+accordingly. 
+Okay? 
+
+87
+00:05:17,845 --> 00:05:22,179
+Good. 
+So like the, the fourth and last case 
+
+88
+00:05:22,179 --> 00:05:26,085
+here is when you say that you free a 
+block, and then there's ac-, there's two 
+
+89
+00:05:26,085 --> 00:05:29,739
+blocks that, on either side, and on both 
+sides of it, that are now can be 
+
+90
+00:05:29,739 --> 00:05:35,681
+coalesced into one large block. 
+So we're going to, we're going to remove 
+
+91
+00:05:35,681 --> 00:05:38,445
+the old ones from the list. 
+We're going to create a new large block 
+
+92
+00:05:38,445 --> 00:05:41,251
+and we're going to search this large 
+block at the beginning of the list so the 
+
+93
+00:05:41,251 --> 00:05:45,100
+root points there now. 
+Pretty cool right? 
+
+94
+00:05:45,100 --> 00:05:48,357
+Okay, so now we created a big block. 
+Hopefully this happens a lot so we can 
+
+95
+00:05:48,357 --> 00:05:54,093
+have more lots of large blocks. 
+So to, to summarize, comparing explicit 
+
+96
+00:05:54,093 --> 00:05:57,810
+free list to implicit free list, the 
+allocate is linear in the number of free 
+
+97
+00:05:57,810 --> 00:06:01,527
+blocks, instead of all blocks like what 
+we had in implicit, in implicit free 
+
+98
+00:06:01,527 --> 00:06:07,700
+list, and this is much faster, when most 
+of the memory is full. 
+
+99
+00:06:07,700 --> 00:06:09,912
+Well, why is that? 
+Because when most of the memory is full 
+
+100
+00:06:09,912 --> 00:06:13,110
+in the implicit case, we're going to have 
+to traverse in time memory. 
+
+101
+00:06:13,110 --> 00:06:14,486
+Okay? 
+So we have, we might have to traverse not 
+
+102
+00:06:14,486 --> 00:06:16,917
+the entire memory, but most of memory 
+until we find one. 
+
+103
+00:06:16,917 --> 00:06:20,486
+It's likely that we're going to do that. 
+With explicit free lists you know, it's 
+
+104
+00:06:20,486 --> 00:06:23,518
+just, we just know it, okay? 
+It's slightly more complicated to 
+
+105
+00:06:23,518 --> 00:06:26,794
+allocate in free because it needs to 
+splice blocks in and out of their lists, 
+
+106
+00:06:26,794 --> 00:06:30,180
+okay? 
+We also need some extra space for the 
+
+107
+00:06:30,180 --> 00:06:34,050
+links, so two extra words needed for each 
+block. 
+
+108
+00:06:34,050 --> 00:06:36,930
+So that means that the minimal free block 
+size has to be, mine has to be a little 
+
+109
+00:06:36,930 --> 00:06:40,225
+bit larger so it leads to more internal 
+fragmentation. 
+
+110
+00:06:40,225 --> 00:06:46,270
+Such is life but I think it's worth it. 
+And so in most common use of explicit 
+
+111
+00:06:46,270 --> 00:06:51,230
+list is with what we call segregated free 
+lists. 
+
+112
+00:06:51,230 --> 00:06:57,000
+With the idea is to keep multiple link 
+lists of different sizes. 
+
+113
+00:06:57,000 --> 00:07:01,284
+Of free blocks and even possible for 
+different types of objects, okay. 
+
+114
+00:07:01,284 --> 00:07:04,858
+That's what we are going to see now, 
+that's a method three. 
+
+115
+00:07:04,858 --> 00:07:08,162
+Okay, so the concept is very very simple, 
+we are going to have bunch of size 
+
+116
+00:07:08,162 --> 00:07:11,690
+classes and for each size class we are 
+going to have eight free explicit free 
+
+117
+00:07:11,690 --> 00:07:15,564
+lists. 
+So here's for size one and two, you have 
+
+118
+00:07:15,564 --> 00:07:19,095
+one, for size three I have another one 
+and so on. 
+
+119
+00:07:19,095 --> 00:07:21,722
+'Kay? 
+And often we have separate classes for 
+
+120
+00:07:21,722 --> 00:07:23,120
+each small size. 
+'Kay? 
+
+121
+00:07:23,120 --> 00:07:25,720
+And then we have one, you see this, you 
+know, this, those are the small ones. 
+
+122
+00:07:25,720 --> 00:07:27,675
+And then we have nine in the, in the big, 
+big one. 
+
+123
+00:07:27,675 --> 00:07:30,850
+'Kay? 
+So, and for larger size we have one for 
+
+124
+00:07:30,850 --> 00:07:36,821
+each two power size, a power is two size. 
+So how, how does that work in a little 
+
+125
+00:07:36,821 --> 00:07:41,196
+bit more detail here's how we going to 
+allocate it. 
+
+126
+00:07:41,196 --> 00:07:44,978
+OK, so given this array of free lists and 
+each one of some class sizes if you 
+
+127
+00:07:44,978 --> 00:07:48,822
+allocate a block of size n, what you are 
+going to do first is, you are going to 
+
+128
+00:07:48,822 --> 00:07:52,790
+find a lesser size m that's larger than 
+the size n that you want, if, if it finds 
+
+129
+00:07:52,790 --> 00:07:59,234
+a block that's appropriate we just 
+allocate it. 
+
+130
+00:08:00,310 --> 00:08:04,092
+If no block is found, we just try the 
+next larger class, and we repeat until a 
+
+131
+00:08:04,092 --> 00:08:07,858
+block is found. 
+And of course if no block is found, you 
+
+132
+00:08:07,858 --> 00:08:11,802
+have to go and increase the size of the 
+heap using this a system called sbrk that 
+
+133
+00:08:11,802 --> 00:08:17,312
+I had mentioned before as well, 'kay? 
+So and then when we do that we're going 
+
+134
+00:08:17,312 --> 00:08:21,130
+to allocate a block of n sizes. 
+of size n from this new memory, and place 
+
+135
+00:08:21,130 --> 00:08:24,835
+the remainders as a single free block in 
+the largest class. 
+
+136
+00:08:24,835 --> 00:08:26,443
+'Kay. 
+We want to keep things in large blocks 
+
+137
+00:08:26,443 --> 00:08:29,095
+and then start splitting them. 
+'Kay? 
+
+138
+00:08:29,095 --> 00:08:32,682
+Great. 
+So when you free a block, you want to 
+
+139
+00:08:32,682 --> 00:08:35,895
+free the block, look at the resulting 
+freed block, coalesce it as much as you 
+
+140
+00:08:35,895 --> 00:08:40,518
+can, and then reinsert the block into the 
+appropriate list. 
+
+141
+00:08:40,518 --> 00:08:44,730
+Okay? 
+So that's pretty cool right? 
+
+142
+00:08:44,730 --> 00:08:47,460
+So now we might have, and when we free 
+it, we might actually change the category 
+
+143
+00:08:47,460 --> 00:08:50,740
+and have to insert it in a different in a 
+different list. 
+
+144
+00:08:50,740 --> 00:08:55,363
+So the advantage of seglist segregators, 
+segregator list allocators is higher 
+
+145
+00:08:55,363 --> 00:08:58,694
+throughput. 
+And we have log time for power of two 
+
+146
+00:08:58,694 --> 00:09:02,991
+size classes, right? 
+There'd be logarithmic time to, to, to 
+
+147
+00:09:02,991 --> 00:09:07,681
+find an appropriate one, and also it has 
+a better memory utilization because the 
+
+148
+00:09:07,681 --> 00:09:12,931
+first fit search on this allocated on the 
+segregated free list really approximates 
+
+149
+00:09:12,931 --> 00:09:19,430
+the best fits that we had, that of the 
+entire heap. 
+
+150
+00:09:19,430 --> 00:09:22,225
+Okay, really it's an approx, not exactly 
+but some an approximate. 
+
+151
+00:09:22,225 --> 00:09:25,996
+Okay. 
+So in an extreme case, if you give each 
+
+152
+00:09:25,996 --> 00:09:32,200
+block its own size class, you know, in 
+the array of lists. 
+
+153
+00:09:32,200 --> 00:09:34,335
+That's going to be equivalent to best 
+fit. 
+
+154
+00:09:34,335 --> 00:09:36,130
+Okay. 
+All right. 
+
+155
+00:09:36,130 --> 00:09:39,430
+So to summarize the summary of the key 
+allocator properties 
+
+156
+00:09:39,430 --> 00:09:42,560
+allocator policies are the placement 
+policy. 
+
+157
+00:09:42,560 --> 00:09:44,892
+We have first fit, next fit, and best 
+fit. 
+
+158
+00:09:44,892 --> 00:09:46,060
+Okay. 
+[INAUDIBLE]. 
+
+159
+00:09:46,060 --> 00:09:51,110
+So and this trades off throughput for 
+last, for fragmentation, okay. 
+
+160
+00:09:51,110 --> 00:09:54,945
+So the observation I just told you is 
+that segregated free lists approximate a 
+
+161
+00:09:54,945 --> 00:09:59,700
+best fit placement without having to 
+search the entire free list. 
+
+162
+00:10:00,920 --> 00:10:05,490
+And so we have a splitting policy, when 
+do we go ahead and split free blocks? 
+
+163
+00:10:05,490 --> 00:10:08,404
+Okay, so that depends on how much 
+internal fragmentation are we willing to 
+
+164
+00:10:08,404 --> 00:10:09,966
+tolerate. 
+Okay? 
+
+165
+00:10:09,966 --> 00:10:15,429
+So you might to and so there's also 
+coalescing policy. 
+
+166
+00:10:15,429 --> 00:10:21,050
+You could do coalescing as soon as you do 
+free, okay? 
+
+167
+00:10:21,050 --> 00:10:22,890
+When you call free, just do it right 
+away. 
+
+168
+00:10:22,890 --> 00:10:25,725
+So that might have some throughput 
+implications because you do more work at 
+
+169
+00:10:25,725 --> 00:10:28,137
+free. 
+Or it can just delay it as long as you 
+
+170
+00:10:28,137 --> 00:10:31,709
+can. 
+So you don't pay the throughput but then 
+
+171
+00:10:31,709 --> 00:10:35,283
+you might be paying more for 
+fragmentation okay. 
+
+172
+00:10:35,283 --> 00:10:36,050
+See you soon. 
+

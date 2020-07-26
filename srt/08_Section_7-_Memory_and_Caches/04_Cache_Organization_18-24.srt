@@ -1,0 +1,1204 @@
+1
+00:00:00,001 --> 00:00:06,643
+[MUSIC]. 
+
+2
+00:00:06,643 --> 00:00:09,533
+Hello again. 
+Now that we know cache basic, principle 
+
+3
+00:00:09,533 --> 00:00:13,010
+of locality and how to propose 
+hierarchies, let's look inside caches now 
+
+4
+00:00:13,010 --> 00:00:18,100
+and see how they're organized. 
+And I'm going to divide this part of the 
+
+5
+00:00:18,100 --> 00:00:21,400
+section into two, just to make shorter 
+videos for you. 
+
+6
+00:00:22,470 --> 00:00:25,630
+So, the first question is, where should 
+you put data in the cache? 
+
+7
+00:00:25,630 --> 00:00:30,346
+Supposedly we have a very simple memory. 
+Kay, of course addresses go from 0000 in 
+
+8
+00:00:30,346 --> 00:00:36,150
+binary to 1111. 
+Kay from 0 to address 15, kay? 
+
+9
+00:00:36,150 --> 00:00:39,285
+And here's our cache, and as I said 
+before, the cache holds a sub set of 
+
+10
+00:00:39,285 --> 00:00:43,184
+memory. 
+So, the cache is going to be smaller than 
+
+11
+00:00:43,184 --> 00:00:45,611
+memory. 
+In fact they're fast because they're 
+
+12
+00:00:45,611 --> 00:00:47,420
+small. 
+One of the main reasons that they're fast 
+
+13
+00:00:47,420 --> 00:00:50,510
+is because they are small. 
+The technology in how to do it is also 
+
+14
+00:00:50,510 --> 00:00:53,405
+different, but. 
+Okay, so alright, memory is bigger than 
+
+15
+00:00:53,405 --> 00:00:57,034
+the cache. 
+And that means that we have to somehow 
+
+16
+00:00:57,034 --> 00:01:01,280
+map data in memory to where it goes in 
+the cache. 
+
+17
+00:01:01,280 --> 00:01:04,566
+Since memory is bigger, of course 
+there'll be different memory locations 
+
+18
+00:01:04,566 --> 00:01:09,899
+that map to the same place in the cache. 
+'Kay, for example, one way we can go 
+
+19
+00:01:09,899 --> 00:01:16,129
+about doing that is just somehow use the 
+address in computing index, so location 
+
+20
+00:01:16,129 --> 00:01:23,920
+in the cache where the data goes. 
+And for example, address 00, we go to 
+
+21
+00:01:23,920 --> 00:01:26,203
+index 0. 
+Address 1101, we go to Index 01. 
+
+22
+00:01:26,203 --> 00:01:39,330
+Address 1010, we go to Index 10. 
+And address 0111 would go to Index 11. 
+
+23
+00:01:39,330 --> 00:01:42,102
+So, do you note something, do you notice 
+something on how we compute why the data 
+
+24
+00:01:42,102 --> 00:01:46,080
+goes into the cache? 
+Well, it's just module arithmetic, right? 
+
+25
+00:01:46,080 --> 00:01:51,060
+I got the memory address 'kay? 
+I get the, the memory address and do mod 
+
+26
+00:01:51,060 --> 00:01:56,356
+4 'kay? 
+Which is the same thing as getting the 
+
+27
+00:01:56,356 --> 00:02:03,181
+low order bits, and use the two lower 
+order bits of memory, and use that to to 
+
+28
+00:02:03,181 --> 00:02:10,478
+address the cache, 'kay? 
+So again, if you got the two, the low 
+
+29
+00:02:10,478 --> 00:02:15,532
+order bits, of this address, I determine 
+that they [INAUDIBLE] and so on. 
+
+30
+00:02:15,532 --> 00:02:23,411
+Now what's important data there? 
+Okay, so suppose again that I this 
+
+31
+00:02:23,411 --> 00:02:27,315
+address here of course, we know based on 
+the lower two bits goes here, but this 
+
+32
+00:02:27,315 --> 00:02:32,450
+address here. 
+Also goes to the same location in the 
+
+33
+00:02:32,450 --> 00:02:35,973
+cache. 
+Now the question is, how the processor 
+
+34
+00:02:35,973 --> 00:02:40,920
+know that the data here contains either 
+this one or that one. 
+
+35
+00:02:40,920 --> 00:02:44,495
+Some more information has to be stored 
+alongside the data in the cache in order 
+
+36
+00:02:44,495 --> 00:02:48,135
+to tell which block of memory stored in 
+the cache. 
+
+37
+00:02:48,135 --> 00:02:50,670
+We lost some information in this mapping, 
+right. 
+
+38
+00:02:50,670 --> 00:02:53,620
+Now this information. 
+Has to be stored somewhere. 
+
+39
+00:02:53,620 --> 00:02:58,000
+Now, how do we solve that? 
+Well, we're going to use something called 
+
+40
+00:02:58,000 --> 00:03:00,670
+tags. 
+Tags are going to be another, you know, 
+
+41
+00:03:00,670 --> 00:03:05,403
+storage element in the cache. 
+It will be one tag per data array in the 
+
+42
+00:03:05,403 --> 00:03:11,070
+cache, per, per, per, per data loca, per, 
+per position in the cache. 
+
+43
+00:03:11,070 --> 00:03:15,636
+That tells what address is stored there. 
+For example say that in our blue address 
+
+44
+00:03:15,636 --> 00:03:19,418
+here, 1101, which, again, based on the 
+low ordered two bits, we know it goes 
+
+45
+00:03:19,418 --> 00:03:23,920
+into this index of the cache. 
+'Kay, goes right here. 
+
+46
+00:03:23,920 --> 00:03:29,672
+And what are we going to put here? 
+Well, now that we know that address 1101 
+
+47
+00:03:29,672 --> 00:03:36,524
+is sorted, I'm going to store tag 11. 
+So now, the tag here together with the 
+
+48
+00:03:36,524 --> 00:03:41,230
+index, I can tell exactly which address 
+was stored in the cache. 
+
+49
+00:03:42,840 --> 00:03:47,313
+So now, there's no more confusion in this 
+multiplexing of multiple memory addresses 
+
+50
+00:03:47,313 --> 00:03:53,858
+into the same position in the cache. 
+A very important question in a cache is 
+
+51
+00:03:53,858 --> 00:03:57,938
+what's a block, or a cache line? 
+Remember when we talked about spatial 
+
+52
+00:03:57,938 --> 00:04:00,698
+locality. 
+We said we would move data from memory to 
+
+53
+00:04:00,698 --> 00:04:04,768
+the cache in blocks, blocks that are 
+bigger than a single byte. 
+
+54
+00:04:04,768 --> 00:04:08,224
+Okay and that helps spatial locality 
+because we go, not only going to ring the 
+
+55
+00:04:08,224 --> 00:04:13,150
+piece of data actually needed by your 
+program that's running the processor. 
+
+56
+00:04:13,150 --> 00:04:16,522
+But also data that is located close by in 
+memory. 
+
+57
+00:04:16,522 --> 00:04:24,151
+So, uh, [INAUDIBLE] what's a block. 
+Suppose that I say, that I have, you know 
+
+58
+00:04:24,151 --> 00:04:30,678
+a block size of two bytes okay? 
+And I have again my memory goes from 
+
+59
+00:04:30,678 --> 00:04:36,816
+address 0 to address 15 and these are 
+byte addresses, the others are originally 
+
+60
+00:04:36,816 --> 00:04:42,804
+kilobytes okay? 
+Now if my system is two bytes like I just 
+
+61
+00:04:42,804 --> 00:04:46,824
+told you each block, each cache line is 
+going to occupy, is going to be mapped, 
+
+62
+00:04:46,824 --> 00:04:51,350
+is going to map to two bytes in memory, 
+okay? 
+
+63
+00:04:51,350 --> 00:04:54,445
+They're our line. 
+So, with the line 0 occupies address 0 
+
+64
+00:04:54,445 --> 00:04:58,039
+and address 1. 
+Line 1 occupies address 2 and 3. 
+
+65
+00:04:58,039 --> 00:05:01,555
+Line 2 occupies address 4 and 5, and so 
+on, okay? 
+
+66
+00:05:01,555 --> 00:05:10,003
+So, now the, of course, the cache, since 
+the cache stores an entire block In an 
+
+67
+00:05:10,003 --> 00:05:18,660
+entry, in an index, okay? 
+So, the index has to be as big, so that 
+
+68
+00:05:18,660 --> 00:05:27,210
+the data array for each index here has to 
+be as big as the block, okay? 
+
+69
+00:05:27,210 --> 00:05:30,785
+So, for example, if I decide to store 
+this block zero here, in the cache, I'm 
+
+70
+00:05:30,785 --> 00:05:35,890
+going to store bytes here. 
+B1 let me, let me pick the green because 
+
+71
+00:05:35,890 --> 00:05:40,630
+it is a byte b1 and byte b2. 
+When it is stored in the cache, if I 
+
+72
+00:05:40,630 --> 00:05:45,690
+happen to store this one, I'm going to 
+store by byte b1 and byte b2. 
+
+73
+00:05:45,690 --> 00:05:48,200
+So, the entire block has to be stored in 
+the cache. 
+
+74
+00:05:48,200 --> 00:05:52,086
+So, the data array, each entry in the 
+data array of the cache has to be as 
+
+75
+00:05:52,086 --> 00:05:58,359
+large as the block. 
+By the way, typically, cache block sizes 
+
+76
+00:05:58,359 --> 00:06:05,540
+are either, you know, 32 bytes is 
+typical, 64 bytes is also typical, okay? 
+
+77
+00:06:05,540 --> 00:06:08,259
+That's, that's a typical size. 
+This is just a simple example 2 bytes to 
+
+78
+00:06:08,259 --> 00:06:11,290
+make it simple. 
+But in real processors is this 32, 64 
+
+79
+00:06:11,290 --> 00:06:13,940
+bytes. 
+'Kay? 
+
+80
+00:06:13,940 --> 00:06:16,746
+Let's think a little about a puzzle now, 
+that might help you with one of the 
+
+81
+00:06:16,746 --> 00:06:20,710
+assignments. 
+If I ask you the following question. 
+
+82
+00:06:20,710 --> 00:06:22,744
+'Kay? 
+Start with the assumption that the cache 
+
+83
+00:06:22,744 --> 00:06:23,590
+is empty. 
+'Kay? 
+
+84
+00:06:23,590 --> 00:06:29,760
+And then, I'm going to to say now the 
+sequence is encoded in the following way. 
+
+85
+00:06:29,760 --> 00:06:33,785
+I'm going to give you an address, comma, 
+whether it was a hit or a miss. 
+
+86
+00:06:33,785 --> 00:06:48,700
+If I tell you that I access address 10, 
+and it's a miss, okay? 
+
+87
+00:06:48,700 --> 00:06:51,807
+Then, I access address 11, address 11, 
+and it's a hit. 
+
+88
+00:06:51,807 --> 00:06:54,165
+Then, I access address 12 and it's a 
+miss. 
+
+89
+00:06:54,165 --> 00:06:57,877
+Hmm, the real, the real piece of 
+information here is that, why is this a 
+
+90
+00:06:57,877 --> 00:07:01,370
+hit. 
+Well, address eleven has never been 
+
+91
+00:07:01,370 --> 00:07:05,500
+accessed before, because the cache 
+started empty. 
+
+92
+00:07:06,690 --> 00:07:11,010
+So, but address 10 was, and it was a 
+miss. 
+
+93
+00:07:11,010 --> 00:07:17,810
+So, 11 can only be a hit is because it 
+was brought together with address 10. 
+
+94
+00:07:17,810 --> 00:07:20,942
+So, that means that I know that in my 
+cache block here somehow I'm going to 
+
+95
+00:07:20,942 --> 00:07:25,920
+have address 10 and address 11. 
+But I know, that 12 is not part of this 
+
+96
+00:07:25,920 --> 00:07:30,046
+block. 
+So what we can say here, what we can 
+
+97
+00:07:30,046 --> 00:07:34,464
+infer, is that our block size is at least 
+two bytes. 
+
+98
+00:07:34,464 --> 00:07:40,490
+Because it brought 10 was a miss for sure 
+brought the data and 11 was a hits, okay? 
+
+99
+00:07:40,490 --> 00:07:43,434
+Think a little bit more about that, with 
+that you can actually this going to help 
+
+100
+00:07:43,434 --> 00:07:49,972
+yourselves one of the assignments, okay. 
+So let me talk about one way of mapping 
+
+101
+00:07:49,972 --> 00:07:56,881
+data from memory to the cache. 
+The example that I gave you earlier, is 
+
+102
+00:07:56,881 --> 00:08:02,232
+what we call direct mapped caches okay? 
+So, direct mapped means that, for each 
+
+103
+00:08:02,232 --> 00:08:07,700
+memory location, there's a single place 
+in the cache where the data can go. 
+
+104
+00:08:07,700 --> 00:08:09,954
+Okay? 
+That's why it's called direct mapped, 
+
+105
+00:08:09,954 --> 00:08:12,684
+there's a direct mapping for each memory 
+location I know exactly where it goes 
+
+106
+00:08:12,684 --> 00:08:14,820
+into the cache. 
+Okay? 
+
+107
+00:08:14,820 --> 00:08:18,750
+So, this example here, both of these 
+addresses go to the same index. 
+
+108
+00:08:18,750 --> 00:08:22,960
+Again, because they have the same 
+low-order bits of the address. 
+
+109
+00:08:22,960 --> 00:08:26,430
+Okay. 
+So what's the problem with this? 
+
+110
+00:08:26,430 --> 00:08:34,150
+Well, if I tell you that I want to access 
+address 2, 6, 2, 6, 2 and so on. 
+
+111
+00:08:34,150 --> 00:08:37,680
+What happens? 
+Well, this is address 2 and this is 
+
+112
+00:08:37,680 --> 00:08:42,800
+address 6. 
+They all map to the same position in the 
+
+113
+00:08:42,800 --> 00:08:45,671
+cache. 
+So, when I access 2, okay? 
+
+114
+00:08:45,671 --> 00:08:48,803
+I'm going to put it in the cache, when I 
+access here, I'm going to put it in the 
+
+115
+00:08:48,803 --> 00:08:52,084
+cache. 
+But then when I access 6, this is going 
+
+116
+00:08:52,084 --> 00:08:57,160
+to be a mess. 
+But when, when I access 2, this is also 
+
+117
+00:08:57,160 --> 00:09:02,720
+going to be a mess because 6 has kicked 2 
+out. 
+
+118
+00:09:02,720 --> 00:09:05,240
+So, when I access 2 again, it is going to 
+be a mess. 
+
+119
+00:09:05,240 --> 00:09:08,930
+So, the bottom line here is that all of 
+these accesses are going to be a mess. 
+
+120
+00:09:08,930 --> 00:09:11,790
+Even though I only using this one 
+position for cache, why is this. 
+
+121
+00:09:11,790 --> 00:09:14,750
+Well we say that whats going on here is a 
+cache conflict. 
+
+122
+00:09:14,750 --> 00:09:17,800
+Since two locations that a max is 
+repeatedly mapped to the same entry, the 
+
+123
+00:09:17,800 --> 00:09:21,794
+only place they can go into the cache. 
+They going to kick each other out, 
+
+124
+00:09:21,794 --> 00:09:24,628
+repeatedly. 
+So, I'm going to have a bunch of misses, 
+
+125
+00:09:24,628 --> 00:09:29,110
+even though the rest of my cache could 
+potentially be empty. 
+
+126
+00:09:29,110 --> 00:09:32,780
+And the way we solve this problem is 
+using something we call associativity. 
+
+127
+00:09:32,780 --> 00:09:37,922
+And this is basically the question. 
+What if we could store data in any place 
+
+128
+00:09:37,922 --> 00:09:43,178
+in the cache 'kay? 
+But, that could be possible, it could 
+
+129
+00:09:43,178 --> 00:09:47,326
+make data go anywhere in the cache, but 
+that slow down caches, because the 
+
+130
+00:09:47,326 --> 00:09:52,421
+sequence gets more complicated, 'kay? 
+So, I'm going to tell you why a little 
+
+131
+00:09:52,421 --> 00:09:55,050
+bit later. 
+So, we do something in between, 'kay? 
+
+132
+00:09:55,050 --> 00:09:58,420
+So, suppose that I. 
+Say that I have cache that has you know, 
+
+133
+00:09:58,420 --> 00:10:03,295
+eight positions, eights blocks here. 
+There's multiple ways of organizing it. 
+
+134
+00:10:03,295 --> 00:10:05,852
+'Kay? 
+One way is to use eight sets and have one 
+
+135
+00:10:05,852 --> 00:10:10,070
+block per set, this will be called direct 
+mapped. 
+
+136
+00:10:10,070 --> 00:10:11,963
+'Kay? 
+So this one I just showed you, direct 
+
+137
+00:10:11,963 --> 00:10:15,332
+mapped. 
+now on the other extreem is fully, fully 
+
+138
+00:10:15,332 --> 00:10:20,392
+associative which means the data can go 
+anywhere in the cache. 
+
+139
+00:10:20,392 --> 00:10:25,202
+Okay? 
+So, direct mapped again, the data can 
+
+140
+00:10:25,202 --> 00:10:28,960
+either go here, or here, or here and so 
+on. 
+
+141
+00:10:28,960 --> 00:10:31,031
+Okay? 
+So, either go to one place only, not to 
+
+142
+00:10:31,031 --> 00:10:33,874
+multiple places. 
+Whereas in, in fully associative, we can 
+
+143
+00:10:33,874 --> 00:10:38,120
+go anywhere here. 
+So, since this one is bad, because of 
+
+144
+00:10:38,120 --> 00:10:42,398
+conflict and this one is bad because it's 
+too expensive, let's see what we can do 
+
+145
+00:10:42,398 --> 00:10:47,308
+in between. 
+There's something we call set associative 
+
+146
+00:10:47,308 --> 00:10:49,892
+caches. 
+Yes, I could say if my cache is set two a 
+
+147
+00:10:49,892 --> 00:10:54,046
+set associative, for example, I'm saying 
+that there are two places in a set where 
+
+148
+00:10:54,046 --> 00:10:59,754
+data can go. 
+So for example, in, in our previous 
+
+149
+00:10:59,754 --> 00:11:05,010
+example, I showed you that two addresses 
+would collide. 
+
+150
+00:11:05,010 --> 00:11:09,770
+Right, they would both go to the same 
+place in the cache. 
+
+151
+00:11:09,770 --> 00:11:13,260
+Now they can go to two places, they can 
+put address a here and address b here. 
+
+152
+00:11:13,260 --> 00:11:19,681
+They can both live together. 
+Okay? 
+
+153
+00:11:19,681 --> 00:11:24,580
+So, now and this has multiple flavors. 
+This is a two way. 
+
+154
+00:11:24,580 --> 00:11:29,180
+If I say it's four way, there's four 
+locations in my set where data can go. 
+
+155
+00:11:29,180 --> 00:11:33,472
+It means that I'm only going to have 
+conflicts in my cache if I'm going to, if 
+
+156
+00:11:33,472 --> 00:11:38,208
+I have at least, if, if, if I have more 
+than four locations that I tend to access 
+
+157
+00:11:38,208 --> 00:11:44,032
+repeatedly. 
+That maps into the same set okay? 
+
+158
+00:11:47,550 --> 00:11:50,795
+An important question in such a 
+[INAUDIBLE], where does the data go and 
+
+159
+00:11:50,795 --> 00:11:55,940
+let me tell with a very simple example. 
+First thing to know is that we're going 
+
+160
+00:11:55,940 --> 00:11:59,710
+to divide an n bit address into three 
+components. 
+
+161
+00:11:59,710 --> 00:12:03,614
+One is a number, a certain number of bits 
+to tell which part of the block the 
+
+162
+00:12:03,614 --> 00:12:07,662
+address refers to, the offset within the 
+block. 
+
+163
+00:12:07,662 --> 00:12:11,566
+Then we're going to have some bits here, 
+k bits, to tell me which index, which 
+
+164
+00:12:11,566 --> 00:12:16,486
+set, the data goes in the cache. 
+And then whatever is left I'm going to 
+
+165
+00:12:16,486 --> 00:12:19,672
+use a sort of tag. 
+Remember the tag's necessary to tell, 
+
+166
+00:12:19,672 --> 00:12:24,330
+where the data what data's actually 
+stored in the cache. 
+
+167
+00:12:24,330 --> 00:12:27,750
+So if I have an, in my example here, 
+suppose that I have a four byte four 
+
+168
+00:12:27,750 --> 00:12:33,042
+block cache. 
+And then I have one I, I have two bytes 
+
+169
+00:12:33,042 --> 00:12:36,780
+per block. 
+How many bits do I need for the offset? 
+
+170
+00:12:36,780 --> 00:12:39,552
+Well, only one bit, because there's only 
+two bytes within a block. 
+
+171
+00:12:39,552 --> 00:12:43,223
+Okay? 
+Now let's say that our cache is direct 
+
+172
+00:12:43,223 --> 00:12:46,548
+mapped. 
+Direct mapped. 
+
+173
+00:12:48,540 --> 00:12:52,730
+If I said that I have four blocks, how 
+many bits do I need? 
+
+174
+00:12:52,730 --> 00:13:00,120
+Well, I need two bits for the index. 
+If I have a four bit address, how many 
+
+175
+00:13:00,120 --> 00:13:02,210
+bits have I for the tag? 
+Just one. 
+
+176
+00:13:02,210 --> 00:13:05,545
+Simple enough, right? 
+So, let's see more examples in 
+
+177
+00:13:05,545 --> 00:13:09,490
+set-associative caches. 
+That was in the direct map cache, 'kay? 
+
+178
+00:13:09,490 --> 00:13:12,342
+So, suppose that I have a different 
+address here now, I have the address 
+
+179
+00:13:12,342 --> 00:13:16,420
+0x1833, okay? 
+The block size now is 16 bytes, it's a 
+
+180
+00:13:16,420 --> 00:13:22,060
+more realistic block size than just two 
+bytes, okay? 
+
+181
+00:13:22,060 --> 00:13:26,870
+And first thing is, 1833 in [UNKNOWN], in 
+binary is something, something, 
+
+182
+00:13:26,870 --> 00:13:33,505
+something, something. 
+0110011, okay? 
+
+183
+00:13:33,505 --> 00:13:37,740
+So, how many, how many bits do I need for 
+the block offset? 
+
+184
+00:13:37,740 --> 00:13:44,340
+Well, if I have 16 bytes in my block, I'm 
+going to need four bits in my offset, 
+
+185
+00:13:44,340 --> 00:13:48,820
+okay? 
+So now, how many bits do I need for the 
+
+186
+00:13:48,820 --> 00:13:50,620
+index? 
+Well. 
+
+187
+00:13:50,620 --> 00:13:53,995
+It depends on the associativity. 
+If I have, say, if I have one way 
+
+188
+00:13:53,995 --> 00:13:57,280
+associativity, that means I'm going to 
+have eight different sets. 
+
+189
+00:13:57,280 --> 00:14:01,400
+If I have eight, eight different sets, I 
+need three bits for the index. 
+
+190
+00:14:01,400 --> 00:14:07,630
+Now, if only have four sets, I need only 
+two bits for the index. 
+
+191
+00:14:08,650 --> 00:14:14,362
+And if I have four way associativity, I'm 
+going to need only two sets, that means I 
+
+192
+00:14:14,362 --> 00:14:21,874
+need only one bit for for the index. 
+And whatever is left has to be used for 
+
+193
+00:14:21,874 --> 00:14:23,480
+the tag. 
+Okay. 
+
+194
+00:14:23,480 --> 00:14:29,468
+[BLANK_AUDIO]. 
+So now, this at, let's, let's think about 
+
+195
+00:14:29,468 --> 00:14:34,949
+the first one, so here, okay, so the 
+first one is k equals 3 means 3 bits for 
+
+196
+00:14:34,949 --> 00:14:42,102
+the, for the index. 
+If I have, if this is my offset, because 
+
+197
+00:14:42,102 --> 00:14:46,920
+of four bit offset. 
+And see these three bits here have to be 
+
+198
+00:14:46,920 --> 00:14:50,120
+part of the index. 
+So, that's why 011 is three, okay. 
+
+199
+00:14:50,120 --> 00:14:55,746
+But now, if I'm talking about k equals 
+two, I'm going to use only these two 
+
+200
+00:14:55,746 --> 00:14:59,920
+bits, okay. 
+Which is, again, also three. 
+
+201
+00:14:59,920 --> 00:15:04,640
+So that's where it goes in my four, in my 
+two way, associative cache. 
+
+202
+00:15:06,020 --> 00:15:10,376
+Now four way associative cache you have 
+only one bits only this one bit here. 
+
+203
+00:15:10,376 --> 00:15:13,247
+okay? 
+is going to be used to determine what 
+
+204
+00:15:13,247 --> 00:15:18,007
+index, what, what set or what index what 
+is the value of the index in other words 
+
+205
+00:15:18,007 --> 00:15:27,060
+what set the data goes. 
+Lets look about block replacement now. 
+
+206
+00:15:27,060 --> 00:15:29,628
+Okay. 
+So we know that multiple locations in 
+
+207
+00:15:29,628 --> 00:15:33,968
+memory can map to the same location in 
+the cache, therefore, in in a direct 
+
+208
+00:15:33,968 --> 00:15:39,683
+associates, in a direct map cache. 
+That means that, see, if you put a piece 
+
+209
+00:15:39,683 --> 00:15:43,713
+of data A here, and later, I want this, I 
+want to access B that goes to the same 
+
+210
+00:15:43,713 --> 00:15:49,348
+place, I have to kick out A to store B. 
+There's only one location, always, so 
+
+211
+00:15:49,348 --> 00:15:52,296
+that's an easy choice in what to replace, 
+there's no choice, you're just going to 
+
+212
+00:15:52,296 --> 00:15:56,445
+replace it, right? 
+But, if I have a two way sets-associative 
+
+213
+00:15:56,445 --> 00:16:00,475
+cache that's a two place I could put 
+address a here, it just be here, suppose 
+
+214
+00:16:00,475 --> 00:16:07,507
+that they map to, to the same set, 'kay? 
+But now the question is, what happens 
+
+215
+00:16:07,507 --> 00:16:14,190
+when I access C, in, C also happens to be 
+mapped to the same set. 
+
+216
+00:16:14,190 --> 00:16:18,010
+I have to choose whether I, I, kill, I, I 
+remove A or I remove B. 
+
+217
+00:16:19,380 --> 00:16:25,740
+The way caches do this normally is to 
+replace what was least recently used. 
+
+218
+00:16:25,740 --> 00:16:32,132
+Because that maximizes temporal locality. 
+Do whatever's most-recently-used should 
+
+219
+00:16:32,132 --> 00:16:34,909
+stay in the cache. 
+Okay, so that means the least recently 
+
+220
+00:16:34,909 --> 00:16:39,480
+used zone that was used furthest in the 
+past should be removed from the cache. 
+
+221
+00:16:39,480 --> 00:16:46,050
+So, lets see that the x is over here was 
+our x-axis one, first and then B later. 
+
+222
+00:16:46,050 --> 00:16:50,334
+Okay, so B was accessed more recently, 
+means that when I put, when I access C, 
+
+223
+00:16:50,334 --> 00:16:56,737
+I'm going to kick A out and out C here. 
+Because A was accessed, further, furthest 
+
+224
+00:16:56,737 --> 00:16:59,130
+in the past. 
+OK. 
+
+225
+00:16:59,130 --> 00:17:04,830
+So, implementing exact least recently 
+used in hardware for set sizes, that are 
+
+226
+00:17:04,830 --> 00:17:10,074
+larger than two, is pretty hard, it uses 
+an approximation called not most recently 
+
+227
+00:17:10,074 --> 00:17:15,116
+used. 
+You can read more about this online or in 
+
+228
+00:17:15,116 --> 00:17:19,280
+the book. 
+Okay, so lets end this video with another 
+
+229
+00:17:19,280 --> 00:17:24,836
+puzzle which might help you with 
+assignments too, okay? 
+
+230
+00:17:24,836 --> 00:17:28,960
+Suppose that the cache starts empty, 
+okay? 
+
+231
+00:17:28,960 --> 00:17:35,790
+And again, we have the, the same axis 
+team I showed before. 
+
+232
+00:17:35,790 --> 00:17:39,515
+The same notation, address, whether it 
+was a hit or a miss, okay. 
+
+233
+00:17:39,515 --> 00:17:46,489
+Suppose that I access 10 and it's a miss, 
+I access 12 and it's also a miss. 
+
+234
+00:17:46,489 --> 00:17:51,510
+But then when I access 10, happens to be 
+a miss again. 
+
+235
+00:17:51,510 --> 00:17:55,990
+Well, I just accessed 10 right here, so 
+what happened? 
+
+236
+00:17:55,990 --> 00:17:59,650
+Well, probably happened that, well 
+probably happened for sure. 
+
+237
+00:17:59,650 --> 00:18:04,458
+When access 12 I kick 10 out. 
+So taht means that 10 and 12 map to the 
+
+238
+00:18:04,458 --> 00:18:12,670
+same so mapped to the same set? 
+And 12 displaced 10. 
+
+239
+00:18:12,670 --> 00:18:18,655
+But since the cache was empty, that means 
+that for sure this has to be a direct 
+
+240
+00:18:18,655 --> 00:18:22,290
+mapped cache. 
+It's cool isn't it? 
+
+241
+00:18:22,290 --> 00:18:24,430
+Have fun with this and have fun with the 
+assignment. 
+

@@ -1,0 +1,713 @@
+1
+00:00:00,073 --> 00:00:05,519
+[MUSIC]. 
+
+2
+00:00:05,519 --> 00:00:07,848
+Hello again. 
+Now we're going to see conditions in 
+
+3
+00:00:07,848 --> 00:00:10,238
+control flow. 
+And if you recall control flow is the 
+
+4
+00:00:10,238 --> 00:00:15,084
+order in which executions instructions of 
+your program execute in the processor. 
+
+5
+00:00:15,084 --> 00:00:18,864
+And the way you change the flow of 
+controlloing your program in writing code 
+
+6
+00:00:18,864 --> 00:00:23,369
+in a high level language is using control 
+statements like if. 
+
+7
+00:00:24,450 --> 00:00:28,170
+While for loops, and do of for loops and 
+for for loops, and for loops as well, 
+
+8
+00:00:28,170 --> 00:00:31,590
+these are all ways in which you can 
+control in which order how the, the 
+
+9
+00:00:31,590 --> 00:00:37,848
+control flow goes in your program. 
+And a conditional branching instruction 
+
+10
+00:00:37,848 --> 00:00:42,208
+which is a branch is an instruction that 
+just changes the control flow. 
+
+11
+00:00:42,208 --> 00:00:45,075
+And if you make the control flow 
+conditional which makes it a conditional 
+
+12
+00:00:45,075 --> 00:00:47,989
+branch, it turns out that that is suf-, 
+sufficient to implement most of the 
+
+13
+00:00:47,989 --> 00:00:51,044
+control flow constructs offered in the 
+high, in high level languages like the 
+
+14
+00:00:51,044 --> 00:00:56,620
+ones I just told you about. 
+and uncon, unconditional branches, which 
+
+15
+00:00:56,620 --> 00:01:00,448
+is branches that just execute no matter 
+what, regardless of the condition, are 
+
+16
+00:01:00,448 --> 00:01:04,520
+used to implement things like break and 
+continue. 
+
+17
+00:01:04,520 --> 00:01:06,938
+Breaks just breaks out of a lopp and 
+continue goes back to the beginning of a 
+
+18
+00:01:06,938 --> 00:01:09,230
+loop. 
+Those are unconditional, they happen 
+
+19
+00:01:09,230 --> 00:01:11,120
+ayways. 
+Is, okay? 
+
+20
+00:01:11,120 --> 00:01:14,734
+and so we, we use unconditional branches 
+for those. 
+
+21
+00:01:14,734 --> 00:01:18,826
+And in x86, we refer to branches as jumps 
+because it jumps, you're executing, it 
+
+22
+00:01:18,826 --> 00:01:22,456
+jumps to a different part of your 
+program. 
+
+23
+00:01:22,456 --> 00:01:26,480
+Okay? 
+Either conditional or unconditional. 
+
+24
+00:01:26,480 --> 00:01:30,690
+So here are the jump instructions 
+available in x86. 
+
+25
+00:01:30,690 --> 00:01:33,428
+They're in the from of, they start with 
+the letter j for jump. 
+
+26
+00:01:33,428 --> 00:01:36,780
+Huh, and x is a various ways of doing 
+jobs. 
+
+27
+00:01:36,780 --> 00:01:43,240
+For example if you do just "jmp," this 
+means jump, that's an unconditional jump. 
+
+28
+00:01:43,240 --> 00:01:45,360
+And it's also going to take as a 
+parameter, it's going to take as a 
+
+29
+00:01:45,360 --> 00:01:48,258
+parameter a instruction address that it's 
+going to jump to. 
+
+30
+00:01:48,258 --> 00:01:49,850
+'Kay. 
+So here's another one. 
+
+31
+00:01:49,850 --> 00:01:54,570
+If you do "je" you mean jump if equal. 
+Or zero. 
+
+32
+00:01:54,570 --> 00:01:57,870
+And that's going to be determined by this 
+special condition code register called 
+
+33
+00:01:57,870 --> 00:02:01,512
+zf. 
+Okay, so let me pick out an example here. 
+
+34
+00:02:01,512 --> 00:02:06,920
+if you use jl, it's going to be jump if 
+last then. 
+
+35
+00:02:06,920 --> 00:02:10,275
+And so if you do a less than, if you do a 
+comparison and it turns out that it's 
+
+36
+00:02:10,275 --> 00:02:15,628
+less than. 
+this, the jump's going to happen. 
+
+37
+00:02:15,628 --> 00:02:18,370
+Okay, I'm going to, we're going to show 
+examples of that later. 
+
+38
+00:02:18,370 --> 00:02:22,759
+And I encourage you to read in the book 
+all of about how all of these 
+
+39
+00:02:22,759 --> 00:02:27,934
+instructions work. 
+let's look at the, the processes of state 
+
+40
+00:02:27,934 --> 00:02:30,670
+again. 
+Remember that we have the registers that 
+
+41
+00:02:30,670 --> 00:02:35,360
+we've been playing with already in our 
+exit, in our assembly programs. 
+
+42
+00:02:35,360 --> 00:02:37,624
+These registers are special. 
+Again, there's the stack pointer and the 
+
+43
+00:02:37,624 --> 00:02:40,405
+base pointer. 
+And the instruction pointer tells what 
+
+44
+00:02:40,405 --> 00:02:43,620
+instructions are going to be executed 
+next. 
+
+45
+00:02:43,620 --> 00:02:48,676
+And note that what do you think is going 
+to happen when you execute a branch 
+
+46
+00:02:48,676 --> 00:02:52,565
+instruction? 
+You're actually going to change the value 
+
+47
+00:02:52,565 --> 00:02:55,610
+of the instruction pointer because it 
+might change. 
+
+48
+00:02:55,610 --> 00:02:57,860
+What instruction is going to be executed 
+next. 
+
+49
+00:02:57,860 --> 00:03:02,020
+So branch instruction potentially changes 
+the value of the instruction point. 
+
+50
+00:03:02,020 --> 00:03:06,209
+And finally the thing that is very 
+important to note here is that we have 
+
+51
+00:03:06,209 --> 00:03:10,682
+this forest wall single bet which is the 
+condition codes that are set by some 
+
+52
+00:03:10,682 --> 00:03:15,180
+instruction. 
+We're going to use that to implement 
+
+53
+00:03:15,180 --> 00:03:19,025
+provisional branches. 
+That's why in this previous here slide I 
+
+54
+00:03:19,025 --> 00:03:22,545
+just showed you, you can determine the 
+condition of whether or not the jump is 
+
+55
+00:03:22,545 --> 00:03:26,460
+going to happen based on these condition 
+codes. 
+
+56
+00:03:26,460 --> 00:03:29,980
+Let's see now how, how these condition 
+codes are set. 
+
+57
+00:03:29,980 --> 00:03:32,420
+The first way we're going to see is 
+implicit setting. 
+
+58
+00:03:32,420 --> 00:03:36,260
+This happens implicitly when you carry 
+out some Operations. 
+
+59
+00:03:36,260 --> 00:03:39,914
+So these are the single bit condition 
+registers that we're going to be talking 
+
+60
+00:03:39,914 --> 00:03:43,568
+about, and they are implicitly set when 
+you execute some instructions, for 
+
+61
+00:03:43,568 --> 00:03:48,030
+example an addition. 
+So this instruction in an it, it, it 
+
+62
+00:03:48,030 --> 00:03:51,385
+performs the arithmetic addition 
+operation, but in addition to that, it 
+
+63
+00:03:51,385 --> 00:03:56,300
+also sets some condition codes depending 
+what happens to the results. 
+
+64
+00:03:56,300 --> 00:04:00,584
+For example, in the case of adds, the CF 
+is set if, if there's a carry out from 
+
+65
+00:04:00,584 --> 00:04:04,490
+the most significant bits, which is 
+essentially an unsigned overflow, an 
+
+66
+00:04:04,490 --> 00:04:10,000
+unsigned overflow happening the addition. 
+Okay? 
+
+67
+00:04:10,000 --> 00:04:14,478
+So the ZF condition is set if the result 
+happens to be equal to zero. 
+
+68
+00:04:14,478 --> 00:04:19,280
+The s, the signal flag is set depending 
+on the result. 
+
+69
+00:04:19,280 --> 00:04:24,025
+If the result is negative then sf is is 
+going to be set, means it's a negative 
+
+70
+00:04:24,025 --> 00:04:26,270
+number. 
+Okay. 
+
+71
+00:04:26,270 --> 00:04:31,020
+And now of happens if there is a two's 
+complement overflow. 
+
+72
+00:04:31,020 --> 00:04:35,046
+If when you add the number will be bigger 
+than what fits in the register. 
+
+73
+00:04:35,046 --> 00:04:39,190
+With what it, you're going to have this, 
+this bit set. 
+
+74
+00:04:39,190 --> 00:04:42,550
+And also be careful of using the LEA 
+instruction. 
+
+75
+00:04:42,550 --> 00:04:46,460
+That also computes some, some expression, 
+some arithmetic expressions. 
+
+76
+00:04:46,460 --> 00:04:49,570
+you do not set these condition codes, 
+okay? 
+
+77
+00:04:49,570 --> 00:04:53,340
+So be careful with that. 
+That's the implicit setting. 
+
+78
+00:04:53,340 --> 00:04:57,370
+The other way, is to set the condition 
+explicitly. 
+
+79
+00:04:57,370 --> 00:05:00,220
+Using compare instructions. 
+Okay. 
+
+80
+00:05:00,220 --> 00:05:05,510
+So for example if you do comp l here. 
+Which compares a 4 byte number. 
+
+81
+00:05:05,510 --> 00:05:09,710
+And you pass, you pass two all 
+parenthesis of parameters. 
+
+82
+00:05:09,710 --> 00:05:13,750
+Source two and source one. 
+Okay so and what it does essentially. 
+
+83
+00:05:13,750 --> 00:05:18,330
+It effectively computes A minus B but 
+without setting the destination. 
+
+84
+00:05:18,330 --> 00:05:21,415
+It just computes this expression. 
+So that he can set. 
+
+85
+00:05:21,415 --> 00:05:25,631
+The condition codes appropriately. 
+So, here the CF is going to be sad if the 
+
+86
+00:05:25,631 --> 00:05:30,401
+carryout from the most significant bit is 
+sad. 
+
+87
+00:05:30,401 --> 00:05:34,434
+Okay so it's used for unsigned 
+comparisons. 
+
+88
+00:05:34,434 --> 00:05:39,190
+So, the Z f is set, the zero flag set so 
+that if A equals B, why is that? 
+
+89
+00:05:39,190 --> 00:05:45,210
+Because if A minus B equals zero, it 
+means that a equals b. 
+
+90
+00:05:45,210 --> 00:05:48,290
+So the set's going to be set. 
+It's going to be useful, this is useful 
+
+91
+00:05:48,290 --> 00:05:53,122
+for an equality comparison. 
+Now, if a - b is negative, we're going to 
+
+92
+00:05:53,122 --> 00:05:58,350
+to set a sign flag. 
+So you know that, then that this also 
+
+93
+00:05:58,350 --> 00:06:05,927
+means that a is less than b. 
+And also the overflow is set, if there's 
+
+94
+00:06:05,927 --> 00:06:11,156
+an a two's complement sign overflow. 
+Okay? 
+
+95
+00:06:11,156 --> 00:06:15,018
+Great. 
+Let's see now how the, to set condition 
+
+96
+00:06:15,018 --> 00:06:19,739
+codes with the test instruction. 
+Okay, so the test instruction also set to 
+
+97
+00:06:19,739 --> 00:06:23,893
+the same set of also manipulates the same 
+set of Single bit condition code 
+
+98
+00:06:23,893 --> 00:06:29,053
+registers. 
+And it takes two operands as parameters, 
+
+99
+00:06:29,053 --> 00:06:35,610
+source two and source, and source one. 
+And essentially it works like computing a 
+
+100
+00:06:35,610 --> 00:06:38,970
+bit-wise with b. 
+'Kay, a being source two and b being 
+
+101
+00:06:38,970 --> 00:06:42,160
+source one. 
+Without setting the destination. 
+
+102
+00:06:42,160 --> 00:06:47,260
+And that's, that's useful to do to have 
+operands to be a mask because tasks with 
+
+103
+00:06:47,260 --> 00:06:52,788
+masks using the twice and is very, very 
+useful. 
+
+104
+00:06:52,788 --> 00:06:56,988
+Okay. 
+So, in this case here tasks if the zf 
+
+105
+00:06:56,988 --> 00:07:04,190
+flag is set if a b twice. 
+And with b, happens to be zero. 
+
+106
+00:07:04,190 --> 00:07:08,020
+And it, SF is set, if a bitwise and with 
+b is less than zero. 
+
+107
+00:07:08,020 --> 00:07:12,940
+So, if the most significant bit is set to 
+one, essentially. 
+
+108
+00:07:12,940 --> 00:07:18,022
+So, now let's look at this example here. 
+We're doing, essentially, eax bitwise n 
+
+109
+00:07:18,022 --> 00:07:23,254
+with eax. 
+So, this is interesting because, zf is 
+
+110
+00:07:23,254 --> 00:07:29,904
+going to be set, only if eax is zero. 
+Oh is essentially just, just checking 
+
+111
+00:07:29,904 --> 00:07:33,510
+whether eax is positive, negative, or 
+zero. 
+
+112
+00:07:33,510 --> 00:07:37,290
+If it's zero, the zf bit's going to be 
+set. 
+
+113
+00:07:37,290 --> 00:07:40,890
+If it's negative, the sf bit's going to 
+be set. 
+
+114
+00:07:40,890 --> 00:07:47,734
+So that's going to be useful when you 
+have, conditions like f a less than zero. 
+
+115
+00:07:47,734 --> 00:07:52,050
+'Kay, so this is going to be implemented 
+with a test instruction. 
+
+116
+00:07:52,050 --> 00:07:56,818
+We can also read condition codes. 
+Okay, in this, set of instructions of, 
+
+117
+00:07:56,818 --> 00:08:01,826
+called set in a bunch of options here. 
+And what they do is they read the 
+
+118
+00:08:01,826 --> 00:08:06,796
+condition codes and put, and put the 
+resulting value at zero or one, the whole 
+
+119
+00:08:06,796 --> 00:08:11,488
+by zero or one. 
+And in a general purpose register so you 
+
+120
+00:08:11,488 --> 00:08:15,352
+can actually read and, and do computation 
+with the contents of the condition codes 
+
+121
+00:08:15,352 --> 00:08:19,005
+register. 
+So essentially you get value of condition 
+
+122
+00:08:19,005 --> 00:08:22,590
+code register and you store it into a 
+general purpose register. 
+
+123
+00:08:22,590 --> 00:08:26,350
+And I encourage you to look at the book 
+For examples of those. 
+
+124
+00:08:26,350 --> 00:08:31,270
+We're going to see one now, but it should 
+read how each of these instructions work. 
+
+125
+00:08:31,270 --> 00:08:37,501
+So let's in example now of using the site 
+instrucions to read condition codes. 
+
+126
+00:08:37,501 --> 00:08:42,089
+So, here we have, we have a function 
+called GT, that just takes X and Y as a 
+
+127
+00:08:42,089 --> 00:08:48,558
+parameter, and then we want to return, 
+whether x is greater than y. 
+
+128
+00:08:48,558 --> 00:08:53,704
+And here's the bud of the instruction. 
+Here, what we are doing is getting y and 
+
+129
+00:08:53,704 --> 00:08:58,898
+storing it in eax. 
+And now we are comparing y with x, 
+
+130
+00:08:58,898 --> 00:09:03,860
+because x is stored in 8 from ebp. 
+Okay? 
+
+131
+00:09:03,860 --> 00:09:07,935
+And now we're doing set greater in al. 
+What is set greater doing? 
+
+132
+00:09:07,935 --> 00:09:12,655
+Set greater is going to get in, we 
+passing a l here, which is the low order 
+
+133
+00:09:12,655 --> 00:09:17,514
+bytes of the e a x register. 
+And what they're doing is the following. 
+
+134
+00:09:17,514 --> 00:09:22,870
+here we are reading y and putting e a x, 
+comparing x and y. 
+
+135
+00:09:22,870 --> 00:09:25,070
+Essentially comparing, doing a 
+subtraction and just setting the 
+
+136
+00:09:25,070 --> 00:09:27,200
+condition codes. 
+Then al now is going to be set to to 1 if 
+
+137
+00:09:27,200 --> 00:09:29,752
+x is greater than y, and it's going to be 
+set to 0 otherwise. 
+
+138
+00:09:29,752 --> 00:09:33,520
+'Kay. 
+And this instruction here just zeroes, 
+
+139
+00:09:33,520 --> 00:09:40,120
+this, this instruction just zeroes the, 
+this instruction here just zeroes the 
+
+140
+00:09:40,120 --> 00:09:47,466
+rest of eax, it makes this whole here, 
+thing here zero. 
+
+141
+00:09:47,466 --> 00:09:50,158
+Okay. 
+So, in the end, this is going to, hope, 
+
+142
+00:09:50,158 --> 00:09:53,870
+this is going to be, al's going to be set 
+to 1, then if x squared is in y, it's 
+
+143
+00:09:53,870 --> 00:09:57,529
+going to be set to 0 otherwise. 
+

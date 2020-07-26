@@ -1,0 +1,434 @@
+1
+00:00:00,3 --> 00:00:06,467
+[MUSIC] Let's take a look at the roadmap 
+for the course what we'll be going 
+
+2
+00:00:06,467 --> 00:00:14,55
+through over these next eight weeks. 
+We're going to start off with the topic 
+
+3
+00:00:14,55 --> 00:00:17,704
+of memory and data. 
+How do we organize data in the memory of 
+
+4
+00:00:17,704 --> 00:00:21,656
+a computer system? 
+And then we're going to move on to, how 
+
+5
+00:00:21,656 --> 00:00:25,653
+do we represent numbers? 
+How do we encode different types of 
+
+6
+00:00:25,653 --> 00:00:29,240
+numbers? 
+both integers and floating point numbers, 
+
+7
+00:00:29,240 --> 00:00:32,834
+in the bit patterns that we can put in 
+memory. 
+
+8
+00:00:32,834 --> 00:00:36,754
+we'll then turn our attention to how we 
+encode instructions, that basically the 
+
+9
+00:00:36,754 --> 00:00:41,344
+machine code. 
+That the CPU will interpret to figure out 
+
+10
+00:00:41,344 --> 00:00:46,30
+what to do, what data to find in memory, 
+where to find it, and what operations to 
+
+11
+00:00:46,30 --> 00:00:51,390
+perform on that data. 
+This these instructions are normally 
+
+12
+00:00:51,390 --> 00:00:55,392
+represented in an assembly language 
+that's a little bit more machine readable 
+
+13
+00:00:55,392 --> 00:01:00,328
+than those ones and zeros. 
+this is one of the languages we'll be 
+
+14
+00:01:00,328 --> 00:01:04,146
+looking at. 
+It's the X86 assembly language for the 
+
+15
+00:01:04,146 --> 00:01:09,672
+popular Intel processors that are in many 
+of our computer systems today. 
+
+16
+00:01:09,672 --> 00:01:13,810
+However, any assembly language is really 
+going to be very similar. 
+
+17
+00:01:13,810 --> 00:01:18,433
+So, we're hoping this is just a, an 
+example of one possible assembly language 
+
+18
+00:01:18,433 --> 00:01:24,56
+albeit, a very common one. 
+We'll then turn our attention to some 
+
+19
+00:01:24,56 --> 00:01:28,796
+approaches to managing how we keep track 
+of our programs and how they're 
+
+20
+00:01:28,796 --> 00:01:32,965
+executing. 
+Namely, what procedures are being 
+
+21
+00:01:32,965 --> 00:01:37,290
+executed, where a procedure should return 
+when it completes. 
+
+22
+00:01:37,290 --> 00:01:41,580
+And that'll get us into the stack 
+discipline, that we use for representing 
+
+23
+00:01:41,580 --> 00:01:45,536
+that information. 
+we'll then turn our attention to 
+
+24
+00:01:45,536 --> 00:01:50,198
+representing some more complex things in 
+memory besides just numbers namely arrays 
+
+25
+00:01:50,198 --> 00:01:55,480
+of values and structs more complicated 
+data structures. 
+
+26
+00:01:55,480 --> 00:01:59,474
+where multiple values are represented in 
+one entity. 
+
+27
+00:01:59,474 --> 00:02:05,300
+then we'll turn our attention to memory 
+and caches. 
+
+28
+00:02:05,300 --> 00:02:08,890
+So, we'll be looking at memory from the 
+point of view of performance. 
+
+29
+00:02:08,890 --> 00:02:13,660
+How a processor moves the data that it 
+needs most often. 
+
+30
+00:02:13,660 --> 00:02:19,268
+And keeps it close to the CPU. 
+By close we mean in a faster access 
+
+31
+00:02:19,268 --> 00:02:24,132
+memory rather than the slower larger 
+memories that we might also have 
+
+32
+00:02:24,132 --> 00:02:28,140
+available. 
+Then we'll turn our attention to two 
+
+33
+00:02:28,140 --> 00:02:32,400
+important Illusions that are common in 
+modern computer systems. 
+
+34
+00:02:32,400 --> 00:02:37,548
+The first one is the concept of a process 
+namely, a program that runs in parallel 
+
+35
+00:02:37,548 --> 00:02:43,604
+to a whole bunch of other processes. 
+And, we have to figure out how to give 
+
+36
+00:02:43,604 --> 00:02:47,700
+the illusion that each process has full 
+control over the processor, so that a 
+
+37
+00:02:47,700 --> 00:02:54,478
+programmer doesn't have to worry about. 
+How to hand off control to another 
+
+38
+00:02:54,478 --> 00:02:58,230
+process, how to save the state it might 
+need. 
+
+39
+00:02:58,230 --> 00:03:02,70
+All these things are going to be taken 
+care of automatically, and this will help 
+
+40
+00:03:02,70 --> 00:03:06,30
+us touch on a little bit about how 
+operating systems handle these things for 
+
+41
+00:03:06,30 --> 00:03:11,500
+us as programmers. 
+The second illusion is, virtual memory, 
+
+42
+00:03:11,500 --> 00:03:16,470
+namely the ability to think about a huge 
+memory that is available to each program, 
+
+43
+00:03:16,470 --> 00:03:22,952
+when in reality there's only a much 
+smaller finite memory available. 
+
+44
+00:03:22,952 --> 00:03:29,20
+that is way, way smaller than the 
+possible memory we may want to use. 
+
+45
+00:03:29,20 --> 00:03:34,324
+So, this will get us into how do we page 
+different parts of memory from disc into 
+
+46
+00:03:34,324 --> 00:03:39,482
+the physical memory. 
+And again, deal with some operating 
+
+47
+00:03:39,482 --> 00:03:43,124
+systems issues. 
+Finally, we'll close the course with some 
+
+48
+00:03:43,124 --> 00:03:47,24
+issues in memory allocation. 
+Namely, how do we decide where we put 
+
+49
+00:03:47,24 --> 00:03:51,200
+stuff in memory, and how does that impact 
+performance? 
+
+50
+00:03:51,200 --> 00:03:56,596
+And lastly, how do we deal with higher 
+level languages, like Java which abstract 
+
+51
+00:03:56,596 --> 00:04:01,920
+the away a lot of those memory allocation 
+issues from us. 
+
+52
+00:04:01,920 --> 00:04:07,88
+And we'll compare Java to C, which is a 
+lower level language, where we actually 
+
+53
+00:04:07,88 --> 00:04:12,408
+consider each of those memory allocations 
+each one in turn and have to free up 
+
+54
+00:04:12,408 --> 00:04:19,296
+memory when we're done using it. 
+Have to keep track of quite a few more 
+
+55
+00:04:19,296 --> 00:04:23,668
+things, than in a higher level managed 
+language like Java. 
+
+56
+00:04:23,668 --> 00:04:26,770
+So, that's the road map for the course 
+and we'll bringing you, we'll be bringing 
+
+57
+00:04:26,770 --> 00:04:31,770
+you back to this slide over and over 
+again at the beginning of each section. 
+
+58
+00:04:31,770 --> 00:04:36,900
+to give you an orientation of where we 
+are as we progress through the course. 
+
+59
+00:04:36,900 --> 00:04:42,80
+Before we start the first section, I'd 
+like to talk about three little themes 
+
+60
+00:04:42,80 --> 00:04:47,690
+that are part of this course. 
+The first one is, representation. 
+
+61
+00:04:47,690 --> 00:04:50,330
+We'll be coming back to these themes over 
+and over again. 
+
+62
+00:04:50,330 --> 00:04:53,730
+Representation is the issue of how do we 
+represent things in zeros and ones. 
+
+63
+00:04:53,730 --> 00:04:58,722
+And by things or everything, we mean 
+numbers, characters, instructions 
+
+64
+00:04:58,722 --> 00:05:03,830
+pointers namely the addresses of that 
+data in memory. 
+
+65
+00:05:03,830 --> 00:05:08,185
+And we'll be talking about how we do an 
+efficient job of representing all of 
+
+66
+00:05:08,185 --> 00:05:14,820
+these different types of data items. 
+the second little theme is, translation. 
+
+67
+00:05:14,820 --> 00:05:17,540
+namely, how do we go from language to 
+language. 
+
+68
+00:05:17,540 --> 00:05:21,270
+You've heard me talk about a few already. 
+I've mentioned Java as a high level 
+
+69
+00:05:21,270 --> 00:05:25,410
+language C, as a lower level language X86 
+assembly language as something being 
+
+70
+00:05:25,410 --> 00:05:30,811
+closer to the machine code of the CPU. 
+Well, to do those translations, as with 
+
+71
+00:05:30,811 --> 00:05:34,690
+any language, we need to do word by word 
+translations. 
+
+72
+00:05:34,690 --> 00:05:38,722
+We need to do, translation of phrase 
+structures, and eventually the larger 
+
+73
+00:05:38,722 --> 00:05:43,528
+grammar of the language itself. 
+So, we're hoping that you know a language 
+
+74
+00:05:43,528 --> 00:05:46,860
+maybe like Java, as a programming 
+language. 
+
+75
+00:05:46,860 --> 00:05:50,614
+You've seen that in an intro programming 
+class, or maybe you've had C already. 
+
+76
+00:05:50,614 --> 00:05:54,442
+so we'll be talking about those 
+languages, and encountering a few of the 
+
+77
+00:05:54,442 --> 00:05:59,20
+things in between, like Java byte-codes 
+as well. 
+
+78
+00:05:59,20 --> 00:06:03,212
+That'll come near the end of the course. 
+lastly, the, the third theme is control 
+
+79
+00:06:03,212 --> 00:06:07,202
+flow, namely how do computers orchestrate 
+the many things they're doing and make it 
+
+80
+00:06:07,202 --> 00:06:11,132
+look like they're doing them all in 
+parallel. 
+
+81
+00:06:11,132 --> 00:06:15,760
+When in fact, of course, they're only 
+executing one instruction at a time? 
+
+82
+00:06:15,760 --> 00:06:18,910
+So, how do we keep track of where we are, 
+when we call a method and then another 
+
+83
+00:06:18,910 --> 00:06:22,591
+and another and so on? 
+what do we do when we hit a return 
+
+84
+00:06:22,591 --> 00:06:25,349
+statement? 
+And how do we give the, the user the 
+
+85
+00:06:25,349 --> 00:06:29,334
+ability to run multiple programs 
+seemingly at the same time? 
+
+86
+00:06:29,334 --> 00:06:33,890
+So, these are the little themes we'll be 
+coming back to again and again throughout 
+
+87
+00:06:33,890 --> 00:06:35,633
+the course. 
+

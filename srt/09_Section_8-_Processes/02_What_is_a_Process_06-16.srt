@@ -1,0 +1,449 @@
+1
+00:00:00,005 --> 00:00:05,078
+[MUSIC]. 
+
+2
+00:00:05,078 --> 00:00:06,961
+Hi, there. 
+We're now starting a new section. 
+
+3
+00:00:06,961 --> 00:00:10,147
+We're going to be talking about 
+processes, which is an abstraction 
+
+4
+00:00:10,147 --> 00:00:14,074
+provided by the operating system together 
+with the hardware. 
+
+5
+00:00:14,074 --> 00:00:16,990
+Just so we can run programs in 
+interesting ways, okay? 
+
+6
+00:00:16,990 --> 00:00:20,980
+So then, we're going to see, we're going 
+to start seeing what a process is. 
+
+7
+00:00:20,980 --> 00:00:23,380
+Then, we're going to see how we create 
+processes using operating system 
+
+8
+00:00:23,380 --> 00:00:25,512
+services. 
+And then, we'll see how we can do 
+
+9
+00:00:25,512 --> 00:00:29,610
+interesting things with processes. 
+So, what is a process? 
+
+10
+00:00:29,610 --> 00:00:32,520
+And, but first of all, why are we 
+learning about processes? 
+
+11
+00:00:32,520 --> 00:00:36,138
+Well, because they're an abstraction of 
+the computer system that provides this 
+
+12
+00:00:36,138 --> 00:00:40,480
+interface between the program, and the 
+underlying CPU plus memory. 
+
+13
+00:00:40,480 --> 00:00:44,128
+Okay, and this is provided by the 
+operating system. 
+
+14
+00:00:44,128 --> 00:00:48,430
+Okay, so what the process have to do with 
+exceptional control flow? 
+
+15
+00:00:48,430 --> 00:00:51,778
+Well, the operating system's going to 
+have to use tricks with exceptional 
+
+16
+00:00:51,778 --> 00:00:54,964
+control flow to give the illusion that 
+multiple processes are running 
+
+17
+00:00:54,964 --> 00:00:59,835
+simultaneously in the system, okay? 
+So what is a program? 
+
+18
+00:00:59,835 --> 00:01:04,521
+A program is just a list of instructions, 
+a collection of instructions and data 
+
+19
+00:01:04,521 --> 00:01:09,260
+that form your code, that form your 
+software, okay? 
+
+20
+00:01:09,260 --> 00:01:13,390
+A processor, obviously, is the piece of 
+hardware that runs these structures in a 
+
+21
+00:01:13,390 --> 00:01:17,500
+program. 
+In a process, well a process is an 
+
+22
+00:01:17,500 --> 00:01:22,403
+instance of a running program. 
+When you start running a program, you 
+
+23
+00:01:22,403 --> 00:01:25,795
+create a process to run the program, 
+therefore the process is an instance of a 
+
+24
+00:01:25,795 --> 00:01:29,736
+running program, okay? 
+So, that's a very important idea in 
+
+25
+00:01:29,736 --> 00:01:34,140
+Computer Science, and it's not the same 
+as a program or a processor, okay? 
+
+26
+00:01:34,140 --> 00:01:38,142
+A processor executes instructions, and a 
+program is a collection of instructions 
+
+27
+00:01:38,142 --> 00:01:41,259
+and data. 
+A process is an instance of a program 
+
+28
+00:01:41,259 --> 00:01:46,090
+running in a processor, so and they 
+provide two key abstractions. 
+
+29
+00:01:46,090 --> 00:01:50,765
+The first one is logical control flow. 
+So, that means that each process has the 
+
+30
+00:01:50,765 --> 00:01:56,690
+illusion that it has full control of the 
+CPU as exclusive use of the CPU. 
+
+31
+00:01:56,690 --> 00:02:02,072
+Which might actually be in the, in 
+reality the case, but processes give this 
+
+32
+00:02:02,072 --> 00:02:07,064
+abstraction to programs that so to 
+processes such that it seems like they 
+
+33
+00:02:07,064 --> 00:02:14,066
+have full use of the CPU, okay? 
+And now, the other one is private virtual 
+
+34
+00:02:14,066 --> 00:02:17,072
+address space. 
+Means that each, this gives the illusion 
+
+35
+00:02:17,072 --> 00:02:20,260
+that each process. 
+Has control over the entire memory. 
+
+36
+00:02:20,260 --> 00:02:24,048
+Nobody else is touching memory. 
+Okay, so this is very important because 
+
+37
+00:02:24,048 --> 00:02:28,196
+it makes it much easier to isolate 
+programs to manage memory layout and so 
+
+38
+00:02:28,196 --> 00:02:31,880
+on, okay? 
+So why are they important? 
+
+39
+00:02:31,880 --> 00:02:36,101
+Well, we simplify writing programs a lot 
+because you give the illusion that they 
+
+40
+00:02:36,101 --> 00:02:40,070
+have the program, the program has entire 
+memory. 
+
+41
+00:02:40,070 --> 00:02:43,913
+And also gives it illusion that it has 
+complete control of the process, or 
+
+42
+00:02:43,913 --> 00:02:49,573
+complete use of the process. 
+And how are these illusions maintained? 
+
+43
+00:02:49,573 --> 00:02:53,960
+Well, first of all process, process 
+executions are interleaved. 
+
+44
+00:02:53,960 --> 00:02:56,795
+That means from the process point of 
+view, which means it's a switch between 
+
+45
+00:02:56,795 --> 00:03:00,264
+one process and the other. 
+And the address space is managed by 
+
+46
+00:03:00,264 --> 00:03:03,792
+neutral memory by, by the visionary 
+system which is going to be a topic of 
+
+47
+00:03:03,792 --> 00:03:11,180
+our next section. 
+So processes can be concurrent. 
+
+48
+00:03:11,180 --> 00:03:15,946
+And it means if they run concurrently, if 
+the instruction flows overlap in time. 
+
+49
+00:03:15,946 --> 00:03:19,327
+Otherwise, they are sequential. 
+So, let me give you an example. 
+
+50
+00:03:19,327 --> 00:03:22,241
+Suppose that I have Process A here, 
+Process A is running, having control in 
+
+51
+00:03:22,241 --> 00:03:24,966
+the CPU, then now it's paused for a 
+second. 
+
+52
+00:03:24,966 --> 00:03:27,760
+And then it continues running and it ends 
+here, okay? 
+
+53
+00:03:27,760 --> 00:03:32,500
+Process B starts here and ends here. 
+Process C starts here, runs, pauses for a 
+
+54
+00:03:32,500 --> 00:03:38,510
+bit and ends right there. 
+So, it means that processes that are 
+
+55
+00:03:38,510 --> 00:03:44,060
+concurrent are A and B are concurrent, 
+okay? 
+
+56
+00:03:44,060 --> 00:03:47,960
+And also A and C, because you see, they 
+are actually running parallel. 
+
+57
+00:03:47,960 --> 00:03:53,945
+However, B and C are not concurrent 
+because B ends here right before C 
+
+58
+00:03:53,945 --> 00:03:58,438
+starts. 
+now, the user view of concurrent 
+
+59
+00:03:58,438 --> 00:04:03,440
+processes as if they are actually running 
+at the same time. 
+
+60
+00:04:03,440 --> 00:04:06,350
+Okay, that's the illusion that they have 
+full control of the CPU. 
+
+61
+00:04:06,350 --> 00:04:10,318
+When in reality, what's going on is that 
+one, a processor might be paused, but 
+
+62
+00:04:10,318 --> 00:04:14,090
+still conceptually executing, but not 
+really. 
+
+63
+00:04:14,090 --> 00:04:16,999
+It's not actually making use of the 
+processor. 
+
+64
+00:04:18,210 --> 00:04:23,780
+so we can really think of concurrent 
+processes as executing in parallel. 
+
+65
+00:04:24,920 --> 00:04:27,980
+Now, how, how does that work? 
+Let's say they have a single process or 
+
+66
+00:04:27,980 --> 00:04:31,680
+you have multiple processes running at 
+the same time, how does that work? 
+
+67
+00:04:31,680 --> 00:04:35,964
+We need some mechanism that bounces 
+between processes that are running at the 
+
+68
+00:04:35,964 --> 00:04:40,624
+same time. 
+So, this is what we call context 
+
+69
+00:04:40,624 --> 00:04:43,175
+switching, okay? 
+So, the process are managed by a shared 
+
+70
+00:04:43,175 --> 00:04:47,848
+chunk of OS code called the Kernel, okay? 
+And it's important to note that the 
+
+71
+00:04:47,848 --> 00:04:51,590
+kernel is not a seperate process, but 
+it's just a piece of code. 
+
+72
+00:04:51,590 --> 00:04:54,752
+A special piece of code that runs as part 
+of a user process. 
+
+73
+00:04:54,752 --> 00:04:57,904
+But the kernel code has special 
+privileges. 
+
+74
+00:04:57,904 --> 00:05:00,910
+So, here's how the context switch 
+happens. 
+
+75
+00:05:00,910 --> 00:05:06,441
+Say that Process A is running, and then 
+suddenly it's time-based on a timer. 
+
+76
+00:05:06,441 --> 00:05:11,337
+There's a timer interrupt that says okay, 
+the time, processor time for Process A, 
+
+77
+00:05:11,337 --> 00:05:17,139
+CPU time for Process A is up. 
+So now, there's an interrupt here, time 
+
+78
+00:05:17,139 --> 00:05:21,733
+interrupt, that switches to kernel code. 
+And the kernel code is going to save the 
+
+79
+00:05:21,733 --> 00:05:26,700
+state. 
+You save A here, save the state of A. 
+
+80
+00:05:26,700 --> 00:05:34,930
+And then you restore B, and then B 
+executes then times up again. 
+
+81
+00:05:34,930 --> 00:05:40,370
+The, the kernel code executes through the 
+context switch, and the context switch 
+
+82
+00:05:40,370 --> 00:05:45,800
+saves B here and restores the state of A 
+and continue. 
+
+83
+00:05:47,670 --> 00:05:50,945
+So that's, that's a process called 
+Context Switch. 
+
+84
+00:05:50,945 --> 00:05:55,899
+Now what's actually saved here? 
+What will we have to save here? 
+
+85
+00:05:55,899 --> 00:05:59,469
+We have to save the instruction pointer 
+because the we have to know where Process 
+
+86
+00:05:59,469 --> 00:06:02,056
+A stopped. 
+So, we need to restore it again and 
+
+87
+00:06:02,056 --> 00:06:07,320
+continue allocating from that point. 
+It also needs to save register states, 
+
+88
+00:06:07,320 --> 00:06:09,589
+okay? 
+Because we need to restore those to 
+
+89
+00:06:09,589 --> 00:06:12,590
+continue executing the program. 
+And the, there are a few other things 
+
+90
+00:06:12,590 --> 00:06:16,580
+that also happen there, but that's that's 
+subject for a another time. 
+

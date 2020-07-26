@@ -1,0 +1,673 @@
+1
+00:00:00,000 --> 00:00:05,208
+[MUSIC]. 
+
+2
+00:00:05,208 --> 00:00:09,282
+Hi, my name is Caitlin Bailey, and I'm 
+here today to talk to you about C. 
+
+3
+00:00:09,282 --> 00:00:12,117
+C is one of my favorite programming 
+languages to work with, but sometimes it 
+
+4
+00:00:12,117 --> 00:00:15,068
+can be a bit intimidating to people to 
+begin with. 
+
+5
+00:00:15,068 --> 00:00:19,676
+the reason why is a little bit more crazy 
+in what it can allow you to do. 
+
+6
+00:00:19,676 --> 00:00:23,024
+But we're going to take you through two 
+simple programs today, to show you how 
+
+7
+00:00:23,024 --> 00:00:28,760
+the basic C works, and you'll learn more 
+over the course of this course. 
+
+8
+00:00:28,760 --> 00:00:32,177
+Okay, so I'm working today in a virtual 
+machine in a terminal inside that virtual 
+
+9
+00:00:32,177 --> 00:00:35,350
+machine. 
+You can do this on your own computer, 
+
+10
+00:00:35,350 --> 00:00:40,295
+whether that's a desktop or a laptop or 
+remotely or some other way. 
+
+11
+00:00:40,295 --> 00:00:43,829
+Just make sure you have access to a 
+computer with a command line that you can 
+
+12
+00:00:43,829 --> 00:00:47,720
+use. 
+Now, I'm assuming that you have some 
+
+13
+00:00:47,720 --> 00:00:51,807
+basic familiarity with command line 
+arguments, and with some program language 
+
+14
+00:00:51,807 --> 00:00:56,762
+whether that's Java or C++. 
+Something that introduces you to if else, 
+
+15
+00:00:56,762 --> 00:01:00,332
+while, for and other things like that. 
+Variable declaration. 
+
+16
+00:01:00,332 --> 00:01:04,524
+Okay. 
+So, really briefly a couple of command 
+
+17
+00:01:04,524 --> 00:01:09,099
+line arguments you might find useful. 
+So, you can do PWD, which I've actually 
+
+18
+00:01:09,099 --> 00:01:13,290
+already done here, which shows you where 
+you are on the computer. 
+
+19
+00:01:13,290 --> 00:01:16,975
+You can also change the directory and you 
+can see this reflected here. 
+
+20
+00:01:16,975 --> 00:01:22,980
+so you can CD back and print where you 
+are. 
+
+21
+00:01:22,980 --> 00:01:26,154
+And then you can CD back into intro C, 
+which is where I am. 
+
+22
+00:01:26,154 --> 00:01:28,700
+Okay. 
+You can also list the contents in the 
+
+23
+00:01:28,700 --> 00:01:33,808
+directories you're in with LS. 
+And that shows you the files we're 
+
+24
+00:01:33,808 --> 00:01:37,090
+going to look at. 
+so I've compiled a couple of these, but 
+
+25
+00:01:37,090 --> 00:01:41,180
+the non complied versions are 
+hello_world.c and print_bytes.c. 
+
+26
+00:01:41,180 --> 00:01:44,512
+Unsurprisingly, they end in C. 
+So, I'm using EMacs today, which is one 
+
+27
+00:01:44,512 --> 00:01:48,802
+of my favorite editors, but just find 
+something that you're familiar with and 
+
+28
+00:01:48,802 --> 00:01:52,033
+use it. 
+So that could be EMacs, that could be VI, 
+
+29
+00:01:52,033 --> 00:01:54,411
+that could be VEM, TextMate, 
+Textwrangler, or something you can pull 
+
+30
+00:01:54,411 --> 00:01:57,268
+of off the internet. 
+It doesn't really matter, just find 
+
+31
+00:01:57,268 --> 00:01:59,465
+something you're really comfortable 
+editing in. 
+
+32
+00:01:59,465 --> 00:02:04,590
+Okay, so the structure this Hello World 
+program is really, really simple. 
+
+33
+00:02:04,590 --> 00:02:07,470
+We've got a header comment, which just 
+puts your name, the date, what the 
+
+34
+00:02:07,470 --> 00:02:11,590
+program is about, pretty standard stuff 
+for comments. 
+
+35
+00:02:11,590 --> 00:02:14,225
+And then we've got some include 
+statements. 
+
+36
+00:02:14,225 --> 00:02:18,317
+the include today is standard IO and 
+standard lib, and that allows you to 
+
+37
+00:02:18,317 --> 00:02:23,800
+print things out to the terminal and 
+include basic types like int, okay? 
+
+38
+00:02:23,800 --> 00:02:26,698
+You're later going to want to include 
+more and more things as you pull in more 
+
+39
+00:02:26,698 --> 00:02:29,540
+and more defitinions from outside 
+libraries. 
+
+40
+00:02:29,540 --> 00:02:33,115
+Because these are included in angle 
+brackets, you're going to know that there 
+
+41
+00:02:33,115 --> 00:02:38,244
+are system libraries. 
+So they're installed in /user/lib no 
+
+42
+00:02:38,244 --> 00:02:41,680
+/include. 
+Sorry, mistake. 
+
+43
+00:02:41,680 --> 00:02:44,782
+If you wanted to include your own files, 
+you could include them using quotation 
+
+44
+00:02:44,782 --> 00:02:50,564
+marks. 
+So you could include, myheader.h. 
+
+45
+00:02:50,564 --> 00:02:55,346
+Just like that. 
+And that would include your header 
+
+46
+00:02:55,346 --> 00:02:58,940
+definitions in .h. 
+I don't have that file in my directory, 
+
+47
+00:02:58,940 --> 00:03:02,852
+so I'm going to delete that, but if you 
+did, you could include that way. 
+
+48
+00:03:02,852 --> 00:03:07,922
+Now, Main is kind of special in C, it's 
+got to include these two parameters: Arg 
+
+49
+00:03:07,922 --> 00:03:13,158
+C and Arg V. 
+Arg C is the count of arguments you want 
+
+50
+00:03:13,158 --> 00:03:16,020
+passed to Main and Arg V is those 
+arguments. 
+
+51
+00:03:16,020 --> 00:03:18,633
+So a lot of times these are the command 
+line arguments because you usually invoke 
+
+52
+00:03:18,633 --> 00:03:23,686
+C from the command line. 
+So if you've included two parameters, so 
+
+53
+00:03:23,686 --> 00:03:28,894
+for instance the name of your program and 
+some file you wanted to output 
+
+54
+00:03:28,894 --> 00:03:34,630
+information to, there would be two 
+arguments. 
+
+55
+00:03:34,630 --> 00:03:38,970
+The second is an array of strings that 
+puts to those arguments. 
+
+56
+00:03:38,970 --> 00:03:41,512
+Now, I said its an array of strings, but 
+it kind of looks like it's an array of 
+
+57
+00:03:41,512 --> 00:03:44,669
+something else, right? 
+Because we've got a char star instead of 
+
+58
+00:03:44,669 --> 00:03:47,833
+string. 
+Well that's because in C, char stars are 
+
+59
+00:03:47,833 --> 00:03:49,650
+strings. 
+Okay? 
+
+60
+00:03:49,650 --> 00:03:54,100
+They're an array of string array of 
+characters is actually a string. 
+
+61
+00:03:54,100 --> 00:03:58,710
+We'll talk more about that later when we 
+get to basic types in this course. 
+
+62
+00:03:58,710 --> 00:04:00,700
+Now, I'm going to actually print out a 
+statement. 
+
+63
+00:04:00,700 --> 00:04:05,548
+Print F, allows you to print out Hello 
+World, and end it with a new line /n. 
+
+64
+00:04:05,548 --> 00:04:09,014
+Okay? 
+Now, this is slightly different than in 
+
+65
+00:04:09,014 --> 00:04:12,472
+system.out. 
+println in Java, you don't include the 
+
+66
+00:04:12,472 --> 00:04:15,780
+new line by default. 
+But other than that, it's pretty similar. 
+
+67
+00:04:15,780 --> 00:04:19,820
+And the you're going to return zero. 
+Now that return indicates excess and 
+
+68
+00:04:19,820 --> 00:04:23,720
+matches the return tape we have up here. 
+Okay, simple. 
+
+69
+00:04:25,170 --> 00:04:29,806
+To compile it, you're going to do this. 
+And, I'm not including any other flags, 
+
+70
+00:04:29,806 --> 00:04:34,351
+but you could if you wanted to. 
+Compile with GCC-O. 
+
+71
+00:04:34,351 --> 00:04:38,360
+Hello in this case is the executable, and 
+Hello World is the source. 
+
+72
+00:04:38,360 --> 00:04:43,050
+Compile with no warnings or errors, 
+great. 
+
+73
+00:04:43,050 --> 00:04:46,536
+Always what we want to see. 
+You're going to run it, and if I spell it 
+
+74
+00:04:46,536 --> 00:04:50,468
+correctly, you'll see that it actually 
+works, runs. 
+
+75
+00:04:50,468 --> 00:04:56,220
+Hello world, great. 
+To move on to the next program, we're 
+
+76
+00:04:56,220 --> 00:05:00,380
+going to open it up. 
+And you're going to see print bytes. 
+
+77
+00:05:00,380 --> 00:05:02,361
+Now, the structure is really similar 
+here. 
+
+78
+00:05:02,361 --> 00:05:05,369
+We've got the header, we've got our 
+includes, the same includes and we've got 
+
+79
+00:05:05,369 --> 00:05:08,020
+a Main. 
+If you wanted to add in other functions, 
+
+80
+00:05:08,020 --> 00:05:12,280
+you do that above main, because you have 
+to declare them before you use them. 
+
+81
+00:05:12,280 --> 00:05:15,100
+Now you can just declare it above and 
+define it later, but usually you see 
+
+82
+00:05:15,100 --> 00:05:18,061
+declarations and definitions in one line 
+and man ends up at the bottom of the 
+
+83
+00:05:18,061 --> 00:05:21,440
+file. 
+Okay. 
+
+84
+00:05:21,440 --> 00:05:23,660
+So, you've got a function here. 
+To call it, you're just going to go down 
+
+85
+00:05:23,660 --> 00:05:26,908
+into main and you're going to type it in. 
+Pretty simple stuff, again some of the 
+
+86
+00:05:26,908 --> 00:05:31,898
+other languages you might have seen. 
+And I'll call it using the number that 
+
+87
+00:05:31,898 --> 00:05:38,170
+I've already defined, which is 4058. 
+So that's a variable declaration and 
+
+88
+00:05:38,170 --> 00:05:40,752
+definition here. 
+I've called my new function and now I'm 
+
+89
+00:05:40,752 --> 00:05:43,582
+going to call print F. 
+But this print F looks slightly 
+
+90
+00:05:43,582 --> 00:05:45,939
+different, it's got format characters in 
+it. 
+
+91
+00:05:45,939 --> 00:05:49,743
+That's percent D and percent X. 
+Now, both of those refer to num, and 
+
+92
+00:05:49,743 --> 00:05:53,100
+that's because you can print it off in 
+different formats. 
+
+93
+00:05:53,100 --> 00:05:56,920
+So the first one, percent D, allows you 
+to print it off in decimal format. 
+
+94
+00:05:56,920 --> 00:06:01,380
+The second one allows you to print it off 
+in hex, which is percent 08X. 
+
+95
+00:06:01,380 --> 00:06:04,797
+Now, I did 08 because I'm expecting eight 
+characters, and I want to print them all 
+
+96
+00:06:04,797 --> 00:06:08,272
+out. 
+Anything I don't have I'll print in 
+
+97
+00:06:08,272 --> 00:06:10,230
+zeros. 
+That's what the zero is for. 
+
+98
+00:06:12,110 --> 00:06:14,620
+Now, the next thing I've got down here is 
+a for loop. 
+
+99
+00:06:14,620 --> 00:06:17,860
+So, we've got inti, which is just the 
+counter for the for loop. 
+
+100
+00:06:17,860 --> 00:06:21,394
+And then the for loop includes: i equals 
+zero, i less than some limit, i plus 
+
+101
+00:06:21,394 --> 00:06:25,538
+plus. 
+Again, very standard, the control fluency 
+
+102
+00:06:25,538 --> 00:06:28,490
+looks very similar to anything else 
+you've seen. 
+
+103
+00:06:28,490 --> 00:06:32,333
+So, my limit here is actually size of int 
+and because that's dependent on the 
+
+104
+00:06:32,333 --> 00:06:38,069
+architecture, whether its 32 or 64 or 
+something else, or it could be dependent. 
+
+105
+00:06:38,069 --> 00:06:42,278
+we use size of, which automatically plugs 
+in the appropriate sizes based on the 
+
+106
+00:06:42,278 --> 00:06:45,799
+system definitions. 
+My other variable declaration here, is 
+
+107
+00:06:45,799 --> 00:06:50,044
+the mask. 
+And that is just 0xff which in hex means 
+
+108
+00:06:50,044 --> 00:06:51,882
+one byte. 
+Okay? 
+
+109
+00:06:51,882 --> 00:06:56,160
+Anything else is zeros and that means 
+that if I end this with anything else, 
+
+110
+00:06:56,160 --> 00:07:00,315
+you'll get just one byte. 
+The least significant byte. 
+
+111
+00:07:00,315 --> 00:07:04,004
+This is exactly what we want. 
+One byte at a time we're going to do 
+
+112
+00:07:04,004 --> 00:07:06,400
+this. 
+Now to isolate the first bit, we just 
+
+113
+00:07:06,400 --> 00:07:10,240
+need to end it with that mask. 
+But to get the others, we need to shift 
+
+114
+00:07:10,240 --> 00:07:12,961
+them over. 
+And so I'm using a shift by eight bits 
+
+115
+00:07:12,961 --> 00:07:15,780
+times i. 
+You can go through this later and see 
+
+116
+00:07:15,780 --> 00:07:19,893
+what it looks like, but it ends up 
+printing them all out. 
+
+117
+00:07:19,893 --> 00:07:23,925
+And to print it, I'm going to print the 
+decimal and then I'm going to print the 
+
+118
+00:07:23,925 --> 00:07:28,720
+hex of that single byte. 
+So, again, this is really simple. 
+
+119
+00:07:28,720 --> 00:07:31,709
+It just shows you some basic control 
+flow, print statements and variable 
+
+120
+00:07:31,709 --> 00:07:35,306
+declarations. 
+So that's what it looks like and if you 
+
+121
+00:07:35,306 --> 00:07:44,260
+wanted to compile it, you would do this. 
+Print bytes. 
+
+122
+00:07:44,260 --> 00:07:47,190
+No warnings, no errors, exactly what you 
+want to see. 
+
+123
+00:07:47,190 --> 00:07:51,428
+And you can call it, and there we go. 
+So you can see Hi, which was my function 
+
+124
+00:07:51,428 --> 00:07:55,590
+definition before, just printed out hi, 
+and here's the main. 
+
+125
+00:07:55,590 --> 00:07:58,555
+So, we have our announcement, that this 
+is what we're going to do. 
+
+126
+00:07:58,555 --> 00:08:03,260
+4058 in hex is actually this number. 
+You can do it out on paper or in your 
+
+127
+00:08:03,260 --> 00:08:09,230
+head and it works out to be FTA. 
+And if we print them out starting with 
+
+128
+00:08:09,230 --> 00:08:14,510
+the least significant byte, you get DA, 
+and then 0F, and 00 and 00. 
+
+129
+00:08:14,510 --> 00:08:19,823
+So, our shifting worked to move over just 
+a couple of characters at a time, or one 
+
+130
+00:08:19,823 --> 00:08:22,238
+byte. 
+Very effective. 
+
+131
+00:08:22,238 --> 00:08:26,000
+This is the really basic introduction to 
+C. 
+
+132
+00:08:26,000 --> 00:08:29,230
+I hope that you get more comfortable with 
+it as the course goes on. 
+
+133
+00:08:29,230 --> 00:08:31,470
+There's lots of resources online and in 
+books. 
+
+134
+00:08:31,470 --> 00:08:37,059
+I definitely recommend using K&R which is 
+the classic C book Kernighan and Ritchie 
+
+135
+00:08:37,059 --> 00:08:39,340
+and good luck. 
+

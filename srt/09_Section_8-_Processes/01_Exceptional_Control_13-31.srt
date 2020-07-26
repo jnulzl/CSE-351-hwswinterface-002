@@ -1,0 +1,1090 @@
+1
+00:00:00,000 --> 00:00:01,856
+Hello again, before we see processes in 
+virtual memory lets talk a little bit 
+
+2
+00:00:01,856 --> 00:00:04,300
+more about control flow. 
+There'll be some special things about 
+
+3
+00:00:04,300 --> 00:00:07,170
+control flow that's going to be useful to 
+implement process extractions in virtual 
+
+4
+00:00:07,170 --> 00:00:12,791
+memory, okay? 
+So, if you recall, processors do one 
+
+5
+00:00:12,791 --> 00:00:22,105
+thing, right? 
+They execute one instruction after the 
+
+6
+00:00:22,105 --> 00:00:26,560
+other. 
+From start up to shut down. 
+
+7
+00:00:26,560 --> 00:00:29,187
+'Kay. 
+So the CPU simply reads and executes a 
+
+8
+00:00:29,187 --> 00:00:32,910
+sequence of instructions one at a time. 
+'Kay. 
+
+9
+00:00:32,910 --> 00:00:35,520
+This is what we call control flow. 
+'Kay. 
+
+10
+00:00:35,520 --> 00:00:40,010
+From start up to shutdown we execute one 
+instruction after the other. 
+
+11
+00:00:40,010 --> 00:00:42,660
+This is control flow. 
+Okay. 
+
+12
+00:00:42,660 --> 00:00:46,845
+So, how do we change the control flow? 
+Up to now we saw two ways. 
+
+13
+00:00:46,845 --> 00:00:50,720
+First, we saw jumps seen them when we saw 
+Sandy program. 
+
+14
+00:00:50,720 --> 00:00:54,330
+Remember, there were jump instructions 
+that changed the control flow. 
+
+15
+00:00:54,330 --> 00:01:01,410
+We used that to implement things like 
+loops, conditionals, if then else etc. 
+
+16
+00:01:01,410 --> 00:01:07,270
+And we also saw call and return, which is 
+used to implement procedures, okay? 
+
+17
+00:01:07,270 --> 00:01:09,455
+It's used to implement procedure calls 
+and so on. 
+
+18
+00:01:09,455 --> 00:01:13,054
+And both of these changes of a control 
+flow, they react to program states, 
+
+19
+00:01:13,054 --> 00:01:16,635
+they're part of your program and they 
+react. 
+
+20
+00:01:16,635 --> 00:01:20,802
+To the program state, okay? 
+So but the processor also needs to change 
+
+21
+00:01:20,802 --> 00:01:25,474
+the control flow to react to changes in 
+system state, not, not program state, 
+
+22
+00:01:25,474 --> 00:01:29,594
+okay? 
+So by, by, [INAUDIBLE] changes to system 
+
+23
+00:01:29,594 --> 00:01:34,930
+state I mean things like, what if the 
+user hits control C at the keyboard? 
+
+24
+00:01:34,930 --> 00:01:37,400
+Somehow the program has to been 
+interrupted, right? 
+
+25
+00:01:37,400 --> 00:01:41,426
+And if the user clicks on the mouse, or 
+like me I'm using the pen here to write, 
+
+26
+00:01:41,426 --> 00:01:45,391
+on, on the slide, I'm changing the system 
+state, and there's a program, in this 
+
+27
+00:01:45,391 --> 00:01:52,365
+case a Powerpoint program, is reacting to 
+my pen touching the tablet here. 
+
+28
+00:01:52,365 --> 00:01:54,599
+Okay? 
+So these are all things that external to 
+
+29
+00:01:54,599 --> 00:01:56,695
+the program. 
+They're part of the system state, somehow 
+
+30
+00:01:56,695 --> 00:01:59,568
+the program has to react to it. 
+And the way the program reacts to it is 
+
+31
+00:01:59,568 --> 00:02:02,120
+by changing its control flow. 
+Okay? 
+
+32
+00:02:02,120 --> 00:02:05,984
+Other examples are when data arrives from 
+the disk or the network adapter, somehow 
+
+33
+00:02:05,984 --> 00:02:10,894
+the program has to go and read data. 
+From the network adapter and the disk and 
+
+34
+00:02:10,894 --> 00:02:12,560
+to, to process it. 
+Okay? 
+
+35
+00:02:12,560 --> 00:02:15,488
+And also there's things like if you do 
+division by zero, something that's 
+
+36
+00:02:15,488 --> 00:02:19,132
+undefined. 
+So somehow the program has to, to do 
+
+37
+00:02:19,132 --> 00:02:23,150
+something it's control flow to deal with 
+that situation. 
+
+38
+00:02:23,150 --> 00:02:27,280
+Or if the system timer expires, you know, 
+from time to time. 
+
+39
+00:02:27,280 --> 00:02:30,997
+This is device, called the timer, the 
+real timer, the real time timer in your 
+
+40
+00:02:30,997 --> 00:02:33,943
+system. 
+That, from time to time it, it's, 
+
+41
+00:02:33,943 --> 00:02:37,955
+interrupts the processor to tell it like, 
+a,a,a certain amount of wall clock time 
+
+42
+00:02:37,955 --> 00:02:41,050
+has passed. 
+It's going to be useful to implement 
+
+43
+00:02:41,050 --> 00:02:43,830
+contact switches that we're going to see 
+later in this module. 
+
+44
+00:02:43,830 --> 00:02:48,590
+But now the real question is, can jumps 
+and procedure cause implement this. 
+
+45
+00:02:49,780 --> 00:02:52,660
+Well, you really can't, right, so they're 
+not sufficient. 
+
+46
+00:02:52,660 --> 00:02:55,894
+We need systems for exceptional control 
+flow for things that are not part of the 
+
+47
+00:02:55,894 --> 00:02:58,979
+program state. 
+So, the way we implement control, 
+
+48
+00:02:58,979 --> 00:03:02,930
+exceptional control flow is by using what 
+we call exceptions. 
+
+49
+00:03:02,930 --> 00:03:06,710
+Okay, so, an exception is transfer 
+control to the operating system okay, in 
+
+50
+00:03:06,710 --> 00:03:10,560
+response to some events. 
+For example, some change in process 
+
+51
+00:03:10,560 --> 00:03:12,710
+through a stage. 
+So, here's how it happens. 
+
+52
+00:03:12,710 --> 00:03:15,830
+Okay, so, say that our, our user process 
+is executing our codes and then this is 
+
+53
+00:03:15,830 --> 00:03:20,080
+the current instruction being executed. 
+Then when, when, when a certain event 
+
+54
+00:03:20,080 --> 00:03:23,330
+happens that leads to a exception, for 
+example we have a division by zero, or we 
+
+55
+00:03:23,330 --> 00:03:26,630
+have something called a page fault, or 
+some I/O request completes, or even when 
+
+56
+00:03:26,630 --> 00:03:31,790
+you type Ctrl+C. 
+In your in your keyboards. 
+
+57
+00:03:31,790 --> 00:03:34,980
+So the program gets interrupted and then 
+there's, then exception happens. 
+
+58
+00:03:34,980 --> 00:03:36,951
+Okay? 
+And the control is transferred to the 
+
+59
+00:03:36,951 --> 00:03:38,890
+operating system. 
+Okay? 
+
+60
+00:03:38,890 --> 00:03:43,392
+So in this exception processing the os is 
+done by the exception handler. 
+
+61
+00:03:43,392 --> 00:03:45,352
+Okay? 
+The exception handler is nothing more 
+
+62
+00:03:45,352 --> 00:03:48,982
+than a piece of code in the operating 
+system that handles what should be done 
+
+63
+00:03:48,982 --> 00:03:53,005
+when a certain event that's an exception 
+happens. 
+
+64
+00:03:53,005 --> 00:03:58,105
+Okay, and whenever the operating system 
+is done with processing that exception, 
+
+65
+00:03:58,105 --> 00:04:02,905
+it returns to the instruction that was 
+that was being executed by the user 
+
+66
+00:04:02,905 --> 00:04:06,836
+process. 
+It will return to the current 
+
+67
+00:04:06,836 --> 00:04:10,400
+instruction, it could be return to the 
+next instruction or it could even decide 
+
+68
+00:04:10,400 --> 00:04:14,290
+to simply abort. 
+The program, okay? 
+
+69
+00:04:14,290 --> 00:04:18,770
+So an important question is how does the 
+system know which exception hander, 
+
+70
+00:04:18,770 --> 00:04:22,983
+handler to execute? 
+Well, that's going to depend on the 
+
+71
+00:04:22,983 --> 00:04:26,710
+exception that happens. 
+So, and there's something in your system 
+
+72
+00:04:26,710 --> 00:04:30,440
+called interrupt vector that all it does 
+is it maps the exception. 
+
+73
+00:04:30,440 --> 00:04:32,925
+An exception, in each exception has a 
+number. 
+
+74
+00:04:32,925 --> 00:04:38,226
+To the codes that handles that exception. 
+So it's not, so the interrupt vector is 
+
+75
+00:04:38,226 --> 00:04:42,030
+just a table that's indexed by the 
+exception number. 
+
+76
+00:04:42,030 --> 00:04:45,999
+And the contents of this table is a 
+pointer to an instruction that many, that 
+
+77
+00:04:45,999 --> 00:04:49,968
+the first instruction to block off codes, 
+that, treats that deals with that 
+
+78
+00:04:49,968 --> 00:04:53,890
+exception. 
+Okay? 
+
+79
+00:04:53,890 --> 00:04:56,315
+So, it, it's an interact jump table. 
+Okay? 
+
+80
+00:04:56,315 --> 00:04:59,646
+Great. 
+So, and the way we do this, well each 
+
+81
+00:04:59,646 --> 00:05:03,190
+type of event has a unique exception 
+number, okay? 
+
+82
+00:05:03,190 --> 00:05:07,264
+And, and that's, a number K. 
+And this K is an index to the exception 
+
+83
+00:05:07,264 --> 00:05:11,430
+table. 
+Also known as interrupt vector. 
+
+84
+00:05:11,430 --> 00:05:15,550
+So and then this handler is called every 
+time a certain exception is executed. 
+
+85
+00:05:15,550 --> 00:05:21,375
+So, whenever exception K happens, the, 
+handler K is executed. 
+
+86
+00:05:21,375 --> 00:05:26,104
+Okay, so there's two types of exceptions. 
+The first time, the, the, the first type 
+
+87
+00:05:26,104 --> 00:05:29,860
+is an asynchronous exception. 
+Also known as interrupts. 
+
+88
+00:05:29,860 --> 00:05:34,069
+And the reason they're called 
+asynchronous it's because they are caused 
+
+89
+00:05:34,069 --> 00:05:40,030
+by events external to the processor. 
+So they are indicated by setting the 
+
+90
+00:05:40,030 --> 00:05:43,393
+processors interrupt pins so the 
+processor, right as you saw there's a 
+
+91
+00:05:43,393 --> 00:05:50,090
+bunch of pins in the processor. 
+So these pins, we call interrupt pins. 
+
+92
+00:05:50,090 --> 00:05:53,051
+So whenever we put a signal in this 
+interrupt pin, something happens inside 
+
+93
+00:05:53,051 --> 00:05:56,745
+the processor. 
+So an exception is raised. 
+
+94
+00:05:56,745 --> 00:06:00,832
+And then the processor, executes, jumps 
+to, to the piece of code responsible for 
+
+95
+00:06:00,832 --> 00:06:05,474
+dealing with that interrupt. 
+For example this interrupt could be, time 
+
+96
+00:06:05,474 --> 00:06:07,630
+stopping the timer. 
+Okay? 
+
+97
+00:06:07,630 --> 00:06:11,580
+Or you could be the mouse click, and so 
+on, okay? 
+
+98
+00:06:11,580 --> 00:06:15,556
+So, for example, it could be hitting the 
+Ctrl+C on the keyboard, as I said, just 
+
+99
+00:06:15,556 --> 00:06:19,140
+clicking on the mouse button or touching 
+the touch screen like what I'm doing 
+
+100
+00:06:19,140 --> 00:06:23,628
+right now. 
+A packet arrives from the network, and so 
+
+101
+00:06:23,628 --> 00:06:25,878
+on. 
+Okay? 
+
+102
+00:06:25,878 --> 00:06:30,363
+So, now the other type of exceptions that 
+we called synchronous exceptions and 
+
+103
+00:06:30,363 --> 00:06:34,718
+synchronous exceptions are caused by 
+events that are triggered by executing an 
+
+104
+00:06:34,718 --> 00:06:41,930
+instruction, an instruction to something 
+that's undefined, that's potentially bad. 
+
+105
+00:06:41,930 --> 00:06:44,540
+There's three types of synchronous 
+exceptions. 
+
+106
+00:06:44,540 --> 00:06:47,676
+One is called traps is a just an 
+intentional way of transferring the 
+
+107
+00:06:47,676 --> 00:06:52,030
+control flow to the operating system to 
+perform some functions. 
+
+108
+00:06:52,030 --> 00:06:56,530
+In fact, that's, that's a fact of the 
+operating system, API. 
+
+109
+00:06:56,530 --> 00:06:59,320
+A trap is a way of an application to 
+transfer the attention to the operating 
+
+110
+00:06:59,320 --> 00:07:03,410
+system so you can do something for the 
+application. 
+
+111
+00:07:03,410 --> 00:07:05,950
+Okay. 
+We, we call that system calls. 
+
+112
+00:07:05,950 --> 00:07:08,093
+Okay? 
+So that's, that's the operating system 
+
+113
+00:07:08,093 --> 00:07:10,520
+API. 
+But there are also other types of traps. 
+
+114
+00:07:10,520 --> 00:07:14,020
+Whenever using GDB, we insert a break 
+point into your code. 
+
+115
+00:07:14,020 --> 00:07:17,730
+It adds what we call break point trap. 
+So you code continues, your code 
+
+116
+00:07:17,730 --> 00:07:20,853
+executes. 
+Whenever it reaches this break point it 
+
+117
+00:07:20,853 --> 00:07:25,803
+sets a trap, it diverts execution, to the 
+debugger. 
+
+118
+00:07:25,803 --> 00:07:28,797
+Okay? 
+And, and so on. 
+
+119
+00:07:28,797 --> 00:07:29,950
+Okay? 
+Great. 
+
+120
+00:07:29,950 --> 00:07:35,425
+So and the traps, they return control to 
+the next instruction that's that call, 
+
+121
+00:07:35,425 --> 00:07:41,680
+the instruction after the one that caused 
+this intentional trap. 
+
+122
+00:07:41,680 --> 00:07:44,820
+The other type of synchronous exceptions 
+that we call fault. 
+
+123
+00:07:44,820 --> 00:07:47,585
+These are unintentional, was not 
+intention of the program. 
+
+124
+00:07:47,585 --> 00:07:50,420
+Okay? 
+But they are possibly recoverable. 
+
+125
+00:07:50,420 --> 00:07:53,759
+For example, if you have a page fault 
+which you're going to see in more detail 
+
+126
+00:07:53,759 --> 00:07:57,098
+in in, in future memories when the 
+program touch a piece of memory that is 
+
+127
+00:07:57,098 --> 00:08:00,808
+not actually in memory, that's a fault in 
+the tran, trans, the transfer is, is the 
+
+128
+00:08:00,808 --> 00:08:07,465
+control is transferred to the operating 
+system to deal with that situation. 
+
+129
+00:08:07,465 --> 00:08:10,358
+Okay. 
+we're going to see an example on that a 
+
+130
+00:08:10,358 --> 00:08:14,542
+little later in this video, okay? 
+So or we have, segment protection fault, 
+
+131
+00:08:14,542 --> 00:08:18,240
+which you might have seen segfault when 
+execute some of your programs. 
+
+132
+00:08:18,240 --> 00:08:21,205
+It's exactly what happened. 
+So, you, you might have touched a piece 
+
+133
+00:08:21,205 --> 00:08:23,957
+of memory that's undefined and then 
+that's unrecoverable so your program is 
+
+134
+00:08:23,957 --> 00:08:27,856
+aborted. 
+Another example of a fault is when you do 
+
+135
+00:08:27,856 --> 00:08:31,080
+division by zero, [UNKNOWN] division by 
+zero is undefined that leads to an 
+
+136
+00:08:31,080 --> 00:08:35,050
+exception, and your program might have to 
+deal with it. 
+
+137
+00:08:35,050 --> 00:08:37,890
+It can potentially be unrecoverable, 
+okay? 
+
+138
+00:08:37,890 --> 00:08:41,310
+So, and in the case of a fault, the 
+program either re-executes the faulty 
+
+139
+00:08:41,310 --> 00:08:46,383
+instruction or the program aborts. 
+Finally, the last type of synchronous 
+
+140
+00:08:46,383 --> 00:08:51,424
+exceptions will be called aborts. 
+They are unintentional and unrecoverable, 
+
+141
+00:08:51,424 --> 00:08:53,630
+okay? 
+One example is when you have a parity 
+
+142
+00:08:53,630 --> 00:08:56,750
+error or machine check that happens 
+because an instruction has touched 
+
+143
+00:08:56,750 --> 00:08:59,990
+something that is bad in your system, 
+okay? 
+
+144
+00:08:59,990 --> 00:09:03,820
+And it just simply aborts the program 
+because it is just unrecoverable. 
+
+145
+00:09:03,820 --> 00:09:07,964
+So now let's see an example of a trap. 
+Okay an example, we using it to transfer 
+
+146
+00:09:07,964 --> 00:09:11,220
+control to the operating system. 
+Okay. 
+
+147
+00:09:11,220 --> 00:09:15,790
+So, opening a file requires an operating 
+system, service, okay? 
+
+148
+00:09:15,790 --> 00:09:18,940
+And that's going to be done using a trap, 
+so for example every time your program 
+
+149
+00:09:18,940 --> 00:09:22,140
+opens a file, eventually it's going to 
+open call this open function that takes a 
+
+150
+00:09:22,140 --> 00:09:25,340
+file name as a parameter and then some 
+options on whether the file is for read, 
+
+151
+00:09:25,340 --> 00:09:29,810
+write or both. 
+Okay. 
+
+152
+00:09:29,810 --> 00:09:34,620
+And if you look at the assembly code for 
+this function open, you're going to see 
+
+153
+00:09:34,620 --> 00:09:40,537
+this instruction here int hex 80, okay. 
+So, this diverts, this int is a, is a 
+
+154
+00:09:40,537 --> 00:09:45,350
+trap that diverts the execution to, so 
+your process executing here. 
+
+155
+00:09:45,350 --> 00:09:49,814
+So, the it is example that your program 
+is execute, whenever it reaches, it 
+
+156
+00:09:49,814 --> 00:09:53,302
+executes int. 
+It, it's a, as I said it's an exception, 
+
+157
+00:09:53,302 --> 00:09:55,772
+it's a trap. 
+Control is transferred to the operating 
+
+158
+00:09:55,772 --> 00:09:57,992
+system. 
+And the operating system knows, based on 
+
+159
+00:09:57,992 --> 00:10:01,563
+a number it needs to open a file. 
+So it opens a file and returns to here's 
+
+160
+00:10:01,563 --> 00:10:04,449
+the code so you can go have the 
+manipulator file. 
+
+161
+00:10:06,700 --> 00:10:10,920
+Okay so in what the OS does here is has 
+to find or create a file. 
+
+162
+00:10:10,920 --> 00:10:13,300
+And get it ready for reading or writing, 
+okay? 
+
+163
+00:10:13,300 --> 00:10:19,290
+And then it returns the file descriptor. 
+So that's why there's a pop here. 
+
+164
+00:10:19,290 --> 00:10:21,758
+Okay? 
+Now another example, this is similar of a 
+
+165
+00:10:21,758 --> 00:10:24,242
+trap. 
+Lets look at a example of a fault. 
+
+166
+00:10:24,242 --> 00:10:26,146
+Okay. 
+Remember that a fault is an, is a 
+
+167
+00:10:26,146 --> 00:10:30,626
+asynchronous exception that happens due 
+to something that you instruction that an 
+
+168
+00:10:30,626 --> 00:10:35,430
+instruction does, okay. 
+So let's see what happens here. 
+
+169
+00:10:35,430 --> 00:10:37,480
+See that we have this piece of code here. 
+Okay. 
+
+170
+00:10:37,480 --> 00:10:38,760
+So eventually we're going to touch 
+memory. 
+
+171
+00:10:38,760 --> 00:10:43,565
+An now so the, the user just writes 
+memory location. 
+
+172
+00:10:43,565 --> 00:10:46,799
+And if it so happens that if the portion 
+of the users memory is currently on disk, 
+
+173
+00:10:46,799 --> 00:10:49,788
+it's not in actual memory, okay, you're 
+going to see that in more detail in 
+
+174
+00:10:49,788 --> 00:10:53,316
+virtual memory, but it could happen that 
+whenever you touch a memory location, the 
+
+175
+00:10:53,316 --> 00:10:58,950
+memory actually isn't there yet. 
+So we have to transfer control to the 
+
+176
+00:10:58,950 --> 00:11:01,735
+operating system to actually map that 
+page in. 
+
+177
+00:11:01,735 --> 00:11:04,966
+Okay? 
+So here's our instruction that's being 
+
+178
+00:11:04,966 --> 00:11:07,714
+executed. 
+Whenever we execute that instruction it 
+
+179
+00:11:07,714 --> 00:11:11,770
+could be that if it so happens that the 
+page is not in memory yet. 
+
+180
+00:11:11,770 --> 00:11:14,335
+This leads to what we call page fault 
+exception. 
+
+181
+00:11:14,335 --> 00:11:16,672
+Okay? 
+The transfer again, transfer control to 
+
+182
+00:11:16,672 --> 00:11:20,550
+the operating system that's going to 
+create a page and load it into memory. 
+
+183
+00:11:20,550 --> 00:11:23,925
+And whenever that's done it's going to go 
+back. 
+
+184
+00:11:23,925 --> 00:11:26,914
+And note that now the difference that 
+it's going to re-execute the memory 
+
+185
+00:11:26,914 --> 00:11:31,650
+access because now the page is there. 
+So we can go and actually execute the, 
+
+186
+00:11:31,650 --> 00:11:34,780
+the memory access. 
+Okay? 
+
+187
+00:11:34,780 --> 00:11:37,570
+So in a, in this case the page handler 
+here that's executed by the operating 
+
+188
+00:11:37,570 --> 00:11:40,760
+system loads the page into physical 
+memory. 
+
+189
+00:11:40,760 --> 00:11:44,316
+And returns to the faulty instructions. 
+So, move has to be executed again. 
+
+190
+00:11:44,316 --> 00:11:47,566
+Okay. 
+So, and hopefully the second time it's 
+
+191
+00:11:47,566 --> 00:11:53,390
+going to be successful it could map, if 
+it could map the, the page. 
+
+192
+00:11:53,390 --> 00:11:56,910
+Now, if you touch a bad memory location, 
+like let's say you just have a pointer 
+
+193
+00:11:56,910 --> 00:12:00,108
+problem, okay. 
+You just had a pointer problem in your 
+
+194
+00:12:00,108 --> 00:12:03,670
+codes, so that could be an invalid memory 
+reference. 
+
+195
+00:12:03,670 --> 00:12:07,328
+So, in that case, if you touch a piece of 
+memory that's not mapped, but the OS 
+
+196
+00:12:07,328 --> 00:12:10,895
+cannot find a, the operating system 
+cannot find a valid mapping as for 
+
+197
+00:12:10,895 --> 00:12:15,271
+[INAUDIBLE] codes. 
+Okay, your execution, the execution of 
+
+198
+00:12:15,271 --> 00:12:17,230
+your program. 
+So, let's look at this example again. 
+
+199
+00:12:17,230 --> 00:12:20,620
+We have our move instruction here. 
+For re-executing [SOUND], it reaches the 
+
+200
+00:12:20,620 --> 00:12:24,372
+move instruction and then that leads to 
+page fault because it's unmapped but the 
+
+201
+00:12:24,372 --> 00:12:27,956
+OS determines that, you know what, not 
+only it's unmapped but this address is 
+
+202
+00:12:27,956 --> 00:12:31,938
+invalid. 
+So what it needs to do, so just have to 
+
+203
+00:12:31,938 --> 00:12:35,522
+go and signal the processing like, 
+unfortunately, I'm going to have to abort 
+
+204
+00:12:35,522 --> 00:12:38,950
+you. 
+So it send this zigzag fault to the user 
+
+205
+00:12:38,950 --> 00:12:43,316
+process and the user process exits with a 
+segmentation fault here. 
+
+206
+00:12:43,316 --> 00:12:48,140
+Okay? 
+So, now to, to summarize. 
+
+207
+00:12:48,140 --> 00:12:51,490
+Exceptions are events that require non 
+center control flow. 
+
+208
+00:12:51,490 --> 00:12:57,840
+That means that, not, with you know, 
+jumps, or, call. 
+
+209
+00:12:57,840 --> 00:13:00,810
+Okay? 
+They can be generated externally because 
+
+210
+00:13:00,810 --> 00:13:04,590
+of interrupts or internally in case of 
+traps and faults. 
+
+211
+00:13:04,590 --> 00:13:06,986
+And, the exception is handled by the 
+operating system. 
+
+212
+00:13:06,986 --> 00:13:10,220
+And when your operating system handles an 
+exception, one of three things could 
+
+213
+00:13:10,220 --> 00:13:12,780
+happen. 
+It re-executes the current instruction, 
+
+214
+00:13:12,780 --> 00:13:17,239
+in the case of, for example, page faults. 
+It could resume the execution with next 
+
+215
+00:13:17,239 --> 00:13:20,144
+instruction. 
+That is the case of doing a trap and 
+
+216
+00:13:20,144 --> 00:13:23,483
+using operating system services like 
+opening file, reading or writing to a 
+
+217
+00:13:23,483 --> 00:13:27,095
+file. 
+Or you might choose to abort the process 
+
+218
+00:13:27,095 --> 00:13:31,422
+in case, the exception is unrecoverable. 
+See you soon! 
+

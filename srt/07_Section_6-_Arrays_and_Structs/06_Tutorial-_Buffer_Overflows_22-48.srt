@@ -1,0 +1,1365 @@
+1
+00:00:00,001 --> 00:00:04,881
+[MUSIC] This video is to help you 
+understand a little bit about the buffer 
+
+2
+00:00:04,881 --> 00:00:09,761
+overflow problems you've been 
+encountering and exploiting on one of the 
+
+3
+00:00:09,761 --> 00:00:16,630
+assignments, one of the programming 
+assignments. 
+
+4
+00:00:16,630 --> 00:00:21,200
+let's start off by talking about what a 
+buffer overflow is. 
+
+5
+00:00:21,200 --> 00:00:26,060
+primary this happens because C doesn't 
+check array bounds. 
+
+6
+00:00:26,060 --> 00:00:31,755
+and what happens is that when we take 
+input from, example, the keyboard we 
+
+7
+00:00:31,755 --> 00:00:37,290
+don't specify a limit on the amount of 
+input. 
+
+8
+00:00:37,290 --> 00:00:41,259
+So, as we fill up a buffer with the input 
+we're taking each keystroke from the 
+
+9
+00:00:41,259 --> 00:00:45,228
+keyboard, we can actually go past the end 
+of an array, that we're using as our 
+
+10
+00:00:45,228 --> 00:00:51,230
+input buffer to store each of those 
+characters. 
+
+11
+00:00:51,230 --> 00:00:56,500
+And this is, was, this was a very common 
+type of security vulnerability. 
+
+12
+00:00:56,500 --> 00:01:01,532
+what we'll go over in this video is how 
+this stack is laid out and the address 
+
+13
+00:01:01,532 --> 00:01:07,930
+space in general that allows this, 
+allowed this to happen. 
+
+14
+00:01:07,930 --> 00:01:13,037
+How input buffers are put on the stack. 
+And then how overflowing the buffer can 
+
+15
+00:01:13,037 --> 00:01:17,360
+help us inject unwanted code, into our 
+program. 
+
+16
+00:01:17,360 --> 00:01:21,712
+And then we'll close with, what are now 
+the defenses against buffer overflows 
+
+17
+00:01:21,712 --> 00:01:25,655
+that have prevented this kind of 
+vulnerability. 
+
+18
+00:01:25,655 --> 00:01:29,990
+Okay, so remember the, Linux Memory 
+Layout. 
+
+19
+00:01:29,990 --> 00:01:35,700
+we have a stack that grows from the high 
+end of memory downward. 
+
+20
+00:01:35,700 --> 00:01:42,396
+and then we have a, our program, our 
+programs static data and dynamic data at 
+
+21
+00:01:42,396 --> 00:01:50,490
+the bottom addresses with the dynamic 
+data growing upward, okay? 
+
+22
+00:01:50,490 --> 00:01:55,845
+Remember the, the dynamic data is 
+allocated using malloc or new or other 
+
+23
+00:01:55,845 --> 00:02:03,210
+memory allocation primitives like that. 
+The stack is allocated by making 
+
+24
+00:02:03,210 --> 00:02:07,396
+procedure calls. 
+And, what each procedure needs to place 
+
+25
+00:02:07,396 --> 00:02:11,414
+on the stack. 
+Things like local variables arguments for 
+
+26
+00:02:11,414 --> 00:02:17,380
+the next procedure call and so on. 
+Okay. 
+
+27
+00:02:17,380 --> 00:02:22,560
+So just to reiterate that point, here's 
+an example program and let's see where 
+
+28
+00:02:22,560 --> 00:02:27,500
+everything actually ends up going in 
+memory. 
+
+29
+00:02:27,500 --> 00:02:31,784
+you can see that this program has a 
+couple of big chunks of memory, two big 
+
+30
+00:02:31,784 --> 00:02:36,068
+arrays allocated at the top, some 
+variables of various types, some instant 
+
+31
+00:02:36,068 --> 00:02:40,684
+pointers. 
+And then a couple of, a couple of 
+
+32
+00:02:40,684 --> 00:02:49,100
+procedures, some of which have statements 
+that do some dynamic memory allocation. 
+
+33
+00:02:49,100 --> 00:02:52,980
+So, lets take a look at where those 
+things all end up in memory. 
+
+34
+00:02:52,980 --> 00:02:58,870
+we'll start with of course, our main 
+procedure and our useless procedure. 
+
+35
+00:02:58,870 --> 00:03:00,950
+They end up in the text portion of 
+memory. 
+
+36
+00:03:00,950 --> 00:03:03,850
+That's where we'll have the ins, the 
+assembly instructions for those 
+
+37
+00:03:03,850 --> 00:03:07,450
+procedures. 
+Then there's some static data, including 
+
+38
+00:03:07,450 --> 00:03:10,990
+those big arrays and the variables we 
+declared. 
+
+39
+00:03:10,990 --> 00:03:15,214
+That space will be allocated here. 
+even prior to running the program, we'll 
+
+40
+00:03:15,214 --> 00:03:18,440
+know in advance how much space we need 
+there. 
+
+41
+00:03:18,440 --> 00:03:22,913
+Then there's parts of the program of 
+course those malloc arrays that allocate 
+
+42
+00:03:22,913 --> 00:03:26,630
+memory when it's needed and that will 
+come from the heap space that will 
+
+43
+00:03:26,630 --> 00:03:31,473
+continue to grow upward. 
+And of course we can free up that space 
+
+44
+00:03:31,473 --> 00:03:35,810
+when we don't need it anymore. 
+And use it for other things. 
+
+45
+00:03:35,810 --> 00:03:42,199
+our stack pointer of course points to the 
+top of the stack. 
+
+46
+00:03:42,199 --> 00:03:47,309
+And we also have some libraries for 
+example the malloc routine that we've 
+
+47
+00:03:47,309 --> 00:03:53,675
+linked at, at run time, and that usually 
+sits in this area down here. 
+
+48
+00:03:53,675 --> 00:03:57,320
+Okay, so that's where things are ending 
+up in memory. 
+
+49
+00:03:59,420 --> 00:04:05,771
+And what happened in the late 80s is a 
+program was created that could actually 
+
+50
+00:04:05,771 --> 00:04:13,476
+attack a lot of internet hosts. 
+by exploiting the way that this a, memory 
+
+51
+00:04:13,476 --> 00:04:18,770
+allocation was done, and the way that 
+memory was arranged. 
+
+52
+00:04:18,770 --> 00:04:24,166
+because the stack grows backwards in 
+memory, and data and instructions are 
+
+53
+00:04:24,166 --> 00:04:30,324
+stored in the same memory, we can do an 
+interesting attack. 
+
+54
+00:04:30,324 --> 00:04:34,381
+That can help us take control of a some 
+ones machine. 
+
+55
+00:04:34,381 --> 00:04:39,896
+let's see how, how this happened. 
+Okay, the stack was based the internet 
+
+56
+00:04:39,896 --> 00:04:45,210
+worm was based on a stack buffer overflow 
+exploit. 
+
+57
+00:04:45,210 --> 00:04:49,850
+Okay and again as I mentioned at the 
+beginning, it's because many Unix 
+
+58
+00:04:49,850 --> 00:04:55,130
+functions do not check argument sizes, so 
+they'll just allow us to fill and over 
+
+59
+00:04:55,130 --> 00:05:02,689
+fill or overflow a buffer, for our input. 
+Let's take a look at a common function in 
+
+60
+00:05:02,689 --> 00:05:07,700
+Linux, the gets function. 
+which is used to to get an input string 
+
+61
+00:05:07,700 --> 00:05:12,914
+from the keyboard. 
+You'll notice that the function returns a 
+
+62
+00:05:12,914 --> 00:05:17,790
+pointer to a character buffer, a 
+character a buffer of bytes. 
+
+63
+00:05:17,790 --> 00:05:25,695
+And it takes as its argument the start of 
+that of that buffer. 
+
+64
+00:05:25,695 --> 00:05:29,350
+Okay. 
+So, let's, let's walk though this code 
+
+65
+00:05:29,350 --> 00:05:33,150
+real quickly. 
+You'll see it starts off by getting a 
+
+66
+00:05:33,150 --> 00:05:38,568
+character from the keyboard, a single 
+character and setting the, setting a 
+
+67
+00:05:38,568 --> 00:05:47,708
+pointer to the destination address. 
+And then asks, is this character, 
+
+68
+00:05:47,708 --> 00:05:52,778
+something that if, something that is not 
+the end of file and not a, a new line, or 
+
+69
+00:05:52,778 --> 00:05:57,734
+a return. 
+And if it isn't, in other words if it's 
+
+70
+00:05:57,734 --> 00:06:02,914
+just some other character, then it will, 
+put that character at where the pointer 
+
+71
+00:06:02,914 --> 00:06:08,350
+is pointing, the reference in the 
+pointer. 
+
+72
+00:06:08,350 --> 00:06:12,007
+And then it increments the pointer by 
+one, which because of pointer arithmetic 
+
+73
+00:06:12,007 --> 00:06:15,150
+will point to the next place in the 
+buffer. 
+
+74
+00:06:15,150 --> 00:06:17,950
+In this case they're characters, they'll 
+increment by one. 
+
+75
+00:06:17,950 --> 00:06:22,770
+And then it just calls get character 
+again and repeats the loop. 
+
+76
+00:06:22,770 --> 00:06:27,020
+asking us again, we reached a return or 
+an end of file. 
+
+77
+00:06:27,020 --> 00:06:31,980
+when we're done, it adds one more thing 
+to the end of the string. 
+
+78
+00:06:31,980 --> 00:06:35,804
+Namely the null character. 
+Because remember in C, we indicate the 
+
+79
+00:06:35,804 --> 00:06:40,427
+end of the string with a null, and then 
+finally just returns that same address it 
+
+80
+00:06:40,427 --> 00:06:46,650
+started with, as the place where it 
+placed the input characters. 
+
+81
+00:06:46,650 --> 00:06:50,720
+Okay. 
+So, what could go wrong in this code? 
+
+82
+00:06:50,720 --> 00:06:55,170
+Well, you can see that. 
+how big is this buffer? 
+
+83
+00:06:55,170 --> 00:06:58,510
+we don't know because we're just giving a 
+starting address. 
+
+84
+00:06:59,760 --> 00:07:04,660
+we have no idea how much space was 
+allocated in memory for this buffer. 
+
+85
+00:07:04,660 --> 00:07:07,780
+we're just going to keep putting things 
+in it until, as long as there's more 
+
+86
+00:07:07,780 --> 00:07:10,520
+input. 
+And we'll keep going. 
+
+87
+00:07:10,520 --> 00:07:13,706
+All right, so in fact there's no way to 
+specify the limit on the number of 
+
+88
+00:07:13,706 --> 00:07:18,398
+characters to read. 
+As defined and this is problem in many a, 
+
+89
+00:07:18,398 --> 00:07:22,630
+similar problem in many other unix 
+functions. 
+
+90
+00:07:22,630 --> 00:07:26,140
+Like string copy, which is just given to 
+addresses and says, copy a string from 
+
+91
+00:07:26,140 --> 00:07:29,710
+here to there. 
+But doesn't bother to check that the 
+
+92
+00:07:29,710 --> 00:07:35,747
+destination can hold that length, string. 
+Similarly in in scan F, these are 
+
+93
+00:07:35,747 --> 00:07:40,408
+functions used to get input from the 
+keyboard, we have a similar kind of 
+
+94
+00:07:40,408 --> 00:07:46,150
+problem as it gets strings of unknown 
+sides. 
+
+95
+00:07:46,150 --> 00:07:51,600
+Alright so, lets do the smallest possible 
+example we can, that can show this off. 
+
+96
+00:07:51,600 --> 00:07:57,075
+Here we have a simple C function called 
+Echo, it's called from main, notice here, 
+
+97
+00:07:57,075 --> 00:08:03,400
+the main prints type of string and then 
+asks us to input a string. 
+
+98
+00:08:03,400 --> 00:08:08,827
+And the function Echo is just going to 
+echo it back to the, console after we hit 
+
+99
+00:08:08,827 --> 00:08:11,130
+return. 
+All right. 
+
+100
+00:08:11,130 --> 00:08:18,570
+So, we will first read a string and then, 
+write the string back out to the console. 
+
+101
+00:08:18,570 --> 00:08:22,440
+After we're done. 
+So, how big is the buffer? 
+
+102
+00:08:22,440 --> 00:08:24,990
+Well, we've decided on a buffer of size 
+four. 
+
+103
+00:08:24,990 --> 00:08:28,080
+Just four bytes. 
+pretty small buffer. 
+
+104
+00:08:28,080 --> 00:08:32,235
+But let's see what happens when we run 
+this code. 
+
+105
+00:08:32,235 --> 00:08:36,392
+'Kay. 
+I'm going to run this code and type this 
+
+106
+00:08:36,392 --> 00:08:41,595
+string 1,2, 3,4, 5, 6,7, 8. 
+You noticed I typed eight characters, not 
+
+107
+00:08:41,595 --> 00:08:44,444
+four. 
+I've gone past the end of that buffer and 
+
+108
+00:08:44,444 --> 00:08:49,068
+written into other parts of memory we'll 
+see in a second where those are and 
+
+109
+00:08:49,068 --> 00:08:55,216
+there's a segmentation fault. 
+The we tried to, somehow our CPU tries to 
+
+110
+00:08:55,216 --> 00:08:59,374
+use an address it shouldn't, and the 
+system complains and says you have a 
+
+111
+00:08:59,374 --> 00:09:04,155
+fault here. 
+Something went terribly wrong, but now if 
+
+112
+00:09:04,155 --> 00:09:08,041
+we type the string 1, 2, 3, 4, 5, 6, 7, 
+you'll notice that that's only one 
+
+113
+00:09:08,041 --> 00:09:15,100
+shorter but it's still greater than four. 
+it'll echo it just fine. 
+
+114
+00:09:15,100 --> 00:09:19,620
+It'll just print that right back out. 
+Well why didn't that cause a problem? 
+
+115
+00:09:19,620 --> 00:09:25,264
+That overflowed the buffer as well, and 
+if we type the string 123456789ABC, of 
+
+116
+00:09:25,264 --> 00:09:30,493
+course we'll keep getting the 
+segmentation faults as these strings 
+
+117
+00:09:30,493 --> 00:09:36,444
+overflow the buffer. 
+So, let's take a look for each of these 
+
+118
+00:09:36,444 --> 00:09:41,399
+cases, just what is going on, what is 
+happening in this system. 
+
+119
+00:09:43,190 --> 00:09:49,509
+To start, lets review the the assembly 
+code that might be generated by echo. 
+
+120
+00:09:49,509 --> 00:09:52,759
+You'll notice here there's just some, 
+that usual set up stuff at the beginning 
+
+121
+00:09:52,759 --> 00:09:58,536
+and clean up stuff at the end. 
+And in between, we compute an address 
+
+122
+00:09:58,536 --> 00:10:03,820
+that we're going to use for, some 
+purposes. 
+
+123
+00:10:03,820 --> 00:10:09,046
+Allocate some space on the stack, save 
+that value onto the stack and then call 
+
+124
+00:10:09,046 --> 00:10:13,716
+gets. 
+When gets returns, we're just going to 
+
+125
+00:10:13,716 --> 00:10:20,730
+basically call puts right after it. 
+to echo the values, then reclaim our 
+
+126
+00:10:20,730 --> 00:10:24,387
+stack and return. 
+Why do we, what are we putting on the 
+
+127
+00:10:24,387 --> 00:10:27,725
+stack? 
+well we're probably allocating some space 
+
+128
+00:10:27,725 --> 00:10:31,158
+for the buffer as well as other things, 
+okay. 
+
+129
+00:10:31,158 --> 00:10:34,109
+Remember that buffer was of size four 
+bytes. 
+
+130
+00:10:35,130 --> 00:10:39,063
+the code down here in the pink region is 
+the code that we might see in main that 
+
+131
+00:10:39,063 --> 00:10:46,958
+calls echo then does something else. 
+And eventually cleans up and returns. 
+
+132
+00:10:46,958 --> 00:10:51,588
+Okay. 
+So before we execute that call to gets in 
+
+133
+00:10:51,588 --> 00:10:58,610
+echo that occurs here, this is likely 
+what's going to be on the stack. 
+
+134
+00:10:58,610 --> 00:11:01,950
+There will have been a stack frame for 
+the main procedure. 
+
+135
+00:11:01,950 --> 00:11:07,846
+And then, of course when main called 
+echo, it placed the return address on the 
+
+136
+00:11:07,846 --> 00:11:11,908
+stack. 
+That would be the return to the next line 
+
+137
+00:11:11,908 --> 00:11:17,036
+after the call to echo. 
+And then we see the stack frame for for 
+
+138
+00:11:17,036 --> 00:11:23,616
+the echo function, alright and that 
+involves pushing EBP on to the stack that 
+
+139
+00:11:23,616 --> 00:11:30,646
+happens here 
+Then we also push EBX onto the stack, so 
+
+140
+00:11:30,646 --> 00:11:37,036
+we that there and then there's some space 
+allocated for our four character buffer 
+
+141
+00:11:37,036 --> 00:11:43,564
+on the stack. 
+And that's computed at this location 
+
+142
+00:11:43,564 --> 00:11:47,410
+here. 
+the address of the stack you'll notice is 
+
+143
+00:11:47,410 --> 00:11:53,070
+the current EBP minus eight bytes is the 
+address of the the buffer. 
+
+144
+00:11:53,070 --> 00:11:57,827
+This functions may also allocate some 
+other space on the stack the last thing 
+
+145
+00:11:57,827 --> 00:12:02,442
+that's put on the stack is the argument 
+to to gets namely, the address of the 
+
+146
+00:12:02,442 --> 00:12:07,544
+buffer. 
+So, let's see what is what that stack 
+
+147
+00:12:07,544 --> 00:12:11,740
+looks like, just before we go to get it 
+to gets. 
+
+148
+00:12:11,740 --> 00:12:17,690
+Again we've allocated we've placed in the 
+EBP onto the stack, the old EBP onto the 
+
+149
+00:12:17,690 --> 00:12:24,501
+stack that's pointing to some earlier 
+place in the stack frame. 
+
+150
+00:12:24,501 --> 00:12:32,962
+you notice here the address is ffc658. 
+That would be maybe the start of the, of 
+
+151
+00:12:32,962 --> 00:12:39,018
+mains F stack frame. 
+our buffer is here, and remember we have 
+
+152
+00:12:39,018 --> 00:12:44,490
+to think about it as not having any 
+particular values in it at this point. 
+
+153
+00:12:44,490 --> 00:12:48,585
+We haven't written anything to those 
+locations yet, and then we have put the 
+
+154
+00:12:48,585 --> 00:12:52,870
+address of the buffer as the argument to 
+gets. 
+
+155
+00:12:52,870 --> 00:12:58,230
+Okay, and that's placed on the stack just 
+before we do that, call. 
+
+156
+00:12:58,230 --> 00:13:04,668
+finally, the return address from when 
+we're done with echo is 040885f7, which 
+
+157
+00:13:04,668 --> 00:13:11,840
+is the address in main for the 
+instruction after the call to echo. 
+
+158
+00:13:11,840 --> 00:13:16,222
+Where we will be returning. 
+Alright, so this is what our stack looks 
+
+159
+00:13:16,222 --> 00:13:20,958
+like at this point. 
+let's see what happens next. 
+
+160
+00:13:20,958 --> 00:13:25,998
+As we enter the characters 1, 2, 3, 4, 5, 
+6, 7 followed by a Return one of our 
+
+161
+00:13:25,998 --> 00:13:31,358
+examples therefore our input, you'll 
+notice that we'll fill the buffer with 
+
+162
+00:13:31,358 --> 00:13:37,440
+the ASCII codes for each of the 
+characters. 
+
+163
+00:13:37,440 --> 00:13:42,214
+There's the 1, the 2, the 3, the 4 all 
+the way to the 7, closing with that null, 
+
+164
+00:13:42,214 --> 00:13:48,280
+with that null byte to indicate the end 
+of the string. 
+
+165
+00:13:48,280 --> 00:13:52,030
+Now, you notice that we've overrun our 
+buffer. 
+
+166
+00:13:52,030 --> 00:13:56,432
+We haven't just filled the four bytes, 
+we've filled eight bytes, and overwritten 
+
+167
+00:13:56,432 --> 00:14:02,295
+ebx that the that the safe value of ebx 
+that have been stored on the stack. 
+
+168
+00:14:02,295 --> 00:14:06,435
+That might cause some problems later on, 
+if we needed that value but it turns out 
+
+169
+00:14:06,435 --> 00:14:11,535
+in this case that it's not an issue and 
+we can return just fine 
+
+170
+00:14:11,535 --> 00:14:17,156
+After this call, the the return address 
+hasn't been affected, the saved value of 
+
+171
+00:14:17,156 --> 00:14:22,764
+ebp hasn't been affected. 
+Everything can still function properly 
+
+172
+00:14:22,764 --> 00:14:29,314
+and that's why we actually print that 
+string correctly, we're able to do that. 
+
+173
+00:14:29,314 --> 00:14:36,550
+Now, if we add one more character and put 
+in an input of 1, 2, 3, 4, 5, 6, 7, 8. 
+
+174
+00:14:36,550 --> 00:14:42,710
+You'll notice that we'll overwrite part 
+of the saved ebp. 
+
+175
+00:14:42,710 --> 00:14:47,792
+So, now rather than being, the frame 
+being reset correctly for main to point 
+
+176
+00:14:47,792 --> 00:14:55,820
+at the beginning, it'll be pointing at 
+the wrong location, 00FF instead of FFFF. 
+
+177
+00:14:55,820 --> 00:15:02,045
+and, that will cause that segmentation 
+fault that we'll see happen later because 
+
+178
+00:15:02,045 --> 00:15:10,360
+when we pop ebp in the lead instruction. 
+for echo we'll get the wrong value and 
+
+179
+00:15:10,360 --> 00:15:17,110
+main stack frame will be improperly 
+addressed. 
+
+180
+00:15:17,110 --> 00:15:22,479
+When I put in the longer string, 
+12345678ABC, we now go even further and 
+
+181
+00:15:22,479 --> 00:15:28,303
+not only overrun the buffer and the save 
+edx and the save ebp, we actually also 
+
+182
+00:15:28,303 --> 00:15:36,248
+change a byte of the return address. 
+So, now when we go to return from echo, 
+
+183
+00:15:36,248 --> 00:15:40,160
+we're not even going to return to the 
+main procedure anymore. 
+
+184
+00:15:40,160 --> 00:15:49,000
+we're going to return to another address 
+rather then going to 080485f7, we're 
+
+185
+00:15:49,000 --> 00:15:55,654
+going to go to 000485F7. 
+And that will def, who knows what we will 
+
+186
+00:15:55,654 --> 00:15:59,642
+find there? 
+So, that's the main problem with this, 
+
+187
+00:15:59,642 --> 00:16:05,570
+buffer overflow is we start destroying 
+data that is on the stack. 
+
+188
+00:16:05,570 --> 00:16:09,523
+Both the stack frame, the stack frame 
+discipline is broken, we destroyed the 
+
+189
+00:16:09,523 --> 00:16:13,750
+return addresses, we return, destroyed 
+this, 
+
+190
+00:16:13,750 --> 00:16:18,012
+Potentially destroy some frame pointers. 
+Okay, so how can we use this maliciously 
+
+191
+00:16:18,012 --> 00:16:20,980
+to get the machine to do whatever we 
+want? 
+
+192
+00:16:22,040 --> 00:16:27,240
+well what we can do is input a string 
+that isn't just simple characters, but 
+
+193
+00:16:27,240 --> 00:16:34,350
+actually are the bytes that could 
+represent some executable code. 
+
+194
+00:16:34,350 --> 00:16:40,650
+So, that as we go back and overwrite that 
+buffer, we can overrun that buffer and go 
+
+195
+00:16:40,650 --> 00:16:49,375
+and write over the return address, we can 
+actually change the return address. 
+
+196
+00:16:49,375 --> 00:16:56,531
+To point into the area we just wrote. 
+So, rather than let's take a look at this 
+
+197
+00:16:56,531 --> 00:17:00,660
+situation here. 
+Where we have this function bar, that 
+
+198
+00:17:00,660 --> 00:17:03,720
+we're calling. 
+And it's supposed to be returning of 
+
+199
+00:17:03,720 --> 00:17:06,510
+course to the address immediately at the 
+bar. 
+
+200
+00:17:06,510 --> 00:17:09,604
+Let's call that A. 
+That was the, that's the return address 
+
+201
+00:17:09,604 --> 00:17:14,392
+we place on the stack. 
+But then we call bar in it, does that, a 
+
+202
+00:17:14,392 --> 00:17:18,820
+buffer allocation and allows us to 
+overrun the buffer. 
+
+203
+00:17:18,820 --> 00:17:23,704
+We could actually go as far as inserting 
+code, into the buffer, so that we put 
+
+204
+00:17:23,704 --> 00:17:30,205
+some special code, here, of our own. 
+As well as continuing down to overrun 
+
+205
+00:17:30,205 --> 00:17:35,440
+where the return address A was stored. 
+And change it to be address B. 
+
+206
+00:17:35,440 --> 00:17:39,340
+So, we get get of A, and, and put the 
+address B. 
+
+207
+00:17:39,340 --> 00:17:44,080
+The address B is just going to be the 
+start of our buffer, where we've put our 
+
+208
+00:17:44,080 --> 00:17:49,755
+own code. 
+And so now rather than returning to this 
+
+209
+00:17:49,755 --> 00:17:56,595
+address here in the function foo, we're 
+going to return, erroneously to part of 
+
+210
+00:17:56,595 --> 00:18:03,340
+our stack where we've injected some 
+special code, that we'll execute, for our 
+
+211
+00:18:03,340 --> 00:18:10,162
+own purposes. 
+And this is how we end up hijacking a 
+
+212
+00:18:10,162 --> 00:18:14,742
+machine. 
+we basically overrun its stack, and write 
+
+213
+00:18:14,742 --> 00:18:20,992
+our own code in there, and force, a jump 
+to that location. 
+
+214
+00:18:20,992 --> 00:18:23,476
+All right. 
+So, that's what we're going to be doing 
+
+215
+00:18:23,476 --> 00:18:25,870
+in assign, in one of our programming 
+assignments. 
+
+216
+00:18:26,950 --> 00:18:30,369
+is writing code to do this. 
+Now this works in machines in the late 
+
+217
+00:18:30,369 --> 00:18:35,500
+80s, early 90s. 
+it doesn't really work today. 
+
+218
+00:18:35,500 --> 00:18:39,212
+But the way that Internet worm does, is 
+that it took advantage of a function in 
+
+219
+00:18:39,212 --> 00:18:43,272
+Linux called, finger, which takes 
+somebody’s e-mail address and would tell 
+
+220
+00:18:43,272 --> 00:18:48,380
+you whether they were logged in, to the 
+machine or not. 
+
+221
+00:18:48,380 --> 00:18:56,000
+And how long they might have been idle. 
+so, it used gets to get that input. 
+
+222
+00:18:56,000 --> 00:19:00,224
+And so instead of providing that, that 
+correct input of, that would probably be 
+
+223
+00:19:00,224 --> 00:19:05,841
+on be of a maybe 64 byte length or so. 
+We could actually put in something that 
+
+224
+00:19:05,841 --> 00:19:10,184
+was much, much longer that included some 
+exploit code 
+
+225
+00:19:10,184 --> 00:19:14,338
+The code we actually want to have run, 
+some padding to get us as far as we need 
+
+226
+00:19:14,338 --> 00:19:18,492
+to go to make sure to overwrite the 
+return address, and then that new return 
+
+227
+00:19:18,492 --> 00:19:24,921
+address that would actually be the start 
+of the exploit code. 
+
+228
+00:19:24,921 --> 00:19:27,772
+Alright? 
+and then that would allow us to take over 
+
+229
+00:19:27,772 --> 00:19:32,704
+the victim's machine. 
+So, buffer overflow exploits were really 
+
+230
+00:19:32,704 --> 00:19:36,460
+common in the late 80s early 90s. 
+What has happened since then? 
+
+231
+00:19:36,460 --> 00:19:41,773
+Well, we've gone in and changed those 
+Linux libraries that like gets function, 
+
+232
+00:19:41,773 --> 00:19:46,701
+we now use fgets which is a function 
+that's been defined to have an additional 
+
+233
+00:19:46,701 --> 00:19:51,802
+argument. 
+which specifies the size of the buffer so 
+
+234
+00:19:51,802 --> 00:19:55,230
+we will not read any more characters than 
+that limit. 
+
+235
+00:19:55,230 --> 00:19:59,991
+therefore we can now, stop before we get 
+to the end of the buffer and know that 
+
+236
+00:19:59,991 --> 00:20:05,474
+we're not overwriting any other areas. 
+similarly, string copy is another 
+
+237
+00:20:05,474 --> 00:20:09,146
+function that's been modified. 
+It's now, there's a version called string 
+
+238
+00:20:09,146 --> 00:20:12,852
+n copy. 
+where the ends argument specifies the 
+
+239
+00:20:12,852 --> 00:20:16,948
+size of the string to copy, so we don't 
+copy some long string into the space for 
+
+240
+00:20:16,948 --> 00:20:23,633
+a smaller one and overrun that. 
+similarly scanf has been changed so that 
+
+241
+00:20:23,633 --> 00:20:27,911
+rather than having the percent s 
+specification, that just read a string of 
+
+242
+00:20:27,911 --> 00:20:33,600
+arbitrary size, it now uses fgets with 
+percent ns. 
+
+243
+00:20:33,600 --> 00:20:39,060
+which says read a string but of size n 
+maximum, again limiting the size of that 
+
+244
+00:20:39,060 --> 00:20:43,300
+input. 
+but there's been some other changes as 
+
+245
+00:20:43,300 --> 00:20:48,982
+well, some system level protections. 
+one is to get the compiler to consider, 
+
+246
+00:20:48,982 --> 00:20:54,820
+randomizing the stack offsets, the size 
+of the frame for each stack frame. 
+
+247
+00:20:54,820 --> 00:20:58,857
+So that it is difficult to, for an 
+attacker to know how much padding to add. 
+
+248
+00:20:58,857 --> 00:21:02,461
+Because every time the procedure is 
+called it adds a slightly it, it makes a 
+
+249
+00:21:02,461 --> 00:21:07,960
+frame of a slightly different size. 
+so that it makes it difficult for to 
+
+250
+00:21:07,960 --> 00:21:11,990
+predict the size of that code and where 
+we're going to get that return address 
+
+251
+00:21:11,990 --> 00:21:17,112
+that we want to be able to jump to the 
+exploit code. 
+
+252
+00:21:17,112 --> 00:21:21,560
+To be just, at the right place becomes 
+very hard to do that. 
+
+253
+00:21:21,560 --> 00:21:26,177
+people have also developed techniques for 
+detecting stack corruption, checking the 
+
+254
+00:21:26,177 --> 00:21:30,167
+stack before and after procedure calls, 
+that it might be sensitive, to these 
+
+255
+00:21:30,167 --> 00:21:35,860
+buffer overflow exploits. 
+To check that the stack has not been. 
+
+256
+00:21:35,860 --> 00:21:39,370
+And then finally some hardware 
+modifications to create some 
+
+257
+00:21:39,370 --> 00:21:44,160
+non-executable areas of memory. 
+So that for example, the portion of the 
+
+258
+00:21:44,160 --> 00:21:48,255
+memory or the segment of the memory that 
+the stack occupies would be set to be 
+
+259
+00:21:48,255 --> 00:21:52,964
+non-executable. 
+Meaning that whenever we read data from 
+
+260
+00:21:52,964 --> 00:21:57,020
+this area, we cannot interprete it as 
+instructions. 
+
+261
+00:21:57,020 --> 00:22:01,070
+So, now even if we're able to fill a 
+buffer with, exploit code. 
+
+262
+00:22:01,070 --> 00:22:06,660
+And, in, insert the address in the right 
+place so we can jump to that code. 
+
+263
+00:22:06,660 --> 00:22:10,648
+we still can't execute it. 
+The system will not interpret that stuff 
+
+264
+00:22:10,648 --> 00:22:14,275
+as, instructions. 
+But will insist on saying the stuff on 
+
+265
+00:22:14,275 --> 00:22:19,320
+the stack has to be interpreted as data. 
+Not as, as code. 
+
+266
+00:22:19,320 --> 00:22:22,701
+For your programming assignment, you'll 
+be working with a virtual machine that is 
+
+267
+00:22:22,701 --> 00:22:25,739
+of the late 80s, early 90s vintage, so 
+you'll be able to write a bunch of flow 
+
+268
+00:22:25,739 --> 00:22:29,460
+exploit. 
+but you should know that of course that 
+
+269
+00:22:29,460 --> 00:22:34,194
+is not the case any longer. 
+And that type of attack is no longer 
+
+270
+00:22:34,194 --> 00:22:37,476
+possible. 
+but good luck with the programming 
+
+271
+00:22:37,476 --> 00:22:41,420
+assignment and you should really enjoy it 
+and see how you can inject code into a 
+
+272
+00:22:41,420 --> 00:22:45,320
+program. 
+that wasn't meant to have that code in it 
+
+273
+00:22:45,320 --> 00:22:48,911
+to begin with. 
+Have fun. 
+

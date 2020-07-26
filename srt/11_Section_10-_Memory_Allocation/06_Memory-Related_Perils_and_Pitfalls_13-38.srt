@@ -1,0 +1,1099 @@
+1
+23:59:59,500 --> 00:00:05,399
+[MUSIC]. 
+
+2
+00:00:05,399 --> 00:00:09,964
+All right, so let's see our last topic in 
+the Memory Allocation section now. 
+
+3
+00:00:09,964 --> 00:00:13,917
+Which is going to be about memory bugs in 
+C, memory related bugs in C, and how to 
+
+4
+00:00:13,917 --> 00:00:17,473
+deal with them. 
+And how complicated and nasty they can 
+
+5
+00:00:17,473 --> 00:00:18,738
+be. 
+Okay. 
+
+6
+00:00:18,738 --> 00:00:22,458
+there are many, many problems in 
+manipulating memory and pointers in C 
+
+7
+00:00:22,458 --> 00:00:25,440
+okay. 
+You could dereference a bad pointer, you 
+
+8
+00:00:25,440 --> 00:00:29,180
+could read memory that was uninitialized, 
+you could override memory without 
+
+9
+00:00:29,180 --> 00:00:32,629
+noticing. 
+You could reference non-existent 
+
+10
+00:00:32,629 --> 00:00:35,920
+variables, you could free a block 
+multiple times. 
+
+11
+00:00:35,920 --> 00:00:39,768
+you could reference free blocks, so you 
+get garbage that was in memory, whatever, 
+
+12
+00:00:39,768 --> 00:00:43,340
+whatever was there. 
+Or it might fail to free your blocks and 
+
+13
+00:00:43,340 --> 00:00:46,060
+exhaust your memory and so on. 
+Okay. 
+
+14
+00:00:46,060 --> 00:00:48,260
+So let's talk about dereferencing bad 
+pointer. 
+
+15
+00:00:48,260 --> 00:00:49,950
+Okay. 
+So here's what's happening here. 
+
+16
+00:00:49,950 --> 00:00:54,302
+We declare a variable val, and we call 
+scanf, which just reads something from 
+
+17
+00:00:54,302 --> 00:01:01,149
+intput and stores it in val. 
+Okay, and but what we're supposed to have 
+
+18
+00:01:01,149 --> 00:01:05,167
+done here is to have. 
+Past the address of val just kind of as 
+
+19
+00:01:05,167 --> 00:01:08,728
+opposed to val. 
+But the problem here is that in the best 
+
+20
+00:01:08,728 --> 00:01:11,668
+case, in the but it's going to have us to 
+know, it's going to interpret that as a 
+
+21
+00:01:11,668 --> 00:01:15,170
+value and it's going to consider that a 
+pointer. 
+
+22
+00:01:15,170 --> 00:01:18,098
+So in the best case, your program is just 
+going to terminate immediately and 
+
+23
+00:01:18,098 --> 00:01:21,270
+because of a seg fault, it's going to 
+cause a seg fault. 
+
+24
+00:01:21,270 --> 00:01:24,960
+But in the worst case, the contents of 
+val actually corresponds. 
+
+25
+00:01:24,960 --> 00:01:28,900
+To some valid read write area of memory 
+that you're going to do it in. 
+
+26
+00:01:28,900 --> 00:01:31,924
+And later in the actual program, you're 
+going to have some problems, not good, 
+
+27
+00:01:31,924 --> 00:01:35,604
+evil, hard to find, complicated. 
+So be careful that when, when you pass a 
+
+28
+00:01:35,604 --> 00:01:38,424
+value as a parameter, make sure it 
+actually, and it happens it's going to be 
+
+29
+00:01:38,424 --> 00:01:42,171
+interpreted as a pointer. 
+Make sure it's actually passing as a 
+
+30
+00:01:42,171 --> 00:01:44,765
+pointer as opposed to some other random 
+value. 
+
+31
+00:01:44,765 --> 00:01:48,024
+Okay. 
+The other problem that happens often is 
+
+32
+00:01:48,024 --> 00:01:50,470
+just reading uninitialized memory. 
+'Kay? 
+
+33
+00:01:50,470 --> 00:01:53,570
+So, here. 
+Suppose that I have this vector y here. 
+
+34
+00:01:53,570 --> 00:01:56,790
+Like it allocates space for it. 
+Has you know n, n ints. 
+
+35
+00:01:56,790 --> 00:02:00,110
+'Kay, as. 
+Enough space for n ints. 
+
+36
+00:02:00,110 --> 00:02:06,388
+But I don't I don't initialize it. 
+And here, when I'm doing y of i, plus 
+
+37
+00:02:06,388 --> 00:02:11,730
+equals, and whatever the, the rest of 
+expression. 
+
+38
+00:02:11,730 --> 00:02:15,451
+I'm implicitly reading y, because it 
+going to be y equals y plus the rest of 
+
+39
+00:02:15,451 --> 00:02:19,405
+the expression. 
+So when I read y, whatever was there 
+
+40
+00:02:19,405 --> 00:02:22,060
+before, for the first time I read it, 
+it's just going to be, whatever was 
+
+41
+00:02:22,060 --> 00:02:23,970
+there. 
+Some garbage. 
+
+42
+00:02:23,970 --> 00:02:28,790
+So it's going to affect the computation 
+and leads, for surely, to bad results. 
+
+43
+00:02:28,790 --> 00:02:30,190
+'Kay. 
+So do not assume that the, the free 
+
+44
+00:02:30,190 --> 00:02:34,480
+blocks in the heap when you allocate it 
+they're going to be initialized to zero. 
+
+45
+00:02:34,480 --> 00:02:37,890
+Unless you use a function that calls it. 
+Like c alloc for, c alloc for example 
+
+46
+00:02:37,890 --> 00:02:41,540
+initializes to zero. 
+'Kay, but normally people don't do it 
+
+47
+00:02:41,540 --> 00:02:44,880
+because it's it's it's expensive. 
+Okay. 
+
+48
+00:02:44,880 --> 00:02:48,180
+So the other one, it might be overriding 
+memory because there's many ways of 
+
+49
+00:02:48,180 --> 00:02:51,461
+overriding memory. 
+And one of them, we're going to tell you 
+
+50
+00:02:51,461 --> 00:02:54,996
+a bunch of those now. 
+But the first one is, you allocate a 
+
+51
+00:02:54,996 --> 00:02:59,157
+possibly wrong size object. 
+For example here, i of p, which is 
+
+52
+00:02:59,157 --> 00:03:04,001
+supposed to be point of pointer, a vector 
+of pointers, okay? 
+
+53
+00:03:04,001 --> 00:03:08,520
+N elements, N pointers. 
+to the size of int, okay? 
+
+54
+00:03:08,520 --> 00:03:12,363
+So, but later here, I'm going to assign 
+to p of i, another pointer, but look at 
+
+55
+00:03:12,363 --> 00:03:18,181
+what I allocated here? 
+Hmm, It's an int as opposed to an int 
+
+56
+00:03:18,181 --> 00:03:20,433
+star. 
+Bad, right? 
+
+57
+00:03:20,433 --> 00:03:24,258
+So why this potentially overwrite memory? 
+Well, first of all, whenever I'm doing 
+
+58
+00:03:24,258 --> 00:03:30,600
+this, this if this is a 64-bit machine. 
+This is going to so int star is 64 bits. 
+
+59
+00:03:30,600 --> 00:03:33,430
+Okay, so this is a 64-bit assignment 
+okay. 
+
+60
+00:03:33,430 --> 00:03:35,815
+Not good, it's going to overwrite memory, 
+okay. 
+
+61
+00:03:35,815 --> 00:03:41,420
+you can also, another one that's pretty 
+common is off by one error, okay. 
+
+62
+00:03:41,420 --> 00:03:46,432
+Again, suppose I had the same example 
+there and now I actually have to write. 
+
+63
+00:03:46,432 --> 00:03:50,680
+the right object size n star so that's 
+not a problem. 
+
+64
+00:03:50,680 --> 00:03:54,838
+But the problem here is that in this loop 
+I'm going from 0 to n, so I'm assuming 
+
+65
+00:03:54,838 --> 00:03:58,468
+that it's going to, so this loop's 
+going to actually traverse n plus one 
+
+66
+00:03:58,468 --> 00:04:02,200
+elements. 
+But we only have n. 
+
+67
+00:04:02,200 --> 00:04:07,408
+So the last write here, which is going to 
+be p of n, is overriding whatever is 
+
+68
+00:04:07,408 --> 00:04:12,104
+after n in, after p in memory. 
+Okay? 
+
+69
+00:04:12,104 --> 00:04:14,445
+So it's going to override stuff there. 
+For sure, not good. 
+
+70
+00:04:14,445 --> 00:04:18,314
+'Kay? 
+Now, the other problem is not checking 
+
+71
+00:04:18,314 --> 00:04:22,450
+the size of a string before you write it. 
+'Kay, so here's an example. 
+
+72
+00:04:22,450 --> 00:04:28,980
+You have you de-, you declare a, a array 
+of 8 bytes in your stack. 
+
+73
+00:04:28,980 --> 00:04:30,830
+'Kay? 
+And then you pass it as a parameter to 
+
+74
+00:04:30,830 --> 00:04:33,480
+get s. 
+And then you go and read the string. 
+
+75
+00:04:33,480 --> 00:04:36,375
+That goes on, that one, two, three, four, 
+five, six, seven, eight nine. 
+
+76
+00:04:36,375 --> 00:04:38,940
+'Kay? 
+And we have one extra byte here. 
+
+77
+00:04:38,940 --> 00:04:41,540
+With the slice here. 
+This already ten bites, but I have only 
+
+78
+00:04:41,540 --> 00:04:44,470
+had eight. 
+It's going to overwrite stuff in your 
+
+79
+00:04:44,470 --> 00:04:46,860
+stack. 
+Can, can, it can potentially effect even 
+
+80
+00:04:46,860 --> 00:04:50,012
+the return pointer in the stack. 
+And, in fact, this is the basis for 
+
+81
+00:04:50,012 --> 00:04:53,604
+classic butter-overflow attack. 
+You pass something that's bigger than 
+
+82
+00:04:53,604 --> 00:04:56,829
+what's expected end up overwriting things 
+on the stack. 
+
+83
+00:04:56,829 --> 00:04:59,818
+And you're going to have, actually, we're 
+going to play with that in one of your 
+
+84
+00:04:59,818 --> 00:05:02,840
+assignments, okay? 
+So you might also overwrite memory by 
+
+85
+00:05:02,840 --> 00:05:06,996
+misunderstanding pointer arithmetic. 
+For example, if you have a function 
+
+86
+00:05:06,996 --> 00:05:09,480
+called search. 
+Okay? 
+
+87
+00:05:09,480 --> 00:05:13,290
+And you pass up the parameter pointer p, 
+pointer to it. 
+
+88
+00:05:13,290 --> 00:05:16,630
+N, a value, val. 
+And this, this loop here, just up. 
+
+89
+00:05:16,630 --> 00:05:21,350
+So this going to be, then we going to 
+have, an array of int's in memory. 
+
+90
+00:05:21,350 --> 00:05:25,390
+And p points to the first element. 
+And then this loop, it's going to 
+
+91
+00:05:25,390 --> 00:05:30,096
+traverse this int look at each one to see 
+that it matches val. 
+
+92
+00:05:30,096 --> 00:05:33,768
+Okay,but, and the way that we're doing is 
+that every iteration of group we're going 
+
+93
+00:05:33,768 --> 00:05:37,435
+to make p bump to the next one, the next 
+one and so on. 
+
+94
+00:05:37,435 --> 00:05:40,754
+But what I'm doing here, I'm actually 
+adding size of int's. 
+
+95
+00:05:40,754 --> 00:05:43,999
+But since we're already told the 
+comparator p is an int because that how 
+
+96
+00:05:43,999 --> 00:05:47,794
+it is declared here, the comparator is 
+already doing implicit multiplication 
+
+97
+00:05:47,794 --> 00:05:52,597
+with the size of the object. 
+So there's going to be size of int by 
+
+98
+00:05:52,597 --> 00:05:54,940
+size of. 
+It's going to be bumping the pointer by 
+
+99
+00:05:54,940 --> 00:05:57,220
+more than it should. 
+Okay? 
+
+100
+00:05:57,220 --> 00:05:59,656
+And then when you return it, it's just 
+going to, first of all you're going to 
+
+101
+00:05:59,656 --> 00:06:03,320
+reach stuff, grab from memory, and then 
+you going to go and return it. 
+
+102
+00:06:03,320 --> 00:06:05,840
+Which could be used in a way, and over 
+written, and that's going to overwrite 
+
+103
+00:06:05,840 --> 00:06:08,136
+memory. 
+Again, not good. 
+
+104
+00:06:08,136 --> 00:06:12,664
+Here's another one. 
+when you reference a pointer you want to 
+
+105
+00:06:12,664 --> 00:06:16,785
+make sure that you actually referencing 
+what you expect. 
+
+106
+00:06:16,785 --> 00:06:19,138
+Okay? 
+So if you reference a pointer as opposed 
+
+107
+00:06:19,138 --> 00:06:22,090
+to the object it points to that could be 
+a problem. 
+
+108
+00:06:22,090 --> 00:06:25,770
+So here's an example. 
+When I call, when, when I execute sta 
+
+109
+00:06:25,770 --> 00:06:29,723
+size minus, minus here, I am not 
+decrementing the value of size which is 
+
+110
+00:06:29,723 --> 00:06:35,999
+clearly what intended in this code. 
+I'm decrementing the size of the pointer 
+
+111
+00:06:35,999 --> 00:06:39,818
+first, okay? 
+So just pointing somewhere and then when 
+
+112
+00:06:39,818 --> 00:06:44,302
+it passes the parameter, I am not 
+going to get what I expect. 
+
+113
+00:06:44,302 --> 00:06:48,703
+Okay, we're going to be pointing whatever 
+comes before size in, in memory. 
+
+114
+00:06:48,703 --> 00:06:52,973
+And that's because the operators minus, 
+minus and star have the same precedence 
+
+115
+00:06:52,973 --> 00:06:56,560
+and therefore, we go from right to left. 
+Okay? 
+
+116
+00:06:56,560 --> 00:06:59,396
+So, the decrement happens first. 
+That's not what it, what, what was 
+
+117
+00:06:59,396 --> 00:07:01,300
+intended. 
+'Kay? 
+
+118
+00:07:01,300 --> 00:07:03,225
+That's all so be careful when you use 
+those operators. 
+
+119
+00:07:03,225 --> 00:07:08,133
+Now, the other problem is if you return a 
+pointer to something in your stack, okay. 
+
+120
+00:07:08,133 --> 00:07:11,973
+So in this example, I have variable val 
+which is using foo's its going to be 
+
+121
+00:07:11,973 --> 00:07:15,540
+allocated in the stack. 
+Okay? 
+
+122
+00:07:15,540 --> 00:07:18,444
+And I going to return its pointer. 
+As soon as I return this pointer the 
+
+123
+00:07:18,444 --> 00:07:22,117
+location of foo permit ends and the stack 
+frame is freed. 
+
+124
+00:07:22,117 --> 00:07:25,527
+That means it might be there but later, 
+when you use it, that could be easily 
+
+125
+00:07:25,527 --> 00:07:28,880
+overwritten when you do more function 
+calls. 
+
+126
+00:07:28,880 --> 00:07:31,750
+So be careful with that too. 
+Never return a pointer to the stack, 
+
+127
+00:07:31,750 --> 00:07:34,660
+unless it's some very, very special 
+circumstances. 
+
+128
+00:07:34,660 --> 00:07:37,320
+But even then you, you should find other 
+ways of not doing that. 
+
+129
+00:07:39,560 --> 00:07:43,408
+So another problem that could happen with 
+pointers just you free a block multiple 
+
+130
+00:07:43,408 --> 00:07:45,856
+times. 
+Okay, dangerous. 
+
+131
+00:07:45,856 --> 00:07:50,592
+So for example if I allocate a piece of 
+memory in n, it is example and store into 
+
+132
+00:07:50,592 --> 00:07:55,106
+x and manipulate and then later I 
+manipulate I free x after being done with 
+
+133
+00:07:55,106 --> 00:08:00,319
+it. 
+Then I allocate something at y, and then 
+
+134
+00:08:00,319 --> 00:08:04,744
+it happens to call free x again but what 
+if this was allocated in the same 
+
+135
+00:08:04,744 --> 00:08:10,224
+position and I freed. 
+Hmm, that might actually freeing y just 
+
+136
+00:08:10,224 --> 00:08:13,772
+because it happens to be in the same 
+place, okay? 
+
+137
+00:08:13,772 --> 00:08:17,732
+So in free, it won't return any elements 
+here because it could, could be there's 
+
+138
+00:08:17,732 --> 00:08:22,519
+still a valid block in that case. 
+But it's not and you want to free that, 
+
+139
+00:08:22,519 --> 00:08:26,491
+so be careful, okay? 
+So be careful when calling free and make 
+
+140
+00:08:26,491 --> 00:08:31,092
+sure that you're not calling twice. 
+And in this case it's a problem because 
+
+141
+00:08:31,092 --> 00:08:35,860
+you have reallocation that could haven't, 
+happen to be freer. 
+
+142
+00:08:35,860 --> 00:08:38,140
+So just call free only ones for each 
+object. 
+
+143
+00:08:38,140 --> 00:08:41,952
+Okay? 
+So the other problem is referencing free 
+
+144
+00:08:41,952 --> 00:08:43,410
+blocks. 
+This is just evil. 
+
+145
+00:08:43,410 --> 00:08:44,400
+Be careful. 
+Okay? 
+
+146
+00:08:44,400 --> 00:08:47,988
+So again similar to what we have before, 
+we allocate a bunch of memory, put in the 
+
+147
+00:08:47,988 --> 00:08:52,840
+x, manipulate it and then I free it. 
+And the later, I refer x again, data 
+
+148
+00:08:52,840 --> 00:08:58,633
+might still be there but it could have 
+been, it might have been overwritten. 
+
+149
+00:08:58,633 --> 00:09:03,580
+Because if I do a malloc here, I could 
+use memory just freed by this one. 
+
+150
+00:09:03,580 --> 00:09:07,730
+Just like the previous one, okay? 
+And now, when I do x here, it might 
+
+151
+00:09:07,730 --> 00:09:11,591
+affect, in fact be y here, you never 
+know. 
+
+152
+00:09:11,591 --> 00:09:16,455
+So it could be something and so be, be 
+careful not to reference memory that you 
+
+153
+00:09:16,455 --> 00:09:20,580
+have freed, okay? 
+So that can't happen. 
+
+154
+00:09:20,580 --> 00:09:22,650
+So the other problem's what we call 
+memory leak. 
+
+155
+00:09:22,650 --> 00:09:26,160
+When you allocate something, so you, you 
+allocate and you use it. 
+
+156
+00:09:26,160 --> 00:09:29,190
+And then, so in this case, this pointer's 
+going to be dead. 
+
+157
+00:09:29,190 --> 00:09:31,010
+Right? 
+Because I, the only pointer. 
+
+158
+00:09:31,010 --> 00:09:34,848
+I don't return any pointers here, so. 
+And the pointer, to, what I just 
+
+159
+00:09:34,848 --> 00:09:38,490
+allocated is, is on full stack, when full 
+returns. 
+
+160
+00:09:38,490 --> 00:09:41,240
+That's, that's gone. 
+But I haven't freed it, so I no longer, 
+
+161
+00:09:41,240 --> 00:09:43,870
+I'm no longer going to know the pointer 
+so I can't free it. 
+
+162
+00:09:43,870 --> 00:09:47,495
+So that's a problem. 
+So, memory leaks are really a long long 
+
+163
+00:09:47,495 --> 00:09:52,683
+term killer and is slow and silent. 
+Okay, be careful because it eventually 
+
+164
+00:09:52,683 --> 00:09:55,286
+going to exhaust your heap without 
+noticing it. 
+
+165
+00:09:55,286 --> 00:09:59,966
+now another problem that happens and that 
+might leads to failing to free blocks and 
+
+166
+00:09:59,966 --> 00:10:05,165
+lead to memory leaks is the only free 
+part of a data structure. 
+
+167
+00:10:05,165 --> 00:10:08,941
+Okay, for example, suppose that we have a 
+struct here called list, it has a 
+
+168
+00:10:08,941 --> 00:10:14,725
+certain, its linked list, right it has a 
+value as a payload here and a pointer. 
+
+169
+00:10:14,725 --> 00:10:21,004
+Okay, and then, when we create this list, 
+you know, create a head here, allocate 
+
+170
+00:10:21,004 --> 00:10:26,357
+size of struct, okay? 
+And then I, I set a next here to, to 
+
+171
+00:10:26,357 --> 00:10:31,043
+know, to not point into anything, just 
+actually, when I'm allocating here, I'm 
+
+172
+00:10:31,043 --> 00:10:36,315
+allocating space for both the val and the 
+pointer. 
+
+173
+00:10:36,315 --> 00:10:38,460
+Okay? 
+I going to create and manipulate the rest 
+
+174
+00:10:38,460 --> 00:10:43,442
+of the list, but then it just free heads. 
+But for each element, I'm going to do a a 
+
+175
+00:10:43,442 --> 00:10:45,824
+malloc. 
+But when I do free head, I'm just 
+
+176
+00:10:45,824 --> 00:10:48,635
+going to free the first one. 
+So you have to be care, not the rest, so 
+
+177
+00:10:48,635 --> 00:10:51,916
+you have to be careful to, if you have a 
+link list. 
+
+178
+00:10:51,916 --> 00:10:55,930
+And you're going to allocate each element 
+of the link list in the separately. 
+
+179
+00:10:55,930 --> 00:10:59,288
+When you freed, you free all of them. 
+You traverse and free all of them, 
+
+180
+00:10:59,288 --> 00:11:03,030
+otherwise it going to have memory leak. 
+'Kay? 
+
+181
+00:11:03,030 --> 00:11:06,520
+So there are many ways of dealing with 
+well I wish there were many ways. 
+
+182
+00:11:06,520 --> 00:11:09,290
+There's just a handful of ways of dealing 
+with memory bugs. 
+
+183
+00:11:09,290 --> 00:11:11,880
+It can use the debugger, gdb. 
+'Kay? 
+
+184
+00:11:11,880 --> 00:11:15,260
+So it's good for finding bad pointer 
+references, but it's hard to detect other 
+
+185
+00:11:15,260 --> 00:11:18,886
+memory bugs. 
+For example, memory leaks are hard to, 
+
+186
+00:11:18,886 --> 00:11:24,730
+to, to detect to find with debuggers. 
+So, there's a special version of malloc. 
+
+187
+00:11:24,730 --> 00:11:30,200
+For example the University of Toronto's 
+CSRI malloc. 
+
+188
+00:11:30,200 --> 00:11:34,240
+it has special features, okay? 
+It's a wrap around the typical malloc and 
+
+189
+00:11:34,240 --> 00:11:39,239
+it detects several memory bugs, okay? 
+So at the boundaries of mallocs and 
+
+190
+00:11:39,239 --> 00:11:42,050
+frees, okay? 
+So it detects things like memory 
+
+191
+00:11:42,050 --> 00:11:45,080
+overrides that, that corrupts heap 
+structures. 
+
+192
+00:11:45,080 --> 00:11:48,130
+it detects some instances of freeing 
+blocks multiple times. 
+
+193
+00:11:48,130 --> 00:11:50,902
+It detects memory leaks, you know, if you 
+free it and go, if you malloc and go free 
+
+194
+00:11:50,902 --> 00:11:55,385
+it might alert you, and so on. 
+But it cannot detect all memory bugs. 
+
+195
+00:11:55,385 --> 00:11:57,902
+Okay? 
+So it cannot detect overwrites into the 
+
+196
+00:11:57,902 --> 00:12:00,674
+middle of allocated blocks, because it 
+doesn't monitor all of the reads and 
+
+197
+00:12:00,674 --> 00:12:03,210
+writes to memory. 
+Okay. 
+
+198
+00:12:03,210 --> 00:12:05,790
+It does it's hard to, to detect freeing 
+block twice. 
+
+199
+00:12:05,790 --> 00:12:08,625
+It has been allocate, reallocated in the 
+interim because we saw one of these 
+
+200
+00:12:08,625 --> 00:12:14,920
+problems on the earlier in this video. 
+And if you allocate it again something 
+
+201
+00:12:14,920 --> 00:12:19,499
+that if you are going to free it again it 
+could be that what is reallocated. 
+
+202
+00:12:19,499 --> 00:12:23,171
+Don't really know that, that didn't, 
+you're actually freeing twice so that's 
+
+203
+00:12:23,171 --> 00:12:28,220
+actually very hard to find. 
+And also does not detect. 
+
+204
+00:12:28,220 --> 00:12:31,771
+Referencing freed blocks because it can 
+only detect things at the boundaries of 
+
+205
+00:12:31,771 --> 00:12:35,548
+malloc and free calls. 
+Now, it does instrument all of the 
+
+206
+00:12:35,548 --> 00:12:40,887
+memory, all of the memory accesses, okay? 
+So there is, there is another one. 
+
+207
+00:12:40,887 --> 00:12:44,737
+There is this tool called val, valgrind 
+that actually does binary 
+
+208
+00:12:44,737 --> 00:12:48,715
+instrumentation. 
+Of your program actually moni-, monitors 
+
+209
+00:12:48,715 --> 00:12:51,830
+much more of the execution. 
+So it's pretty powerful, okay? 
+
+210
+00:12:51,830 --> 00:12:55,710
+It actually rewrites the text of code to, 
+to do special things. 
+
+211
+00:12:55,710 --> 00:12:58,986
+And it, and it can check each, so and 
+since it examines your whole program, it 
+
+212
+00:12:58,986 --> 00:13:02,420
+can check each individual reference at 
+run time. 
+
+213
+00:13:02,420 --> 00:13:06,410
+Things like bad point over writing, and 
+referencing outside of allocated block 
+
+214
+00:13:06,410 --> 00:13:08,882
+and so on. 
+And by the way, some malloc 
+
+215
+00:13:08,882 --> 00:13:12,890
+implementations contain some check code. 
+Okay, so you can actually set. 
+
+216
+00:13:12,890 --> 00:13:17,750
+See, if you use the Linux glib malloc 
+library, you can set an environment 
+
+217
+00:13:17,750 --> 00:13:25,391
+variable that's going to check some some 
+of the calls to the memory allocater. 
+
+218
+00:13:25,391 --> 00:13:29,238
+Okay, equivalent things are developing 
+for FreeBSD. 
+
+219
+00:13:29,238 --> 00:13:34,120
+Well, this concludes our section on 
+memory allocation. 
+
+220
+00:13:34,120 --> 00:13:38,140
+And I hope you learned what you should 
+avoid in writing C code with pointers. 
+

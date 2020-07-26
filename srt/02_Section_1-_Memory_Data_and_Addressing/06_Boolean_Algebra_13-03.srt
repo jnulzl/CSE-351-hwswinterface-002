@@ -1,0 +1,785 @@
+1
+00:00:06,170 --> 00:00:10,440
+Alright, the last section of our memory 
+data and addressing portion, is going to 
+
+2
+00:00:10,440 --> 00:00:15,912
+cover a little bit about Boolean algebra. 
+The kinds of things we need to know, the 
+
+3
+00:00:15,912 --> 00:00:19,999
+kinds of operators we need to know about 
+to do some bit level manipulations on the 
+
+4
+00:00:19,999 --> 00:00:25,799
+bits were storing into memory. 
+let's go through the basics of Boolean 
+
+5
+00:00:25,799 --> 00:00:30,124
+algebra really quickly. 
+Boolean algebra was developed by Goerge 
+
+6
+00:00:30,124 --> 00:00:34,190
+Boole, that's who it's named after, in 
+the 19th century. 
+
+7
+00:00:34,190 --> 00:00:37,810
+And basically it's an algebraic 
+representation of logic. 
+
+8
+00:00:37,810 --> 00:00:46,596
+We encode True as a 1 and False as a O. 
+again, binary number system and we have a 
+
+9
+00:00:46,596 --> 00:00:52,080
+few basic operators. 
+A very important one is the logical AND 
+
+10
+00:00:52,080 --> 00:00:56,534
+often represented with an ampersand as in 
+operator. 
+
+11
+00:00:56,534 --> 00:00:59,516
+that says if the variable A and the 
+variable B are true, then the AND, the 
+
+12
+00:00:59,516 --> 00:01:03,217
+product of their values in Boolean 
+algebra is also true, okay? 
+
+13
+00:01:03,217 --> 00:01:06,236
+So, A&B is 1, when both A is 1 and B is 
+1. 
+
+14
+00:01:06,236 --> 00:01:19,691
+similarly we have the OR operator which 
+as you'd expect, is true if, A is 1 or B 
+
+15
+00:01:19,691 --> 00:01:28,410
+is 1, or both. 
+And then of course we have the exclusive 
+
+16
+00:01:28,410 --> 00:01:31,824
+or operator. 
+Often abbreviated as XOR. 
+
+17
+00:01:31,824 --> 00:01:36,840
+which is true if A is true, or B is true, 
+but not both. 
+
+18
+00:01:36,840 --> 00:01:41,040
+So, it excludes that case. 
+That's where that X comes from. 
+
+19
+00:01:41,040 --> 00:01:45,040
+And then finally we have a Unary operator 
+in Boolean algebra. 
+
+20
+00:01:45,040 --> 00:01:52,446
+That says the NOT of A, or the complement 
+of A, is is just the opposite value. 
+
+21
+00:01:52,446 --> 00:01:56,590
+So, if A is 1, then its complement is 0. 
+And vice versa. 
+
+22
+00:01:56,590 --> 00:02:02,656
+If A is 0, then its complement is 1. 
+interesting law in Boolean algebra that 
+
+23
+00:02:02,656 --> 00:02:07,750
+can be derived from basic principles is 
+De Morgan's Law. 
+
+24
+00:02:07,750 --> 00:02:12,634
+Which basically says the complement of 
+the OR of two variables is the same as 
+
+25
+00:02:12,634 --> 00:02:19,029
+the AND of the complemented variables. 
+And this can be very valuable when we 
+
+26
+00:02:19,029 --> 00:02:26,030
+want to eliminate ORs to have only ANDs 
+or eliminate ANDs to have only ORs. 
+
+27
+00:02:26,030 --> 00:02:29,945
+In a logic expression. 
+Here are another representation of these 
+
+28
+00:02:29,945 --> 00:02:34,150
+basic operators in what are called Truth 
+Tables. 
+
+29
+00:02:34,150 --> 00:02:37,350
+Here we see the operator, in this case 
+the AND. 
+
+30
+00:02:37,350 --> 00:02:40,310
+And the val, the possible values of one 
+variable. 
+
+31
+00:02:40,310 --> 00:02:43,440
+And the possible values of another 
+variable. 
+
+32
+00:02:43,440 --> 00:02:47,276
+And this is the AND of the two. 
+So, when they're both 0, then the AND is 
+
+33
+00:02:47,276 --> 00:02:51,650
+0. 
+When they're both 1, the AND is 1. 
+
+34
+00:02:51,650 --> 00:02:56,862
+And when either one of them is 0, then 
+the result is also 0. 
+
+35
+00:02:56,862 --> 00:03:02,740
+So, in the case of AND, it is 1 only when 
+both are True or 1. 
+
+36
+00:03:02,740 --> 00:03:07,984
+For the OR, which we use the vertical bar 
+you'll see that it's a 1 whenever either 
+
+37
+00:03:07,984 --> 00:03:12,980
+one of them is a 1 and only 0 when both 
+are 0. 
+
+38
+00:03:12,980 --> 00:03:17,840
+For the Exclusive OR, again, if one is a 
+1, but not both so, in this case, we 
+
+39
+00:03:17,840 --> 00:03:22,710
+want to make sure that this is a 0 as 
+well. 
+
+40
+00:03:22,710 --> 00:03:26,460
+That's the difference to the OR case that 
+we had here. 
+
+41
+00:03:26,460 --> 00:03:30,145
+And then, the Unary operator, of course 
+is only one variable and it's just the 
+
+42
+00:03:30,145 --> 00:03:35,470
+opposite of the, of the value. 
+So, that's the basic of Boolean algebra. 
+
+43
+00:03:35,470 --> 00:03:40,940
+How we use this to manipulate bits? 
+Well, we can have two bytes in memory. 
+
+44
+00:03:40,940 --> 00:03:45,168
+Here we're showing two bytes. 
+And we can AND them together bit wise one 
+
+45
+00:03:45,168 --> 00:03:49,406
+bit at a time. 
+So, we can AND 0 and 0 and of course that 
+
+46
+00:03:49,406 --> 00:03:55,430
+result would be a 0. 
+1 and 1 the result would be a 1. 
+
+47
+00:03:55,430 --> 00:04:00,407
+In these two, the next cases these are 
+all zero the result except for the last 
+
+48
+00:04:00,407 --> 00:04:08,230
+one where again the two values are one so 
+we would expect the one as a result okay? 
+
+49
+00:04:08,230 --> 00:04:13,018
+So, this would be the resulting AND 
+across these two variable, so the OR case 
+
+50
+00:04:13,018 --> 00:04:18,370
+the same values again. 
+As long as one of them is a 1, we expect 
+
+51
+00:04:18,370 --> 00:04:23,363
+to see a 1 down here. 
+So there's only two cases where we would 
+
+52
+00:04:23,363 --> 00:04:29,346
+end up with a 0, here and here, where 
+both variable values are 0. 
+
+53
+00:04:29,346 --> 00:04:34,820
+finally, for the Exclusive OR. 
+where would we expect to see zeros? 
+
+54
+00:04:34,820 --> 00:04:37,268
+Well, certainly here, where they're both 
+0. 
+
+55
+00:04:37,268 --> 00:04:41,980
+certainly here, where they're both 0. 
+But also where they're both 1. 
+
+56
+00:04:41,980 --> 00:04:46,554
+And that's here at the end. 
+And also right here in the second column. 
+
+57
+00:04:46,554 --> 00:04:51,460
+So, that result, is the corresponding one 
+for XOR. 
+
+58
+00:04:51,460 --> 00:04:57,050
+And then for the bit wise compliment or 
+not, we would just expect to see the bits 
+
+59
+00:04:57,050 --> 00:05:02,212
+flip, okay? 
+So, this is the the Boolean operators 
+
+60
+00:05:02,212 --> 00:05:07,057
+applied to bit vectors. 
+In this case just the bytes lengths of 
+
+61
+00:05:07,057 --> 00:05:11,092
+bits. 
+And in C we have these exact same 
+
+62
+00:05:11,092 --> 00:05:16,174
+operators available to us and they can 
+apply to any integral data type long, 
+
+63
+00:05:16,174 --> 00:05:22,548
+int, short, or character. 
+remember character being just a byte. 
+
+64
+00:05:22,548 --> 00:05:29,030
+and the arguments to these operators 
+appear are treated as bit vectors. 
+
+65
+00:05:29,030 --> 00:05:34,138
+And the operations apply bitwise. 
+So, you can see here we've declared three 
+
+66
+00:05:34,138 --> 00:05:40,400
+byte variables a b and c. 
+you'll notice here that we're setting the 
+
+67
+00:05:40,400 --> 00:05:46,129
+value of a to the hex four one. 
+That's represented here in its bit 
+
+68
+00:05:46,129 --> 00:05:49,536
+notation. 
+And when we take the compliment of a. 
+
+69
+00:05:49,536 --> 00:05:53,798
+and assign it to b, this is the value we 
+get and assign it to b. 
+
+70
+00:05:53,798 --> 00:06:00,348
+In hex, this is BE, not immediately 
+obvious, from the 41. 
+
+71
+00:06:00,348 --> 00:06:05,022
+Okay, but you can see that the 1 and e 
+add up to 16, and the 4 and b add up to 
+
+72
+00:06:05,022 --> 00:06:10,637
+16. 
+Alright if we take the value of 0 and put 
+
+73
+00:06:10,637 --> 00:06:18,390
+it in a, as in this case, then the 
+compliment is just FF all ones. 
+
+74
+00:06:18,390 --> 00:06:24,898
+Here's a case of an AND. 
+we've taken 69 and 55 as bit vectors 
+
+75
+00:06:24,898 --> 00:06:31,680
+represented here in 
+In these values. 
+
+76
+00:06:31,680 --> 00:06:36,059
+This should say 69, not 41. 
+And, sorry about that error there. 
+
+77
+00:06:36,059 --> 00:06:40,958
+This is a 6, and 9. 
+And, the, the bit vector is correct 
+
+78
+00:06:40,958 --> 00:06:49,230
+however. 
+And, a and b, is just this string of, of 
+
+79
+00:06:49,230 --> 00:06:55,804
+1s and 0s. 
+Again, similar to the example on the 
+
+80
+00:06:55,804 --> 00:07:01,000
+previous page, which results in a 41. 
+Okay. 
+
+81
+00:07:01,000 --> 00:07:06,265
+So, this is how we do bit-level 
+operations in in C just using those basic 
+
+82
+00:07:06,265 --> 00:07:11,500
+operators. 
+Okay. 
+
+83
+00:07:11,500 --> 00:07:16,635
+So, the other thing we should know is 
+that zero is always viewed as false and 
+
+84
+00:07:16,635 --> 00:07:22,776
+anything that is non zero is true. 
+So, the value doesn't have to be one to 
+
+85
+00:07:22,776 --> 00:07:25,520
+be true. 
+Anything that is not a zero is 
+
+86
+00:07:25,520 --> 00:07:29,066
+interpreted as true. 
+Now, when we're talking about bits, of 
+
+87
+00:07:29,066 --> 00:07:32,720
+course, the only values we can have are 
+zero or one. 
+
+88
+00:07:32,720 --> 00:07:39,320
+But if we apply a logical operator to an 
+entire series of bits. 
+
+89
+00:07:39,320 --> 00:07:43,430
+For example, an entire byte at a time, or 
+an entire int at a time. 
+
+90
+00:07:43,430 --> 00:07:48,150
+Then it will only be considered false if 
+that entire int is equal to zero. 
+
+91
+00:07:48,150 --> 00:07:51,310
+In other words, all the bits are zero. 
+And anything else. 
+
+92
+00:07:51,310 --> 00:07:54,787
+So as long as there's any one anywhere, 
+then it will be considered as true, 
+
+93
+00:07:54,787 --> 00:07:58,252
+alright? 
+This is very useful, for early 
+
+94
+00:07:58,252 --> 00:08:02,752
+termination of if statements. 
+And, we'll see that a little bit later 
+
+95
+00:08:02,752 --> 00:08:06,214
+on. 
+but let's take a look at a few examples. 
+
+96
+00:08:06,214 --> 00:08:10,627
+here's the compliment. 
+Again this is now the logical operator, 
+
+97
+00:08:10,627 --> 00:08:14,710
+not the bitwise complement, so we're 
+using a different symbol. 
+
+98
+00:08:14,710 --> 00:08:18,500
+The exclamation point or bang rather than 
+the tilda. 
+
+99
+00:08:18,500 --> 00:08:25,267
+And so the complement of 41 is what we'd 
+expect from our logic is to be zero, 
+
+100
+00:08:25,267 --> 00:08:29,897
+false. 
+You'll notice its not the bitwise 
+
+101
+00:08:29,897 --> 00:08:35,537
+complement, that was a different value In 
+this case, it's simply zero. 
+
+102
+00:08:35,537 --> 00:08:39,760
+If we take the complement of zero, what 
+would we expect to get? 
+
+103
+00:08:39,760 --> 00:08:45,040
+Well, actually anything would do that has 
+at least a one, one in it, that would be 
+
+104
+00:08:45,040 --> 00:08:50,240
+true, but by convention, we'll just flip 
+one bit and make it equivalent to a hex 
+
+105
+00:08:50,240 --> 00:08:55,813
+zero one. 
+Alright, if we and 69 and 55 as we did on 
+
+106
+00:08:55,813 --> 00:09:00,428
+the previous page, we know this result 
+would've been 41, if we had done a lot 
+
+107
+00:09:00,428 --> 00:09:05,355
+bit wise operation. 
+But in this case, this value is 
+
+108
+00:09:05,355 --> 00:09:09,020
+interpreted as true, this value is 
+interpreted as true. 
+
+109
+00:09:09,020 --> 00:09:13,219
+So, our result is simply true. 
+Or one. 
+
+110
+00:09:14,380 --> 00:09:19,774
+if we then do 0 and with 55, a 0 is 
+false, so our results should be false, as 
+
+111
+00:09:19,774 --> 00:09:25,506
+it is. 
+again let's do an an OR operation and we 
+
+112
+00:09:25,506 --> 00:09:32,354
+would see 69 true or 55 also true, is 
+just going to result in a 1. 
+
+113
+00:09:32,354 --> 00:09:36,424
+Okay? 
+So, how does this early termination help? 
+
+114
+00:09:36,424 --> 00:09:42,904
+Well, for example, suppose that we're 
+looking to increment the value at which p 
+
+115
+00:09:42,904 --> 00:09:46,490
+points. 
+P is a pointer. 
+
+116
+00:09:46,490 --> 00:09:50,180
+to a particular value. 
+And, what we're concerned about is that 
+
+117
+00:09:50,180 --> 00:09:54,624
+we actually do have a pointer, and that 
+our pointer isn't null, or all zeros. 
+
+118
+00:09:54,624 --> 00:10:00,456
+So, we can first say, well, is p true, 
+meaning not zero? 
+
+119
+00:10:00,456 --> 00:10:06,684
+so, by putting into an, a logical AND 
+statement, we can do that test. 
+
+120
+00:10:06,684 --> 00:10:11,292
+Here, if p is all zeros, a null pointer, 
+we know that the and is going to be false 
+
+121
+00:10:11,292 --> 00:10:16,436
+in the end. 
+So, we can just not do that, not continue 
+
+122
+00:10:16,436 --> 00:10:22,060
+evaluating this expression, and it would 
+stop right there. 
+
+123
+00:10:22,060 --> 00:10:26,152
+On the other hand if p is something else, 
+other than zero, then we can assume it's 
+
+124
+00:10:26,152 --> 00:10:30,440
+not null. 
+And it's probably a valid address. 
+
+125
+00:10:30,440 --> 00:10:33,970
+And we can de-reference it. 
+Go to the place it points. 
+
+126
+00:10:33,970 --> 00:10:38,054
+Get the value and increment. 
+Okay? 
+
+127
+00:10:38,054 --> 00:10:44,774
+So, this is a shorthand notation for if p 
+is true, then increment the value at that 
+
+128
+00:10:44,774 --> 00:10:50,366
+pointer. 
+But often in C you'll see this as a quick 
+
+129
+00:10:50,366 --> 00:10:53,930
+shorthand instead of having to write that 
+in. 
+
+130
+00:10:53,930 --> 00:10:56,746
+But this could be placed in the middle of 
+an expression even to help check that 
+
+131
+00:10:56,746 --> 00:11:01,413
+pointer. 
+Alright, lastly I want to show you how 
+
+132
+00:11:01,413 --> 00:11:07,660
+Boolean algebra can be used to represent 
+sets. 
+
+133
+00:11:07,660 --> 00:11:12,860
+We'll be using this in a few places 
+during the rest of the course. 
+
+134
+00:11:12,860 --> 00:11:17,852
+So, we can take a bit vector of w bits 
+let's say maybe that's just eight bits 
+
+135
+00:11:17,852 --> 00:11:21,750
+for now. 
+so, what we can do is have each bit 
+
+136
+00:11:21,750 --> 00:11:25,284
+represent an element of a set, in this 
+case the set can have up to eight 
+
+137
+00:11:25,284 --> 00:11:30,322
+elements. 
+And you'll notice in this example here I 
+
+138
+00:11:30,322 --> 00:11:35,327
+have this particular vector, and I can 
+have each bit represent 1 element of the 
+
+139
+00:11:35,327 --> 00:11:40,880
+set. 
+So, this bit sequence would represent the 
+
+140
+00:11:40,880 --> 00:11:47,923
+set of element 0, element 3, 5, and 6. 
+Because those are the ones I've set to 1, 
+
+141
+00:11:47,923 --> 00:11:50,220
+okay? 
+Here's another example. 
+
+142
+00:11:50,220 --> 00:11:54,808
+Slightly different set. 
+0,2,4,6. 
+
+143
+00:11:54,808 --> 00:11:57,158
+Okay. 
+So, you kind of get the hang of how we 
+
+144
+00:11:57,158 --> 00:12:01,424
+could represent a set using a bit vector. 
+And now our operators, our bit wise 
+
+145
+00:12:01,424 --> 00:12:05,724
+operators, are pretty interesting. 
+The AND can be viewed as set 
+
+146
+00:12:05,724 --> 00:12:12,080
+intersection, because it will only be 
+true if the element is in both sets. 
+
+147
+00:12:12,080 --> 00:12:16,931
+So, if we AND these two bit vectors 
+together, we would get this result, which 
+
+148
+00:12:16,931 --> 00:12:22,579
+says that 0 and 6 are elements of the 
+intersection, 'kay. 
+
+149
+00:12:22,579 --> 00:12:28,465
+Similarly, OR corresponds to set union. 
+If we OR those two values, we would get 
+
+150
+00:12:28,465 --> 00:12:34,020
+this bit vector, which represents 0, 2,3 
+,4, 5, and 6. 
+
+151
+00:12:34,020 --> 00:12:37,300
+You notice that is the union of these two 
+sets. 
+
+152
+00:12:37,300 --> 00:12:42,014
+All the elements present. 
+Exclusive OR corresponds to what's called 
+
+153
+00:12:42,014 --> 00:12:46,678
+the symmetric difference. 
+In other words, elements that are in one 
+
+154
+00:12:46,678 --> 00:12:50,869
+set, but not both. 
+In this case, the elements 2, 3, 4, and 
+
+155
+00:12:50,869 --> 00:12:53,884
+5. 
+And a Compliment is obviously the 
+
+156
+00:12:53,884 --> 00:12:58,192
+complimentary set. 
+So, the compliment of the first one, of 
+
+157
+00:12:58,192 --> 00:13:03,638
+the second set here is 1, 3, 5, and 7, 
+alright. 
+

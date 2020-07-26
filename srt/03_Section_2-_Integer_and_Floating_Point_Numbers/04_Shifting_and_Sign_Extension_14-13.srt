@@ -1,0 +1,908 @@
+1
+00:00:00,001 --> 00:00:06,681
+[MUSIC]. 
+
+2
+00:00:06,681 --> 00:00:10,641
+In this video we're going to talk about 
+shifting operations for both unsigned and 
+
+3
+00:00:10,641 --> 00:00:14,661
+signed integers and see how that how, how 
+we need to do some sign extension for 
+
+4
+00:00:14,661 --> 00:00:19,318
+sign values. 
+Let's get started with just the case of 
+
+5
+00:00:19,318 --> 00:00:22,764
+unsigned integers. 
+What I'm showing here is both the, Left 
+
+6
+00:00:22,764 --> 00:00:26,583
+shift operation, and the Right shift 
+operation, in[UNKNOWN] and you'll notice 
+
+7
+00:00:26,583 --> 00:00:30,288
+we used the double less than sign, and 
+the double greater than sign to indicate 
+
+8
+00:00:30,288 --> 00:00:34,326
+those. 
+But don't think of them as less than or 
+
+9
+00:00:34,326 --> 00:00:37,474
+greater than. 
+Those are just symbols for those shift 
+
+10
+00:00:37,474 --> 00:00:40,393
+operators. 
+we just use those because they kind of 
+
+11
+00:00:40,393 --> 00:00:43,610
+look like a move to the left and a move 
+to the right. 
+
+12
+00:00:43,610 --> 00:00:47,681
+So, when we say x shifted to the left by 
+y, what we mean is we're going to move 
+
+13
+00:00:47,681 --> 00:00:54,370
+the bit patter of x to the left by that 
+many positions the value of y. 
+
+14
+00:00:54,370 --> 00:00:58,690
+Let's take a look at this example here, 
+here's the number six. 
+
+15
+00:00:58,690 --> 00:01:03,650
+represented in eight bits and we're going 
+to shift to the left by 3. 
+
+16
+00:01:03,650 --> 00:01:09,164
+So, in this case the y value is 3. 
+And what we'd expect to have happened, is 
+
+17
+00:01:09,164 --> 00:01:13,728
+that those bits would move over by three 
+positions, okay? 
+
+18
+00:01:13,728 --> 00:01:18,048
+And you'll notice that high order three 
+bits, the most significant bits. 
+
+19
+00:01:18,048 --> 00:01:22,780
+we're going to kind of lose, they're just 
+going to drop off the end. 
+
+20
+00:01:22,780 --> 00:01:26,331
+And we're going to have a hole left over 
+on the right of, three bits that we need 
+
+21
+00:01:26,331 --> 00:01:28,917
+to fill. 
+And we're just going to fill that with 
+
+22
+00:01:28,917 --> 00:01:30,960
+zeroes. 
+Okay? 
+
+23
+00:01:30,960 --> 00:01:35,290
+Now, the right shift is very analogous. 
+We're just going to move things over by 
+
+24
+00:01:35,290 --> 00:01:37,402
+two. 
+In this case we've lost the one and the 
+
+25
+00:01:37,402 --> 00:01:41,960
+zero, the two least significant bits. 
+And we have a hole of two on the left to 
+
+26
+00:01:41,960 --> 00:01:44,120
+fill in. 
+And we're just going to put zeros in 
+
+27
+00:01:44,120 --> 00:01:46,986
+there. 
+Okay, so that's the basic left-shift and 
+
+28
+00:01:46,986 --> 00:01:50,970
+right-shift operator. 
+Let's take a look at another example. 
+
+29
+00:01:50,970 --> 00:01:55,160
+But before we do that actually, let me 
+just take a look at these values here. 
+
+30
+00:01:55,160 --> 00:01:59,380
+I said that this was the number six. 
+This turns out to be the number 48. 
+
+31
+00:01:59,380 --> 00:02:04,340
+And this is the number one. 
+So, when we did a left shift by 3, what 
+
+32
+00:02:04,340 --> 00:02:10,870
+we did was essentially multiply that 6 by 
+the value 8. 
+
+33
+00:02:10,870 --> 00:02:14,020
+How did we get 8? 
+That's 2 to the 3rd power. 
+
+34
+00:02:14,020 --> 00:02:16,315
+the number of bits were moving to the 
+left. 
+
+35
+00:02:16,315 --> 00:02:19,644
+Okay? 
+so we can use shifts to often do 
+
+36
+00:02:19,644 --> 00:02:23,424
+multiplications quickly, by, because 
+these are much simpler operations to 
+
+37
+00:02:23,424 --> 00:02:27,810
+implement in hardware than a multiplier 
+would be. 
+
+38
+00:02:27,810 --> 00:02:30,520
+but of course, we can only do powers of 
+two. 
+
+39
+00:02:30,520 --> 00:02:34,922
+Similarly a shift to the right is a 
+division operation, in this case we took 
+
+40
+00:02:34,922 --> 00:02:41,427
+the six and divided it by two to the two 
+or four and we got one as a result. 
+
+41
+00:02:41,427 --> 00:02:45,697
+Now you see in fact we probably wanted 
+one point five but we cant represent 
+
+42
+00:02:45,697 --> 00:02:50,665
+fractional values, so it got rounded down 
+to one okay. 
+
+43
+00:02:50,665 --> 00:02:53,990
+Let's take a look at this other example 
+with the number 242. 
+
+44
+00:02:53,990 --> 00:02:59,905
+represented in our eight bits when we 
+shift to left by three we're going to 
+
+45
+00:02:59,905 --> 00:03:05,820
+multiply that by eight, so we're going to 
+get this value, which is actually the 
+
+46
+00:03:05,820 --> 00:03:12,440
+number 144. 
+Well that's not 242. 
+
+47
+00:03:12,440 --> 00:03:16,170
+Multiplied by eight. 
+Well, that's a much larger number and way 
+
+48
+00:03:16,170 --> 00:03:21,725
+larger than the 255 which is our maximum 
+value for an 8-bit unsigned integer. 
+
+49
+00:03:21,725 --> 00:03:25,565
+So, we're, we're, we have an overflow 
+here, so we're going to get a value that 
+
+50
+00:03:25,565 --> 00:03:29,935
+doesn't really make any sense. 
+So, this tells us that. 
+
+51
+00:03:29,935 --> 00:03:34,120
+You know, when we're thinking about doing 
+multiplications using shift. 
+
+52
+00:03:34,120 --> 00:03:38,014
+We've got to check the number before we 
+shift it, to make sure that the result 
+
+53
+00:03:38,014 --> 00:03:42,026
+will in fact fit in the, in, in the eight 
+bits that we have, or whatever number of 
+
+54
+00:03:42,026 --> 00:03:47,406
+bit word we have. 
+But, if we do a divide by four, or a 
+
+55
+00:03:47,406 --> 00:03:52,632
+right shift by two we would expect to get 
+a result of 60.5 and in fact that is the 
+
+56
+00:03:52,632 --> 00:03:56,960
+value that we get. 
+This is 60. 
+
+57
+00:03:56,960 --> 00:04:03,785
+Of course it got rounded, it's not 60.5 
+so we have that rounding issue again. 
+
+58
+00:04:03,785 --> 00:04:07,760
+Okay, let's take a look now at a signed 
+integers. 
+
+59
+00:04:07,760 --> 00:04:11,936
+It's a little bit different situation. 
+here I'm showing a signed integer that's 
+
+60
+00:04:11,936 --> 00:04:17,447
+equivalent to the number 98. 
+and we're going to left shift it by 3 
+
+61
+00:04:17,447 --> 00:04:21,540
+multiply by again this is way too big a 
+number. 
+
+62
+00:04:21,540 --> 00:04:27,325
+we're going to get a result that is 
+equivalent to 16 which is wrong of course 
+
+63
+00:04:27,325 --> 00:04:35,160
+because we should have got 784. 
+Alright, so now let's try the right 
+
+64
+00:04:35,160 --> 00:04:40,702
+shift, divide by four. 
+right shift by two and we would want to 
+
+65
+00:04:40,702 --> 00:04:46,468
+see the number 24.5 of course we can't 
+get the 24, we can't get the 24.5 we're 
+
+66
+00:04:46,468 --> 00:04:53,700
+just going to get 24. 
+The rounded version of 24.5 okay, now, in 
+
+67
+00:04:53,700 --> 00:04:58,299
+in dealing with signed integers, we have 
+to think about that sign pit that we 
+
+68
+00:04:58,299 --> 00:05:05,196
+didn't have to think about before. 
+So in, we also have another kind of right 
+
+69
+00:05:05,196 --> 00:05:10,024
+shift called an arithmetic shift, where 
+instead of filling in those two bits with 
+
+70
+00:05:10,024 --> 00:05:16,160
+zeroes, we're going to fill in those two 
+bits with a copy. 
+
+71
+00:05:16,160 --> 00:05:18,410
+Of the signed bit, the most significant 
+bit. 
+
+72
+00:05:18,410 --> 00:05:22,740
+In this case that turns out to be exactly 
+the same thing so we see any difference. 
+
+73
+00:05:22,740 --> 00:05:26,350
+But let's take a look at what happens 
+with a negative number. 
+
+74
+00:05:26,350 --> 00:05:31,750
+so down here we have an example with the 
+number minus 94 and again multiplying it 
+
+75
+00:05:31,750 --> 00:05:35,751
+by eight. 
+Doing that left shift by three, is going 
+
+76
+00:05:35,751 --> 00:05:39,114
+to yield too negative a number and we're 
+going to end up with a result of 16, 
+
+77
+00:05:39,114 --> 00:05:44,948
+which is just clearly wrong again. 
+and again that's because now we've had an 
+
+78
+00:05:44,948 --> 00:05:48,320
+underflow, we had too negative a number 
+as a result. 
+
+79
+00:05:50,010 --> 00:05:54,350
+When we divide by 4 by shifting to the 
+right by 2. 
+
+80
+00:05:54,350 --> 00:05:58,230
+We would want the result to be minus 
+23.5. 
+
+81
+00:05:58,230 --> 00:06:02,766
+But if we just fill in with zeros, as we 
+do for our logical shift then we're 
+
+82
+00:06:02,766 --> 00:06:08,050
+going to get a result of 40, which is 
+also clearly wrong. 
+
+83
+00:06:08,050 --> 00:06:12,210
+It's not even negative. 
+we've totally lost that sign bit. 
+
+84
+00:06:12,210 --> 00:06:16,640
+And that's why we have arithmetic shifts. 
+In this case, again we're going to copy 
+
+85
+00:06:16,640 --> 00:06:20,604
+that most significant bit. 
+Into those bit positions, so instead of 
+
+86
+00:06:20,604 --> 00:06:25,240
+ending up with a positive number we still 
+have a negative value. 
+
+87
+00:06:25,240 --> 00:06:29,449
+In this case we have a negative value 
+minus 24 which isn't the minus 23.5 we 
+
+88
+00:06:29,449 --> 00:06:36,280
+would want but again it's a rounded 
+version of that okay it's minus 24. 
+
+89
+00:06:36,280 --> 00:06:40,186
+And one thing to keep in mind is in C 
+things are undefined if we shift try to 
+
+90
+00:06:40,186 --> 00:06:45,770
+shift by a negative number or by 
+something larger than the word size. 
+
+91
+00:06:45,770 --> 00:06:50,870
+The result is undefined and we could 
+expect to just get junk as a result of 
+
+92
+00:06:50,870 --> 00:06:54,748
+that. 
+Alright let's see how the shift 
+
+93
+00:06:54,748 --> 00:06:58,193
+operations can be used for more 
+interesting things though than just doing 
+
+94
+00:06:58,193 --> 00:07:02,910
+basic multiplication and division by a 
+power of two. 
+
+95
+00:07:02,910 --> 00:07:06,878
+Here I'm showing how we can extract the 
+second most significant byte of an 
+
+96
+00:07:06,878 --> 00:07:12,735
+integer using Shift and Masking. 
+All right, so, the example we're going to 
+
+97
+00:07:12,735 --> 00:07:18,310
+start with is this 32-bit pattern. 
+And we want the second most significant 
+
+98
+00:07:18,310 --> 00:07:20,672
+byte. 
+That's the one with the red box around 
+
+99
+00:07:20,672 --> 00:07:23,955
+it. 
+And we can get that to all the way over 
+
+100
+00:07:23,955 --> 00:07:28,275
+to the right by shifting that value by 16 
+to the right. 
+
+101
+00:07:28,275 --> 00:07:31,792
+Okay? 
+So, now we've moved that byte over to the 
+
+102
+00:07:31,792 --> 00:07:36,908
+low order eight bits. 
+And you notice we padded with zeros on 
+
+103
+00:07:36,908 --> 00:07:41,346
+the far left end. 
+Our next operation is what is called a 
+
+104
+00:07:41,346 --> 00:07:46,639
+masking operation, were going to use this 
+bit pattern which is all zeros except for 
+
+105
+00:07:46,639 --> 00:07:53,651
+ones in the low or the byte. 
+That's represented by the value 0xFF in 
+
+106
+00:07:53,651 --> 00:08:00,030
+hexadecimal. 
+So, all 1s in the, in the low order byte. 
+
+107
+00:08:00,030 --> 00:08:05,425
+And when we mask that, or AND, do a 
+logical bit-wise AND with our our shifted 
+
+108
+00:08:05,425 --> 00:08:10,239
+value, we will just get the result of 
+that first byte, because ANDing, 
+
+109
+00:08:10,239 --> 00:08:18,360
+remember, with a 1 the result is just the 
+other value. 
+
+110
+00:08:18,360 --> 00:08:21,779
+While ANDing with a zero, the results 
+will always be zero. 
+
+111
+00:08:21,779 --> 00:08:26,414
+And we'll just end up with all zeros 
+everywhere else, okay. 
+
+112
+00:08:26,414 --> 00:08:30,260
+So, that masking operation is very 
+powerful that way. 
+
+113
+00:08:30,260 --> 00:08:35,730
+We can also use shifting and masking to 
+extract the sign bit on an integer. 
+
+114
+00:08:35,730 --> 00:08:38,460
+For example, if we just wanted to know if 
+it was positive or negative. 
+
+115
+00:08:38,460 --> 00:08:43,080
+What we can do is take the, the signed 
+integer x, shift it to the right by 31 
+
+116
+00:08:43,080 --> 00:08:49,942
+bits, so that the signed bit ends up in 
+the low order bit position. 
+
+117
+00:08:49,942 --> 00:08:54,100
+And then AND it with the number one, 
+which just has a one in that one 
+
+118
+00:08:54,100 --> 00:08:58,030
+position. 
+Right, about low order bit. 
+
+119
+00:08:58,030 --> 00:09:01,983
+And everything else will get cleared out 
+to zero, so that's how we can extract the 
+
+120
+00:09:01,983 --> 00:09:05,641
+sign bit and our result will either be 
+zero if the sign bit was zero or a one if 
+
+121
+00:09:05,641 --> 00:09:10,758
+the sign bit was one. 
+And that makes it easy for us to test at 
+
+122
+00:09:10,758 --> 00:09:14,300
+that number. 
+what's positive or negative. 
+
+123
+00:09:14,300 --> 00:09:20,940
+We can also do conditional as Boolean 
+expressions, remember, let's assume that 
+
+124
+00:09:20,940 --> 00:09:28,349
+the Boolean value is either zero or one 
+for now, not anything else. 
+
+125
+00:09:28,349 --> 00:09:31,440
+In C, I can do a conditional with an if 
+statement. 
+
+126
+00:09:31,440 --> 00:09:36,480
+I can write if x meaning if x is true, 
+then assign the value of y to a,and if x 
+
+127
+00:09:36,480 --> 00:09:42,740
+is false, the else clause assign the 
+value of z to a. 
+
+128
+00:09:42,740 --> 00:09:47,092
+In C I can also write it in this notation 
+using a question mark, so that i can fit 
+
+129
+00:09:47,092 --> 00:09:54,643
+it all into an assignment statement. 
+This says a is equal to either y or z, 
+
+130
+00:09:54,643 --> 00:10:02,085
+depending on the value of x. 
+If x is one then it will be y. 
+
+131
+00:10:02,085 --> 00:10:05,685
+If x is zero it will be the value z and 
+we use that question mark and colon to 
+
+132
+00:10:05,685 --> 00:10:09,952
+delineate those. 
+Okay, so that's how we can see how we can 
+
+133
+00:10:09,952 --> 00:10:13,670
+use these conditionals using shift 
+operations. 
+
+134
+00:10:13,670 --> 00:10:16,380
+What you'll see down here is two 
+expressions. 
+
+135
+00:10:18,340 --> 00:10:22,750
+One for the if part of the clause and the 
+other for the else part of the clause, 
+
+136
+00:10:22,750 --> 00:10:28,380
+and lets look at the one on the. 
+left first. 
+
+137
+00:10:28,380 --> 00:10:32,220
+You'll notice that what I'm doing is 
+shifting x first to the left by 31 and 
+
+138
+00:10:32,220 --> 00:10:36,300
+then to the right by 31. 
+Well, that doesn't seem to make much 
+
+139
+00:10:36,300 --> 00:10:39,120
+sense it's kind of doing, should be 
+ending up back where we started but in 
+
+140
+00:10:39,120 --> 00:10:43,540
+fact we don't. 
+Because when we shift to the left by 31, 
+
+141
+00:10:43,540 --> 00:10:48,639
+we're losing 31 bits off the end. 
+And then when we shift back the right 
+
+142
+00:10:48,639 --> 00:10:53,329
+we're doing an arithmetic shift that will 
+copy that most significant bit all the 
+
+143
+00:10:53,329 --> 00:10:59,740
+way down through all 32 bits. 
+So, our result will be, if we started 
+
+144
+00:10:59,740 --> 00:11:03,894
+with x of 0, we'll end up with all zeros, 
+and if we started with an x of equal to 
+
+145
+00:11:03,894 --> 00:11:09,935
+1, we shifted that 1 lowered bit all the 
+way over to the left. 
+
+146
+00:11:09,935 --> 00:11:14,357
+And then arithmetically shifted back it 
+over to the right, filling in behind it 
+
+147
+00:11:14,357 --> 00:11:18,474
+with all 1s. 
+So, we'll either have a vector that's all 
+
+148
+00:11:18,474 --> 00:11:22,074
+zeros or all ones. 
+And when we and that with y and it's all 
+
+149
+00:11:22,074 --> 00:11:26,940
+zeros, we'll just come up with a bunch of 
+zeros, and that'll be it. 
+
+150
+00:11:26,940 --> 00:11:30,050
+And if they're all ones, we'll just have 
+the value of y. 
+
+151
+00:11:31,790 --> 00:11:34,412
+On the other side, we're just doing the 
+complementary thing by first 
+
+152
+00:11:34,412 --> 00:11:39,060
+complementing x and then doing that shift 
+to the left and shift to the right. 
+
+153
+00:11:39,060 --> 00:11:44,286
+So, now we'll end up with z effects was 1 
+to begin with was 0 to begin with and all 
+
+154
+00:11:44,286 --> 00:11:47,832
+0's effects was 1. 
+Okay? 
+
+155
+00:11:47,832 --> 00:11:53,097
+Then the addition operator will just 
+combine those values and one of them will 
+
+156
+00:11:53,097 --> 00:12:00,820
+be 0, so we'll just end up with the other 
+one, and that's how we get y or z. 
+
+157
+00:12:00,820 --> 00:12:06,370
+Into the value, into the variable a. 
+Okay, that might be a little convoluted. 
+
+158
+00:12:06,370 --> 00:12:08,840
+You might want to spend some time looking 
+at that. 
+
+159
+00:12:08,840 --> 00:12:13,160
+but sometimes you'll see expressions like 
+this in a C program and it's important to 
+
+160
+00:12:13,160 --> 00:12:18,136
+understand where they came from. 
+Alright, so that sign extension is really 
+
+161
+00:12:18,136 --> 00:12:22,710
+important and so let's take a look at 
+that in a little bit more detail. 
+
+162
+00:12:22,710 --> 00:12:26,016
+What we're showing here is a value of x 
+represented in w bits and we're 
+
+163
+00:12:26,016 --> 00:12:31,070
+converting it into a value of x into 
+something larger then w bits. 
+
+164
+00:12:31,070 --> 00:12:36,850
+Let's say we're going from 32 bits to 64, 
+what we're going to do is copy the 31 low 
+
+165
+00:12:36,850 --> 00:12:44,110
+order bits just directly down into the 
+larger representation. 
+
+166
+00:12:44,110 --> 00:12:49,850
+But then the most significant bit we will 
+copy throughout the upper 32 bits and we 
+
+167
+00:12:49,850 --> 00:12:56,430
+do that to keep the number positive. 
+If it was originally positive or negative 
+
+168
+00:12:56,430 --> 00:13:01,205
+if it was originally negative. 
+Okay, so lets take a look at some sign 
+
+169
+00:13:01,205 --> 00:13:06,325
+extension examples here I'm showing a 
+short int that is representative in 16 
+
+170
+00:13:06,325 --> 00:13:12,154
+bits. 
+Okay, and then were going to cast it into 
+
+171
+00:13:12,154 --> 00:13:15,799
+a 32 bit int. 
+So, we're going to go from short int to 
+
+172
+00:13:15,799 --> 00:13:19,443
+int. 
+And what we'll see is for the number 
+
+173
+00:13:19,443 --> 00:13:25,587
+12345, it's represented in 16 bits with 
+that pattern, and then when we cast it 
+
+174
+00:13:25,587 --> 00:13:31,539
+into 32 bits, we're just sign extending 
+that 0 sign bit into all the upper 16 
+
+175
+00:13:31,539 --> 00:13:38,140
+bits. 
+Of the larger word. 
+
+176
+00:13:38,140 --> 00:13:41,364
+For a negative value, if we use negative 
+12345 it's represented by this bit 
+
+177
+00:13:41,364 --> 00:13:44,948
+pattern. 
+You can tell it's a negative number 
+
+178
+00:13:44,948 --> 00:13:50,196
+because the higher order bit is a one and 
+when we sign extend it into the larger 
+
+179
+00:13:50,196 --> 00:13:59,296
+representation of 60, of 32 bits, we copy 
+that one throughout those upper 16 bits. 
+
+180
+00:13:59,296 --> 00:14:02,562
+Okay? 
+And so sign extension is used both when 
+
+181
+00:14:02,562 --> 00:14:07,989
+we're doing arithmetic shifts to the 
+right as well as when we're casting a 
+
+182
+00:14:07,989 --> 00:14:12,749
+value into a larger bit path. 
+

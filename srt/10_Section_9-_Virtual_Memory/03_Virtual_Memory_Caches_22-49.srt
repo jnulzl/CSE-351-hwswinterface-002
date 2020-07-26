@@ -1,0 +1,1410 @@
+1
+00:00:00,000 --> 00:00:02,600
+Now that we've seen how indirection can 
+help us with virtual memory, let's see 
+
+2
+00:00:02,600 --> 00:00:06,392
+how we use a VM as a tool for caching. 
+A different kind of cache than we've seen 
+
+3
+00:00:06,392 --> 00:00:14,920
+before but a cache nonetheless. 
+So, let's think about the virtual 
+
+4
+00:00:14,920 --> 00:00:28,724
+memories placed in the memory hierarchy. 
+virtual memory is an array, contiguous 
+
+5
+00:00:28,724 --> 00:00:36,040
+array in memory of two to the n bytes. 
+Where n is the little n here is the 
+
+6
+00:00:36,040 --> 00:00:42,530
+number of address bits that we have in 
+our architecture. 
+
+7
+00:00:42,530 --> 00:00:47,906
+So n to the 64 for our case. 
+Alright, that's a, that's a very large 
+
+8
+00:00:47,906 --> 00:00:54,215
+amount of, of space 16 X a bytes is the 
+value for big N here. 
+
+9
+00:00:54,215 --> 00:01:00,920
+the physical main memory you can now 
+think of as a cache. 
+
+10
+00:01:00,920 --> 00:01:04,632
+The dynamic ram in the co, in, in, our 
+computer system as a cache for that giant 
+
+11
+00:01:04,632 --> 00:01:10,167
+virtual memory array. 
+and that's going to be a much smaller 
+
+12
+00:01:10,167 --> 00:01:15,830
+amount of memory as we mentioned before 
+might be on the order of a few gigabytes. 
+
+13
+00:01:17,190 --> 00:01:24,361
+So we're going to arrange this virtual 
+memory into blocks, just like we did in 
+
+14
+00:01:24,361 --> 00:01:34,230
+our cache before, between, our, our cache 
+from, main memory to the CPU. 
+
+15
+00:01:34,230 --> 00:01:37,366
+in this case the blocks are going to be 
+called pages, and it's really the same 
+
+16
+00:01:37,366 --> 00:01:41,020
+concept, it's just slightly different 
+terminology. 
+
+17
+00:01:41,020 --> 00:01:43,640
+These were different communities that 
+came up with these. 
+
+18
+00:01:43,640 --> 00:01:48,860
+And a page is going to be of a certain 
+size, capital p or two to the little p, 
+
+19
+00:01:48,860 --> 00:01:55,809
+bytes, the log of big p. 
+Okay, and typically the size of these 
+
+20
+00:01:55,809 --> 00:02:01,380
+blocks is or pages is on the order of 
+kilobytes. 
+
+21
+00:02:01,380 --> 00:02:07,128
+rather than on the order of just a few 
+dozen bytes like we've seen before. 
+
+22
+00:02:07,128 --> 00:02:14,867
+Okay, so looking at virtual memory as 
+this big array of, of space, 16 exabytes, 
+
+23
+00:02:14,867 --> 00:02:22,808
+we're not going to use all of it. 
+Many of the pieces of virtual memory, 
+
+24
+00:02:22,808 --> 00:02:28,592
+these virtual pages may be unallocated. 
+In other words, just space we could 
+
+25
+00:02:28,592 --> 00:02:33,360
+address but we don't have anything there 
+and we don't really care about it. 
+
+26
+00:02:33,360 --> 00:02:38,586
+other parts of it are going to be cached 
+in the physical memory at a particular 
+
+27
+00:02:38,586 --> 00:02:45,080
+location in that physical memory. 
+and that's that mapping we need to keep 
+
+28
+00:02:45,080 --> 00:02:48,930
+track of, what's going to be in our 
+memory management unit. 
+
+29
+00:02:48,930 --> 00:02:54,156
+How does this particular page map to the 
+physical page, virtual page to physical 
+
+30
+00:02:54,156 --> 00:02:58,510
+page mapping. 
+And you notice of course these pages 
+
+31
+00:02:58,510 --> 00:03:03,340
+could go anywhere in the physical memory 
+where there's an empty page. 
+
+32
+00:03:03,340 --> 00:03:08,665
+Of course, some of the blocks like this 
+one sh, like these shown in gray, are 
+
+33
+00:03:08,665 --> 00:03:12,450
+uncached. 
+In other words, they are space we're 
+
+34
+00:03:12,450 --> 00:03:17,070
+using in virtual memory, but we haven't 
+gotten it to our physical memory yet. 
+
+35
+00:03:17,070 --> 00:03:20,190
+We haven't found a place to put it, or we 
+haven't needed it yet. 
+
+36
+00:03:20,190 --> 00:03:25,490
+And so it's still sitting there on disk. 
+We haven't yet moved it to the dynamic 
+
+37
+00:03:25,490 --> 00:03:31,300
+ram, the physical memory of the CPU, of 
+the computer system. 
+
+38
+00:03:33,120 --> 00:03:36,870
+Alright, now why do we bother with this 
+kind of caching? 
+
+39
+00:03:36,870 --> 00:03:39,992
+Well, for the same exact reason we did 
+before. 
+
+40
+00:03:39,992 --> 00:03:46,184
+remember, before we had the problem of 
+going from main memory, to the CPU, to 
+
+41
+00:03:46,184 --> 00:03:51,766
+the registers, the fast memory inside the 
+CPU. 
+
+42
+00:03:51,766 --> 00:03:57,244
+And the problem was, that we wanted to 
+keep, the fat, the stuff we need the 
+
+43
+00:03:57,244 --> 00:04:01,740
+most. 
+Here at our CPU, in as fast a memory as 
+
+44
+00:04:01,740 --> 00:04:05,480
+possible. 
+So we created these layers of caches 
+
+45
+00:04:05,480 --> 00:04:09,370
+here. 
+We talked about a level one and a level 
+
+46
+00:04:09,370 --> 00:04:14,270
+two cache, and data cache and instruction 
+cache, that, make it much faster to 
+
+47
+00:04:14,270 --> 00:04:20,280
+access parts of memory and get it into 
+our registers. 
+
+48
+00:04:20,280 --> 00:04:23,522
+If we can keep the right things in this 
+cache, okay. 
+
+49
+00:04:23,522 --> 00:04:29,892
+Now in this case what we're talking about 
+with virtual memory is this much larger 
+
+50
+00:04:29,892 --> 00:04:35,523
+disk out here. 
+that has our entire virtual memory 
+
+51
+00:04:35,523 --> 00:04:41,890
+potentially on it and how it maps into 
+the main memory. 
+
+52
+00:04:41,890 --> 00:04:44,915
+Okay. 
+So we're caching parts of the disk in the 
+
+53
+00:04:44,915 --> 00:04:49,236
+main memory. 
+So that's that page that we're copying 
+
+54
+00:04:49,236 --> 00:04:53,900
+from the disk into the main memory and 
+making it faster to access. 
+
+55
+00:04:53,900 --> 00:04:57,515
+Because the disk is much, much slower, 
+alright. 
+
+56
+00:04:57,515 --> 00:05:03,255
+exactly the same situation when we had a 
+smaller block of main memory that we were 
+
+57
+00:05:03,255 --> 00:05:09,990
+copying into the L2 cache or even into 
+the L1 cache. 
+
+58
+00:05:09,990 --> 00:05:14,214
+And that was another mapping different 
+kind of mapping that we were keeping 
+
+59
+00:05:14,214 --> 00:05:18,730
+track of before. 
+So we have two levels of caches here. 
+
+60
+00:05:18,730 --> 00:05:22,125
+Virtual memory deals with the main memory 
+to disk. 
+
+61
+00:05:22,125 --> 00:05:28,160
+Okay. 
+Now, while in the past we were dealing 
+
+62
+00:05:28,160 --> 00:05:33,185
+when we would, we saw our memory cache, 
+we were having a memory miss penalty of 
+
+63
+00:05:33,185 --> 00:05:39,913
+33 times a regular access. 
+That was a big penalty when we had to go 
+
+64
+00:05:39,913 --> 00:05:44,390
+to main memory rather than finding a 
+result in our cache. 
+
+65
+00:05:44,390 --> 00:05:48,234
+And the reason for that was, because 
+these caches are often on the same chip 
+
+66
+00:05:48,234 --> 00:05:52,264
+as the CPU, they're much quicker to get 
+to than going off chip to the larger main 
+
+67
+00:05:52,264 --> 00:05:57,115
+memory. 
+Now the situation between main memory and 
+
+68
+00:05:57,115 --> 00:06:03,970
+disk is actually even much of much worse. 
+The difference is 10,000x. 
+
+69
+00:06:03,970 --> 00:06:07,194
+Disks are way, way slower but of course 
+they can hold much, much more data so 
+
+70
+00:06:07,194 --> 00:06:11,150
+they're very useful. 
+But are much, much slower than even, than 
+
+71
+00:06:11,150 --> 00:06:15,407
+main memory. 
+and so in this case we want to definitely 
+
+72
+00:06:15,407 --> 00:06:19,580
+be using some kind of caching. 
+And in fact we're going to do things a 
+
+73
+00:06:19,580 --> 00:06:24,300
+little bit differently. 
+than we did for the l one l two cache. 
+
+74
+00:06:24,300 --> 00:06:29,170
+because of that huge difference in, in 
+missed latency. 
+
+75
+00:06:30,470 --> 00:06:36,059
+Okay, so in DRAM as we said about ten x 
+slower than the static ram inside of our 
+
+76
+00:06:36,059 --> 00:06:39,693
+CPU. 
+Now we're talking about a disk that is 
+
+77
+00:06:39,693 --> 00:06:43,935
+10,000 times slower than the dynamic ram 
+that make up the main memory. 
+
+78
+00:06:43,935 --> 00:06:48,030
+But it's only slow for that very first 
+byte, then it's much, much faster for the 
+
+79
+00:06:48,030 --> 00:06:52,820
+next byte because we aren't going to move 
+one byte at a time. 
+
+80
+00:06:52,820 --> 00:06:56,450
+We're going to move an entire block or an 
+entire page at a time. 
+
+81
+00:06:57,530 --> 00:07:00,640
+But, what is this difference in speed 
+here, 
+
+82
+00:07:00,640 --> 00:07:05,060
+Now 10,000 x instead of 10 x have on the 
+size of the block the associativity that 
+
+83
+00:07:05,060 --> 00:07:09,877
+we want in our cache. 
+And whether we want it to be write 
+
+84
+00:07:09,877 --> 00:07:14,144
+through or write back. 
+those were, remember all decisions we had 
+
+85
+00:07:14,144 --> 00:07:20,550
+to make in our cache organization. 
+Okay, so in the case of virtual memory. 
+
+86
+00:07:20,550 --> 00:07:23,836
+we're going to see that our page size is 
+much larger, the block size is much 
+
+87
+00:07:23,836 --> 00:07:27,735
+larger. 
+Typically four to eight kilobytes, could 
+
+88
+00:07:27,735 --> 00:07:31,939
+even be as high as megabytes. 
+another thing that we're going to do is 
+
+89
+00:07:31,939 --> 00:07:37,304
+make the cache fully associative. 
+in other words, we're not going to worry 
+
+90
+00:07:37,304 --> 00:07:40,810
+about direct map caches or set 
+associative caches. 
+
+91
+00:07:40,810 --> 00:07:43,080
+We're just going to make it fully 
+associative. 
+
+92
+00:07:43,080 --> 00:07:48,300
+And that way we can place any virtual 
+page in any physical page. 
+
+93
+00:07:48,300 --> 00:07:51,875
+This of course, will requires a more 
+sophisticated and larger mapping 
+
+94
+00:07:51,875 --> 00:07:56,127
+function. 
+different than those CPU caches that we 
+
+95
+00:07:56,127 --> 00:08:00,537
+could use certain bits to go to the right 
+set, and then do some tag matching within 
+
+96
+00:08:00,537 --> 00:08:03,530
+that. 
+We're going to have to do it a little bit 
+
+97
+00:08:03,530 --> 00:08:05,810
+differently. 
+But we're also going to have the option 
+
+98
+00:08:05,810 --> 00:08:10,540
+of having much more sophisticated 
+replacement algorithms because of that. 
+
+99
+00:08:10,540 --> 00:08:14,124
+We can decide where to put any physical 
+page so we can be smarter about that and 
+
+100
+00:08:14,124 --> 00:08:19,450
+make sure we keep the physical pages 
+we're likely to use again. 
+
+101
+00:08:19,450 --> 00:08:22,736
+And then the last thing is that we're 
+going to use write back rather than write 
+
+102
+00:08:22,736 --> 00:08:28,340
+through because the block size so large. 
+Write through would be very expensive. 
+
+103
+00:08:28,340 --> 00:08:31,936
+Every time we would write one word in 
+that memory, we would have to write the 
+
+104
+00:08:31,936 --> 00:08:36,560
+entire block back and that could start to 
+add up. 
+
+105
+00:08:36,560 --> 00:08:40,292
+and be a little too expensive. 
+So instead, we're going to wait until we 
+
+106
+00:08:40,292 --> 00:08:44,198
+need to push that block out of the cache, 
+out of our main memory and then write 
+
+107
+00:08:44,198 --> 00:08:49,155
+back the whole thing. 
+OK, so we'll be using write back rather 
+
+108
+00:08:49,155 --> 00:08:55,908
+than write through for virtual memory. 
+Let's go back to our architecture diagram 
+
+109
+00:08:55,908 --> 00:08:59,310
+then of how we will implement this 
+mapping. 
+
+110
+00:08:59,310 --> 00:09:03,027
+Remember, we said the CPU will be 
+generating virtual addresses that will go 
+
+111
+00:09:03,027 --> 00:09:07,910
+through a mapping function in our memory 
+management unit. 
+
+112
+00:09:07,910 --> 00:09:12,200
+which will find the corresponding 
+physical address in memory, and then 
+
+113
+00:09:12,200 --> 00:09:17,300
+accessing the main memory. 
+so how do we perform this virtual 
+
+114
+00:09:17,300 --> 00:09:23,770
+address, to physical address translation? 
+That's our next sub topic here. 
+
+115
+00:09:23,770 --> 00:09:27,839
+the way we're going to do it is using a 
+construct called a page table. 
+
+116
+00:09:29,650 --> 00:09:35,543
+A page table is going to consist of a set 
+of an array of page table entries that do 
+
+117
+00:09:35,543 --> 00:09:41,205
+this mapping of virtual page to physical 
+page. 
+
+118
+00:09:41,205 --> 00:09:44,588
+Okay? 
+So what we're going to use is our virtual 
+
+119
+00:09:44,588 --> 00:09:49,860
+address, or part of our virtual address 
+to index this table. 
+
+120
+00:09:49,860 --> 00:09:53,825
+Find the right page table entry which 
+will then contain the physical page 
+
+121
+00:09:53,825 --> 00:09:57,624
+number. 
+for where to go in main memory, or tell 
+
+122
+00:09:57,624 --> 00:10:00,928
+us where on the disk that we can find 
+that page so we can go get it and bring 
+
+123
+00:10:00,928 --> 00:10:05,840
+it into main memory. 
+And find the place for it. 
+
+124
+00:10:05,840 --> 00:10:10,070
+So this is a table that is now, in 
+another part of memory. 
+
+125
+00:10:10,070 --> 00:10:13,889
+A part of memory that we're going to 
+keep, we're going to try to keep around 
+
+126
+00:10:13,889 --> 00:10:19,737
+in our physical memory so we don't have 
+to go find that on disk as well. 
+
+127
+00:10:19,737 --> 00:10:24,400
+And we'll see later how to take care of 
+that. 
+
+128
+00:10:24,400 --> 00:10:28,420
+But for now think about this, page table 
+as being the place where we go and look 
+
+129
+00:10:28,420 --> 00:10:33,865
+up in that directory, the mapping between 
+virtual and physical address. 
+
+130
+00:10:33,865 --> 00:10:39,674
+Okay. 
+So let's say we have these, seven virtual 
+
+131
+00:10:39,674 --> 00:10:47,466
+pages, on our disk and we have. 
+space for four physical pages in our 
+
+132
+00:10:47,466 --> 00:10:53,055
+physical memory, okay? 
+what we're going to want to do is create 
+
+133
+00:10:53,055 --> 00:10:55,876
+this mapping. 
+You see here that only four of the 
+
+134
+00:10:55,876 --> 00:11:01,430
+virtual pages are of course resident in 
+memory, that's all that could fit. 
+
+135
+00:11:01,430 --> 00:11:06,590
+So four of these page table entries have 
+actual addresses. 
+
+136
+00:11:06,590 --> 00:11:10,580
+physical addresses that go to the 
+physical memory. 
+
+137
+00:11:10,580 --> 00:11:17,530
+then there's another two another two 
+pages that we are using. 
+
+138
+00:11:17,530 --> 00:11:21,590
+but are not resident in the physical 
+memory. 
+
+139
+00:11:21,590 --> 00:11:26,352
+They're simply on the disk. 
+And then there's another page table entry 
+
+140
+00:11:26,352 --> 00:11:31,690
+which is or another two page table 
+entries here that are not allocated. 
+
+141
+00:11:31,690 --> 00:11:35,180
+not used for anything and we'll never 
+have to worry about those. 
+
+142
+00:11:35,180 --> 00:11:45,260
+But they, fill up part of our page table. 
+Okay, so here again those two. 
+
+143
+00:11:45,260 --> 00:11:51,624
+gray colored pages have addresses to disk 
+rather than to the physical memory. 
+
+144
+00:11:51,624 --> 00:11:56,310
+And those addresses are of course of a 
+very different structure, they're not 64 
+
+145
+00:11:56,310 --> 00:12:00,712
+bit addresses, they have to index a 
+position on the disk and that's done in a 
+
+146
+00:12:00,712 --> 00:12:06,528
+very different way. 
+That you would see then in an operating 
+
+147
+00:12:06,528 --> 00:12:10,460
+systems course, for example. 
+So how many page tables are there, in 
+
+148
+00:12:10,460 --> 00:12:14,890
+the, in our computer system? 
+Well, let's think about that. 
+
+149
+00:12:14,890 --> 00:12:19,404
+we're going to need a page table for 
+every virtual memory and we know that 
+
+150
+00:12:19,404 --> 00:12:24,920
+every process, is going to require a 
+virtual memory. 
+
+151
+00:12:24,920 --> 00:12:30,930
+So they'll be one page table for every 
+single process. 
+
+152
+00:12:30,930 --> 00:12:33,920
+Alright. 
+So let's go look at that address 
+
+153
+00:12:33,920 --> 00:12:37,453
+translation again. 
+we're starting here at the top with a 
+
+154
+00:12:37,453 --> 00:12:41,418
+virtual address and we're going to use 
+part of that virtual address, the virtual 
+
+155
+00:12:41,418 --> 00:12:46,470
+page number. 
+To index our page table. 
+
+156
+00:12:46,470 --> 00:12:48,530
+Now why are we using only part of the 
+address? 
+
+157
+00:12:48,530 --> 00:12:51,869
+Well because another part of the address, 
+just like with regular caches, is 
+
+158
+00:12:51,869 --> 00:12:55,870
+going to be an offset within a block or 
+within a page. 
+
+159
+00:12:55,870 --> 00:12:59,280
+we call that the VPO, the virtual page 
+offset. 
+
+160
+00:12:59,280 --> 00:13:02,100
+So we don't need those bits, we're 
+going to use the virtual page number, the 
+
+161
+00:13:02,100 --> 00:13:06,430
+high order bits. 
+To index into the page table. 
+
+162
+00:13:06,430 --> 00:13:10,910
+there we will read the valid bit that 
+will tell us whether this page is already 
+
+163
+00:13:10,910 --> 00:13:16,300
+in physical memory or not, whether it's 
+allocated or not. 
+
+164
+00:13:16,300 --> 00:13:21,290
+And if the page is not in memory, it will 
+cause a, what's called a page fault. 
+
+165
+00:13:21,290 --> 00:13:27,070
+equivalent to a cache miss. 
+which will tell us hey you got to figure 
+
+166
+00:13:27,070 --> 00:13:32,257
+out a way to get this page into memory 
+first and then try again. 
+
+167
+00:13:32,257 --> 00:13:36,613
+but if that entry is valid then we will 
+see in the page table a virtual page 
+
+168
+00:13:36,613 --> 00:13:41,299
+number. 
+which then becomes the part of the 
+
+169
+00:13:41,299 --> 00:13:47,158
+physical address that we append to. 
+The physical page offset, which is just 
+
+170
+00:13:47,158 --> 00:13:50,930
+going to be the virtual page offset 
+coming straight down. 
+
+171
+00:13:50,930 --> 00:13:55,971
+because of course that offset is within a 
+block and we're doing things with blocks 
+
+172
+00:13:55,971 --> 00:13:59,584
+at a time. 
+we're not cutting up blocks or anything 
+
+173
+00:13:59,584 --> 00:14:05,504
+like that, so that offset stays the same. 
+Okay, so that's the basic address 
+
+174
+00:14:05,504 --> 00:14:09,640
+translation story. 
+Now, where do we go find this page table 
+
+175
+00:14:09,640 --> 00:14:14,980
+though, to go look up that virtual page 
+number. 
+
+176
+00:14:14,980 --> 00:14:21,370
+Well, to do that, we're going to use 
+what's called a page table base register. 
+
+177
+00:14:21,370 --> 00:14:25,778
+This is a special register. 
+that, the CPU is going to maintain for a 
+
+178
+00:14:25,778 --> 00:14:28,602
+process. 
+That is going to have these put into it 
+
+179
+00:14:28,602 --> 00:14:31,900
+by the run time system, by the operating 
+system. 
+
+180
+00:14:31,900 --> 00:14:36,910
+Of where this page table is resident in 
+memory, okay? 
+
+181
+00:14:36,910 --> 00:14:40,930
+And for each computer system and 
+operating system combination there's 
+
+182
+00:14:40,930 --> 00:14:45,200
+usually a standard place in memory where 
+that occurs. 
+
+183
+00:14:45,200 --> 00:14:49,296
+Now the important thing to understand is 
+that all of this is done by the memory 
+
+184
+00:14:49,296 --> 00:14:53,712
+management unit in hardware it doesn't 
+require any software systems or any 
+
+185
+00:14:53,712 --> 00:14:59,396
+knowledge of the program. 
+This stuff is all going on in the 
+
+186
+00:14:59,396 --> 00:15:07,450
+computer system automatically. 
+Alright, let's see what happens on a page 
+
+187
+00:15:07,450 --> 00:15:10,629
+hit. 
+On a page hit, we use our virtual address 
+
+188
+00:15:10,629 --> 00:15:15,241
+to index the page table. 
+We find that it is valid and it provides 
+
+189
+00:15:15,241 --> 00:15:19,721
+us with an address in physical memory and 
+we now know where that page is and can 
+
+190
+00:15:19,721 --> 00:15:26,490
+access it using physical addresses. 
+Pretty straightforward. 
+
+191
+00:15:26,490 --> 00:15:32,670
+we've had to do a, access of memory to 
+get this page table entry. 
+
+192
+00:15:32,670 --> 00:15:35,970
+And then a second access to memory to 
+actually get the data we want at that 
+
+193
+00:15:35,970 --> 00:15:41,168
+physical address. 
+A page fault occurs when we access a page 
+
+194
+00:15:41,168 --> 00:15:48,120
+that is not valid, and therefore we, it's 
+address. 
+
+195
+00:15:48,120 --> 00:15:52,908
+Is going to be potentially an address on 
+the disk or it could be just an 
+
+196
+00:15:52,908 --> 00:15:57,090
+unallocated page. 
+in which case we have a more serious 
+
+197
+00:15:57,090 --> 00:16:01,790
+problem, we're trying to access a part of 
+the memory we haven't allocated at all. 
+
+198
+00:16:01,790 --> 00:16:05,920
+but let's say its it is allocated memory, 
+but the page is still on the disk here 
+
+199
+00:16:05,920 --> 00:16:09,840
+for example. 
+and not yet in memory. 
+
+200
+00:16:09,840 --> 00:16:15,010
+So what happens in this case? 
+Here we'll have to take that page, move 
+
+201
+00:16:15,010 --> 00:16:20,250
+it to somewhere in physical memory. 
+And wait a minute, where do we move it? 
+
+202
+00:16:20,250 --> 00:16:24,390
+Its physical memory is entirely occupied. 
+Well, we're going to have to decide which 
+
+203
+00:16:24,390 --> 00:16:27,350
+of those virtual pages to push out of 
+main memory. 
+
+204
+00:16:27,350 --> 00:16:31,702
+And of course that could create a future 
+page fault later if we tried to access 
+
+205
+00:16:31,702 --> 00:16:37,142
+that page we just evicted, again. 
+So we have to be careful, choose 
+
+206
+00:16:37,142 --> 00:16:41,829
+carefully which page to push out. 
+That's, that replacement algorithm, for 
+
+207
+00:16:41,829 --> 00:16:45,975
+this cache. 
+the way this looks in, in memory is in, 
+
+208
+00:16:45,975 --> 00:16:50,749
+in the execution of the process is that 
+the process will be coming along and 
+
+209
+00:16:50,749 --> 00:16:55,831
+eventually hit an instruction that 
+accesses memory that, causes that page 
+
+210
+00:16:55,831 --> 00:17:01,180
+fault. 
+So we get an exception. 
+
+211
+00:17:01,180 --> 00:17:05,940
+We have to make room for that page, load 
+it into memory and then we're going to go 
+
+212
+00:17:05,940 --> 00:17:11,340
+back to that instruction and execute it 
+again. 
+
+213
+00:17:11,340 --> 00:17:14,817
+But, the situation is going to be 
+different now That page will now be in, 
+
+214
+00:17:14,817 --> 00:17:18,688
+in physical memory. 
+The page table entry will have been 
+
+215
+00:17:18,688 --> 00:17:22,958
+modified and will get a page hit, and can 
+proceed normally through the rest of our 
+
+216
+00:17:22,958 --> 00:17:29,482
+process. 
+So this is the basic, situation with a 
+
+217
+00:17:29,482 --> 00:17:34,620
+page fault. 
+Alright, the key things to remember is 
+
+218
+00:17:34,620 --> 00:17:39,900
+that the page handler has to load the 
+page into physical memory. 
+
+219
+00:17:39,900 --> 00:17:43,868
+The page lan, handler is a bit of code in 
+the operating system that knows how to 
+
+220
+00:17:43,868 --> 00:17:49,716
+replace pages in physical memory. 
+And then we return to the faulting 
+
+221
+00:17:49,716 --> 00:17:55,050
+instruction, in this case executing that 
+move instruction yet again. 
+
+222
+00:17:55,050 --> 00:17:58,382
+And this time we'll be successful on this 
+second time through because we've moved 
+
+223
+00:17:58,382 --> 00:18:03,680
+the page to memory. 
+Let's look at that again in finer detail. 
+
+224
+00:18:03,680 --> 00:18:07,260
+Our virtual address goes to the page 
+table. 
+
+225
+00:18:07,260 --> 00:18:12,508
+the corresponding page table entry. 
+Finds that our page is invalid and is 
+
+226
+00:18:12,508 --> 00:18:18,310
+resident on disk. 
+so the next thing it will have to do. 
+
+227
+00:18:18,310 --> 00:18:23,422
+this causes the page fault, the exception 
+and now our operating system will kick in 
+
+228
+00:18:23,422 --> 00:18:27,895
+and figure out where to go get that page 
+on the disk, bring it into main memory 
+
+229
+00:18:27,895 --> 00:18:34,603
+and find a place to put it. 
+So what it first has to do is select a 
+
+230
+00:18:34,603 --> 00:18:39,283
+victim page to evict. 
+in this case it's going to pick that last 
+
+231
+00:18:39,283 --> 00:18:43,354
+page in physical memory virtual page 
+number four and it's going to remove that 
+
+232
+00:18:43,354 --> 00:18:47,870
+from the physical memory. 
+How does it remove it from memory? 
+
+233
+00:18:47,870 --> 00:18:52,769
+Well it doesn't really remove it, it just 
+simply changes the page table entry to no 
+
+234
+00:18:52,769 --> 00:18:57,806
+longer point to it from the location for 
+the virtual address four and the page 
+
+235
+00:18:57,806 --> 00:19:04,347
+table. 
+Instead, what it will do is have virtual 
+
+236
+00:19:04,347 --> 00:19:09,865
+page three point to that physical 
+location, copy that page from the disk to 
+
+237
+00:19:09,865 --> 00:19:14,860
+the main memory. 
+To the physical memory. 
+
+238
+00:19:14,860 --> 00:19:21,330
+And now you'll see that virtual page four 
+just points to its copy on disk. 
+
+239
+00:19:21,330 --> 00:19:25,682
+Which may have been put there from the 
+main memory if that page had to be 
+
+240
+00:19:25,682 --> 00:19:30,578
+written back, if it had been modified by 
+some write statements write instructions 
+
+241
+00:19:30,578 --> 00:19:37,620
+before then. 
+Okay, so, now at this point we can 
+
+242
+00:19:37,620 --> 00:19:41,766
+execute the instruction again. 
+We leave the operating system and just 
+
+243
+00:19:41,766 --> 00:19:47,060
+re-execute our instruction that caused 
+the page fault in the first place. 
+
+244
+00:19:47,060 --> 00:19:51,190
+And this time of course it will be a hit, 
+it will find a valid page. 
+
+245
+00:19:51,190 --> 00:19:54,920
+Because we made those changes to the page 
+table entry. 
+
+246
+00:19:54,920 --> 00:19:59,880
+And updated our physical memory and 
+virtual memory on disk. 
+
+247
+00:20:01,960 --> 00:20:07,213
+Okay, so how, why does this work? 
+this works for the same reason caches CPU 
+
+248
+00:20:07,213 --> 00:20:11,180
+caches work. 
+because of locality. 
+
+249
+00:20:11,180 --> 00:20:15,405
+if we're accessing a chunk of memory, 
+chances are we're going to access other 
+
+250
+00:20:15,405 --> 00:20:21,350
+things nearby that place in memory. 
+Other words near the one we're initially 
+
+251
+00:20:21,350 --> 00:20:25,376
+accessing. 
+So this is the same reason that those l 
+
+252
+00:20:25,376 --> 00:20:30,442
+one l two caches work between the CPU and 
+main memory. 
+
+253
+00:20:30,442 --> 00:20:35,854
+the set of virtual pages that a program 
+is actively accessing at any point in 
+
+254
+00:20:35,854 --> 00:20:41,220
+time. 
+The pages it's kind of using at any short 
+
+255
+00:20:41,220 --> 00:20:48,029
+window of time is called the working set. 
+In other words, those are the pages that 
+
+256
+00:20:48,029 --> 00:20:52,439
+should be resident in memory together, 
+because the program is quickly changing 
+
+257
+00:20:52,439 --> 00:20:58,358
+between accessing different ones. 
+We want that working set for our typical 
+
+258
+00:20:58,358 --> 00:21:02,000
+program to be much smaller than the main 
+memory. 
+
+259
+00:21:02,000 --> 00:21:06,145
+So that we can fit the working set in 
+main memory at once. 
+
+260
+00:21:06,145 --> 00:21:10,021
+This gives us good performance because it 
+means our program, our process, can run 
+
+261
+00:21:10,021 --> 00:21:15,782
+for a while without causing page faults. 
+It finds all of the pages in memory that 
+
+262
+00:21:15,782 --> 00:21:23,519
+it needs in the main memory. 
+Okay, and that's our, that's our goal. 
+
+263
+00:21:23,519 --> 00:21:28,073
+however of course sometimes we have many 
+processes running and all of their 
+
+264
+00:21:28,073 --> 00:21:32,430
+working sets can't be in memory at the 
+same time. 
+
+265
+00:21:32,430 --> 00:21:37,090
+So their total working sets is often 
+larger than main memory. 
+
+266
+00:21:37,090 --> 00:21:41,445
+And as we add more processes, try to run 
+more programs at the same time it looks 
+
+267
+00:21:41,445 --> 00:21:46,010
+like things slow down. 
+And why do things slow down? 
+
+268
+00:21:46,010 --> 00:21:48,060
+This happens on your machines all the 
+time. 
+
+269
+00:21:48,060 --> 00:21:51,970
+You have too many windows open, too many 
+different programs running. 
+
+270
+00:21:51,970 --> 00:21:56,284
+Things, things seem to get sluggish. 
+The reason they get sluggish is because 
+
+271
+00:21:56,284 --> 00:22:00,983
+of a phenomenon called thrashing. 
+Where one process is trying to act to 
+
+272
+00:22:00,983 --> 00:22:05,340
+access a page in memory. 
+It has to brought in from disk. 
+
+273
+00:22:05,340 --> 00:22:09,605
+That evicts another page out of memory. 
+that happens to be the, something that 
+
+274
+00:22:09,605 --> 00:22:13,824
+another process you're running needs. 
+So as soon as that one gets a turn, it 
+
+275
+00:22:13,824 --> 00:22:18,330
+goes and gets that page back from disk 
+and brings it back to main memory. 
+
+276
+00:22:18,330 --> 00:22:21,710
+And then the next process goes and gets 
+another page from disk. 
+
+277
+00:22:21,710 --> 00:22:25,538
+And if there's too many of these running 
+at the same time in other words those 
+
+278
+00:22:25,538 --> 00:22:30,860
+working sets don't all fit in main memory 
+then we're constantly juggling. 
+
+279
+00:22:30,860 --> 00:22:33,000
+What's in main memory? 
+What's on the disk? 
+
+280
+00:22:33,000 --> 00:22:35,440
+What's in main memory? 
+What's on the disk? 
+
+281
+00:22:35,440 --> 00:22:41,485
+And, we end up swapping and copying 
+pages, all the time and when we don't 
+
+282
+00:22:41,485 --> 00:22:49,800
+that more and more, we get this 
+performance meltdown called "thrashing." 
+

@@ -1,0 +1,723 @@
+1
+00:00:00,057 --> 00:00:05,960
+[MUSIC]. 
+
+2
+00:00:05,960 --> 00:00:09,677
+So, we've now seen how to pass arguments 
+onto a stack, let's see how we can use 
+
+3
+00:00:09,677 --> 00:00:14,319
+the stack for both allocating local 
+variables to a procedure. 
+
+4
+00:00:14,319 --> 00:00:19,714
+And for saving registers that we have to 
+restore to the right value, for all the 
+
+5
+00:00:19,714 --> 00:00:24,778
+procedures involved. 
+Let's start with the register saving 
+
+6
+00:00:24,778 --> 00:00:27,766
+conventions. 
+let's go back to that procedure yoo and 
+
+7
+00:00:27,766 --> 00:00:30,622
+procedure who that we've talked about 
+before. 
+
+8
+00:00:30,622 --> 00:00:35,397
+Remember yoo is the caller and who is the 
+callee. 
+
+9
+00:00:35,397 --> 00:00:39,861
+so let's take a look at this code here, 
+and we see that just here's the call to 
+
+10
+00:00:39,861 --> 00:00:44,882
+who, but just before that, we put a value 
+into edx. 
+
+11
+00:00:44,882 --> 00:00:50,572
+And then we expect to be able to use it 
+after the call to who. 
+
+12
+00:00:50,572 --> 00:00:54,842
+So, we, in the function yoo, we would 
+hope that the value of edx would not be 
+
+13
+00:00:54,842 --> 00:00:59,626
+disrupted by what might happen in the 
+call to who. 
+
+14
+00:00:59,626 --> 00:01:04,121
+So, that the same value is still there 
+when we return. 
+
+15
+00:01:04,121 --> 00:01:08,744
+So, in who however, which will might have 
+been written by a different programmer 
+
+16
+00:01:08,744 --> 00:01:14,387
+edx might get a new value. 
+And that would destroy the one that we 
+
+17
+00:01:14,387 --> 00:01:20,493
+had before, because there is only one 
+register edx in our CPU. 
+
+18
+00:01:20,493 --> 00:01:27,052
+different procedures might use it, but 
+it's the same physical register. 
+
+19
+00:01:27,052 --> 00:01:31,177
+So, we have to make sure that the 
+contents of that register which is 
+
+20
+00:01:31,177 --> 00:01:36,800
+overwritten by who gets saved somewhere 
+before that happens. 
+
+21
+00:01:36,800 --> 00:01:44,459
+So, what we have is some register saving 
+conventions that are split between caller 
+
+22
+00:01:44,459 --> 00:01:51,080
+save and callee save. 
+In the caller save case the, the caller 
+
+23
+00:01:51,080 --> 00:01:56,330
+procedure saves the values in a register, 
+in the registers before calling the other 
+
+24
+00:01:56,330 --> 00:02:02,320
+procedure. 
+Callee save is complimentary, it says the 
+
+25
+00:02:02,320 --> 00:02:08,024
+callee will do the saving before using 
+that register. 
+
+26
+00:02:08,024 --> 00:02:12,759
+So when do we use each? 
+When does the caller save a register and 
+
+27
+00:02:12,759 --> 00:02:18,222
+when does a callee save a register? 
+So, turn out that will begin to do with 
+
+28
+00:02:18,222 --> 00:02:23,634
+three registers be callers save, eax, edx 
+and ecx and three registers be callee 
+
+29
+00:02:23,634 --> 00:02:28,876
+save. 
+Sort of split the responsibilities, okay. 
+
+30
+00:02:28,876 --> 00:02:32,475
+And then of course we have some, two 
+special registers that are the base 
+
+31
+00:02:32,475 --> 00:02:36,750
+pointer and the stack pointer. 
+Those are handled a little bit 
+
+32
+00:02:36,750 --> 00:02:40,422
+differently, but also involve restoring 
+them to their original values upon exit 
+
+33
+00:02:40,422 --> 00:02:45,452
+from a procedure. 
+Okay the last thing to remember is that 
+
+34
+00:02:45,452 --> 00:02:51,662
+eax the reason also its caller saved, is 
+because remember the returning procedure 
+
+35
+00:02:51,662 --> 00:02:59,282
+puts its return value in eax. 
+And so if the caller wants to use what it 
+
+36
+00:02:59,282 --> 00:03:05,808
+had in eax previous to the call, it 
+better save it somewhere else. 
+
+37
+00:03:05,808 --> 00:03:08,315
+Okay. 
+And where might it save it? 
+
+38
+00:03:08,315 --> 00:03:10,583
+probably in memory somewhere. 
+Okay. 
+
+39
+00:03:10,583 --> 00:03:14,940
+Alright, now let's turn to local 
+variables, alright? 
+
+40
+00:03:14,940 --> 00:03:20,090
+Here we have two functions. 
+We have a factorial function called 
+
+41
+00:03:20,090 --> 00:03:26,435
+sfact, which calls a helper procedure 
+inside of it. 
+
+42
+00:03:26,435 --> 00:03:31,166
+What the, the way this works is that we 
+create a starting point for the 
+
+43
+00:03:31,166 --> 00:03:38,079
+factorial, in this case the number 1 here 
+at the beginning of sfact. 
+
+44
+00:03:38,079 --> 00:03:43,212
+And what we're going to do is pass a 
+pointer to that value, an address along 
+
+45
+00:03:43,212 --> 00:03:49,075
+with the value of the factorial we want 
+to reach, x. 
+
+46
+00:03:49,075 --> 00:03:56,300
+And pass that to a helper function which 
+is defined here on the left. 
+
+47
+00:03:56,300 --> 00:04:01,629
+Okay, the helper function is going to 
+see, if x is less than or equal to 1. 
+
+48
+00:04:01,629 --> 00:04:07,650
+If it is, it's just going to stop. 
+And if it's not, it's going to perform 
+
+49
+00:04:07,650 --> 00:04:14,800
+the multiplication of x times that of 
+value, that address that was passed to it 
+
+50
+00:04:14,800 --> 00:04:22,070
+as an argument. 
+So, you'll notice that, that address of 
+
+51
+00:04:22,070 --> 00:04:26,894
+val, was passed to this helper function 
+as a pointer. 
+
+52
+00:04:26,894 --> 00:04:33,294
+Right, and then we de-reference the 
+pointer to go get that value and multiply 
+
+53
+00:04:33,294 --> 00:04:39,003
+it times x. 
+So, when we start here, let's say that x 
+
+54
+00:04:39,003 --> 00:04:44,615
+was equal to 3, right, we would start 
+with, s_helper being called with the 
+
+55
+00:04:44,615 --> 00:04:52,967
+value three and the address of val. 
+Which is has a value of one stored at 
+
+56
+00:04:52,967 --> 00:04:57,756
+that address. 
+So, when we come here to to the s_helper 
+
+57
+00:04:57,756 --> 00:05:02,748
+procedure, what we'll find is that x is 3 
+and the value stored at the address of 
+
+58
+00:05:02,748 --> 00:05:08,134
+val is 1, so we'll do a multiply 1 times 
+3. 
+
+59
+00:05:08,134 --> 00:05:16,072
+And store that back into that address we 
+were passed as an argument, again by 
+
+60
+00:05:16,072 --> 00:05:26,610
+using the dereference operator, okay? 
+So, now val is going to be equal to 3. 
+
+61
+00:05:26,610 --> 00:05:33,396
+But now s_helper calls itself 
+recursively, this time with the value 2 
+
+62
+00:05:33,396 --> 00:05:42,432
+and the address again of that same place. 
+Although this time we refer to it by it's 
+
+63
+00:05:42,432 --> 00:05:47,786
+local name a, accum. 
+Right, so this is also accum, the same 
+
+64
+00:05:47,786 --> 00:05:54,328
+address that we passed in. 
+So, now when we do this call to s_helper 
+
+65
+00:05:54,328 --> 00:05:59,874
+x will be 2 and the value that we 
+dereference with the pointer is that one 
+
+66
+00:05:59,874 --> 00:06:08,530
+that we just stored away earlier 3. 
+So, now we'll do 3 times 2 and put a 6 at 
+
+67
+00:06:08,530 --> 00:06:13,761
+that place, at that address of value, 
+alright. 
+
+68
+00:06:13,761 --> 00:06:20,061
+And you'll see that the next time of 
+course, s_helper is called now with 1 and 
+
+69
+00:06:20,061 --> 00:06:28,512
+the address of our accumulating product. 
+And this time the procedure will just 
+
+70
+00:06:28,512 --> 00:06:35,152
+stop right away, and return. 
+Okay, so how did this actually get 
+
+71
+00:06:35,152 --> 00:06:41,493
+implemented in our stack? 
+So, lets start with the sfact procedure 
+
+72
+00:06:41,493 --> 00:06:45,580
+at the very beginning and here's the code 
+corresponding to sfact or at least some 
+
+73
+00:06:45,580 --> 00:06:50,732
+of it. 
+here is the stack inside of sfact. 
+
+74
+00:06:50,732 --> 00:06:55,932
+You'll notice that its, it has a return 
+address for where it was called from and 
+
+75
+00:06:55,932 --> 00:07:00,894
+it's argument. 
+x, the value x that it was given to start 
+
+76
+00:07:00,894 --> 00:07:03,968
+with. 
+Okay, the very first procedure does that 
+
+77
+00:07:03,968 --> 00:07:07,427
+set up stuff we always do at the 
+beginning of a procedure. 
+
+78
+00:07:07,427 --> 00:07:11,412
+Adjusting base pointers. 
+So, we're going to save our old base 
+
+79
+00:07:11,412 --> 00:07:16,036
+pointer by pushing it on to the stack and 
+of course, esp the stack pointer adjusted 
+
+80
+00:07:16,036 --> 00:07:21,390
+as well. 
+Then we are going to adjust the value of 
+
+81
+00:07:21,390 --> 00:07:29,416
+ebp to be to this new start of this frame 
+pointer, of this frame, on the stack. 
+
+82
+00:07:29,416 --> 00:07:36,136
+and then we're, you'll notice we're 
+going to subtract 16 from esp creating 
+
+83
+00:07:36,136 --> 00:07:44,382
+this temporary space on the stack. 
+essentially allocating four words 16 
+
+84
+00:07:44,382 --> 00:07:48,844
+bytes on the stack for use by local 
+variables. 
+
+85
+00:07:48,844 --> 00:07:53,941
+Now in this case it turns out we're not 
+really going to use all that space. 
+
+86
+00:07:53,941 --> 00:07:59,756
+We only really needed four bytes, but for 
+argument's sake, let's allocate 16. 
+
+87
+00:07:59,756 --> 00:08:05,708
+The next thing that we do is we go get 
+the value of x by accessing the location 
+
+88
+00:08:05,708 --> 00:08:14,072
+where that argument was stored. 
+remember 8 plus the base pointer, okay. 
+
+89
+00:08:14,072 --> 00:08:20,954
+We get the value of x and then we set the 
+value of val and how do we set the value 
+
+90
+00:08:20,954 --> 00:08:26,965
+of val? 
+Val is a local variable declared inside 
+
+91
+00:08:26,965 --> 00:08:32,968
+the procedure and you notice that we made 
+a place for it at minus 4 ebp. 
+
+92
+00:08:32,968 --> 00:08:39,980
+That corresponds to this location, our 
+first temporary word on the stack. 
+
+93
+00:08:39,980 --> 00:08:44,472
+And we're going to just put the literal 1 
+there, okay. 
+
+94
+00:08:44,472 --> 00:08:53,142
+So that creates that variable val and 
+gives it the initial value of 1. 
+
+95
+00:08:53,142 --> 00:08:57,846
+All right. 
+The next thing we're going to do is, is 
+
+96
+00:08:57,846 --> 00:09:02,854
+call s_helper from sfact. 
+And, to do that, we need to set up the 
+
+97
+00:09:02,854 --> 00:09:07,358
+arguments for that procedure call. 
+Now, this procedure, s_helper, has two 
+
+98
+00:09:07,358 --> 00:09:11,446
+arguments, so we're going to need to push 
+both of 'em onto the stack. 
+
+99
+00:09:11,446 --> 00:09:15,274
+So, the first thing we need to do is 
+remember we pushed the arguments in 
+
+100
+00:09:15,274 --> 00:09:20,630
+reverse order, so the second argument and 
+then the first argument. 
+
+101
+00:09:20,630 --> 00:09:25,414
+Here is the second argument the address 
+of val. 
+
+102
+00:09:25,414 --> 00:09:29,939
+So, what we've done is used an effective 
+address computation. 
+
+103
+00:09:29,939 --> 00:09:34,286
+Instruction to compute that address, 
+remember just that minus 4 ebp that's 
+
+104
+00:09:34,286 --> 00:09:38,291
+this location right there where we stored 
+val. 
+
+105
+00:09:38,291 --> 00:09:45,394
+And we're going to put that address in 
+eax, then push eax onto the stack. 
+
+106
+00:09:45,394 --> 00:09:49,693
+And that puts our first argument onto the 
+stack. 
+
+107
+00:09:49,693 --> 00:09:54,540
+And that is an address, that points back 
+to val, okay? 
+
+108
+00:09:54,540 --> 00:10:00,120
+the next thing to do is to push the other 
+argument, x, well that member we had 
+
+109
+00:10:00,120 --> 00:10:05,520
+stored that in edx, so we can just push 
+that value of the register onto the 
+
+110
+00:10:05,520 --> 00:10:11,781
+stack. 
+And we see this, that appear here. 
+
+111
+00:10:11,781 --> 00:10:17,756
+At this point we call s_helper now that 
+we have the arguments on the stack. 
+
+112
+00:10:17,756 --> 00:10:22,209
+And that will go in execute the code for 
+s_helper. 
+
+113
+00:10:22,209 --> 00:10:26,617
+And remember in this case s_helper 
+returns a void, so it does not have a 
+
+114
+00:10:26,617 --> 00:10:30,479
+return value. 
+How do we get the result of what, sub 
+
+115
+00:10:30,479 --> 00:10:33,625
+helper does? 
+Well, remember it modified the value that 
+
+116
+00:10:33,625 --> 00:10:37,310
+was stored at this location, for which we 
+provided the address as an argument, so 
+
+117
+00:10:37,310 --> 00:10:41,159
+that s_helper can go and modify that 
+location. 
+
+118
+00:10:41,159 --> 00:10:47,231
+So, when we call s_helper, the result we 
+expect to happen is that now the value at 
+
+119
+00:10:47,231 --> 00:10:55,468
+that location of our temporary variable 
+has been changed to x factorial. 
+
+120
+00:10:55,468 --> 00:11:01,629
+Going through that series of recursive 
+multiplys okay? 
+
+121
+00:11:01,629 --> 00:11:07,739
+So, then our result for sfact which does 
+have to return an int value, is to go get 
+
+122
+00:11:07,739 --> 00:11:13,943
+that value, and it's going to do it again 
+by just going to that address and moving 
+
+123
+00:11:13,943 --> 00:11:22,087
+that result to eax. 
+And leaving it in that register when it 
+
+124
+00:11:22,087 --> 00:11:27,028
+executes its return, so whatever called 
+sfact can find x factorial in the 
+
+125
+00:11:27,028 --> 00:11:33,105
+register eax, that int value that was to 
+be returned. 
+
+126
+00:11:33,105 --> 00:11:40,616
+Okay, so let's just summarize that the IA 
+32 procedure. 
+
+127
+00:11:40,616 --> 00:11:44,434
+stack frame. 
+The important points is there's a 
+
+128
+00:11:44,434 --> 00:11:47,266
+combination of instructions and 
+conventions we need to use to get this 
+
+129
+00:11:47,266 --> 00:11:51,860
+happen correctly. 
+we have to prevent the functions from 
+
+130
+00:11:51,860 --> 00:11:54,738
+disrupting each others correct behavior, 
+alright. 
+
+131
+00:11:54,738 --> 00:11:58,514
+So, that means not only figuring out 
+where to return and pickup where you left 
+
+132
+00:11:58,514 --> 00:12:02,467
+off, but also making sure that they don't 
+step in each others toes and destroy the 
+
+133
+00:12:02,467 --> 00:12:08,695
+contents of registers That one function 
+thought was going to stay the same. 
+
+134
+00:12:08,695 --> 00:12:11,552
+Alright. 
+So the stack turns out to be great data 
+
+135
+00:12:11,552 --> 00:12:16,382
+structure for doing this, because when we 
+call one procedure we're going to return 
+
+136
+00:12:16,382 --> 00:12:22,420
+from that callee procedure before we 
+return from the caller. 
+
+137
+00:12:22,420 --> 00:12:25,971
+So, it has that nice property of growing 
+the stack and then shrinking the stack on 
+
+138
+00:12:25,971 --> 00:12:29,523
+the return. 
+And recursion can be handled by all of 
+
+139
+00:12:29,523 --> 00:12:35,526
+these normal calling conventions, there's 
+really nothing special we need to do. 
+
+140
+00:12:37,210 --> 00:12:41,435
+We can safely store values we need, local 
+variables we need, in the local stack 
+
+141
+00:12:41,435 --> 00:12:45,360
+stack frame and in callee saved 
+registers. 
+
+142
+00:12:45,360 --> 00:12:48,770
+we put new arguments at the top of the 
+stack, and then called the fun and then 
+
+143
+00:12:48,770 --> 00:12:53,559
+called the function. 
+The return value is returned to the eax, 
+
+144
+00:12:53,559 --> 00:12:58,338
+and we know where to go find it by 
+convention we know where we will find it 
+
+145
+00:12:58,338 --> 00:13:03,023
+in that register and and usage . 
+

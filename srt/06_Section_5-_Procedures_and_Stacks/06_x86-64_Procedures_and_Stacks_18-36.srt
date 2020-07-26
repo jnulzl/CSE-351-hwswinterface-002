@@ -1,0 +1,1049 @@
+1
+00:00:00,002 --> 00:00:05,963
+[MUSIC]. 
+
+2
+00:00:05,963 --> 00:00:10,489
+Before we close this section on 
+procedures and stacks let's talk about 
+
+3
+00:00:10,489 --> 00:00:17,497
+how things change when we go to the 
+64-bit architecture as popular today. 
+
+4
+00:00:17,497 --> 00:00:22,522
+So the calling convention in x86, 64-bit 
+architectures is a little different, and 
+
+5
+00:00:22,522 --> 00:00:29,340
+that's because of the doubling of the 
+number of general purpose registers. 
+
+6
+00:00:29,340 --> 00:00:34,890
+There's so many more registers available 
+on the 64-bit architectures that we can 
+
+7
+00:00:34,890 --> 00:00:40,440
+decrease our use of the stack. 
+And make better use of the registers. 
+
+8
+00:00:40,440 --> 00:00:43,978
+So, we're going to store arguments in in 
+registers and we're going to store 
+
+9
+00:00:43,978 --> 00:00:48,570
+temporary variables in registers. 
+Of course, we could always run out of 
+
+10
+00:00:48,570 --> 00:00:53,158
+registers and we'll fall back to the way 
+we did things in the 32-bit architectures 
+
+11
+00:00:53,158 --> 00:00:58,250
+we've just seen. 
+But for the most part, we're going to try 
+
+12
+00:00:58,250 --> 00:01:04,295
+make use of those registers as best we 
+can and avoid the use of memory. 
+
+13
+00:01:04,295 --> 00:01:10,570
+so let's take a look at the registers in 
+the 64-bit architecture again. 
+
+14
+00:01:10,570 --> 00:01:16,492
+there are now 16 general purpose 
+registers, and they are 8 bytes each 
+
+15
+00:01:16,492 --> 00:01:24,630
+rather than 4 bytes because we have code 
+words instead of 4 byte words. 
+
+16
+00:01:24,630 --> 00:01:30,100
+We also going to extend our Callee and 
+Callee saved and Caller save conventions. 
+
+17
+00:01:30,100 --> 00:01:34,520
+And you can see the registers that are 
+annotated here in green being the Callee 
+
+18
+00:01:34,520 --> 00:01:39,252
+saved registers. 
+And in yellow are the caller saved 
+
+19
+00:01:39,252 --> 00:01:44,618
+registers. 
+also we're going to use six registers, in 
+
+20
+00:01:44,618 --> 00:01:53,157
+these locations for passing arguments. 
+And we're going to us up to six registers 
+
+21
+00:01:53,157 --> 00:01:57,910
+to take care of six arguments for 
+procedure. 
+
+22
+00:01:57,910 --> 00:02:02,070
+Now, if we have more than six arguments, 
+we'll have to go back to using the stack. 
+
+23
+00:02:02,070 --> 00:02:06,100
+But for the most part, we'll use these 
+and most procedures have just a couple of 
+
+24
+00:02:06,100 --> 00:02:09,750
+parameters. 
+So most of the time, we won't have to use 
+
+25
+00:02:09,750 --> 00:02:13,350
+the stack. 
+we're still going to use rax for the 
+
+26
+00:02:13,350 --> 00:02:18,529
+return value of a procedure and we're 
+still going to use rsp for a stack point. 
+
+27
+00:02:22,130 --> 00:02:25,204
+Okay, let's revisit the swap function and 
+look at it in both the 32-bit 
+
+28
+00:02:25,204 --> 00:02:28,331
+architecture which we see here on the 
+left. 
+
+29
+00:02:28,331 --> 00:02:35,960
+This is the one we've seen so far, and a 
+swap implementation using 64 bits, okay. 
+
+30
+00:02:35,960 --> 00:02:40,610
+And the differences in these two cases 
+are that arguments are passed in 
+
+31
+00:02:40,610 --> 00:02:44,532
+registers. 
+So the first argument is now in the 
+
+32
+00:02:44,532 --> 00:02:49,482
+register rdi the second in the register 
+rsi, and that's where we find the 64-bit 
+
+33
+00:02:49,482 --> 00:02:55,880
+pointer, those two arguments to swap. 
+so we're not having to get them off the 
+
+34
+00:02:55,880 --> 00:02:59,723
+stack. 
+So the only stock operation we really 
+
+35
+00:02:59,723 --> 00:03:03,386
+need is return. 
+that goes against the return value from 
+
+36
+00:03:03,386 --> 00:03:07,081
+the stock and jumps to that location when 
+we're done. 
+
+37
+00:03:07,081 --> 00:03:10,791
+By avoiding the stack, and holding all 
+the local information in registers we can 
+
+38
+00:03:10,791 --> 00:03:15,276
+make execution much faster one because we 
+have less instructions. 
+
+39
+00:03:15,276 --> 00:03:17,539
+As you can see we have quite a quite less 
+instructions for the 64-bit version. 
+
+40
+00:03:17,539 --> 00:03:19,010
+But also because we're not going to 
+memory. 
+
+41
+00:03:19,010 --> 00:03:24,191
+And the stack is stored in memory. 
+And that is slower to get to than the 
+
+42
+00:03:24,191 --> 00:03:35,070
+registers of the CPU. 
+The general purpose registers. 
+
+43
+00:03:35,070 --> 00:03:39,600
+We'll learn more about that later when we 
+talk about the memory system. 
+
+44
+00:03:39,600 --> 00:03:45,600
+but for now suffice it say that it's a 
+lot faster to go to registers, okay. 
+
+45
+00:03:45,600 --> 00:03:50,357
+So the highlights of this then for the 
+64-bit case, are that arguments up to the 
+
+46
+00:03:50,357 --> 00:03:56,437
+first six are stored in registers. 
+It's faster to get to those values there 
+
+47
+00:03:56,437 --> 00:04:02,150
+than if they were in memory in the stack. 
+Local variables can also be placed in 
+
+48
+00:04:02,150 --> 00:04:06,950
+registers if there's room.and we don't 
+have too many of them. 
+
+49
+00:04:06,950 --> 00:04:09,850
+Otherwise, we will have to go back to the 
+stack. 
+
+50
+00:04:09,850 --> 00:04:14,500
+We have a callq instruction now instead 
+of a call instruction, which puts a 
+
+51
+00:04:14,500 --> 00:04:20,254
+64-bit return address on the stack. 
+And of course it will have to increm-, 
+
+52
+00:04:20,254 --> 00:04:24,585
+decrement the stack pointer by 8, rather 
+than 4 because were putting 8 bytes on 
+
+53
+00:04:24,585 --> 00:04:30,656
+the stack. 
+we also have eliminated the use of the 
+
+54
+00:04:30,656 --> 00:04:35,800
+frame pointer, remember ebp, our base 
+frame pointer. 
+
+55
+00:04:35,800 --> 00:04:39,512
+we're not going to do that anymore and 
+we're going to make all reference 
+
+56
+00:04:39,512 --> 00:04:43,608
+relative to the stack pointer, so we 
+won't have to keep track of two registers 
+
+57
+00:04:43,608 --> 00:04:50,078
+pointing to stack, but only one. 
+And epb or now its 64 bit version, rbp is 
+
+58
+00:04:50,078 --> 00:04:55,400
+going to be available as a general 
+purpose register. 
+
+59
+00:04:55,400 --> 00:05:00,470
+And then the way, the reason that works 
+is because we can access memory up to 128 
+
+60
+00:05:00,470 --> 00:05:06,086
+bytes of beyond the rsp where rsp is 
+pointing without having to use multiple 
+
+61
+00:05:06,086 --> 00:05:10,979
+instructions. 
+We can do that directly. 
+
+62
+00:05:10,979 --> 00:05:16,544
+This is called the red zone, okay? 
+And so we can store these temporary 
+
+63
+00:05:16,544 --> 00:05:21,772
+variables on this stack very easily and 
+access them quickly. 
+
+64
+00:05:21,772 --> 00:05:25,774
+registers are still designated as 
+caller-saved or callee-saved however, but 
+
+65
+00:05:25,774 --> 00:05:28,964
+slightly differently than they were 
+before. 
+
+66
+00:05:28,964 --> 00:05:34,324
+Okay, so ideally the 64 bit architecture 
+has no stack frame at all, except for the 
+
+67
+00:05:34,324 --> 00:05:39,607
+return address. 
+So we've now shrunk the stack frame down 
+
+68
+00:05:39,607 --> 00:05:44,437
+to just one piece of information namely 
+that that it might return address that is 
+
+69
+00:05:44,437 --> 00:05:50,392
+placed on the stack. 
+this makes things a lot simply to for 
+
+70
+00:05:50,392 --> 00:05:56,740
+manipulating stack and keeping the, 
+making the frames that we need. 
+
+71
+00:05:56,740 --> 00:06:01,228
+However, we always have to fall back to 
+the 32-bit architecture conventions if we 
+
+72
+00:06:01,228 --> 00:06:06,181
+can't fit things in registers. 
+And that's why we bothered to show you 
+
+73
+00:06:06,181 --> 00:06:10,731
+all that 32-bit stack convention even 
+though we're mostly running on 64-bit 
+
+74
+00:06:10,731 --> 00:06:15,749
+architectures these days. 
+Because when we have too many local 
+
+75
+00:06:15,749 --> 00:06:21,116
+variables we have to go to the stack. 
+when local variables are more complex 
+
+76
+00:06:21,116 --> 00:06:26,578
+data structures like arrays or struts, 
+we'll have to put things on the stack. 
+
+77
+00:06:26,578 --> 00:06:31,252
+When we have an address for local 
+variable, we'll have to put it on the 
+
+78
+00:06:31,252 --> 00:06:36,828
+stack, because we can't have an address 
+to a register we have to have an address 
+
+79
+00:06:36,828 --> 00:06:44,650
+to a memory location. 
+so we will have to put it on the stack. 
+
+80
+00:06:44,650 --> 00:06:48,494
+And whenever we need more than six 
+arguments to a function we'll need to 
+
+81
+00:06:48,494 --> 00:06:54,042
+stack again. 
+and of course saving registers away that 
+
+82
+00:06:54,042 --> 00:07:00,344
+also will potentially have to have us use 
+the stack. 
+
+83
+00:07:00,344 --> 00:07:03,948
+So, we still need stack frames and it's 
+still important to understand the general 
+
+84
+00:07:03,948 --> 00:07:07,248
+case. 
+But to keep in mind that most of the time 
+
+85
+00:07:07,248 --> 00:07:11,460
+on 64-bit architectures, that stack frame 
+is tiny. 
+
+86
+00:07:11,460 --> 00:07:15,606
+It's just a return address. 
+All right, let's take a look at an 
+
+87
+00:07:15,606 --> 00:07:20,666
+example that that illustrates this. 
+we're going to have this function called 
+
+88
+00:07:20,666 --> 00:07:27,590
+call proc, which does some has some four 
+local variables of different sizes. 
+
+89
+00:07:27,590 --> 00:07:32,567
+and, then does a call to another 
+procedure called proc, and then finally 
+
+90
+00:07:32,567 --> 00:07:38,658
+returns a value that it computes 
+according to this expression. 
+
+91
+00:07:38,658 --> 00:07:41,466
+Okay. 
+So, the, the way call proc is going to 
+
+92
+00:07:41,466 --> 00:07:45,821
+start, of course, is its stack pointer is 
+pointing to where it has to return and 
+
+93
+00:07:45,821 --> 00:07:53,230
+whatever procedure called it. 
+that's, the top of the stack. 
+
+94
+00:07:53,230 --> 00:07:59,327
+And the first thing that it's going to do 
+is allocate 32 bytes on the stack for the 
+
+95
+00:07:59,327 --> 00:08:07,151
+local variables that it will need. 
+And you'll notice that by adjusting the 
+
+96
+00:08:07,151 --> 00:08:13,066
+pointer down to 32, the stack pointer to 
+now down here 32 is 4 times 8 bytes so 
+
+97
+00:08:13,066 --> 00:08:20,087
+four 8 byte words. 
+that's why I've drawn it as four 
+
+98
+00:08:20,087 --> 00:08:26,300
+horizontal sections of memory. 
+Each of those is 8 bytes. 
+
+99
+00:08:26,300 --> 00:08:30,524
+And we're going to allocate the four 
+temporary variables, x1 though x4 to 
+
+100
+00:08:30,524 --> 00:08:35,482
+these areas here. 
+And you'll notice that x1 occupies 8 
+
+101
+00:08:35,482 --> 00:08:38,558
+bytes. 
+It's a long integer. 
+
+102
+00:08:38,558 --> 00:08:43,967
+X2 is just a regular integer, only needs 
+four bytes. 
+
+103
+00:08:43,967 --> 00:08:50,734
+X3 is a short int which only needs two, 
+and x4 is a single byte, okay. 
+
+104
+00:08:50,734 --> 00:08:54,451
+now why did we allocate two more words, 
+well we're going to see, we're going to 
+
+105
+00:08:54,451 --> 00:08:58,286
+need those because this procedure call 
+here has eight arguments more than the 
+
+106
+00:08:58,286 --> 00:09:03,890
+six we can do with registers. 
+So we're going to need two places to go 
+
+107
+00:09:03,890 --> 00:09:08,310
+put those two extra arguments for our 
+procedure call. 
+
+108
+00:09:08,310 --> 00:09:11,382
+All right. 
+So, let's see what the what the first 
+
+109
+00:09:11,382 --> 00:09:16,776
+instructions of the function are. 
+As I mentioned, we adjusted the stack 
+
+110
+00:09:16,776 --> 00:09:22,112
+pointer by 32 to create that space. 
+and then we moved four values into 
+
+111
+00:09:22,112 --> 00:09:27,100
+different locations on the stack. 
+And you'll notice that we used offset to 
+
+112
+00:09:27,100 --> 00:09:32,062
+the current stack pointer to find the 
+right places to put them. 
+
+113
+00:09:32,062 --> 00:09:38,757
+We put the 8 byte quantity, the quad word 
+that was value 1 for x1 at 16 plus the 
+
+114
+00:09:38,757 --> 00:09:48,544
+stack point, that's at this location. 
+then we moved a long word, value 2, to 24 
+
+115
+00:09:48,544 --> 00:09:53,430
+plus the stack pointer. 
+That's at this location. 
+
+116
+00:09:53,430 --> 00:10:01,651
+then a word or rather 16 bits value three 
+at 28 plus the stack pointer. 
+
+117
+00:10:01,651 --> 00:10:07,317
+Well, 24 was here, four more over puts us 
+here at x3. 
+
+118
+00:10:07,317 --> 00:10:14,970
+And then finally, a single byte of value 
+4 at 31 plus the stack pointer. 
+
+119
+00:10:14,970 --> 00:10:22,428
+That's that 24 here, and then 7 over puts 
+us over where we've labelled x4 as byte, 
+
+120
+00:10:22,428 --> 00:10:29,888
+that single byte, okay. 
+let's move on now to setting up the 
+
+121
+00:10:29,888 --> 00:10:35,380
+parameters, the arguments for calling the 
+function proc. 
+
+122
+00:10:35,380 --> 00:10:39,581
+OK, that's the next part of this of this 
+procedure. 
+
+123
+00:10:39,581 --> 00:10:44,665
+And, what we see here is a set of 
+instructions, that Set things up for all 
+
+124
+00:10:44,665 --> 00:10:48,882
+those arguments. 
+Now, arguments have passed in a 
+
+125
+00:10:48,882 --> 00:10:53,980
+particular order in the registers. 
+The first argument has to go into rdi. 
+
+126
+00:10:53,980 --> 00:10:56,400
+The second into rsi. 
+The third into rdx. 
+
+127
+00:10:56,400 --> 00:11:00,246
+Rcx, r8, r9 until we're, we got six per 
+six arguments. 
+
+128
+00:11:00,246 --> 00:11:06,090
+The rest are going to go on the stack. 
+Okay? 
+
+129
+00:11:06,090 --> 00:11:08,350
+And that means two more will have to go 
+on the stack. 
+
+130
+00:11:08,350 --> 00:11:10,720
+in this case because we have eight 
+arguments. 
+
+131
+00:11:10,720 --> 00:11:13,280
+So let's take a look at the first 
+instruction. 
+
+132
+00:11:13,280 --> 00:11:20,175
+It moves a quad word with value 1 to rdi. 
+That's the equivalent of putting that x1 
+
+133
+00:11:20,175 --> 00:11:26,275
+there as the first argument. 
+then we are going to need the address of 
+
+134
+00:11:26,275 --> 00:11:30,590
+x1. 
+Well, the address of x1 on the stack is 
+
+135
+00:11:30,590 --> 00:11:36,208
+here at 16 from the rsp. 
+So you'll notice that we'll calculate 
+
+136
+00:11:36,208 --> 00:11:41,822
+that effective address and put it into 
+rsi, the second argument. 
+
+137
+00:11:41,822 --> 00:11:49,886
+Then we'll put a value 2 into edx for the 
+third argument and the address of that 
+
+138
+00:11:49,886 --> 00:12:02,130
+value, which is a 24-plus rsp, into rcx, 
+that, that address, for x2. 
+
+139
+00:12:02,130 --> 00:12:08,250
+Then we will move a 3 int r8d, that's 
+just the 4 bytes, the low order 4 bytes 
+
+140
+00:12:08,250 --> 00:12:14,982
+above rate that's how we referred with 
+and then put that address into the 
+
+141
+00:12:14,982 --> 00:12:25,142
+address of x3 into r9, r6 argument. 
+And 28 plus rsp is the address of this 
+
+142
+00:12:25,142 --> 00:12:29,290
+byte right here. 
+Okay. 
+
+143
+00:12:29,290 --> 00:12:36,760
+Lastly we will move for into where the 
+rsp is pointing right now. 
+
+144
+00:12:36,760 --> 00:12:41,044
+Remember, the parenthesis are the 
+preference for that and that's argument 
+
+145
+00:12:41,044 --> 00:12:46,745
+number 7, put on through the current, 
+onto the stack, at that location. 
+
+146
+00:12:46,745 --> 00:12:53,454
+And then the last argument, argument 8 is 
+the address of x4. 
+
+147
+00:12:53,454 --> 00:12:59,670
+And the address of x4 can be computed by 
+doing 31 plus the rsp. 
+
+148
+00:12:59,670 --> 00:13:05,158
+We're going to put that in rax 
+temporarily, just so that we can then 
+
+149
+00:13:05,158 --> 00:13:12,200
+move it to 8 plus the rsp, the slot for 
+the 8th argument. 
+
+150
+00:13:12,200 --> 00:13:18,240
+Okay, so now we've set up all 8 argument, 
+6 in registers, 2 on the stack. 
+
+151
+00:13:18,240 --> 00:13:22,866
+And we're ready to call_proc. 
+At this point of course a new return 
+
+152
+00:13:22,866 --> 00:13:29,030
+address gets pushed onto the stack that 
+will help us come back to this point in 
+
+153
+00:13:29,030 --> 00:13:37,764
+this procedure call_proc after we're done 
+with the proc call. 
+
+154
+00:13:37,764 --> 00:13:42,910
+Okay, once that's completed, we will be 
+back here and now have to do that 
+
+155
+00:13:42,910 --> 00:13:48,660
+computation to figure out the return 
+value. 
+
+156
+00:13:48,660 --> 00:13:53,244
+So how do we do that computation? 
+Well, what we're going to do is make sure 
+
+157
+00:13:53,244 --> 00:13:58,428
+we carefully get the the values of our, 
+of our temporary variables in this 
+
+158
+00:13:58,428 --> 00:14:04,900
+procedure. 
+and put them into registers with 
+
+159
+00:14:04,900 --> 00:14:10,415
+appropriate sign extension. 
+So, we're going to be using these 
+
+160
+00:14:10,415 --> 00:14:17,399
+interesting instructions here, that say, 
+move the s stands for extending the sign 
+
+161
+00:14:17,399 --> 00:14:26,099
+bit, of the word, into the long. 
+Alright, so we're taking a 16-bit 
+
+162
+00:14:26,099 --> 00:14:34,470
+quantity, the word, sign extending it to 
+32-bits, the long. 
+
+163
+00:14:34,470 --> 00:14:36,740
+Okay? 
+That's what the l refers to. 
+
+164
+00:14:36,740 --> 00:14:40,967
+And the ss sign extend. 
+Another option is z, for just put 0s 
+
+165
+00:14:40,967 --> 00:14:46,580
+there in the other 16 bits. 
+But this says, do the sign extension. 
+
+166
+00:14:46,580 --> 00:14:50,440
+And the result goes into the 32-bit 
+register, eax. 
+
+167
+00:14:50,440 --> 00:14:56,420
+We'll do the same thing for now. 
+A byte extended to a long. 
+
+168
+00:14:56,420 --> 00:15:00,695
+to get the value of x4. 
+And put that in edx. 
+
+169
+00:15:00,695 --> 00:15:05,770
+Sign extended. 
+And then subtract that from eax. 
+
+170
+00:15:05,770 --> 00:15:10,448
+So this will have computed x3 minus x4. 
+Now of course thats a 32 bit quantity and 
+
+171
+00:15:10,448 --> 00:15:14,140
+we going to have to multiply with some 64 
+bit quantity. 
+
+172
+00:15:14,140 --> 00:15:25,005
+So we going to use some more sign 
+extension using the cl. 
+
+173
+00:15:25,005 --> 00:15:28,175
+T Q instruction. 
+That sign extends the 32-bit eax register 
+
+174
+00:15:28,175 --> 00:15:31,926
+to 64 bits. 
+The next part computes, as you can 
+
+175
+00:15:31,926 --> 00:15:39,168
+imagine, x1 plus x2, and it does that by 
+getting the, value of x1, moving it into 
+
+176
+00:15:39,168 --> 00:15:45,687
+rdx. 
+Or rather the value of x2, moving it into 
+
+177
+00:15:45,687 --> 00:15:54,340
+rdx, and sign extending it to 64 bits, in 
+this case, from a long to a quad. 
+
+178
+00:15:54,340 --> 00:16:02,990
+And then, adds the, already 64-bit value 
+of x1. 
+
+179
+00:16:02,990 --> 00:16:10,100
+also to rdx, so here we will have x1 plus 
+x2 now as the result. 
+
+180
+00:16:10,100 --> 00:16:15,210
+Finally, we take those two registers rax 
+and rdx and do a multiply instruction to 
+
+181
+00:16:15,210 --> 00:16:20,930
+compute the final result. 
+Okay. 
+
+182
+00:16:20,930 --> 00:16:26,450
+The result is placed into rax, ready to 
+be returned. 
+
+183
+00:16:26,450 --> 00:16:30,820
+Remember, we put the return value in the 
+rax register. 
+
+184
+00:16:30,820 --> 00:16:34,411
+The last thing we need to do before 
+executing our return statement, is clean 
+
+185
+00:16:34,411 --> 00:16:38,590
+up the stack, and get rid of the space we 
+allocated. 
+
+186
+00:16:38,590 --> 00:16:45,160
+while we were in this procedure, and to 
+do that, we add 32 to the stack pointer. 
+
+187
+00:16:45,160 --> 00:16:47,975
+the opposite of, the subtract 32, that we 
+did at the beginning. 
+
+188
+00:16:47,975 --> 00:16:54,175
+Okay, so now we are exactly back to the 
+stack that looks just like it did before. 
+
+189
+00:16:54,175 --> 00:16:58,936
+And, we are ready to execute the return 
+instruction that will take us back to 
+
+190
+00:16:58,936 --> 00:17:04,430
+whatever called. 
+called proc in the first place. 
+
+191
+00:17:04,430 --> 00:17:07,394
+So, to summarize, the 64-bit 
+architectures make a heavy use of 
+
+192
+00:17:07,394 --> 00:17:12,240
+registers because they're faster than 
+using the stack in memory. 
+
+193
+00:17:12,240 --> 00:17:16,135
+We use them for parameter passing and we 
+use them for temporary variables. 
+
+194
+00:17:16,135 --> 00:17:19,084
+Okay, so there's a minimal use of the 
+stack. 
+
+195
+00:17:19,084 --> 00:17:23,573
+sometimes, oftentimes actually, we don't 
+use the stack at all except for the 
+
+196
+00:17:23,573 --> 00:17:28,901
+return address of the function. 
+And but when needed, when we need the 
+
+197
+00:17:28,901 --> 00:17:33,189
+space there, either for those arguments 
+or for more temporary variables, we 
+
+198
+00:17:33,189 --> 00:17:38,860
+allocate and deallocate the entire frame 
+in one, at one time. 
+
+199
+00:17:38,860 --> 00:17:43,640
+It's just faster than doing multiple 
+pushes and pops. 
+
+200
+00:17:43,640 --> 00:17:47,062
+So we don't, also don't bother with a 
+frame pointer anymore and address 
+
+201
+00:17:47,062 --> 00:17:52,700
+everything relative to the stack pointer, 
+as we saw in that previous example, okay. 
+
+202
+00:17:52,700 --> 00:17:57,812
+This also creates a lot more room for 
+compiler optimizations that can play with 
+
+203
+00:17:57,812 --> 00:18:02,974
+registers and how we use them in, best 
+make use of them. 
+
+204
+00:18:02,974 --> 00:18:08,086
+so we don't have to have collisions that 
+would cause us to have to save registers 
+
+205
+00:18:08,086 --> 00:18:10,850
+and so on. 
+All right? 
+
+206
+00:18:10,850 --> 00:18:15,734
+So that's that ends this section and I 
+hope it provided a good overview of 
+
+207
+00:18:15,734 --> 00:18:22,030
+procedure call conventions. 
+Both the 32 and 64 bit. 
+
+208
+00:18:22,030 --> 00:18:26,980
+remember that we, although we make 
+minimal use of stack frames in the 64-bit 
+
+209
+00:18:26,980 --> 00:18:31,780
+architecture. 
+We often have to fall back to the general 
+
+210
+00:18:31,780 --> 00:18:36,506
+case, which we saw with the 32-bit, 
+conventions. 
+

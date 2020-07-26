@@ -1,0 +1,699 @@
+1
+00:00:00,006 --> 00:00:06,897
+[MUSIC]. 
+
+2
+00:00:06,897 --> 00:00:09,414
+Hi there. 
+Now that we know how to set condition 
+
+3
+00:00:09,414 --> 00:00:12,714
+codes, let's see how we use branch 
+instructions that depend on these 
+
+4
+00:00:12,714 --> 00:00:17,283
+condition codes to modify the control 
+flow of your program. 
+
+5
+00:00:17,283 --> 00:00:19,662
+Okay? 
+So, x86 supports several branch 
+
+6
+00:00:19,662 --> 00:00:23,560
+instructions of type J for jump X. 
+And X can be a bunch of things here. 
+
+7
+00:00:23,560 --> 00:00:26,722
+And the first one is an unconditional 
+branch, means that it jumps no matter 
+
+8
+00:00:26,722 --> 00:00:28,410
+what. 
+There's no condition. 
+
+9
+00:00:28,410 --> 00:00:31,500
+So the condition for the branch is always 
+true, is one. 
+
+10
+00:00:31,500 --> 00:00:34,658
+So that's the JXP instruction. 
+But let's pick another one here for 
+
+11
+00:00:34,658 --> 00:00:38,484
+example, if we have JE here. 
+JE only jumps to the destination 
+
+12
+00:00:38,484 --> 00:00:44,160
+instruction address if the ZF condition 
+register is set to one. 
+
+13
+00:00:44,160 --> 00:00:47,534
+Which is used, for example, when you do 
+an equality comparison. 
+
+14
+00:00:47,534 --> 00:00:51,574
+Right, so if you do a compare a and b for 
+example. 
+
+15
+00:00:51,574 --> 00:00:56,230
+the ZF condition code is going to be set 
+to one only if they're equal. 
+
+16
+00:00:56,230 --> 00:00:59,130
+Because if you recall, the comparison 
+performs the difference. 
+
+17
+00:00:59,130 --> 00:01:02,720
+The difference is zero, it happens that 
+the numbers are the same. 
+
+18
+00:01:02,720 --> 00:01:06,150
+Then there's a bunch of other jumping 
+circumstances, they encourage you to take 
+
+19
+00:01:06,150 --> 00:01:11,104
+a look and see how their conditions work. 
+Now we're going to jump into an example. 
+
+20
+00:01:11,104 --> 00:01:15,080
+So, this piece of code here, absdiff, 
+does the following. 
+
+21
+00:01:15,080 --> 00:01:20,105
+It receives x and y as a parameter. 
+And then returns the absolute difference 
+
+22
+00:01:20,105 --> 00:01:22,552
+between them. 
+And the way we do that is by first 
+
+23
+00:01:22,552 --> 00:01:26,458
+comparing if x is greater than y, and if 
+so the result is x minus y, because x is 
+
+24
+00:01:26,458 --> 00:01:31,660
+greater. 
+So and otherwise it does y minus x in 
+
+25
+00:01:31,660 --> 00:01:39,710
+case y is greater than or equal to x. 
+And this the asembly code in IA32 that 
+
+26
+00:01:39,710 --> 00:01:44,850
+implements this piece of code. 
+And the first thing to note here is that 
+
+27
+00:01:44,850 --> 00:01:49,470
+we're using two, branch instructions to 
+jump instructions. 
+
+28
+00:01:49,470 --> 00:01:53,193
+The first one here, jle, says jump less 
+than or equal. 
+
+29
+00:01:54,370 --> 00:01:57,774
+And, note that there's a new thing here. 
+There's a doc outside, but that's whats 
+
+30
+00:01:57,774 --> 00:02:01,224
+called a label. 
+A label simply specifies a location in 
+
+31
+00:02:01,224 --> 00:02:06,862
+your code, where the jumps going to jump 
+to if the condition evaluates the true. 
+
+32
+00:02:06,862 --> 00:02:12,860
+So, if this, if the comparison does lead 
+to less than or equal result. 
+
+33
+00:02:12,860 --> 00:02:15,260
+The control flow is going to, so the 
+program execution is going to go from 
+
+34
+00:02:15,260 --> 00:02:19,160
+here to one of it's instructions. 
+It's going to go in, jump here, and then 
+
+35
+00:02:19,160 --> 00:02:25,016
+this instruction is going to be executed. 
+And now there's an unconditional jump 
+
+36
+00:02:25,016 --> 00:02:30,824
+here that just branches to dot L8, it's a 
+different label, to return from the 
+
+37
+00:02:30,824 --> 00:02:34,512
+function. 
+Okay? 
+
+38
+00:02:34,512 --> 00:02:38,355
+So, you might have a hard time actually 
+mapping this code directly to this 
+
+39
+00:02:38,355 --> 00:02:43,370
+assembly implementation here. 
+Because there's some other thing is going 
+
+40
+00:02:43,370 --> 00:02:47,490
+on here, let me show you what. 
+First, we when we are looking at this, 
+
+41
+00:02:47,490 --> 00:02:50,853
+is, to put a bunch of goto's, let's 
+convert this program to use goto's to 
+
+42
+00:02:50,853 --> 00:02:55,205
+make it easier to see the translation to 
+assembly. 
+
+43
+00:02:55,205 --> 00:02:58,690
+And by the way, we do not I recommend 
+using goto's in your code. 
+
+44
+00:02:58,690 --> 00:03:01,958
+You can use goto's in C but it's 
+generally considered bad coding style. 
+
+45
+00:03:01,958 --> 00:03:06,200
+What we're doing here just to make it 
+clear how the translation happens. 
+
+46
+00:03:06,200 --> 00:03:11,640
+First note that expression in the 
+comparison here changed from x greater 
+
+47
+00:03:11,640 --> 00:03:17,079
+than y to x less than or equal y. 
+Because this is determining whether we 
+
+48
+00:03:17,079 --> 00:03:19,586
+should jump to the Else position since 
+they invert. 
+
+49
+00:03:19,586 --> 00:03:22,580
+Condition, okay? 
+And if so we execute the Else. 
+
+50
+00:03:22,580 --> 00:03:25,570
+And if we're done with the Else, it comes 
+back to the exit, which is this part 
+
+51
+00:03:25,570 --> 00:03:29,240
+here, okay? 
+So the exit here. 
+
+52
+00:03:29,240 --> 00:03:32,880
+Now if this evaluates to false, we 
+actually executing the then part of your 
+
+53
+00:03:32,880 --> 00:03:36,216
+of your if. 
+So that means that's called the The 
+
+54
+00:03:36,216 --> 00:03:38,326
+fallback. 
+When you do not take a branch, it's 
+
+55
+00:03:38,326 --> 00:03:40,588
+called the fallback. 
+In this case, you have the fallback as 
+
+56
+00:03:40,588 --> 00:03:42,268
+the then position. 
+Okay? 
+
+57
+00:03:42,268 --> 00:03:46,756
+So, a high level way to think about this, 
+that we converted this such that we jump 
+
+58
+00:03:46,756 --> 00:03:51,244
+over the then part of your if condition, 
+'kay and execute the Else only if the 
+
+59
+00:03:51,244 --> 00:03:56,730
+condition evaluates. 
+Great. 
+
+60
+00:03:56,730 --> 00:04:00,400
+So let's look at this example step by 
+step. 
+
+61
+00:04:00,400 --> 00:04:05,810
+Now note that we're at the c code that's 
+converted to goto's now. 
+
+62
+00:04:05,810 --> 00:04:10,035
+these instructions here are just reading 
+x and y putting them in edx and eax 
+
+63
+00:04:10,035 --> 00:04:16,410
+respectively. 
+And now that's when I'm performing the 
+
+64
+00:04:16,410 --> 00:04:19,173
+comparison. 
+Now that x and y are in the eax and edx 
+
+65
+00:04:19,173 --> 00:04:24,060
+registers we're comparing them. 
+Okay so we're comparing x and y. 
+
+66
+00:04:24,060 --> 00:04:28,500
+That's in implementing this comparison 
+here. 
+
+67
+00:04:28,500 --> 00:04:32,672
+And if this comparison happens to 
+evaluate that x is less than or equal. 
+
+68
+00:04:32,672 --> 00:04:37,936
+Why? 
+Then we jump to L7, to implement the Else 
+
+69
+00:04:37,936 --> 00:04:44,190
+block. 
+Now let's see how the Else block, okay. 
+
+70
+00:04:44,190 --> 00:04:49,060
+So now if the jump does not happen, we're 
+executing the, this part of the code. 
+
+71
+00:04:49,060 --> 00:04:51,920
+We're going to execute this search, and 
+this is how it's implemented here this 
+
+72
+00:04:51,920 --> 00:04:56,704
+where we implement it. 
+So, the sub instruction here thus edx 
+
+73
+00:04:56,704 --> 00:05:01,460
+equals edx minus eax. 
+So it's essentially doing X minus Y. 
+
+74
+00:05:01,460 --> 00:05:04,420
+And then it gets the results and stores 
+it in eax. 
+
+75
+00:05:04,420 --> 00:05:09,664
+And the reason we're storing to eax is 
+because that's where we put return values 
+
+76
+00:05:09,664 --> 00:05:15,382
+for the function, that we can actually 
+return the results. 
+
+77
+00:05:15,382 --> 00:05:21,480
+now the next step here is to implement 
+the Else part of[INAUDIBLE] . 
+
+78
+00:05:21,480 --> 00:05:25,748
+And that's going to implement x minus y. 
+And we use another subinstruction here, 
+
+79
+00:05:25,748 --> 00:05:29,444
+except that now see that the parameters 
+are inverted compared to the other one. 
+
+80
+00:05:29,444 --> 00:05:35,260
+Now, what we're doing is, eax equals eax 
+minus edx. 
+
+81
+00:05:35,260 --> 00:05:39,045
+And then from there we just jump To .L8, 
+that's going to be return. 
+
+82
+00:05:39,045 --> 00:05:43,077
+And note that we did not have to, we did 
+not need to copy the result to eax since 
+
+83
+00:05:43,077 --> 00:05:48,020
+that we can return it. 
+Because the results was, was already in 
+
+84
+00:05:48,020 --> 00:05:51,189
+eax. 
+so, let's look at conditional expressions 
+
+85
+00:05:51,189 --> 00:05:54,916
+in general and see how their, their 
+translation happens. 
+
+86
+00:05:54,916 --> 00:05:57,850
+Well, in, C, you can write the following 
+conditional expression. 
+
+87
+00:05:57,850 --> 00:06:00,300
+You can put a task here, which is any 
+condition. 
+
+88
+00:06:00,300 --> 00:06:05,333
+For example x greater than y. 
+And then we, we put the then expression, 
+
+89
+00:06:05,333 --> 00:06:09,115
+means that if this test, evaluates to 
+true, we're going to return, the then 
+
+90
+00:06:09,115 --> 00:06:13,067
+expression. 
+Otherwise, we're going to return the Else 
+
+91
+00:06:13,067 --> 00:06:16,422
+expression. 
+So one way to implement the code, we just 
+
+92
+00:06:16,422 --> 00:06:20,300
+showed you, is to say, compare x, whether 
+x is greater than y. 
+
+93
+00:06:20,300 --> 00:06:27,842
+And if so, we return x minus y. 
+Otherwise, we return y minus x. 
+
+94
+00:06:27,842 --> 00:06:34,217
+So, and here's the goto version of that. 
+And so we are evaluating the the opposite 
+
+95
+00:06:34,217 --> 00:06:38,110
+of this expression. 
+So, in this case it's just going to be 
+
+96
+00:06:38,110 --> 00:06:43,406
+the complement of that expression. 
+In execute the Else in case it reverts to 
+
+97
+00:06:43,406 --> 00:06:48,478
+true and then otherwise we're going to 
+execute the then. 
+
+98
+00:06:48,478 --> 00:06:52,469
+So it does exactly what we just saw in 
+the previous slide. 
+
+99
+00:06:52,469 --> 00:06:55,661
+So now you might be ask, you might be 
+asking, how can we make this more 
+
+100
+00:06:55,661 --> 00:06:59,280
+efficient? 
+Just so we can implement this simple 
+
+101
+00:06:59,280 --> 00:07:03,156
+conditional expression, we are inserting 
+a bunch of branches in our code, a bunch 
+
+102
+00:07:03,156 --> 00:07:07,602
+of jumps. 
+And this is not very efficient, branches 
+
+103
+00:07:07,602 --> 00:07:13,229
+tend to be expensive, especially modern, 
+deeply pipelined processors. 
+
+104
+00:07:13,229 --> 00:07:17,377
+So x86 supports a special, x86-64 
+supports a special type of instruction 
+
+105
+00:07:17,377 --> 00:07:21,058
+that solves that problem. 
+It's called a conditional move 
+
+106
+00:07:21,058 --> 00:07:24,419
+instruction. 
+So what Conditional move does is it moves 
+
+107
+00:07:24,419 --> 00:07:29,740
+a value from one branches from the source 
+to the destination. 
+
+108
+00:07:29,740 --> 00:07:34,768
+Only if a certain condition is met. 
+And this condition the same ones that we 
+
+109
+00:07:34,768 --> 00:07:37,872
+use for jumps. 
+So that means we can rewrite this code 
+
+110
+00:07:37,872 --> 00:07:40,690
+here in a way that we perform the 
+comparison. 
+
+111
+00:07:40,690 --> 00:07:44,363
+And depending on the result of the 
+comparison here we do a move. 
+
+112
+00:07:44,363 --> 00:07:50,546
+So we say we do move less than or equal. 
+So essentially, we only move the value 
+
+113
+00:07:50,546 --> 00:07:55,333
+from edx to eax, if the condition is 
+satisfied. 
+
+114
+00:07:55,333 --> 00:07:58,801
+So we can implement exactly what we just 
+showed in the previous slide, without any 
+
+115
+00:07:58,801 --> 00:08:02,718
+branches. 
+So we do the two subtractions here. 
+
+116
+00:08:02,718 --> 00:08:08,380
+We subtract x y, from x, and y from and x 
+from y. 
+
+117
+00:08:08,380 --> 00:08:13,368
+Store them in ede, eax or edx, and then 
+here we only move edx to eax if the 
+
+118
+00:08:13,368 --> 00:08:18,441
+condition gets set. 
+And then we just return it, because we 
+
+119
+00:08:18,441 --> 00:08:22,030
+should put the return value in eax. 
+Isn't that great? 
+
+120
+00:08:22,030 --> 00:08:26,340
+So, now, this is a way of, executing 
+conditionals. 
+
+121
+00:08:26,340 --> 00:08:29,200
+Implement some conditional box without 
+using, branch instructions. 
+
+122
+00:08:29,200 --> 00:08:34,377
+So this can be, a big win in performance 
+in several cases. 
+
+123
+00:08:34,377 --> 00:08:38,598
+So, one last thing I want to show before 
+ending this video is, how, addressing 
+
+124
+00:08:38,598 --> 00:08:43,661
+actually happens. 
+Addressing of the destination instruction 
+
+125
+00:08:43,661 --> 00:08:45,550
+in, in in branches. 
+'Kay. 
+
+126
+00:08:45,550 --> 00:08:50,530
+And often the destination's specified in 
+what we call a PC relative way. 
+
+127
+00:08:50,530 --> 00:08:53,692
+It means that the instruction specifies 
+an offset that should be jumped to 
+
+128
+00:08:53,692 --> 00:08:56,730
+relative to the current instruction 
+address. 
+
+129
+00:08:56,730 --> 00:09:00,090
+So in, in this example we have this "je" 
+instruction. 
+
+130
+00:09:00,090 --> 00:09:07,100
+that jumps to, that, that's located in 
+address 0x102 and then jumps to 0x172. 
+
+131
+00:09:07,100 --> 00:09:12,240
+But note that the destination here is 
+specified as 0x70. 
+
+132
+00:09:12,240 --> 00:09:19,394
+Because this address here is computed as 
+0x102 + 0x70. 
+
+133
+00:09:20,650 --> 00:09:23,716
+Which is this value here, let's call PC 
+relative. 
+
+134
+00:09:23,716 --> 00:09:27,746
+And the reason that this is so important 
+is because now you can relocate this 
+
+135
+00:09:27,746 --> 00:09:30,696
+block. 
+You can just change for example here we 
+
+136
+00:09:30,696 --> 00:09:33,912
+change it to different address and now we 
+still have this compare because if we 
+
+137
+00:09:33,912 --> 00:09:37,032
+change where the code is since everything 
+is relative you're not going to have to 
+
+138
+00:09:37,032 --> 00:09:41,630
+recompute the targets. 
+in the branches in your codes. 
+
+139
+00:09:41,630 --> 00:09:45,890
+But note that some branches have absolute 
+addresses. 
+
+140
+00:09:45,890 --> 00:09:49,033
+In that case they're not relocatable. 
+See you next time. 
+

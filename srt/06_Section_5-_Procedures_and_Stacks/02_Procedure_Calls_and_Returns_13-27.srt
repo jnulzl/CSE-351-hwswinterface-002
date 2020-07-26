@@ -1,0 +1,895 @@
+1
+00:00:00,005 --> 00:00:05,738
+[MUSIC] Now that we've seen how a stack 
+is set up in memory and the operations 
+
+2
+00:00:05,738 --> 00:00:13,510
+that we can use on a stack namely the 
+push and pop instructions. 
+
+3
+00:00:13,510 --> 00:00:17,127
+Let's see how we can keep track of 
+procedure calls using the stack. 
+
+4
+00:00:17,127 --> 00:00:20,678
+And also how we can, remember the return 
+address where we need to return at the 
+
+5
+00:00:20,678 --> 00:00:26,360
+end of our procedure call, and the return 
+value we need to get from that procedure. 
+
+6
+00:00:26,360 --> 00:00:29,045
+How do we keep track of those, using a 
+stack? 
+
+7
+00:00:29,045 --> 00:00:32,060
+Okay. 
+Let's take a look, okay, let's take a 
+
+8
+00:00:32,060 --> 00:00:36,805
+look at, an overview of the procedure 
+call, and what what happens, in that one 
+
+9
+00:00:36,805 --> 00:00:41,236
+step at a time. 
+So, we're going to start off with two 
+
+10
+00:00:41,236 --> 00:00:45,176
+procedures, a caller and a callee. 
+the caller is going to set up some 
+
+11
+00:00:45,176 --> 00:00:50,520
+arguments for calling a second procedure, 
+the callee. 
+
+12
+00:00:50,520 --> 00:00:55,960
+And then execute a call instruction, 
+which will change the flow of control to 
+
+13
+00:00:55,960 --> 00:01:01,060
+the first instruction in the assembly 
+code corresponding to the callee 
+
+14
+00:01:01,060 --> 00:01:06,549
+procedure. 
+What's going to be in that assembly code 
+
+15
+00:01:06,549 --> 00:01:09,979
+is probably some stuff about creating 
+some local variables that this procedure 
+
+16
+00:01:09,979 --> 00:01:14,570
+will need. 
+then some computation in here. 
+
+17
+00:01:14,570 --> 00:01:20,042
+then we'll probably get a return value 
+created and that will be what this 
+
+18
+00:01:20,042 --> 00:01:24,928
+procedure will want to give back to the 
+caller. 
+
+19
+00:01:24,928 --> 00:01:29,408
+then they'll might be some stuff to 
+cleanup the local variables that were 
+
+20
+00:01:29,408 --> 00:01:35,222
+created reclaim the space. 
+And finally a, a, return instruction to 
+
+21
+00:01:35,222 --> 00:01:41,107
+to tell the CPU that we're going to, we 
+want to give control back to the caller. 
+
+22
+00:01:41,107 --> 00:01:46,270
+And go back to the very next instruction 
+after the original call. 
+
+23
+00:01:46,270 --> 00:01:50,504
+that next instruction will probably start 
+the process of cleaning up the space that 
+
+24
+00:01:50,504 --> 00:01:54,518
+was used to set up the arguments in the 
+first place. 
+
+25
+00:01:54,518 --> 00:01:58,740
+And then go find that return value that 
+was created here in the callee. 
+
+26
+00:01:58,740 --> 00:02:02,978
+Okay. 
+And that, that's the process of calling a 
+
+27
+00:02:02,978 --> 00:02:06,946
+procedure, set up the arguments, get the 
+procedure executed, clean up the 
+
+28
+00:02:06,946 --> 00:02:11,058
+arguments and find the return value. 
+Okay. 
+
+29
+00:02:11,058 --> 00:02:16,050
+So, the callee has to know, though, where 
+to find those arguments. 
+
+30
+00:02:16,050 --> 00:02:19,060
+where did the caller put them? 
+We have to have some agreement about 
+
+31
+00:02:19,060 --> 00:02:21,853
+that. 
+the callee must also know where to find 
+
+32
+00:02:21,853 --> 00:02:25,559
+the return address. 
+Where's this address, after the call 
+
+33
+00:02:25,559 --> 00:02:29,890
+instruction, that I have to go back to 
+when I'm done? 
+
+34
+00:02:29,890 --> 00:02:35,789
+with the the called and the callee. 
+Alright, the caller must know where to 
+
+35
+00:02:35,789 --> 00:02:40,050
+find a return value that the callee 
+generated. 
+
+36
+00:02:40,050 --> 00:02:44,204
+where is, where is he going to find that 
+and since the caller and callee are 
+
+37
+00:02:44,204 --> 00:02:49,878
+running on the same CPU of course. 
+They're using the same registers in that 
+
+38
+00:02:49,878 --> 00:02:52,355
+CPU. 
+They have to make sure that they don't 
+
+39
+00:02:52,355 --> 00:02:55,922
+step on each other. 
+So if the callee is going to use some 
+
+40
+00:02:55,922 --> 00:03:01,025
+registers that the callee also wants to 
+use, it better save them away before 
+
+41
+00:03:01,025 --> 00:03:07,538
+gives them to the a callee. 
+before gives control over to the callee. 
+
+42
+00:03:07,538 --> 00:03:11,816
+And similary the callee might want to 
+save somethings as well, which one is 
+
+43
+00:03:11,816 --> 00:03:15,190
+going to to do what ? 
+Are we going to give all the 
+
+44
+00:03:15,190 --> 00:03:18,838
+responsibility to the caller or all the 
+responsibility to the callee or some 
+
+45
+00:03:18,838 --> 00:03:25,257
+combination of the two. 
+Okay, so we now embellish our diagram a 
+
+46
+00:03:25,257 --> 00:03:29,678
+little bit. 
+You'll notice that now we've added maybe 
+
+47
+00:03:29,678 --> 00:03:34,220
+we need to save some registers before we 
+get this call set up. 
+
+48
+00:03:34,220 --> 00:03:38,070
+the callee might want to save some other 
+registers. 
+
+49
+00:03:38,070 --> 00:03:42,170
+again we have to decide how we're 
+going to distribuate that work. 
+
+50
+00:03:42,170 --> 00:03:46,074
+and if it saves some registers it needs 
+to make sure to restore them before 
+
+51
+00:03:46,074 --> 00:03:49,440
+returns. 
+So that the caller will find the same 
+
+52
+00:03:49,440 --> 00:03:53,420
+contents there that it, that it started 
+things with. 
+
+53
+00:03:53,420 --> 00:03:57,641
+And similarly the caller may want to 
+restore some registers after the callee 
+
+54
+00:03:57,641 --> 00:04:00,950
+is done. 
+Okay. 
+
+55
+00:04:00,950 --> 00:04:05,240
+So this convention of where to find these 
+things where to save them how to 
+
+56
+00:04:05,240 --> 00:04:11,530
+coordinate all of this activity, is 
+called a procedure called linkage. 
+
+57
+00:04:11,530 --> 00:04:15,625
+And we're going to look at the detail for 
+the IA32 Linux way of doing this 
+
+58
+00:04:15,625 --> 00:04:20,360
+procedure called linkage. 
+There are many others every operating 
+
+59
+00:04:20,360 --> 00:04:23,680
+language and program has slight 
+variations. 
+
+60
+00:04:23,680 --> 00:04:28,315
+but this what we're going to be using for 
+C on Linux. 
+
+61
+00:04:28,315 --> 00:04:31,926
+Okay. 
+Now the last question at the bottom is 
+
+62
+00:04:31,926 --> 00:04:35,436
+asking of course if our program didn't 
+follow these conventions we'd be quite 
+
+63
+00:04:35,436 --> 00:04:39,466
+confused about where. 
+How to do this and we'd have to think 
+
+64
+00:04:39,466 --> 00:04:43,261
+individual about every procedure and what 
+it might have done or where it might have 
+
+65
+00:04:43,261 --> 00:04:48,110
+put things. 
+what it might need to save and so on. 
+
+66
+00:04:48,110 --> 00:04:51,314
+And that just too much of a burden on the 
+programmer. 
+
+67
+00:04:51,314 --> 00:04:55,154
+That's why we like to have a particular 
+convention and then we can assume it's 
+
+68
+00:04:55,154 --> 00:04:59,509
+always done the same way, okay. 
+So let's take a look at this in a little 
+
+69
+00:04:59,509 --> 00:05:03,805
+bit more detail and see how this relates 
+to the use of the stack and memory. 
+
+70
+00:05:03,805 --> 00:05:05,988
+Okay. 
+How you going to use to support the 
+
+71
+00:05:05,988 --> 00:05:09,600
+procedure call and return. 
+So we, we seem we execute a procedure 
+
+72
+00:05:09,600 --> 00:05:15,728
+call using the call instruction, CALL. 
+And we give it a label as argument, 
+
+73
+00:05:15,728 --> 00:05:22,760
+namely as address of the callee function. 
+What function are we going to what 
+
+74
+00:05:22,760 --> 00:05:26,398
+procedure are we going to go and execute 
+next. 
+
+75
+00:05:26,398 --> 00:05:30,248
+So what we're going to do, is before we 
+do that, as part of that call 
+
+76
+00:05:30,248 --> 00:05:34,287
+instruction. 
+We're going to push the return address 
+
+77
+00:05:34,287 --> 00:05:38,536
+onto the stack and save it there. 
+what address will that be, that's 
+
+78
+00:05:38,536 --> 00:05:41,749
+going to be the address of this, of the 
+instruction immediately following the 
+
+79
+00:05:41,749 --> 00:05:45,198
+call. 
+The one that we have to go to when we're 
+
+80
+00:05:45,198 --> 00:05:48,144
+done. 
+Executing the procedure and we would 
+
+81
+00:05:48,144 --> 00:05:52,945
+execute next after the call. 
+Okay, and then we'll jump to the label or 
+
+82
+00:05:52,945 --> 00:05:57,130
+namely the address of the call, the 
+instruction. 
+
+83
+00:05:57,130 --> 00:06:01,733
+Just is if it were a jump instruction. 
+So as I said the return address that 
+
+84
+00:06:01,733 --> 00:06:04,835
+we've saved on the stack is the address 
+of the instruction immediatly after the 
+
+85
+00:06:04,835 --> 00:06:08,098
+call. 
+So let's take a look at a little fragment 
+
+86
+00:06:08,098 --> 00:06:11,350
+of code here. 
+Here's a call instruction. 
+
+87
+00:06:11,350 --> 00:06:15,634
+that is going to go to this particular 
+address to execute the next instruction 
+
+88
+00:06:15,634 --> 00:06:20,935
+in a different procedure. 
+so the address immediately after it is 
+
+89
+00:06:20,935 --> 00:06:25,863
+going to be this address of the very next 
+instruction that happens to be a push 
+
+90
+00:06:25,863 --> 00:06:30,597
+instruction. 
+But that's totally coincidental, that 
+
+91
+00:06:30,597 --> 00:06:34,530
+could be any instruction. 
+the important thing is that this is the 
+
+92
+00:06:34,530 --> 00:06:40,280
+address that we want to return to, so our 
+return address will be that value. 
+
+93
+00:06:40,280 --> 00:06:44,816
+What we're going to do is push that value 
+onto the stack, so that when we execute 
+
+94
+00:06:44,816 --> 00:06:49,408
+the return instruction in the callee 
+procedure. 
+
+95
+00:06:49,408 --> 00:06:54,007
+We can go to the stack and pop that value 
+off and then jump to that value to that 
+
+96
+00:06:54,007 --> 00:06:58,275
+address. 
+Okay, so the return instruction is 
+
+97
+00:06:58,275 --> 00:07:02,741
+going to be a pop followed by a jump, 
+while the call instruction was a push 
+
+98
+00:07:02,741 --> 00:07:06,717
+followed by a jump. 
+And you can see the two are 
+
+99
+00:07:06,717 --> 00:07:10,009
+complimentary. 
+Alright let's take a look at this 
+
+100
+00:07:10,009 --> 00:07:15,406
+procedure call in more detail. 
+Here I have that same little code 
+
+101
+00:07:15,406 --> 00:07:19,002
+fragment again, a call instruction 
+followed by the very next instruction 
+
+102
+00:07:19,002 --> 00:07:23,387
+after the call. 
+And here I am showing the current 
+
+103
+00:07:23,387 --> 00:07:28,095
+contents of the stack. 
+You'll notice that there is a value at 
+
+104
+00:07:28,095 --> 00:07:33,002
+that 123, that may be as an argument to 
+this procedure. 
+
+105
+00:07:33,002 --> 00:07:37,487
+and you'll notice that the stack pointer 
+of course is always pointing to the top 
+
+106
+00:07:37,487 --> 00:07:42,256
+element of that stack. 
+And the instruction pointer where we are 
+
+107
+00:07:42,256 --> 00:07:46,950
+in the program is pointing to the address 
+of the call instruction. 
+
+108
+00:07:46,950 --> 00:07:50,029
+Okay, and that's we going to execute, 
+right now. 
+
+109
+00:07:50,029 --> 00:07:55,573
+So heres our call instruction to execute 
+its as called the procedure at this 
+
+110
+00:07:55,573 --> 00:07:57,947
+address. 
+Okay. 
+
+111
+00:07:57,947 --> 00:08:02,610
+So what's going to happen? 
+Well we will start off with just add 
+
+112
+00:08:02,610 --> 00:08:07,774
+contents of memory. 
+the very first thing that we'll be doing 
+
+113
+00:08:07,774 --> 00:08:10,528
+is since we just read the call 
+instruction, we'll advance our 
+
+114
+00:08:10,528 --> 00:08:14,525
+instruction pointer to point to the next 
+instruction. 
+
+115
+00:08:14,525 --> 00:08:17,026
+Alright? 
+But we're not done executing the call 
+
+116
+00:08:17,026 --> 00:08:20,236
+yet. 
+But our instruction pointer will have 
+
+117
+00:08:20,236 --> 00:08:23,512
+advanced and you notice that now says 
+553. 
+
+118
+00:08:23,512 --> 00:08:27,043
+Okay. 
+The very next thing that happens is that 
+
+119
+00:08:27,043 --> 00:08:31,399
+we're going to take that value, that 
+address of the next instruction after the 
+
+120
+00:08:31,399 --> 00:08:36,792
+call, and push it onto the stack. 
+So you notice that the stack grew a 
+
+121
+00:08:36,792 --> 00:08:40,573
+little bit we now have something at 
+location in 104. 
+
+122
+00:08:40,573 --> 00:08:44,349
+And the stack pointer was adjusted to 
+point to that location, we subtracted 4 
+
+123
+00:08:44,349 --> 00:08:48,275
+from the stack pointer, that's the push 
+instruction. 
+
+124
+00:08:48,275 --> 00:08:52,046
+Okay. 
+The next thing that happens is that we 
+
+125
+00:08:52,046 --> 00:08:56,138
+have to, of course, go to this address 
+and the way we're going to generate that 
+
+126
+00:08:56,138 --> 00:09:00,296
+address, you'll notice is by doing an 
+addition to the current address of our 
+
+127
+00:09:00,296 --> 00:09:06,381
+instruction pointer. 
+This is, a method called Relative 
+
+128
+00:09:06,381 --> 00:09:09,052
+Addressing. 
+you'll notice that in the instruction, we 
+
+129
+00:09:09,052 --> 00:09:11,670
+have the constant, 06 3d of course, in 
+Little Endian notation. 
+
+130
+00:09:11,670 --> 00:09:19,656
+Here's that 06 3d, and we're adding that 
+to the current value of the instruction 
+
+131
+00:09:19,656 --> 00:09:27,642
+pointer to generate the address of the 
+actual place in memory where are the call 
+
+132
+00:09:27,642 --> 00:09:35,594
+tells us to go? 
+Okay, now why don't we just put this 
+
+133
+00:09:35,594 --> 00:09:41,580
+address the rectly in the instruction. 
+There was room there to fit that. 
+
+134
+00:09:41,580 --> 00:09:52,759
+we could made this be 80 or rather 08 04 
+8b 90. 
+
+135
+00:09:52,759 --> 00:09:58,912
+But we didn't do that. 
+We used this relative addressing instead, 
+
+136
+00:09:58,912 --> 00:10:05,311
+and in fact, both kinds of instructions 
+exist in, in the x86 architecture. 
+
+137
+00:10:05,311 --> 00:10:09,090
+it doesn't really matter though because a 
+compiler is doing this for us. 
+
+138
+00:10:09,090 --> 00:10:13,150
+And it decided to do it, that, with 
+Relative Addressing. 
+
+139
+00:10:13,150 --> 00:10:18,905
+So the shorter value, 06 3d, and that 
+just gets added to the address. 
+
+140
+00:10:18,905 --> 00:10:21,956
+Okay? 
+So this is not something you need to 
+
+141
+00:10:21,956 --> 00:10:25,164
+worry about, generating. 
+Of course, the compiler takes care of all 
+
+142
+00:10:25,164 --> 00:10:27,960
+of that when it generates the assembly 
+code. 
+
+143
+00:10:27,960 --> 00:10:32,376
+Am just explaining how we actually get 
+the address we really care about going 
+
+144
+00:10:32,376 --> 00:10:33,940
+to. 
+Okay. 
+
+145
+00:10:33,940 --> 00:10:39,140
+So that address then replaces the 
+instruction pointer because that's the 
+
+146
+00:10:39,140 --> 00:10:43,402
+next instruction we are going to go to. 
+Okay. 
+
+147
+00:10:43,402 --> 00:10:49,367
+So we are now executing that next 
+instruction in that callee procedure. 
+
+148
+00:10:49,367 --> 00:10:54,779
+we are going through that entire set of 
+instructions for that procedure and 
+
+149
+00:10:54,779 --> 00:11:03,809
+finally will reach a returning structure. 
+Thats at the end of the callee procedure. 
+
+150
+00:11:03,809 --> 00:11:08,501
+Okay, when we hit that the stack will be 
+let hopefully have returned to the same 
+
+151
+00:11:08,501 --> 00:11:13,009
+position. 
+So the stack pointer is pointing to that 
+
+152
+00:11:13,009 --> 00:11:17,830
+return address we had saved away. 
+And now what we're going to do is pop 
+
+153
+00:11:17,830 --> 00:11:24,364
+that stack and get that value back so 
+that we can go to that location next. 
+
+154
+00:11:24,364 --> 00:11:29,084
+So what the return is going to do, is 
+it's going to pop this value from the 
+
+155
+00:11:29,084 --> 00:11:33,961
+stack. 
+And push it into the instruction pointer 
+
+156
+00:11:33,961 --> 00:11:39,050
+pop it and store it into the instruction 
+pointer. 
+
+157
+00:11:39,050 --> 00:11:42,250
+So that's what we see happening here, 
+that value moved there, and of course we 
+
+158
+00:11:42,250 --> 00:11:46,590
+have to adjust the stack, that's the 
+other part of the pop instruction. 
+
+159
+00:11:46,590 --> 00:11:50,366
+So the stack now changes to 108, pointing 
+back to where it pointed to before we 
+
+160
+00:11:50,366 --> 00:11:56,231
+called this procedure in the first place. 
+And, our next instruction to execute is 
+
+161
+00:11:56,231 --> 00:12:00,839
+going to be at that address, which is 
+remember that push instruction following 
+
+162
+00:12:00,839 --> 00:12:06,060
+the call. 
+The last thing to talk about in this, 
+
+163
+00:12:06,060 --> 00:12:10,185
+portion is what do we do with return 
+values from a function? 
+
+164
+00:12:10,185 --> 00:12:15,579
+And by convention, values returned by 
+procedures are placed in the EAX 
+
+165
+00:12:15,579 --> 00:12:20,520
+register. 
+the choice of EAX is pretty arbitrary. 
+
+166
+00:12:20,520 --> 00:12:25,200
+It could have easily been a different 
+register like ECX or EDX, but we've 
+
+167
+00:12:25,200 --> 00:12:29,376
+chosen EAX. 
+That's part of that procedure calling 
+
+168
+00:12:29,376 --> 00:12:33,473
+convention. 
+the caller has to make sure to save that 
+
+169
+00:12:33,473 --> 00:12:39,710
+register before calling a callee that 
+might return a value. 
+
+170
+00:12:39,710 --> 00:12:45,100
+because that callee is going to over 
+right the contents of that eax register. 
+
+171
+00:12:45,100 --> 00:12:49,980
+So this is part of the register, register 
+saving convention we'll see later on. 
+
+172
+00:12:49,980 --> 00:12:54,360
+so at the end of the procedure, the call, 
+the callee procedure, the return values 
+
+173
+00:12:54,360 --> 00:12:58,553
+place in the eax and of course EAX is 
+only 4 bytes. 
+
+174
+00:12:58,553 --> 00:13:02,273
+So we could only put certain types there, 
+things like integeres, floats or 
+
+175
+00:13:02,273 --> 00:13:05,632
+pointers. 
+Of course if we want to return anything 
+
+176
+00:13:05,632 --> 00:13:08,908
+that's bigger than 4 bytes, prolly the 
+best thing to do is to just return a 
+
+177
+00:13:08,908 --> 00:13:15,506
+pointer to that object. 
+Rather than the object itself. 
+
+178
+00:13:15,506 --> 00:13:21,000
+Okay, so the thing to remember for now 
+that is upon return, a caller procedure 
+
+179
+00:13:21,000 --> 00:13:27,023
+finds the return value of the callee in 
+the EAX register. 
+

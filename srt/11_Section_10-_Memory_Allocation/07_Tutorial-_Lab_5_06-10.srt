@@ -1,0 +1,344 @@
+1
+23:59:59,500 --> 00:00:05,003
+[MUSIC]. 
+
+2
+00:00:05,003 --> 00:00:07,835
+Hello everybody. 
+My name's Jeremy, and I'm going to be 
+
+3
+00:00:07,835 --> 00:00:10,938
+showing you how to get started on the 
+Malloc Lab. 
+
+4
+00:00:10,938 --> 00:00:16,216
+number five for this class. 
+so I have my terminal, and my lab five 
+
+5
+00:00:16,216 --> 00:00:21,185
+tar all ready, so I'm going to untar 
+that. 
+
+6
+00:00:21,185 --> 00:00:26,885
+[NOISE] And it's going to, you know, 
+produce a bunch of files, and we'll get 
+
+7
+00:00:26,885 --> 00:00:32,322
+into the lab five directory that I've 
+made. 
+
+8
+00:00:32,322 --> 00:00:40,136
+And, so you see we have a bunch of files. 
+And the only ones that you need to really 
+
+9
+00:00:40,136 --> 00:00:46,664
+worry about are mm.c and the README, in 
+case you're looking for information about 
+
+10
+00:00:46,664 --> 00:00:52,847
+the lab itself. 
+So if you look at the README, it will 
+
+11
+00:00:52,847 --> 00:00:59,645
+show you just some information about the 
+files and how to do stuff. 
+
+12
+00:00:59,645 --> 00:01:05,367
+so you always want to look at your 
+README's, of course. 
+
+13
+00:01:05,367 --> 00:01:10,534
+so let's look that in mm.c. 
+open that in emacs, because we're 
+
+14
+00:01:10,534 --> 00:01:15,120
+going to be, updating it in the course of 
+this lab, and that'll open up. 
+
+15
+00:01:15,120 --> 00:01:19,550
+So, we've got our source file, mm.c and 
+open in emacs here. 
+
+16
+00:01:19,550 --> 00:01:23,393
+And so this is the starter code, your 
+going to have to go in and fill in some 
+
+17
+00:01:23,393 --> 00:01:28,340
+function's, to make it actually do what 
+it's suppose to do. 
+
+18
+00:01:28,340 --> 00:01:34,019
+so we're going to be implementing the 
+memory allocator malloc. 
+
+19
+00:01:34,019 --> 00:01:39,219
+And the general overview of that is that, 
+you have, as we talked about, you have 
+
+20
+00:01:39,219 --> 00:01:44,899
+heap in memory, and malloc is the program 
+that allocates and deallocates space on 
+
+21
+00:01:44,899 --> 00:01:54,592
+the heap as the program requested. 
+So there's two methods in malloc that we 
+
+22
+00:01:54,592 --> 00:02:01,028
+are going to be implementing. 
+Malloc, right here, and, whoops, mm_free, 
+
+23
+00:02:01,028 --> 00:02:02,410
+right here. 
+yeah. 
+
+24
+00:02:02,410 --> 00:02:11,987
+So, what malloc is going to do, is 
+allocate a block on the heap of a certain 
+
+25
+00:02:11,987 --> 00:02:18,615
+size. 
+Whatever size the user specifies, and 
+
+26
+00:02:18,615 --> 00:02:24,100
+then it's going to return the pointer to 
+that memory. 
+
+27
+00:02:24,100 --> 00:02:29,710
+And then when the user's done with that, 
+they'll call free on that same pointer, 
+
+28
+00:02:29,710 --> 00:02:35,490
+and malloc, and the malloc system will 
+put it back into the pool of free memory, 
+
+29
+00:02:35,490 --> 00:02:43,428
+that can be allocated. 
+So, the two functions that you're going 
+
+30
+00:02:43,428 --> 00:02:47,653
+to be implementing in this lab are malloc 
+and free. 
+
+31
+00:02:47,653 --> 00:02:50,990
+And malloc is kind of the more simple 
+one. 
+
+32
+00:02:50,990 --> 00:02:55,082
+we give you some code to start with, and 
+it's going to, basically just take, a 
+
+33
+00:02:55,082 --> 00:02:59,450
+block of the size, and return a pointer 
+to it. 
+
+34
+00:02:59,450 --> 00:03:03,680
+And that, that's not too hard. 
+for purposes of this lab. 
+
+35
+00:03:03,680 --> 00:03:09,161
+The harder part, is for free, to take 
+the, pointer to the memory that the user 
+
+36
+00:03:09,161 --> 00:03:18,130
+is done using, and put it back into the 
+pool of allocatable memory onto the heap. 
+
+37
+00:03:18,130 --> 00:03:23,155
+And to keep track of all those different 
+flocks of memory, we're going to be using 
+
+38
+00:03:23,155 --> 00:03:28,284
+a doubly linked list. 
+As you can see in the source files at the 
+
+39
+00:03:28,284 --> 00:03:32,604
+top, there's a kind of a ascii picture of 
+that here, and it summarizes the 
+
+40
+00:03:32,604 --> 00:03:38,660
+structure and the structure definition is 
+just below. 
+
+41
+00:03:39,670 --> 00:03:42,025
+so we're going to have this doubly link 
+list. 
+
+42
+00:03:42,025 --> 00:03:48,405
+So you have, like a link list, you have a 
+element and a point to the next thing. 
+
+43
+00:03:48,405 --> 00:03:51,620
+But, with a doubly link list you just 
+have two pointer's. 
+
+44
+00:03:51,620 --> 00:03:53,625
+One to the next thing, one to previous 
+thing. 
+
+45
+00:03:53,625 --> 00:03:58,377
+So that makes it really easy to traverse 
+the list, back and forth when you're 
+
+46
+00:03:58,377 --> 00:04:03,769
+looking for the thing of what, whatever 
+appropriate size. 
+
+47
+00:04:03,769 --> 00:04:09,775
+And with that there's going to be mostly 
+in the free method, a lot of management 
+
+48
+00:04:09,775 --> 00:04:15,326
+that you're going to have to do, to keep 
+the link list, the doubly link list of 
+
+49
+00:04:15,326 --> 00:04:24,625
+the free blocks consistent and helpful. 
+Because you're going to have to smash 
+
+50
+00:04:24,625 --> 00:04:30,103
+blocks together, if their right next to 
+each other, or split them if they're too 
+
+51
+00:04:30,103 --> 00:04:36,902
+big so that's what free is going to do. 
+And, all this is going to have a lot to 
+
+52
+00:04:36,902 --> 00:04:41,054
+do with manipulating pointers. 
+There's a lot of code in the source file 
+
+53
+00:04:41,054 --> 00:04:45,430
+that is already provided. 
+So, you have functions for coalescing 
+
+54
+00:04:45,430 --> 00:04:51,500
+free blocks, removing free blocks, 
+inserting free blocks into the list. 
+
+55
+00:04:51,500 --> 00:04:55,925
+And searching the list for a block of a 
+certain size, and you're going to be 
+
+56
+00:04:55,925 --> 00:05:00,650
+using all of those to implement malloc 
+and free. 
+
+57
+00:05:00,650 --> 00:05:06,226
+So once you're done writing your malloc 
+implementation, and you want to test it 
+
+58
+00:05:06,226 --> 00:05:11,966
+we provide the mdriver program the source 
+files in mdriver.c, that you can use to 
+
+59
+00:05:11,966 --> 00:05:19,407
+test your malloc implementation. 
+And you're going to make that, with a 
+
+60
+00:05:19,407 --> 00:05:23,985
+make and it's going to produce this 
+mdriver program. 
+
+61
+00:05:23,985 --> 00:05:28,130
+To test your malloc implementation you 
+just run mdriver. 
+
+62
+00:05:28,130 --> 00:05:32,930
+And, of course, my malloc implementation 
+doesn't exist, because I just untied it 
+
+63
+00:05:32,930 --> 00:05:37,275
+just now. 
+So, of course, it fails every test. 
+
+64
+00:05:37,275 --> 00:05:43,775
+the mdriver program also has some options 
+that you can use to generate more 
+
+65
+00:05:43,775 --> 00:05:51,790
+detailed information, and you can find 
+that by using the H flag. 
+
+66
+00:05:54,670 --> 00:05:57,584
+So that's a general overview of how 
+you're going to implement and test your 
+
+67
+00:05:57,584 --> 00:06:01,263
+malloc. 
+pointers are kind of hard, so you may get 
+
+68
+00:06:01,263 --> 00:06:05,960
+frustrated in this lab, but don't worry 
+about it. 
+
+69
+00:06:05,960 --> 00:06:10,130
+It's, it's a challenging lab so good luck 
+and have fun. 
+

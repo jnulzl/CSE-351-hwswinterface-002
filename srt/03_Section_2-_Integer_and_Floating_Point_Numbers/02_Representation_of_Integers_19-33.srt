@@ -1,0 +1,1208 @@
+1
+00:00:00,006 --> 00:00:04,988
+[MUSIC]. 
+
+2
+00:00:04,988 --> 00:00:09,630
+Now that we've seen a basic encoding. 
+Let's turn our attention to encoding 
+
+3
+00:00:09,630 --> 00:00:11,878
+integers. 
+And we're going to talk about both 
+
+4
+00:00:11,878 --> 00:00:15,116
+unsigned integers positive numbers, as 
+well as signed integers. 
+
+5
+00:00:15,116 --> 00:00:19,961
+Integers that can represent both positive 
+and negative values. 
+
+6
+00:00:19,961 --> 00:00:25,520
+Let's start with a basic example of 
+binary number representation. 
+
+7
+00:00:25,520 --> 00:00:32,200
+Here we see an 8 bit value represented by 
+8 binary bits labelled b7 through b0. 
+
+8
+00:00:32,200 --> 00:00:35,600
+The most significant bit to the least 
+significant bit. 
+
+9
+00:00:35,600 --> 00:00:40,156
+The reason we call them most significant 
+and least significant, is you'll notice 
+
+10
+00:00:40,156 --> 00:00:44,100
+that b0 is a coefficient on 2 to the 0, 
+or 1. 
+
+11
+00:00:44,100 --> 00:00:46,870
+This represents the ones column of the 
+number. 
+
+12
+00:00:46,870 --> 00:00:54,130
+And b1 is the twos column of the number. 
+B5 is the 32s column. 
+
+13
+00:00:54,130 --> 00:01:01,495
+And B6 is the 64s column, and so on. 
+A useful formula to remember is that if 
+
+14
+00:01:01,495 --> 00:01:05,875
+we have an n bit quantity, then the 
+largest number we can represent is 2 to 
+
+15
+00:01:05,875 --> 00:01:11,019
+the n minus 1. 
+In the case of 8 bits, with n equal to 8, 
+
+16
+00:01:11,019 --> 00:01:17,071
+that would be the number 255. 
+Namely, 128 plus 64 plus 32 all the way 
+
+17
+00:01:17,071 --> 00:01:22,228
+down to plus 1. 
+So let's take a look at a simple example 
+
+18
+00:01:22,228 --> 00:01:26,712
+of addition and subtraction. 
+using basically the normal carried borrow 
+
+19
+00:01:26,712 --> 00:01:30,370
+rules that we use for decimal addition 
+and subtraction. 
+
+20
+00:01:30,370 --> 00:01:34,792
+Only in this case, since we have base-2 
+numbers, we'll be doing things with only 
+
+21
+00:01:34,792 --> 00:01:39,740
+the digits 0 and 1. 
+Here's an example, 63 plus 8. 
+
+22
+00:01:39,740 --> 00:01:44,300
+Is of course equal to 71. 
+The number 63 is represented by these 
+
+23
+00:01:44,300 --> 00:01:47,090
+bits. 
+The number 8 is represented by these bits 
+
+24
+00:01:47,090 --> 00:01:51,180
+and you should make sure that, that makes 
+good sense to you. 
+
+25
+00:01:51,180 --> 00:01:54,885
+And when we add them up, you'll notice 
+we'll do a 1 and a 0 as a 1, a 1 and a 0 
+
+26
+00:01:54,885 --> 00:01:59,610
+is also a 1. 
+A 1 and 0 again is 1. 
+
+27
+00:01:59,610 --> 00:02:06,610
+But now a 1 plus 1 in this column yields 
+a 0 with a carry of 1. 
+
+28
+00:02:06,610 --> 00:02:14,240
+So, we now add 1 0 plus the carry of 1 
+yields a 0 again, but a carry of 1. 
+
+29
+00:02:14,240 --> 00:02:19,040
+So we do 1 plus 1 plus 0, again yields a 
+0 with a carry of 1 that ends up in this 
+
+30
+00:02:19,040 --> 00:02:24,440
+position. 
+And this is the number 71, our result. 
+
+31
+00:02:24,440 --> 00:02:28,774
+To do subtraction we do something very 
+similar. 
+
+32
+00:02:28,774 --> 00:02:37,086
+Let's take, let's say we have the number 
+12 in binary and we wanted to subtract 7. 
+
+33
+00:02:37,086 --> 00:02:42,527
+7 is represented by 0111. 
+And so if we do the subtraction we would 
+
+34
+00:02:42,527 --> 00:02:48,960
+say 0 minus 1, of course is a 1 with a 
+borrow of 1. 
+
+35
+00:02:48,960 --> 00:02:55,570
+1 minus 1 is a 0 and a 0 now because we 
+borrowed earlier. 
+
+36
+00:02:55,570 --> 00:03:01,770
+0 minus 1 is a 1 again. 
+Without and we leave this as a 0 so the 
+
+37
+00:03:01,770 --> 00:03:10,770
+result is 0101 which is in fact equal to 
+the number 5 what we'd expect, okay. 
+
+38
+00:03:10,770 --> 00:03:14,930
+So, that's the basics of addition and 
+subtraction in binary. 
+
+39
+00:03:14,930 --> 00:03:18,249
+So let's do the natural thing for 
+representing positive numbers. 
+
+40
+00:03:18,249 --> 00:03:21,564
+they're going to rep, they're going to 
+correspond to all the unsigned integers 
+
+41
+00:03:21,564 --> 00:03:26,584
+of the same value. 
+So in 8 bits, for example, we can go from 
+
+42
+00:03:26,584 --> 00:03:34,920
+the x00 to the x7F and represent 127 
+different positive number. 
+
+43
+00:03:34,920 --> 00:03:38,666
+But since we need about half of them to 
+be negative. 
+
+44
+00:03:38,666 --> 00:03:42,698
+We're going to to save the other half 
+from 128 to 255 to really be used to 
+
+45
+00:03:42,698 --> 00:03:48,850
+represent negative numbers rather then 
+those larger positive numbers. 
+
+46
+00:03:48,850 --> 00:03:52,946
+So we're going to use the high order bit, 
+that b7, to indicate whether a number is 
+
+47
+00:03:52,946 --> 00:03:57,204
+negative or not. 
+And often that most significant bit is 
+
+48
+00:03:57,204 --> 00:04:00,648
+the sign bit. 
+This is called a sign and magnitude 
+
+49
+00:04:00,648 --> 00:04:03,950
+representation. 
+Let me give you a few examples. 
+
+50
+00:04:03,950 --> 00:04:07,525
+Here we have the number 0 and you'll 
+notice that it has a 0 in the most 
+
+51
+00:04:07,525 --> 00:04:12,220
+significant bit. 
+So it's non-negative because the sign bit 
+
+52
+00:04:12,220 --> 00:04:16,660
+is 0 and the value is 0. 
+Here we have another postitive number a 
+
+53
+00:04:16,660 --> 00:04:20,636
+non-negative number. 
+where except for the sign bit, all the 
+
+54
+00:04:20,636 --> 00:04:24,720
+other bits of 1. 
+That corresponds to the number 127. 
+
+55
+00:04:24,720 --> 00:04:28,738
+Okay. 
+Now the other 2 numbers in these examples 
+
+56
+00:04:28,738 --> 00:04:33,900
+are both negative numbers. 
+They have a 1 in the most significant 
+
+57
+00:04:33,900 --> 00:04:39,049
+bit. 
+And can be used to represent for example 
+
+58
+00:04:39,049 --> 00:04:43,250
+a minus 5. 
+In this case, this is the number 5 but 
+
+59
+00:04:43,250 --> 00:04:47,612
+we're saying it's negative. 
+So we're going to basically just use that 
+
+60
+00:04:47,612 --> 00:04:52,820
+sign bit to say whether we put a minus 
+sign in front of it or not. 
+
+61
+00:04:52,820 --> 00:04:57,238
+In this case we have minus 0. 
+Which get's into one the problems of sign 
+
+62
+00:04:57,238 --> 00:05:01,795
+and magnitude notations. 
+There's the 2 representations for 0. 
+
+63
+00:05:01,795 --> 00:05:06,600
+The first line here was the positive 0. 
+This is the negative 0. 
+
+64
+00:05:06,600 --> 00:05:10,565
+Well they're both 0s so this kind of, 
+this will cause some problems for us if 
+
+65
+00:05:10,565 --> 00:05:15,928
+we use this representation. 
+Okay, so let's talk about sign and 
+
+66
+00:05:15,928 --> 00:05:18,540
+magnitude negative numbers in a bit more 
+detail. 
+
+67
+00:05:18,540 --> 00:05:22,670
+Here I'm showing a number wheel for 4-bit 
+binary numbers. 
+
+68
+00:05:22,670 --> 00:05:28,264
+It starts at 000, and as we increment by 
+1, we move around to 1111. 
+
+69
+00:05:28,264 --> 00:05:33,665
+And of course if we continued to 
+increment we'd go back to 0000. 
+
+70
+00:05:33,665 --> 00:05:39,274
+Now, what I've also noted on the outside 
+of the circle is the number corresponding 
+
+71
+00:05:39,274 --> 00:05:45,108
+to each bit pattern. 
+So you see here, we have our 0, 1, 2, 3, 
+
+72
+00:05:45,108 --> 00:05:50,124
+all the way around to 7 and then we have 
+the negative numbers on this side with 
+
+73
+00:05:50,124 --> 00:05:56,964
+the first bit being a 1. 
+Alright, so a minus 1 in binary is always 
+
+74
+00:05:56,964 --> 00:06:04,040
+represented by the inside magnitude 
+binary with a leading 1 for the sign. 
+
+75
+00:06:04,040 --> 00:06:07,555
+And then a value of 1 for the remainder 
+of the bits. 
+
+76
+00:06:07,555 --> 00:06:12,225
+Okay, for the magnitude. 
+All right, so, the unfortunate side 
+
+77
+00:06:12,225 --> 00:06:16,129
+effect of this, as we've said, is that we 
+have 2 values for 2 values that 
+
+78
+00:06:16,129 --> 00:06:21,930
+correspond to 0. 
+A negative 0 and a positive 0. 
+
+79
+00:06:21,930 --> 00:06:25,485
+So why is this an issue? 
+Well it makes math a little cumbersome. 
+
+80
+00:06:25,485 --> 00:06:32,600
+Let's take a look at a little example. 
+If I do 4 minus 3 that corresponds to the 
+
+81
+00:06:32,600 --> 00:06:41,938
+number 4 here 0100 minus 0011. 
+And if we do the arithmetic for that, of 
+
+82
+00:06:41,938 --> 00:06:48,123
+course we see that the value is 1. 
+But now if we look at the nu-, the 4 plus 
+
+83
+00:06:48,123 --> 00:06:52,937
+minus 3 which should yield the same 
+result, we see that in fact, 4 plus a 
+
+84
+00:06:52,937 --> 00:06:59,650
+minus 3 yields minus 7. 
+Well that's not the same as 1. 
+
+85
+00:06:59,650 --> 00:07:04,005
+so we now would have to worry about how, 
+what order in which we do the additions 
+
+86
+00:07:04,005 --> 00:07:08,542
+and subtraction. 
+this is not something that we want to be 
+
+87
+00:07:08,542 --> 00:07:13,300
+dealing with when we think about 
+arithmetic in our programming languages. 
+
+88
+00:07:13,300 --> 00:07:17,371
+So instead of using sign and magnitude 
+numbers computer systems today use what 
+
+89
+00:07:17,371 --> 00:07:23,450
+is called Two's Complement negatives. 
+And let's go back to that representation 
+
+90
+00:07:23,450 --> 00:07:27,068
+of a minus 1. 
+So instead of using the sign bit at the 
+
+91
+00:07:27,068 --> 00:07:31,896
+front to, the most significant bit to 
+just represent the minus sign in front of 
+
+92
+00:07:31,896 --> 00:07:36,672
+the 1. 
+What we're going to do is give that most 
+
+93
+00:07:36,672 --> 00:07:41,922
+significant bit a large negative weight. 
+Alright remember each of the bits has a 
+
+94
+00:07:41,922 --> 00:07:45,070
+certain weight corresponding to the 
+column that they're in. 
+
+95
+00:07:45,070 --> 00:07:53,320
+So bits 0 through the second to last bit 
+represent the values 1, 2, 4, 8, 16 and 
+
+96
+00:07:53,320 --> 00:08:02,614
+so on. 
+Well what were going to do is have the 
+
+97
+00:08:02,614 --> 00:08:07,811
+most significant bit represented as the W 
+minus 1 bit. 
+
+98
+00:08:07,811 --> 00:08:13,076
+Or in this case would correspond to that 
+b7 we had in our previous slide when W is 
+
+99
+00:08:13,076 --> 00:08:18,006
+equal to 8. 
+It would actually add a na, a negative 
+
+100
+00:08:18,006 --> 00:08:21,786
+weight to the number. 
+In this case, the negative weight would 
+
+101
+00:08:21,786 --> 00:08:24,400
+be minus 128. 
+2 to the 7th is 128. 
+
+102
+00:08:24,400 --> 00:08:31,726
+And then minus 128. 
+So let's take a look at an unsigned 
+
+103
+00:08:31,726 --> 00:08:37,966
+number here. 
+1010, that corresponds to 1 times 2 to 
+
+104
+00:08:37,966 --> 00:08:45,490
+the 3 plus 0 times 2 to the 2 and so on 
+to yield the number 10 decimal. 
+
+105
+00:08:45,490 --> 00:08:51,450
+In 2's complement, 1010 would be 
+interpreted a little bit differently. 
+
+106
+00:08:51,450 --> 00:08:56,350
+You notice that now we have a minus 1 for 
+the first bit, the most significant bit. 
+
+107
+00:08:56,350 --> 00:08:58,230
+Alright? 
+That's that large negative weight. 
+
+108
+00:08:58,230 --> 00:09:02,390
+In this case minus 8. 
+So that when we add this up we see that 
+
+109
+00:09:02,390 --> 00:09:07,160
+this corresponds to the negative number 6 
+in base 10. 
+
+110
+00:09:07,160 --> 00:09:12,436
+using two's complement notation. 
+So a minus 1 is represented as 1111, 
+
+111
+00:09:12,436 --> 00:09:14,876
+right. 
+Minus 8 plus 7 for the remainder, so that 
+
+112
+00:09:14,876 --> 00:09:19,902
+would add up to minus 1. 
+All right, so that looks, a lot like, we 
+
+113
+00:09:19,902 --> 00:09:25,824
+solved our problem here because what 
+we've essentially done is shifted our 
+
+114
+00:09:25,824 --> 00:09:33,110
+number wheel a little bit. 
+So now the numbers are the same on the 
+
+115
+00:09:33,110 --> 00:09:37,073
+right hand side. 
+You see we go from 0 to plus 7 but the 
+
+116
+00:09:37,073 --> 00:09:44,150
+numbers with deleting 1 are now in a 
+different order then they were before. 
+
+117
+00:09:44,150 --> 00:09:49,633
+We started minus 1 up here go around to 
+minus 2 to minus 3 to minus 4. 
+
+118
+00:09:50,700 --> 00:09:55,290
+[COUGH] All the way to minus 8. 
+What's important to note here is that now 
+
+119
+00:09:55,290 --> 00:10:00,092
+we only have one representation of 0, 
+namely all the bits are set to 0. 
+
+120
+00:10:00,092 --> 00:10:03,750
+And you'll notice that minus 1 is 
+immediately adjacent to 0. 
+
+121
+00:10:03,750 --> 00:10:08,172
+So, it looks like things can flow on a 
+number wheel by doing basic addition and 
+
+122
+00:10:08,172 --> 00:10:13,522
+subtraction, and get that to work. 
+For example, if I start at 2 and take 
+
+123
+00:10:13,522 --> 00:10:17,160
+three steps back I do in fact get to 
+minus 1. 
+
+124
+00:10:17,160 --> 00:10:21,120
+That wasn't the case with sign magnitude 
+notation. 
+
+125
+00:10:21,120 --> 00:10:24,778
+The other nice thing about two's 
+compliment notation is that its very easy 
+
+126
+00:10:24,778 --> 00:10:29,530
+to obtain the negative number from its 
+positive of magnitude. 
+
+127
+00:10:29,530 --> 00:10:33,251
+All I have to do is take a bit wise 
+complement of the number, of the positive 
+
+128
+00:10:33,251 --> 00:10:37,610
+number and add 1. 
+And that gives me the negative version of 
+
+129
+00:10:37,610 --> 00:10:41,869
+that original number. 
+Interesting interesting fact that makes 
+
+130
+00:10:41,869 --> 00:10:45,730
+it very easy to take the negatives of 
+numbers. 
+
+131
+00:10:47,560 --> 00:10:50,451
+Okay, so let's take a look at 2's 
+complement arithmetic in some more 
+
+132
+00:10:50,451 --> 00:10:54,000
+detail. 
+What's nice about 2's complement is the 
+
+133
+00:10:54,000 --> 00:10:57,780
+same addition procedure now works for 
+both unsigned and 2's complement 
+
+134
+00:10:57,780 --> 00:11:00,824
+integers. 
+So we only have to build one kind of 
+
+135
+00:11:00,824 --> 00:11:04,871
+adder in our processors. 
+Let's take a look at the example 4 plus 
+
+136
+00:11:04,871 --> 00:11:08,234
+3. 
+Here we have the positive number 4 the 
+
+137
+00:11:08,234 --> 00:11:11,270
+positive number 3. 
+We do a straight addition and we get a 
+
+138
+00:11:11,270 --> 00:11:13,960
+result of 7. 
+That works out well. 
+
+139
+00:11:13,960 --> 00:11:17,776
+On the righthand side we have minus 4 
+plus 3. 
+
+140
+00:11:17,776 --> 00:11:21,870
+'Kay, you'll notice that when we add that 
+up we get all 1s. 
+
+141
+00:11:21,870 --> 00:11:25,460
+That corresponds to minus 1. 
+That's correct as well. 
+
+142
+00:11:25,460 --> 00:11:29,434
+Now let's take a look at the middle here. 
+4 minus 3 that's the example we did 
+
+143
+00:11:29,434 --> 00:11:36,430
+before that should have yielded 1. 
+And now with 2's compliment numbers we 
+
+144
+00:11:36,430 --> 00:11:43,672
+have a 40100 but our minus 3 is 1101. 
+And when we add this up we get the 
+
+145
+00:11:43,672 --> 00:11:47,327
+result, 0001. 
+Of course we do have a carry out of 1 
+
+146
+00:11:47,327 --> 00:11:51,968
+that we're going to drop. 
+And because we have our 4 bits of 
+
+147
+00:11:51,968 --> 00:11:58,590
+precision here. 
+And the result is 0001. 
+
+148
+00:11:58,590 --> 00:12:04,199
+Exactly the value we expected to see. 
+the drop and carry makes this modulo 
+
+149
+00:12:04,199 --> 00:12:09,100
+edition. 
+So we say that this is addition modulo 2 
+
+150
+00:12:09,100 --> 00:12:16,510
+to the w, or modulo modulo 256, in this 
+case, with w equal to 8. 
+
+151
+00:12:16,510 --> 00:12:22,788
+Or in the examples here with w equal to 
+4, it's modulo 16. 
+
+152
+00:12:24,510 --> 00:12:27,200
+Why does 2's complement notation work out 
+so well? 
+
+153
+00:12:27,200 --> 00:12:30,160
+well, let's try to look at it a different 
+way. 
+
+154
+00:12:30,160 --> 00:12:34,576
+Whenever we have a positive integer we'd 
+like the negative number representation 
+
+155
+00:12:34,576 --> 00:12:38,804
+of that same integer. 
+to always add up to 0 if we sum it with 
+
+156
+00:12:38,804 --> 00:12:42,948
+the positive version. 
+So let's take a look at the numbers 
+
+157
+00:12:42,948 --> 00:12:46,290
+00001. 
+what we have to add to that in order to 
+
+158
+00:12:46,290 --> 00:12:50,089
+get all zeros, right. 
+What we really want to be negative 1 is 
+
+159
+00:12:50,089 --> 00:12:53,540
+whatever bit pattern gives us that same 
+result. 
+
+160
+00:12:53,540 --> 00:12:57,295
+And we know now that, that in fact is the 
+pattern all 1s. 
+
+161
+00:12:57,295 --> 00:13:01,783
+Which when we add will cause a carry to 
+ripple down this entire sequence of one's 
+
+162
+00:13:01,783 --> 00:13:08,279
+to yield all 0s with a carry out of 1. 
+That we'll be dropping and ignoring, 
+
+163
+00:13:08,279 --> 00:13:13,300
+because we do modular 256 arithmetic. 
+In the case of the number two, we want 
+
+164
+00:13:13,300 --> 00:13:17,250
+the number minus 2 here. 
+What bit pattern would yield that? 
+
+165
+00:13:17,250 --> 00:13:22,070
+Well, we'd expect it to have a 0 here. 
+So that 0 plus 0 would come out to 0. 
+
+166
+00:13:22,070 --> 00:13:25,030
+[COUGH]. 
+Then a 1 in the second position, so that 
+
+167
+00:13:25,030 --> 00:13:30,034
+one plus 1 is also a 0. 
+And then a sequence of 1s to ripple that 
+
+168
+00:13:30,034 --> 00:13:37,440
+carry through. 
+So a minus 2 looks like this value, okay. 
+
+169
+00:13:37,440 --> 00:13:42,654
+And you'll notice that that's just the 
+bit pattern of the number 2 complemented 
+
+170
+00:13:42,654 --> 00:13:47,603
+and then adding a 1. 
+So if we complemented every one of these 
+
+171
+00:13:47,603 --> 00:13:51,159
+bits. 
+We would get 111101, but then when we add 
+
+172
+00:13:51,159 --> 00:13:55,070
+1, we would actually get this value here, 
+which is our minus 2. 
+
+173
+00:13:55,070 --> 00:14:01,516
+And then for 3, it's the same situation. 
+The pattern that, the pattern that would 
+
+174
+00:14:01,516 --> 00:14:08,015
+yield all the 0s looks like this. 
+Which you'll notice again, is just a bit 
+
+175
+00:14:08,015 --> 00:14:13,205
+wise compliment of the original 3 plus 1 
+added in. 
+
+176
+00:14:13,205 --> 00:14:19,420
+Okay, so that's how 2s compliment works. 
+If we look at these numbers now in terms 
+
+177
+00:14:19,420 --> 00:14:24,193
+of the possible big patterns that we can 
+have in four bits. 
+
+178
+00:14:24,193 --> 00:14:29,905
+From 000 to 1111, we'll notice that for 
+the first 7 numbers the positive values, 
+
+179
+00:14:29,905 --> 00:14:35,500
+signed and unsigned numbers are exactly 
+the same. 
+
+180
+00:14:35,500 --> 00:14:40,910
+But now for unsigned, we continue on to 
+8, 9, 10 all the way up to 15. 
+
+181
+00:14:40,910 --> 00:14:44,863
+While for signed representations, the 
+value that would have been 8 now 
+
+182
+00:14:44,863 --> 00:14:49,269
+corresponds to minus 8. 
+And the value that would have been 15 
+
+183
+00:14:49,269 --> 00:14:54,026
+corresponds to minus 1. 
+Now, of course both signed and unsigned 
+
+184
+00:14:54,026 --> 00:14:57,850
+integers have limits. 
+There's only so far we can go until we 
+
+185
+00:14:57,850 --> 00:15:02,374
+run out of patterns to use. 
+So, for example, if we tried to add 6 
+
+186
+00:15:02,374 --> 00:15:06,694
+plus 4, the result would be 10, and we 
+could not represent that as a signed 
+
+187
+00:15:06,694 --> 00:15:11,590
+number. 
+There's just not enough bits to do that. 
+
+188
+00:15:11,590 --> 00:15:14,520
+You notice that there is no pattern that 
+corresponds to the number 10. 
+
+189
+00:15:14,520 --> 00:15:20,975
+If they were unsigned numbers we could, 
+because we have a pattern of 10, for ten. 
+
+190
+00:15:20,975 --> 00:15:27,060
+in seeing we also use the notation 15u to 
+signify an unsigned number. 
+
+191
+00:15:27,060 --> 00:15:32,878
+In this case 15u plus 2u. 
+Yields 17 and that would not fit into any 
+
+192
+00:15:32,878 --> 00:15:36,365
+of our representations, signed or 
+unsigned. 
+
+193
+00:15:36,365 --> 00:15:40,023
+Okay. 
+We can also have a number that is too 
+
+194
+00:15:40,023 --> 00:15:44,951
+small for example minus 7, minus 3 
+unsigned would yield as signed numbers 
+
+195
+00:15:44,951 --> 00:15:49,998
+would yield minus 10. 
+And you'll notice that there is no 
+
+196
+00:15:49,998 --> 00:15:54,900
+pattern for minus 10. 
+We only get up to to minus 8. 
+
+197
+00:15:54,900 --> 00:15:58,833
+And then if they were unsigned we still 
+have a problem because 0 unsigned minus 2 
+
+198
+00:15:58,833 --> 00:16:03,284
+would be negative 2. 
+Well we cannot represent negative numbers 
+
+199
+00:16:03,284 --> 00:16:07,450
+in unsigned formats. 
+So we'd be in trouble there as well. 
+
+200
+00:16:07,450 --> 00:16:12,011
+So the CPU. 
+when it's when it's given this kind these 
+
+201
+00:16:12,011 --> 00:16:16,100
+kinds of arithmetics to do will throw an 
+exception. 
+
+202
+00:16:16,100 --> 00:16:21,050
+Meaning it will signal that it got a 
+number that it can't represent. 
+
+203
+00:16:21,050 --> 00:16:25,258
+and it does that for signed values. 
+But most CPUs do not do this for unsigned 
+
+204
+00:16:25,258 --> 00:16:29,040
+values. 
+And, C and Java, both languages, will 
+
+205
+00:16:29,040 --> 00:16:34,790
+just cruse along and not bother checking 
+that the arithmatic was correct or not. 
+
+206
+00:16:34,790 --> 00:16:40,670
+So you have to do an explicit check if 
+you really want to know if the arithmatic 
+
+207
+00:16:40,670 --> 00:16:45,380
+worked out correctly. 
+And we'll see that again later on. 
+
+208
+00:16:45,380 --> 00:16:49,640
+Alright, jsut a quick visualization of 
+what is going on here. 
+
+209
+00:16:49,640 --> 00:16:54,140
+If we start off with a 2s complement 
+number that can go from minus 2 to the w 
+
+210
+00:16:54,140 --> 00:17:00,410
+minus 1 to plus 2 to the w minus 1. 
+When we move it to unsigned value a 
+
+211
+00:17:00,410 --> 00:17:05,436
+represented as an unsigned value. 
+Of course those positive values stay the 
+
+212
+00:17:05,436 --> 00:17:10,225
+same but the negative numbers now look 
+like big positive values. 
+
+213
+00:17:10,225 --> 00:17:12,844
+'Kay. 
+And similarly, going in the other 
+
+214
+00:17:12,844 --> 00:17:15,559
+direction. 
+If we start with an unsigned number, the 
+
+215
+00:17:15,559 --> 00:17:20,696
+smaller numbers can just move straight 
+across the 2s complement notation. 
+
+216
+00:17:20,696 --> 00:17:25,380
+But the large positive numbers, the ones 
+that start with that leading 1. 
+
+217
+00:17:25,380 --> 00:17:28,864
+Now get interpreted as negative numbers, 
+if we think of the representation as 2s 
+
+218
+00:17:28,864 --> 00:17:32,755
+complement. 
+So, we have to remember which type of 
+
+219
+00:17:32,755 --> 00:17:37,376
+number we have in memory. 
+Is it a 2s complement number or is it an 
+
+220
+00:17:37,376 --> 00:17:41,624
+unsigned integer? 
+And that's part of how we get into types 
+
+221
+00:17:41,624 --> 00:17:47,080
+in these different languages data types 
+in these different languages. 
+
+222
+00:17:47,080 --> 00:17:51,220
+Here were showing the addition of 2 
+numbers can yield a value that's very 
+
+223
+00:17:51,220 --> 00:17:57,581
+negative or a value that's very positive. 
+the values again that are in teh midrange 
+
+224
+00:17:57,581 --> 00:18:03,550
+can just move straight alogn no problem 
+to the 2s compliment representation. 
+
+225
+00:18:03,550 --> 00:18:08,090
+But the very large positive numbers get 
+interpreted as negatives. 
+
+226
+00:18:08,090 --> 00:18:14,900
+The very large negative numbers end up 
+getting interpreted as big positives. 
+
+227
+00:18:14,900 --> 00:18:20,075
+Okay, so that's where we would run into 
+trouble in our arithmetic if we generate 
+
+228
+00:18:20,075 --> 00:18:25,010
+too large a number, or too negative a 
+number. 
+
+229
+00:18:25,010 --> 00:18:29,524
+Okay, some values to remember when we're 
+thinking about integers is for unsigned 
+
+230
+00:18:29,524 --> 00:18:32,946
+values. 
+we have a special value called UMin, 
+
+231
+00:18:32,946 --> 00:18:36,880
+which is the smallest number we can 
+represent that's 0. 
+
+232
+00:18:36,880 --> 00:18:41,983
+The pattern of all 0's and the maximum, 
+UMax is the unsigned max, is all 1s 
+
+233
+00:18:41,983 --> 00:18:46,530
+obviously. 
+And that would correspond to the 2 to the 
+
+234
+00:18:46,530 --> 00:18:50,494
+w minus 1. 
+While in 2's compliment TMin is 2's 
+
+235
+00:18:50,494 --> 00:18:55,888
+compliment minimum is the biggest 
+negative number we can have which would 
+
+236
+00:18:55,888 --> 00:19:01,720
+be the pattern of 1 all 0 followed by all 
+0s. 
+
+237
+00:19:01,720 --> 00:19:07,128
+And then TMax is 0 followed by all 1s. 
+So the maximum numbers only half as big 
+
+238
+00:19:07,128 --> 00:19:11,730
+as it was before the unsigned values. 
+And a negative 1 is represented by the 
+
+239
+00:19:11,730 --> 00:19:15,204
+sequence of all 1s. 
+Ffff we would do in 32 bits. 
+
+240
+00:19:15,204 --> 00:19:17,741
+Okay. 
+So for a word size of 16, we would see 
+
+241
+00:19:17,741 --> 00:19:26,462
+these value for UMax, TMax, and TMin. 
+these would be the x representations of 
+
+242
+00:19:26,462 --> 00:19:32,150
+them and their binary representations. 
+

@@ -1,0 +1,699 @@
+1
+00:00:00,001 --> 00:00:05,710
+[MUSIC]. 
+
+2
+00:00:05,710 --> 00:00:10,285
+Before we get to our example for how 
+virtual memory actually, works in 
+
+3
+00:00:10,285 --> 00:00:16,033
+practice, lets, cover a few more topics 
+before we do that. 
+
+4
+00:00:16,033 --> 00:00:21,110
+One is how virtual memory helps with 
+memory management and protection. 
+
+5
+00:00:21,110 --> 00:00:26,620
+sharing and protection and how we do, how 
+we speed up address translation. 
+
+6
+00:00:28,460 --> 00:00:31,720
+First how does a virtual memory manage 
+multiple processes? 
+
+7
+00:00:31,720 --> 00:00:34,963
+Well the key abstraction remember is that 
+each process has its own virtual address 
+
+8
+00:00:34,963 --> 00:00:38,796
+space. 
+the virtual address space is a simple 
+
+9
+00:00:38,796 --> 00:00:41,910
+array in memory. 
+A linear array of one byte after the 
+
+10
+00:00:41,910 --> 00:00:45,695
+other. 
+but this linear virtual address space 
+
+11
+00:00:45,695 --> 00:00:49,670
+does not need to be contiguous and 
+physical memory. 
+
+12
+00:00:49,670 --> 00:00:54,566
+Because we're mapping things at the level 
+of pages or blocks of virtual memory, we 
+
+13
+00:00:54,566 --> 00:00:59,390
+can put any virtual page at any location 
+in physical memory, at any physical page 
+
+14
+00:00:59,390 --> 00:01:05,305
+in physical mempry. 
+So we don't have to worry about the, the 
+
+15
+00:01:05,305 --> 00:01:09,209
+virtual page one being just before 
+virtual page two and then virtual page 
+
+16
+00:01:09,209 --> 00:01:14,990
+three and so on, as we think about it in 
+the virtual address space. 
+
+17
+00:01:14,990 --> 00:01:18,330
+These can be scattered throughout the 
+physical memory. 
+
+18
+00:01:18,330 --> 00:01:21,985
+And can be in any order. 
+So this helps us really fit things in as 
+
+19
+00:01:21,985 --> 00:01:26,072
+needed and not have to worry about moving 
+things around so that they're always in 
+
+20
+00:01:26,072 --> 00:01:32,478
+exact same order. 
+How does virtual memory help with 
+
+21
+00:01:32,478 --> 00:01:36,195
+protection and sharing. 
+Well now we can do things like for 
+
+22
+00:01:36,195 --> 00:01:40,794
+example, here we have a physical page, 
+physical page six, that might be some 
+
+23
+00:01:40,794 --> 00:01:47,550
+library code that two processes need. 
+Well they can both have part of their 
+
+24
+00:01:47,550 --> 00:01:53,810
+virtual address space mapped to that same 
+physical address. 
+
+25
+00:01:53,810 --> 00:01:59,319
+Where physical page six is. 
+That way they can share the code for that 
+
+26
+00:01:59,319 --> 00:02:06,314
+routine, of that library code. 
+likewise, we can protect the processes 
+
+27
+00:02:06,314 --> 00:02:10,406
+from each other by giving them pages that 
+they are the only ones that have an 
+
+28
+00:02:10,406 --> 00:02:16,300
+address for. 
+they have the physical address but in the 
+
+29
+00:02:16,300 --> 00:02:21,580
+other process does not. 
+In this case, process two cannot access 
+
+30
+00:02:21,580 --> 00:02:26,935
+physical page two because it doesn't have 
+the address for physical page two 
+
+31
+00:02:26,935 --> 00:02:33,830
+anywhere in it's page tables. 
+so that's a very easy way to keep two 
+
+32
+00:02:33,830 --> 00:02:39,990
+processes from stepping on each other. 
+Just making sure that they have different 
+
+33
+00:02:39,990 --> 00:02:47,085
+physical pages allocated to them. 
+Okay lastly about these page table 
+
+34
+00:02:47,085 --> 00:02:51,635
+entries is they're not, they don't have 
+to be just simply addresses and physical 
+
+35
+00:02:51,635 --> 00:02:56,790
+memory. 
+We can add additional bits to that. 
+
+36
+00:02:56,790 --> 00:03:01,480
+You've already seen the valid bit as 
+telling us whether this entry contains a 
+
+37
+00:03:01,480 --> 00:03:07,522
+valid address in physical memory or not. 
+But we can also have a bit for example 
+
+38
+00:03:07,522 --> 00:03:11,430
+that tells us we have right permission to 
+this area. 
+
+39
+00:03:11,430 --> 00:03:15,952
+or we could only read this area. 
+This would be very useful for example in 
+
+40
+00:03:15,952 --> 00:03:20,480
+the case when we have those shared 
+libraries of code. 
+
+41
+00:03:20,480 --> 00:03:23,630
+Where we might want to be able to read 
+that code but not necessarily be able to 
+
+42
+00:03:23,630 --> 00:03:28,274
+write to it. 
+we can also, have a bit for example that 
+
+43
+00:03:28,274 --> 00:03:34,630
+provides permission to execute code in 
+that, physical memory. 
+
+44
+00:03:34,630 --> 00:03:40,545
+So that we can protect from code 
+injection attacks like, we saw with the 
+
+45
+00:03:40,545 --> 00:03:46,412
+buffer overflow earlier. 
+So these can be quite useful in doing 
+
+46
+00:03:46,412 --> 00:03:50,438
+that and there is a special hardware that 
+checks, that the kind of memory access 
+
+47
+00:03:50,438 --> 00:03:55,670
+we're trying to do, or read or write or 
+an execute. 
+
+48
+00:03:55,670 --> 00:04:01,940
+an instruction fetch is actually allowed 
+for this physical address. 
+
+49
+00:04:01,940 --> 00:04:06,228
+And if it's not allowed then the 
+operating system raises a a segmentation 
+
+50
+00:04:06,228 --> 00:04:12,780
+fault exception and our program crashes. 
+And we can then go about the debugging 
+
+51
+00:04:12,780 --> 00:04:16,889
+process to make sure that we're using it 
+correctly. 
+
+52
+00:04:18,230 --> 00:04:24,190
+Okay so that's the how we implement 
+protection of various forms. 
+
+53
+00:04:24,190 --> 00:04:31,410
+Let's go back to address translation and 
+what happens in the case of a page hit. 
+
+54
+00:04:31,410 --> 00:04:34,440
+And then we'll look at a page fault as 
+well. 
+
+55
+00:04:34,440 --> 00:04:37,921
+So we start off of course with generating 
+a virtual address from our CPU 
+
+56
+00:04:37,921 --> 00:04:42,070
+instructions. 
+this goes to our memory management unit 
+
+57
+00:04:42,070 --> 00:04:46,642
+for translation. 
+What the memory management unit has to do 
+
+58
+00:04:46,642 --> 00:04:51,880
+is go to the page table entry. 
+And for that it needs to generate a page 
+
+59
+00:04:51,880 --> 00:04:56,130
+table entry address. 
+Remember it looks at that page table 
+
+60
+00:04:56,130 --> 00:04:59,168
+buffer register. 
+To give it the starting address of the 
+
+61
+00:04:59,168 --> 00:05:02,856
+page table. 
+And then indexes it appropriately for the 
+
+62
+00:05:02,856 --> 00:05:07,470
+virtual address involved. 
+And goes and reads that entry from main 
+
+63
+00:05:07,470 --> 00:05:11,536
+memory. 
+if it's valid and there's a good address 
+
+64
+00:05:11,536 --> 00:05:17,490
+there then it does the mapping generating 
+the physical address. 
+
+65
+00:05:17,490 --> 00:05:23,350
+And accesses the memory again to read 
+the, that location in physical memory. 
+
+66
+00:05:23,350 --> 00:05:27,150
+That data comes back to the CPU as the 
+result. 
+
+67
+00:05:27,150 --> 00:05:31,898
+So we've done two memory accesses. 
+One to get the page table entry, and one 
+
+68
+00:05:31,898 --> 00:05:36,450
+to get the actual data that we're 
+interested in. 
+
+69
+00:05:38,380 --> 00:05:42,870
+Alright, what happens on a page fault? 
+Well on a page fault what happens is that 
+
+70
+00:05:42,870 --> 00:05:46,710
+we've gone and gotten our page table 
+entry brought that back to the memory 
+
+71
+00:05:46,710 --> 00:05:51,870
+management unit and found that the page 
+is invalid. 
+
+72
+00:05:51,870 --> 00:05:56,761
+so we now have to go and involve the 
+operating system in helping us get that 
+
+73
+00:05:56,761 --> 00:06:01,265
+page. 
+From disk and loading it into, the 
+
+74
+00:06:01,265 --> 00:06:05,235
+physical memory. 
+So that's going to cause an exception 
+
+75
+00:06:05,235 --> 00:06:09,890
+that goes to this page fault handler. 
+Which is a special, piece of code in the 
+
+76
+00:06:09,890 --> 00:06:13,510
+operating system that knows what to do in 
+these situations. 
+
+77
+00:06:14,660 --> 00:06:18,560
+When the, page fault handler might write 
+the victim page, the page it has to 
+
+78
+00:06:18,560 --> 00:06:21,970
+replace. 
+back into disk in case that we had 
+
+79
+00:06:21,970 --> 00:06:26,180
+written anything there we want to make 
+sure we're saving that away. 
+
+80
+00:06:26,180 --> 00:06:30,802
+So it writes that back to disk that 
+optionally. 
+
+81
+00:06:30,802 --> 00:06:34,956
+and then gets the new page from the disk, 
+the one that we really want and brings 
+
+82
+00:06:34,956 --> 00:06:41,290
+that into that location, in physical 
+memory where the victim page was. 
+
+83
+00:06:41,290 --> 00:06:46,078
+It now has to update the page table 
+entries, to reflect these change in the 
+
+84
+00:06:46,078 --> 00:06:51,474
+physical memory, and then can re-execute 
+the instruction, have it generate a new 
+
+85
+00:06:51,474 --> 00:06:58,450
+virtual address, again. 
+that, actually the same virtual address 
+
+86
+00:06:58,450 --> 00:07:03,049
+but issue it again so that now, when we 
+go and read the page table entry, we'll 
+
+87
+00:07:03,049 --> 00:07:09,930
+find a valid a valid bit on and then can 
+execute that instruction. 
+
+88
+00:07:09,930 --> 00:07:15,255
+So we're executing quite a lot of stuff 
+here, we're doing a lot of operations to 
+
+89
+00:07:15,255 --> 00:07:19,960
+get this. 
+memory mapping to happen properly. 
+
+90
+00:07:19,960 --> 00:07:25,295
+the MMU accesses memory twice. 
+Once to get the [INAUDIBLE] the PTE for 
+
+91
+00:07:25,295 --> 00:07:28,110
+translation. 
+And then again for the actual memory 
+
+92
+00:07:28,110 --> 00:07:31,510
+request. 
+Okay, and we have to remember that since 
+
+93
+00:07:31,510 --> 00:07:38,030
+the page table entries are, are in fact 
+in memory they can be cached. 
+
+94
+00:07:38,030 --> 00:07:41,928
+just like any other memory word. 
+but might get evicted by other data 
+
+95
+00:07:41,928 --> 00:07:45,350
+references, just like any other memory 
+word. 
+
+96
+00:07:45,350 --> 00:07:50,615
+and this starts to potentially add up, 
+and since we're doing this for every 
+
+97
+00:07:50,615 --> 00:07:57,900
+memory address, so how can we make this 
+process go faster. 
+
+98
+00:07:57,900 --> 00:08:02,751
+So to do that, we're going to create 
+another construct called a Translation 
+
+99
+00:08:02,751 --> 00:08:08,079
+Lookaside Buffer or TLB. 
+This is another cache which we're 
+
+100
+00:08:08,079 --> 00:08:13,056
+going to use just for the MMU, this is a 
+special little tiny cache that the MMU is 
+
+101
+00:08:13,056 --> 00:08:19,110
+going to use to store away page table 
+entries. 
+
+102
+00:08:19,110 --> 00:08:22,480
+Basically, so keep them around in case it 
+needs them again. 
+
+103
+00:08:22,480 --> 00:08:27,170
+And remember, because of locality its 
+changes are we'll be accessing many bytes 
+
+104
+00:08:27,170 --> 00:08:32,264
+of memory in the same page. 
+Therefore we'll be re-using the same page 
+
+105
+00:08:32,264 --> 00:08:36,494
+table entry over and over again. 
+So the TLB is going to be a special 
+
+106
+00:08:36,494 --> 00:08:41,265
+mapping cache for virtual page numbers to 
+physical page numbers. 
+
+107
+00:08:41,265 --> 00:08:47,139
+and it's going to contain these page 
+table and treats typically a TLB is 128 
+
+108
+00:08:47,139 --> 00:08:53,739
+to 256 entries. 
+not all that much but things on the order 
+
+109
+00:08:53,739 --> 00:08:59,565
+of the working set size. 
+Okay, so how does this work now with the 
+
+110
+00:08:59,565 --> 00:09:02,904
+TLB in place? 
+and remember the TLB there is to 
+
+111
+00:09:02,904 --> 00:09:07,390
+eliminate memory access, to go get that 
+page table entry. 
+
+112
+00:09:07,390 --> 00:09:11,296
+So, now we generate our virtual address 
+but the MMU isn't going to go to memory 
+
+113
+00:09:11,296 --> 00:09:15,328
+to find the page table entry, it's first 
+going to check in it's little cache, the 
+
+114
+00:09:15,328 --> 00:09:20,208
+TLB. 
+And if it finds it there, great, it just 
+
+115
+00:09:20,208 --> 00:09:24,624
+gets it really quickly, ideally within a 
+single cycle rather than, the three or 
+
+116
+00:09:24,624 --> 00:09:29,200
+more cycles it might need to go to the 
+cache. 
+
+117
+00:09:31,620 --> 00:09:34,970
+since it has the page table entry now it 
+can do that translation right away and 
+
+118
+00:09:34,970 --> 00:09:39,723
+just go immedietaly to. 
+the physical address and try to get that 
+
+119
+00:09:39,723 --> 00:09:44,900
+out of the cache and memory system. 
+Okay so that looks a little faster. 
+
+120
+00:09:44,900 --> 00:09:47,855
+Looks a little bit better. 
+We're still doing a little bit of look up 
+
+121
+00:09:47,855 --> 00:09:51,540
+but this can be done now very quickly 
+since we have this tiny little cache that 
+
+122
+00:09:51,540 --> 00:09:56,003
+can help us out. 
+And we can make special hardware to make 
+
+123
+00:09:56,003 --> 00:10:01,800
+that fast. 
+Okay, now what happens on this? 
+
+124
+00:10:01,800 --> 00:10:05,048
+Let's say we got to the TLB for a 
+particular page table entry and its not 
+
+125
+00:10:05,048 --> 00:10:09,235
+there? 
+Well, now we have the same situation, we 
+
+126
+00:10:09,235 --> 00:10:13,196
+had before. 
+We have to go back out to the cache, read 
+
+127
+00:10:13,196 --> 00:10:17,941
+that page table entry at the right 
+address, bring that entry back to the 
+
+128
+00:10:17,941 --> 00:10:21,910
+MMU. 
+But at the same time we're going to load 
+
+129
+00:10:21,910 --> 00:10:27,122
+it into the TLB incase we need it again. 
+And of course that involves the TLB 
+
+130
+00:10:27,122 --> 00:10:31,974
+finding place, a place to put it. 
+Which might mean finding, a spot in it's 
+
+131
+00:10:31,974 --> 00:10:36,255
+little cache. 
+So that could be, potentially, replacing 
+
+132
+00:10:36,255 --> 00:10:41,242
+some other entry, which. 
+we might also need but now will be gone 
+
+133
+00:10:41,242 --> 00:10:44,730
+because we have to override it with this 
+one. 
+
+134
+00:10:46,830 --> 00:10:49,320
+Okay. 
+TLB misses tend to be pretty rare. 
+
+135
+00:10:49,320 --> 00:10:52,300
+So fortunately this doesn't happen that 
+often. 
+
+136
+00:10:52,300 --> 00:10:56,690
+but when it does it's just like any other 
+cache, is the way to think about it. 
+
+137
+00:10:56,690 --> 00:10:59,940
+We have to find room for the new element 
+to be the new block to be placed in the 
+
+138
+00:10:59,940 --> 00:11:02,950
+cache. 
+Okay. 
+
+139
+00:11:02,950 --> 00:11:07,846
+And then of course once we have that new 
+page table entry we can then generate the 
+
+140
+00:11:07,846 --> 00:11:17,802
+physical address we need to go to memory. 
+With the data coming back to the CPU. 
+

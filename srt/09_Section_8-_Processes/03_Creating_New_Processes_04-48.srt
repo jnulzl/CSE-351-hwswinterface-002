@@ -1,0 +1,328 @@
+1
+00:00:00,005 --> 00:00:05,229
+[MUSIC]. 
+
+2
+00:00:05,229 --> 00:00:09,351
+Now that we know what a process is, let's 
+see how we create processes. 
+
+3
+00:00:09,351 --> 00:00:11,540
+We're going to use a model called the 
+fork-exec model. 
+
+4
+00:00:11,540 --> 00:00:17,370
+So fork creates a copy of the current 
+process. 
+
+5
+00:00:17,370 --> 00:00:21,858
+And execve replaces the current process 
+code and address space with a code for a 
+
+6
+00:00:21,858 --> 00:00:27,026
+different program, okay? 
+So, fork creates a copy an entire copy of 
+
+7
+00:00:27,026 --> 00:00:32,354
+the current process and execve replaces 
+the codes and the data, and the address 
+
+8
+00:00:32,354 --> 00:00:39,760
+space of the process with the code for a 
+different program, okay? 
+
+9
+00:00:39,760 --> 00:00:43,669
+And these two servers are, we call system 
+calls, okay? 
+
+10
+00:00:43,669 --> 00:00:47,689
+System calls is part of the operating 
+system programming interface, okay? 
+
+11
+00:00:47,689 --> 00:00:51,166
+So note that we going to be doing what 
+Linux provides here, and Windows is 
+
+12
+00:00:51,166 --> 00:00:56,010
+slightly different, but the concepts are 
+essentially the same, okay? 
+
+13
+00:00:56,010 --> 00:00:58,520
+So, and there are other system calls to 
+do process management. 
+
+14
+00:00:58,520 --> 00:01:02,488
+For example, there's getpid, which 
+returns an ID of the current process, the 
+
+15
+00:01:02,488 --> 00:01:07,604
+process that's calling the system call. 
+This exit, which just kills and, and ends 
+
+16
+00:01:07,604 --> 00:01:11,029
+a process. 
+And there's wait and waitpid which is 
+
+17
+00:01:11,029 --> 00:01:15,460
+used to synchronize processes running, 
+okay? 
+
+18
+00:01:15,460 --> 00:01:18,170
+So, let's see what fork does in more 
+detail. 
+
+19
+00:01:18,170 --> 00:01:23,207
+So, it creates new processes and when you 
+call fork, fork takes no parameters and 
+
+20
+00:01:23,207 --> 00:01:27,913
+it returns this PID type. 
+Essentially, it's just the idea that the 
+
+21
+00:01:27,913 --> 00:01:30,992
+process was newly create that was newly 
+created, okay? 
+
+22
+00:01:30,992 --> 00:01:34,712
+So, when you call, when a person, say 
+that we have this example here, you can 
+
+23
+00:01:34,712 --> 00:01:38,100
+call fork. 
+And what fork does is it creates a new 
+
+24
+00:01:38,100 --> 00:01:44,230
+process that's identical to the calling 
+process, called the parent process. 
+
+25
+00:01:44,230 --> 00:01:48,850
+And we turned 0 to the child process. 
+And we turn, returns the child, the child 
+
+26
+00:01:48,850 --> 00:01:54,114
+process idea to the parent process, okay? 
+I know that this can get a little 
+
+27
+00:01:54,114 --> 00:02:00,129
+confusing because it kind of is. 
+and the reason is that fork is unique 
+
+28
+00:02:00,129 --> 00:02:04,760
+because he called once, but it returns 
+twice. 
+
+29
+00:02:04,760 --> 00:02:08,108
+Because when you call, when you're 
+calling, you have a processor in it, you 
+
+30
+00:02:08,108 --> 00:02:11,660
+called fork, okay? 
+Now, we're going to replicate the process 
+
+31
+00:02:11,660 --> 00:02:14,545
+and going to have two different processes 
+here. 
+
+32
+00:02:14,545 --> 00:02:19,604
+This is the parent and this is the child. 
+It is going to return the process ID to 
+
+33
+00:02:19,604 --> 00:02:24,804
+the parent and it's going to return 0 to 
+the child. 
+
+34
+00:02:24,804 --> 00:02:29,885
+So in this example here, we call fork 
+here then, and then we check. 
+
+35
+00:02:29,885 --> 00:02:34,547
+If the pid return is 0, that means that 
+this is going to be executing the child 
+
+36
+00:02:34,547 --> 00:02:40,507
+and if not 0, that's going to be executed 
+in the parents, okay? 
+
+37
+00:02:40,507 --> 00:02:42,788
+So, let me go to just one more level of 
+detail, okay? 
+
+38
+00:02:42,788 --> 00:02:46,244
+Suppose that we have a process n, and 
+we're executing the piece of code we just 
+
+39
+00:02:46,244 --> 00:02:51,611
+showed you, okay, when we call fork, it's 
+going to create a process called m, okay? 
+
+40
+00:02:51,611 --> 00:02:55,853
+And they run the same program, alright? 
+Because it's an entire replica byte for 
+
+41
+00:02:55,853 --> 00:02:59,593
+byte, and, and the entire state[UNKNOWN] 
+but now they are both running at the same 
+
+42
+00:02:59,593 --> 00:03:05,350
+time, okay? 
+So now process n continues executing. 
+
+43
+00:03:05,350 --> 00:03:09,781
+So, it's going to relieve pid, right? 
+The pid is going to recieve M which is 
+
+44
+00:03:09,781 --> 00:03:13,190
+the, the ID of, of the child process, 
+okay? 
+
+45
+00:03:13,190 --> 00:03:21,680
+And now the child process is running and 
+it's going to receive 0, okay? 
+
+46
+00:03:21,680 --> 00:03:26,828
+Great, so now since process n received m, 
+it's going to execute this side 
+
+47
+00:03:26,828 --> 00:03:31,483
+of[UNKNOWN] okay? 
+And this one's going to execute as well, 
+
+48
+00:03:31,483 --> 00:03:34,942
+so you're going to see hello from child, 
+okay? 
+
+49
+00:03:34,942 --> 00:03:40,300
+Pretty cool, isn't it? 
+So which one is first? 
+
+50
+00:03:40,300 --> 00:03:45,392
+Well, we definitely know that this fork 
+here executed before anything else, but 
+
+51
+00:03:45,392 --> 00:03:49,685
+which one is first? 
+Well, even, as soon as the child process 
+
+52
+00:03:49,685 --> 00:03:54,125
+is creating, it could be anything, it's 
+non-deterministic really, okay,? 
+
+53
+00:03:54,125 --> 00:03:57,942
+So, one could be executing. 
+But the only thing we know is that 
+
+54
+00:03:57,942 --> 00:04:05,730
+processing up to the point where the fork 
+is executed process and executed first. 
+
+55
+00:04:05,730 --> 00:04:11,060
+So so, the example things to remember 
+that the parent and child both run the 
+
+56
+00:04:11,060 --> 00:04:15,781
+same code, okay? 
+So, when we distinguish the child by the 
+
+57
+00:04:15,781 --> 00:04:20,411
+value returned from fork, okay? 
+So, which one runs after the fork, as I 
+
+58
+00:04:20,411 --> 00:04:24,380
+said before, is undefined, it's 
+non-deterministic, okay? 
+
+59
+00:04:24,380 --> 00:04:27,414
+It has to be one of them. 
+But you might run multiple times, you 
+
+60
+00:04:27,414 --> 00:04:31,165
+might see different things, okay? 
+So, the one thing to note here is that 
+
+61
+00:04:31,165 --> 00:04:34,545
+they both start the same state but after 
+the fork, they both have a private copy 
+
+62
+00:04:34,545 --> 00:04:38,346
+of the state, okay? 
+Same variables, same call stack, same 
+
+63
+00:04:38,346 --> 00:04:41,307
+files descriptors and so on. 
+But then, after the point, they can 
+
+64
+00:04:41,307 --> 00:04:44,572
+diverge the execution, right? 
+Because that is what's going to make this 
+
+65
+00:04:44,572 --> 00:04:46,670
+interesting. 
+And we are going to see how to use that 
+
+66
+00:04:46,670 --> 00:04:47,770
+in the next video. 
+

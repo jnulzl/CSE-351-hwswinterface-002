@@ -1,0 +1,553 @@
+1
+00:00:00,008 --> 00:00:05,821
+[MUSIC]. 
+
+2
+00:00:05,821 --> 00:00:09,405
+So far in this section, we've been 
+focusing on integer representations, and 
+
+3
+00:00:09,405 --> 00:00:12,903
+we've looked at both unsigned and signed 
+integers. 
+
+4
+00:00:12,903 --> 00:00:16,933
+Now, let's turn our attention to 
+fractional binary numbers, on our way to, 
+
+5
+00:00:16,933 --> 00:00:22,164
+to talk about floating point values. 
+So, let's start with a typical fractional 
+
+6
+00:00:22,164 --> 00:00:25,018
+binary number. 
+Here, we have one you'll notice that it's 
+
+7
+00:00:25,018 --> 00:00:28,130
+a little different than the number's 
+we've dealt with before. 
+
+8
+00:00:28,130 --> 00:00:32,325
+It has a binary point. 
+Very analogous to a decimal point. 
+
+9
+00:00:32,325 --> 00:00:37,011
+in this case just like in decimal 
+numbers, remember, we had the 1s column 
+
+10
+00:00:37,011 --> 00:00:41,468
+and the 2s column and the 4s column and 
+so on? 
+
+11
+00:00:41,468 --> 00:00:46,088
+Now, we have the halves column, the 
+quarters column, and the eighths column 
+
+12
+00:00:46,088 --> 00:00:50,148
+just as we would in a decimal value 
+number, we would have tenths and 
+
+13
+00:00:50,148 --> 00:00:56,605
+hundredths and thousandths. 
+So, this number is an 8 Plus a 2 plus a 
+
+14
+00:00:56,605 --> 00:01:00,544
+1. 
+Those are the, that's the integer side, 
+
+15
+00:01:00,544 --> 00:01:07,372
+the left side of the binary point. 
+So that's the number 11. 
+
+16
+00:01:07,372 --> 00:01:15,600
+And then, we have a half and an eighth. 
+Not a fourth, because that's a 0. 
+
+17
+00:01:15,600 --> 00:01:23,840
+So in this case, this number comes out to 
+be 11.625, in decimal, okay? 
+
+18
+00:01:23,840 --> 00:01:27,424
+And, we're in, in fact, going to 
+interpret fractional binary numbers the 
+
+19
+00:01:27,424 --> 00:01:30,835
+same way we do with fractional decimal 
+numbers. 
+
+20
+00:01:30,835 --> 00:01:32,722
+Okay? 
+We're going to do exactly the same 
+
+21
+00:01:32,722 --> 00:01:37,026
+things. 
+so here we see an, an extended version of 
+
+22
+00:01:37,026 --> 00:01:43,918
+the calculation that we just did. 
+again the, integer values and the 
+
+23
+00:01:43,918 --> 00:01:49,796
+fractional values. 
+for the numbers both to the left and to 
+
+24
+00:01:49,796 --> 00:01:55,120
+the right of the binary point. 
+Okay? 
+
+25
+00:01:55,120 --> 00:01:58,440
+And we can have a summation expression 
+that adds all that up. 
+
+26
+00:01:58,440 --> 00:02:04,299
+From minus j to i we can add all those 
+values as we just did in our little 
+
+27
+00:02:04,299 --> 00:02:09,536
+example. 
+Let's take a look, at, at a few more 
+
+28
+00:02:09,536 --> 00:02:12,560
+examples of these fractional binary 
+numbers. 
+
+29
+00:02:12,560 --> 00:02:16,310
+let's start with 5 and 3 4ths. 
+How would we represent that? 
+
+30
+00:02:16,310 --> 00:02:18,830
+Well, the 5 that's going to be to the 
+left of the binary point is going to be 
+
+31
+00:02:18,830 --> 00:02:22,280
+pretty easy. 
+That's just 1 0 1. 
+
+32
+00:02:22,280 --> 00:02:27,455
+then the 3 4ths on the right-hand side of 
+the binary point is equivalent to a half 
+
+33
+00:02:27,455 --> 00:02:32,495
+plus a fourth. 
+So those are going to be represented as 
+
+34
+00:02:32,495 --> 00:02:36,430
+one, one in the halves and quarters 
+column. 
+
+35
+00:02:36,430 --> 00:02:40,838
+So we'd expect that representation to 
+look like this, a 1 0 1 for the 5, a 
+
+36
+00:02:40,838 --> 00:02:47,010
+binary point, then one half plus 1 4th 
+for the 3 4ths. 
+
+37
+00:02:47,010 --> 00:02:50,460
+Okay, for 2 and 7 8ths, it's a very 
+similar thing. 
+
+38
+00:02:50,460 --> 00:02:55,475
+The 2 would be 1 0 on the left and the 7 
+8ths would now be a half plus a fourth 
+
+39
+00:02:55,475 --> 00:03:03,679
+plus an eighth or point 111 and that is 
+the representation of 2 and 7 8ths. 
+
+40
+00:03:03,679 --> 00:03:08,101
+For 63 64ths there is no integer part to 
+the number, so we have a 0 to the left of 
+
+41
+00:03:08,101 --> 00:03:12,931
+the binary point. 
+And then a half plus a fourth plus an 
+
+42
+00:03:12,931 --> 00:03:17,191
+eighth plus a sixteenth, all the way down 
+to get us to 63 64ths, and that's 
+
+43
+00:03:17,191 --> 00:03:25,425
+going to be the equivalent of six 1s. 
+so 0.111111. 
+
+44
+00:03:25,425 --> 00:03:29,407
+Now some observations. 
+remember that shifting that we were doing 
+
+45
+00:03:29,407 --> 00:03:33,102
+with binary numbers? 
+well, we can do it with fixed point 
+
+46
+00:03:33,102 --> 00:03:37,650
+representations as well of these 
+fractional binary numbers. 
+
+47
+00:03:37,650 --> 00:03:45,640
+If we divide by two, it's like moving 
+that binary point 1 over to the left. 
+
+48
+00:03:45,640 --> 00:03:49,572
+And multiplying by 2 is moving the binary 
+point 1 over to the right. 
+
+49
+00:03:49,572 --> 00:03:53,794
+Okay? 
+one other observation to note is that 
+
+50
+00:03:53,794 --> 00:03:59,038
+numbers that are of this form as with 
+these leading trail of 1s are just below 
+
+51
+00:03:59,038 --> 00:04:04,206
+the value 1.0, because if we had a little 
+bit more, then they would be just equal 
+
+52
+00:04:04,206 --> 00:04:10,260
+to 1. 
+So, if we added one half plus a fourth, 
+
+53
+00:04:10,260 --> 00:04:15,370
+plus an eighth, plus a sixteenth, and so 
+on infinitely far down we would approach 
+
+54
+00:04:15,370 --> 00:04:22,743
+1, but never quite get there. 
+So often, we'll see a notation like this 
+
+55
+00:04:22,743 --> 00:04:27,620
+to avoid writing the long, long string of 
+1s. 
+
+56
+00:04:27,620 --> 00:04:32,835
+We just say 1 minus epsilon, minus a 
+smidgen to to indicate that. 
+
+57
+00:04:32,835 --> 00:04:35,111
+Okay. 
+So what is some of the limitations of 
+
+58
+00:04:35,111 --> 00:04:38,500
+binary numbers and the representable 
+values. 
+
+59
+00:04:38,500 --> 00:04:43,162
+Remember we had limitations on integers, 
+we could only be so large and so negative 
+
+60
+00:04:43,162 --> 00:04:48,530
+before we ran out of room in our bit 
+representations. 
+
+61
+00:04:48,530 --> 00:04:52,818
+Okay, so we could only, first of all, 
+represent numbers exactly if they can be 
+
+62
+00:04:52,818 --> 00:04:58,020
+written in the form x times 2 to some 
+power of y. 
+
+63
+00:04:58,020 --> 00:05:03,780
+other rational numbers are going to have 
+repeating bit representations. 
+
+64
+00:05:03,780 --> 00:05:09,764
+So, for example remember, like 1 3rd in 
+decimal is 0.33333, but it never stops, 
+
+65
+00:05:09,764 --> 00:05:14,684
+it goes on forever. 
+Well, we have an equivalent situation 
+
+66
+00:05:14,684 --> 00:05:19,086
+with binary numbers. 
+So take a look at the representation for 
+
+67
+00:05:19,086 --> 00:05:23,960
+1 3rd in fact, 1 3rd is actually going to 
+be this bit pattern. 
+
+68
+00:05:23,960 --> 00:05:28,790
+And you'll notice that that 010101 is a 
+repeating pattern, and we'll use square 
+
+69
+00:05:28,790 --> 00:05:33,380
+brackets to represent that repeating 
+pattern. 
+
+70
+00:05:33,380 --> 00:05:39,305
+there's other values, numbers like that 
+in in binary 1 5th, also has a repeating 
+
+71
+00:05:39,305 --> 00:05:44,862
+bit pattern that repeats 0011 on forever, 
+and ever. 
+
+72
+00:05:44,862 --> 00:05:49,406
+And 1 10th, you notice is also has that 
+same repeating pattern as 1 5th did, 
+
+73
+00:05:49,406 --> 00:05:54,344
+because of course, 1 10th is just a half 
+of a fifth. 
+
+74
+00:05:54,344 --> 00:05:57,935
+It's just that same bit pattern shifted 
+over by 1. 
+
+75
+00:05:57,935 --> 00:06:03,106
+Okay, so it's going to start it's 
+going to repeat the same way. 
+
+76
+00:06:03,106 --> 00:06:08,006
+Alright, so, fixed point representation 
+is when we decided to represent factional 
+
+77
+00:06:08,006 --> 00:06:12,766
+binary by picking a place for the binary 
+point and fixing it there, always putting 
+
+78
+00:06:12,766 --> 00:06:18,910
+it in that location. 
+So, we have to decide where to put it. 
+
+79
+00:06:18,910 --> 00:06:21,770
+Well, if we're looking at an 8-bit fixed 
+point numbers, again, just to keep the 
+
+80
+00:06:21,770 --> 00:06:25,510
+example small. 
+we can decide to put the, the binary 
+
+81
+00:06:25,510 --> 00:06:30,235
+point, for example, so that it has three 
+bits to the right and five bits to the 
+
+82
+00:06:30,235 --> 00:06:33,720
+left. 
+Well, what does that imply? 
+
+83
+00:06:33,720 --> 00:06:39,672
+That implies that we can represent up to 
+the number 31 on the left, so we can get 
+
+84
+00:06:39,672 --> 00:06:45,858
+as high as 31.111. 
+So that would be 31 and 7 8ths would be 
+
+85
+00:06:45,858 --> 00:06:53,782
+the largest number we could represent. 
+Of course, we could have chosen to put 
+
+86
+00:06:53,782 --> 00:06:58,442
+the binary point elsewhere. 
+Fixed it at a different place with only 
+
+87
+00:06:58,442 --> 00:07:02,490
+three bits over on the left and five bits 
+to the right. 
+
+88
+00:07:02,490 --> 00:07:07,230
+well now, this only let's us go up to 
+seven point something. 
+
+89
+00:07:07,230 --> 00:07:13,110
+seven and what well, there's five bits 
+here, so we can represent up to 3130 
+
+90
+00:07:13,110 --> 00:07:19,237
+seconds. 
+And so, the largest number we can have 
+
+91
+00:07:19,237 --> 00:07:28,670
+here is 7 and 31 37th, 30 seconds. 
+While here, we had the numbers up to 31 
+
+92
+00:07:28,670 --> 00:07:31,370
+and 7 8ths. 
+Okay? 
+
+93
+00:07:31,370 --> 00:07:34,833
+So, what is the difference between these? 
+How would we choose what to use? 
+
+94
+00:07:34,833 --> 00:07:38,491
+Well one question we have to ask 
+ourselves is how large number do we need 
+
+95
+00:07:38,491 --> 00:07:42,756
+to be able to represent. 
+and the other is how much precision do we 
+
+96
+00:07:42,756 --> 00:07:46,720
+want the numbers to have. 
+In other words, what is the smallest 
+
+97
+00:07:46,720 --> 00:07:50,649
+fraction null difference that we can 
+represent. 
+
+98
+00:07:50,649 --> 00:07:53,469
+Okay. 
+So, the range is that range of numbers, 
+
+99
+00:07:53,469 --> 00:07:57,623
+the precision is how small of a fraction 
+and with fixed point representations we 
+
+100
+00:07:57,623 --> 00:08:01,814
+have this trade off. 
+The more range we have, the less 
+
+101
+00:08:01,814 --> 00:08:05,708
+precision we have, the less bits we have 
+on the other side of the binary point and 
+
+102
+00:08:05,708 --> 00:08:10,860
+vice versa if we have less range, then we 
+get more precision. 
+
+103
+00:08:12,920 --> 00:08:17,405
+So, that's the reason that we don't end 
+up using fixed point representations, 
+
+104
+00:08:17,405 --> 00:08:22,097
+because of these very strong cons against 
+it, it's really hard to pick a good place 
+
+105
+00:08:22,097 --> 00:08:26,750
+for the fixed point to be. 
+All right. 
+
+106
+00:08:26,750 --> 00:08:30,420
+Sometimes you end up wanting range. 
+Sometimes you end up needing more 
+
+107
+00:08:30,420 --> 00:08:32,620
+precision. 
+And the more you have of one, the less 
+
+108
+00:08:32,620 --> 00:08:36,070
+you have of the other. 
+You can't get the best of both. 
+
+109
+00:08:36,070 --> 00:08:39,850
+so that's why we're going to turn our 
+attention to what are called floating 
+
+110
+00:08:39,850 --> 00:08:43,690
+point notations, where we don't fix the 
+binary point, but allow it to float as 
+
+111
+00:08:43,690 --> 00:08:46,000
+needed. 
+

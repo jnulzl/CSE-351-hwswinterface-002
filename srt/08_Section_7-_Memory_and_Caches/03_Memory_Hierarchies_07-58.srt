@@ -1,0 +1,559 @@
+1
+00:00:00,194 --> 00:00:04,037
+[MUSIC] 
+
+2
+00:00:04,037 --> 00:00:07,218
+. 
+Okay, now that we know how the basics of 
+
+3
+00:00:07,218 --> 00:00:11,471
+caches work and what makes them work, 
+which is locality. 
+
+4
+00:00:11,471 --> 00:00:14,439
+Let's look how we put a bunch of caches 
+together to form what we call a 
+
+5
+00:00:14,439 --> 00:00:17,543
+hierarchy. 
+But before we get there, let's just stop 
+
+6
+00:00:17,543 --> 00:00:20,875
+to think to little bit about the costs of 
+cache misses. 
+
+7
+00:00:20,875 --> 00:00:27,570
+The difference in, in, in time costs of a 
+hit and a miss is huge, it could be 100x. 
+
+8
+00:00:27,570 --> 00:00:32,406
+That means that a hit can be 100 times 
+faster than a miss and just, just, just 
+
+9
+00:00:32,406 --> 00:00:37,320
+to make you see this in numbers would you 
+believe if I told you that a 99% hit is 
+
+10
+00:00:37,320 --> 00:00:43,990
+twice as good as a 97% hit in terms of 
+time. 
+
+11
+00:00:43,990 --> 00:00:46,678
+And in this, in this example here let me 
+show you say, say that a cache hit costs 
+
+12
+00:00:46,678 --> 00:00:50,279
+1 cycle. 
+And the penalty of taking a cache miss is 
+
+13
+00:00:50,279 --> 00:00:52,850
+a hundred cycles. 
+Okay? 
+
+14
+00:00:52,850 --> 00:00:57,610
+It means that the average access time for 
+nin-for ninety-seven percent hit rate is, 
+
+15
+00:00:57,610 --> 00:01:01,292
+one cycle. 
+Which you always take the hi-you always 
+
+16
+00:01:01,292 --> 00:01:04,577
+take the hit time. 
+Plus, three percent of the time, you're 
+
+17
+00:01:04,577 --> 00:01:07,749
+going to pay a hundred cycles which is 
+your penalty that leads to a four cycle 
+
+18
+00:01:07,749 --> 00:01:11,969
+average cost. 
+When I, if you look at this number for 
+
+19
+00:01:11,969 --> 00:01:16,867
+99% it'll be one cycle for just a hit 
+times into where it's there or not, plus 
+
+20
+00:01:16,867 --> 00:01:22,816
+1% of the time you're going to take 100 
+cycles. 
+
+21
+00:01:22,816 --> 00:01:27,172
+So that means that the average cycle is 
+two, there's a two access, difference in 
+
+22
+00:01:27,172 --> 00:01:31,462
+that average access time when you go from 
+97 percentage rates to 99 percent hit 
+
+23
+00:01:31,462 --> 00:01:37,014
+rate. 
+That's why we often use miss rate more 
+
+24
+00:01:37,014 --> 00:01:44,447
+often than we use hit rate, okay? 
+So now let's just look at the, the basic 
+
+25
+00:01:44,447 --> 00:01:51,510
+concepts of, of metric, of a cache 
+performance metrics, okay? 
+
+26
+00:01:51,510 --> 00:01:54,000
+The first ones called the miss rate, 
+okay? 
+
+27
+00:01:54,000 --> 00:01:57,224
+And the miss rate is the fraction of 
+memory references That are not found in 
+
+28
+00:01:57,224 --> 00:02:01,720
+the cache. 
+'Kay, that's one minus the hit rate. 
+
+29
+00:02:01,720 --> 00:02:05,590
+'Kay, so the hit rate is a percentage of 
+accesses that hit in the cache. 
+
+30
+00:02:05,590 --> 00:02:08,560
+So one minus the hit rate, so we call the 
+miss rate which is a fraction of accesses 
+
+31
+00:02:08,560 --> 00:02:12,265
+that do not hit in the cache. 
+'Kay, and, and the typical numbers that 
+
+32
+00:02:12,265 --> 00:02:15,132
+we see for the first level of cache is 
+which is the level of cache closest to 
+
+33
+00:02:15,132 --> 00:02:18,854
+the processor. 
+We'll see what that means in more detail 
+
+34
+00:02:18,854 --> 00:02:21,723
+in a second. 
+But for our one, the one that's closest 
+
+35
+00:02:21,723 --> 00:02:25,784
+to the processor. 
+The typical number is between 3 and 10%, 
+
+36
+00:02:25,784 --> 00:02:29,341
+okay? 
+Now, the hits time is the time it takes 
+
+37
+00:02:29,341 --> 00:02:34,141
+to deliver a cache line that's in the 
+cache to the processor so that it can 
+
+38
+00:02:34,141 --> 00:02:39,330
+consume the data. 
+Okay. 
+
+39
+00:02:39,330 --> 00:02:41,766
+And that also includes the time to 
+determine whether the line is in the 
+
+40
+00:02:41,766 --> 00:02:45,013
+cache or not... 
+That's why in the previous example we 
+
+41
+00:02:45,013 --> 00:02:50,300
+included the hit time even when computing 
+the overall miss penalty, okay. 
+
+42
+00:02:50,300 --> 00:02:55,356
+So now the typical hit time for one is 
+between one and two processor cycles, it 
+
+43
+00:02:55,356 --> 00:03:00,800
+means that the L1 cache is very, very 
+fast, okay. 
+
+44
+00:03:00,800 --> 00:03:05,481
+Now the miss penalty is a time. 
+You, you pay when you do have a cache 
+
+45
+00:03:05,481 --> 00:03:10,565
+maze and you have to go to the lower 
+levels of memory to bring the data, okay, 
+
+46
+00:03:10,565 --> 00:03:16,480
+and that varies between 50 and 200 
+cycles. 
+
+47
+00:03:16,480 --> 00:03:18,594
+Okay. 
+So that's why I said before there was 
+
+48
+00:03:18,594 --> 00:03:22,860
+about 2, 100x difference between a hit 
+and a miss, well... 
+
+49
+00:03:22,860 --> 00:03:25,350
+Here's an example. 
+Okay? 
+
+50
+00:03:25,350 --> 00:03:28,410
+So there's something that we call a 
+memory hierarchy, which is putting a 
+
+51
+00:03:28,410 --> 00:03:32,980
+bunch of types of memory together, a 
+bunch of levels of memory together. 
+
+52
+00:03:32,980 --> 00:03:37,075
+And and the reason this, that this is 
+good is that almost always when you have 
+
+53
+00:03:37,075 --> 00:03:41,365
+some faster and, and smaller memories 
+typically mean faster, but they are also 
+
+54
+00:03:41,365 --> 00:03:46,936
+more expensive. 
+Okay, so it means, that suggests why not 
+
+55
+00:03:46,936 --> 00:03:51,772
+put a little bit of fast, expensive 
+memory closer to eh processor backed up 
+
+56
+00:03:51,772 --> 00:03:56,920
+by little bigger memory that's cheaper 
+and a little lower, and compose that all 
+
+57
+00:03:56,920 --> 00:04:03,430
+the way down to the disc, even. 
+Okay. 
+
+58
+00:04:03,430 --> 00:04:07,456
+So and this is, this is profitable, this 
+is good, because there are gaps between 
+
+59
+00:04:07,456 --> 00:04:11,930
+memory technologies, and these gaps are 
+widening, okay. 
+
+60
+00:04:11,930 --> 00:04:15,962
+That's so, if you look at the performance 
+of registers versus caches that's 
+
+61
+00:04:15,962 --> 00:04:19,866
+widening, okay, as, as, with new 
+processor generations, and so is the gap 
+
+62
+00:04:19,866 --> 00:04:24,930
+between cache performance and DRAM 
+performance... 
+
+63
+00:04:24,930 --> 00:04:27,225
+And then also between DRAM and disk, and 
+so on. 
+
+64
+00:04:27,225 --> 00:04:29,607
+'Kay. 
+And if well-written programs exhibit 
+
+65
+00:04:29,607 --> 00:04:33,831
+locality, that suggests that you can 
+actually build progressively larger and 
+
+66
+00:04:33,831 --> 00:04:38,510
+slower memory hierarchies and still give 
+the illusion. 
+
+67
+00:04:38,510 --> 00:04:41,300
+From the processor point of view, that 
+the memory is most of the time pretty 
+
+68
+00:04:41,300 --> 00:04:45,720
+fast. 
+'Kay, so this property is really. 
+
+69
+00:04:45,720 --> 00:04:48,894
+Complement each other beautifully to form 
+a large pool of memory that behaves as if 
+
+70
+00:04:48,894 --> 00:04:53,592
+it were very, very fast. 
+Even though it's composed in, in, in, to 
+
+71
+00:04:53,592 --> 00:04:58,300
+a large extent by slow large memory. 
+'Kay? 
+
+72
+00:04:58,300 --> 00:05:01,320
+So they really suggest organizing them in 
+the form of a hierarchy. 
+
+73
+00:05:01,320 --> 00:05:03,110
+'Kay? 
+By that I mean that we have one memory 
+
+74
+00:05:03,110 --> 00:05:06,335
+backed by another memory, backed by 
+another memory. 
+
+75
+00:05:06,335 --> 00:05:10,677
+And so on okay. 
+So here's another way of looking at the 
+
+76
+00:05:10,677 --> 00:05:15,957
+fundamental idea of hierarchy, is that 
+for each level K of the hierarchy serves 
+
+77
+00:05:15,957 --> 00:05:21,077
+as a cache for the level below, and the 
+level below is typically larger, lower 
+
+78
+00:05:21,077 --> 00:05:29,200
+and cheaper as well. 
+Well, why do they work? 
+
+79
+00:05:29,200 --> 00:05:33,226
+Because what i just said before and 
+because of locality, programs tend to 
+
+80
+00:05:33,226 --> 00:05:38,901
+access data that's at level K much more 
+often than level K plus 1, okay. 
+
+81
+00:05:40,620 --> 00:05:44,402
+Therefore the storage at level K plus 1 
+can be lower, therefore larger, and 
+
+82
+00:05:44,402 --> 00:05:49,372
+cheaper, and also cheaper per bit... 
+So again, repeating myself the big idea 
+
+83
+00:05:49,372 --> 00:05:53,068
+within hierarchy is to reach a large pool 
+of storage that costs much as the cheap 
+
+84
+00:05:53,068 --> 00:05:56,877
+storage. 
+Your at the bottom, okay, but serves it 
+
+85
+00:05:56,877 --> 00:06:01,660
+data to the program mostly by the upper 
+levels, which is faster. 
+
+86
+00:06:01,660 --> 00:06:04,747
+Okay, so you can create the illusion of a 
+large pool of memory that is fast and 
+
+87
+00:06:04,747 --> 00:06:08,180
+cheap. 
+Okay, so let me give you an example to 
+
+88
+00:06:08,180 --> 00:06:11,975
+the memory hierarchy. 
+At the top of the hierarchy our 
+
+89
+00:06:11,975 --> 00:06:16,555
+registers, which we saw before. 
+They're different than caches because 
+
+90
+00:06:16,555 --> 00:06:20,975
+software has to use them explciity, 
+whereas memory caches typically are used 
+
+91
+00:06:20,975 --> 00:06:26,775
+for, all caches that you care to know 
+about work automatically... 
+
+92
+00:06:26,775 --> 00:06:30,620
+Okay, so, and then, so this is the 
+registers at the top. 
+
+93
+00:06:30,620 --> 00:06:34,076
+The, the CPU is right here, 'kay? 
+Then you have registers inside the, 
+
+94
+00:06:34,076 --> 00:06:37,192
+inside the CPU, okay? 
+And then right very close to the 
+
+95
+00:06:37,192 --> 00:06:40,181
+processor, we have L, what we call DL1 
+cache. 
+
+96
+00:06:41,340 --> 00:06:47,920
+That's backed by a L2 cache. 
+Some cases on chips, some cases off-chip. 
+
+97
+00:06:47,920 --> 00:06:52,629
+Let me write on or off chip, okay? 
+That's all, that's backed up by main 
+
+98
+00:06:52,629 --> 00:06:56,138
+memory made of DRAM. 
+That's backed up by disks in case you 
+
+99
+00:06:56,138 --> 00:07:00,390
+have virtual memory, which we're going to 
+see later in this, in this course. 
+
+100
+00:07:00,390 --> 00:07:03,012
+And you can even imagine this being 
+backed up by caches that are in the 
+
+101
+00:07:03,012 --> 00:07:05,956
+network. 
+That, you know, go beyond your machine, 
+
+102
+00:07:05,956 --> 00:07:08,618
+'kay? 
+And in fact, chances are that you guys 
+
+103
+00:07:08,618 --> 00:07:14,600
+also have, you know, file caches and you 
+have caches web servers and so on, 'kay? 
+
+104
+00:07:14,600 --> 00:07:18,164
+Great, so now one more example. 
+Let's look at the cache hierarchy of the 
+
+105
+00:07:18,164 --> 00:07:21,780
+Intel Core i7, which I'm sure many of 
+your have. 
+
+106
+00:07:21,780 --> 00:07:26,843
+Okay, so the Core i7 has for each core 
+inside is multicore processor has of 
+
+107
+00:07:26,843 --> 00:07:34,300
+course has registers, but it has an L1 
+cache for data and an L1 cache. 
+
+108
+00:07:34,300 --> 00:07:39,450
+For instructions, and it has a unified 
+one cache per core, okay. 
+
+109
+00:07:39,450 --> 00:07:47,440
+And then there is a unified L3 cache 
+shared by all cores in the system. 
+
+110
+00:07:47,440 --> 00:07:51,860
+So now just inside one, just inside the 
+chip itself... 
+
+111
+00:07:51,860 --> 00:07:55,397
+It has multiples cores. 
+There's already three levels of cache; 
+
+112
+00:07:55,397 --> 00:07:57,996
+L1, L2, and L3. 
+See you soon. 
+

@@ -1,0 +1,403 @@
+1
+00:00:00,000 --> 00:00:05,592
+[MUSIC]. 
+
+2
+00:00:05,592 --> 00:00:08,383
+We've seen multi-dimensional and 
+multi-level arrays. 
+
+3
+00:00:08,383 --> 00:00:13,489
+now let's take a look at how we represent 
+some other structures besides just plain 
+
+4
+00:00:13,489 --> 00:00:19,091
+integers or pointers, in memory. 
+In C, we have the concept of a struct. 
+
+5
+00:00:19,091 --> 00:00:24,411
+a struct is a definition of a composite 
+data type that has sub-elements that are, 
+
+6
+00:00:24,411 --> 00:00:31,634
+are in turn other data types themselves. 
+In this case, we have a small struct here 
+
+7
+00:00:31,634 --> 00:00:36,010
+with three elements inside of it. 
+One is an integer. 
+
+8
+00:00:36,010 --> 00:00:40,180
+One is an array of integers, in this case 
+a three element array. 
+
+9
+00:00:40,180 --> 00:00:46,787
+And the other is a pointer to an integer. 
+So those are three parts to that struct. 
+
+10
+00:00:46,787 --> 00:00:51,617
+In memory, is going to be laid out as a 
+continuous set of bytes for each of those 
+
+11
+00:00:51,617 --> 00:00:55,421
+parts. 
+The first four bytes will of course be 
+
+12
+00:00:55,421 --> 00:00:59,029
+the integer i. 
+the next 12 bytes will be the three 
+
+13
+00:00:59,029 --> 00:01:03,723
+integers of the array a, contiuously 
+allocated. 
+
+14
+00:01:03,723 --> 00:01:08,779
+And then finally, the last 4 bytes will 
+be a pointer to an integer in a 32 bit 
+
+15
+00:01:08,779 --> 00:01:13,340
+architecture. 
+So, total for this struct is a 20 bite 
+
+16
+00:01:13,340 --> 00:01:17,480
+chunk of memory, continuously allocated 
+and we can refer to the members of this 
+
+17
+00:01:17,480 --> 00:01:23,146
+structure, by the names we've given them. 
+but the members can be of different 
+
+18
+00:01:23,146 --> 00:01:27,612
+types, they don't have to be the same. 
+in this case these are either integers or 
+
+19
+00:01:27,612 --> 00:01:31,385
+pointers intergers, but those are very 
+different data types. 
+
+20
+00:01:31,385 --> 00:01:35,458
+OK. 
+So how do we access, a structure member? 
+
+21
+00:01:35,458 --> 00:01:41,833
+well, given, an instance of a struct, we 
+can use the dot operator, just like in 
+
+22
+00:01:41,833 --> 00:01:46,303
+Java. 
+So for example, if we declare one of 
+
+23
+00:01:46,303 --> 00:01:51,194
+these str, rec structs that we just 
+defined, declared here, we can give it 
+
+24
+00:01:51,194 --> 00:01:56,382
+the name r1. 
+Then we can refer to that first integer 
+
+25
+00:01:56,382 --> 00:02:01,854
+in r1 by writing r1 dot i, and that 
+refers to just that first Integer, that 
+
+26
+00:02:01,854 --> 00:02:09,440
+is part of that larger struct, that has a 
+couple of other things in it. 
+
+27
+00:02:11,670 --> 00:02:16,320
+OK, if we have a pointer to a struct, 
+rather than the struct itself, in other 
+
+28
+00:02:16,320 --> 00:02:21,645
+words, we've declared not the struct r1, 
+as we did in this case, but in pointer r 
+
+29
+00:02:21,645 --> 00:02:28,285
+to a struct of type rec. 
+in other words, we, that would be 
+
+30
+00:02:28,285 --> 00:02:33,251
+something like the address of the r1 
+struct we declared previously. 
+
+31
+00:02:33,251 --> 00:02:38,555
+we're now using, we're going to be using 
+the star and dot operators, because we 
+
+32
+00:02:38,555 --> 00:02:43,707
+first need to de-reference the struct 
+pointer. 
+
+33
+00:02:43,707 --> 00:02:49,083
+get to the starting location of that of 
+that struct in memory, and then 
+
+34
+00:02:49,083 --> 00:02:55,912
+offsetting that by the position of the 
+member within the struct. 
+
+35
+00:02:55,912 --> 00:02:59,883
+OK? 
+So this happens so often in C that we 
+
+36
+00:02:59,883 --> 00:03:10,110
+actually give it a shorthand. 
+we give it the shorthand r right arrow i. 
+
+37
+00:03:10,110 --> 00:03:13,040
+and the arrow is drawn as a - followed by 
+a > sign. 
+
+38
+00:03:13,040 --> 00:03:19,748
+and that's just a shorthand for doing 
+that de-reference first, that's what the 
+
+39
+00:03:19,748 --> 00:03:24,732
+parentheses indicate, and then the dot. 
+OK? 
+
+40
+00:03:24,732 --> 00:03:27,657
+So you'll often see this kind of 
+construct in C because we have pointers 
+
+41
+00:03:27,657 --> 00:03:30,810
+to structs rather than the structs 
+themselves. 
+
+42
+00:03:30,810 --> 00:03:38,426
+So, here you see a simple function that 
+is used to set the value of that first 
+
+43
+00:03:38,426 --> 00:03:46,104
+element of this type of struct. 
+So it takes a pointer to that struct as 
+
+44
+00:03:46,104 --> 00:03:50,120
+an argument, and a value to put in that 
+first member. 
+
+45
+00:03:50,120 --> 00:03:54,540
+And it says, well, I have that pointer, 
+let's de-reference it, and offset to i, 
+
+46
+00:03:54,540 --> 00:04:00,960
+that first member of the struct, and then 
+give it the value of val. 
+
+47
+00:04:00,960 --> 00:04:08,148
+The way that ends up looking in assembly 
+code, is very straight forward actually. 
+
+48
+00:04:08,148 --> 00:04:13,575
+Because we have the value val in eax, and 
+we're going to have the pointer to the 
+
+49
+00:04:13,575 --> 00:04:19,083
+element in edx, and we're just going to 
+say move that value val to edx at that 
+
+50
+00:04:19,083 --> 00:04:25,101
+address. 
+So the parentheses, again, are the 
+
+51
+00:04:25,101 --> 00:04:28,996
+de-reference operator. 
+In this case, we don't have an offset, 
+
+52
+00:04:28,996 --> 00:04:33,100
+because that was the, i is the very first 
+element of the struct. 
+
+53
+00:04:33,100 --> 00:04:38,070
+So it's at that starting address. 
+If if we had to provide an offset, there 
+
+54
+00:04:38,070 --> 00:04:45,388
+would have been an additional offset 
+here, in front of the parentheses. 
+
+55
+00:04:45,388 --> 00:04:48,541
+OK. 
+So let's take a look at a slightly more 
+
+56
+00:04:48,541 --> 00:04:52,995
+complex case. 
+generating a pointer to one of those 
+
+57
+00:04:52,995 --> 00:04:56,880
+elements of that array inside of the 
+struct. 
+
+58
+00:04:56,880 --> 00:05:01,905
+so in this case what we would like to do 
+is find the particular element that we're 
+
+59
+00:05:01,905 --> 00:05:08,158
+interested in, by providing an index. 
+So we're going to provide a pointer to 
+
+60
+00:05:08,158 --> 00:05:11,750
+the struct, and then an index into the 
+array. 
+
+61
+00:05:11,750 --> 00:05:19,220
+And in this case, what we want to return 
+is a pointer to that integer element. 
+
+62
+00:05:19,220 --> 00:05:22,568
+OK? 
+So to return the pointer what we will do 
+
+63
+00:05:22,568 --> 00:05:28,828
+is first do that r Arrow a. 
+that gets us to the starting address of 
+
+64
+00:05:28,828 --> 00:05:33,160
+the array within memory within that 
+struct. 
+
+65
+00:05:33,160 --> 00:05:38,080
+And then, index that array with the 
+appropriate offset, and then the 
+
+66
+00:05:38,080 --> 00:05:43,410
+ampersand says well I don't want the 
+value there, I want the address of that 
+
+67
+00:05:43,410 --> 00:05:48,920
+value, and return that. 
+Mm-kay. 
+
+68
+00:05:48,920 --> 00:05:54,060
+How we see that in assembly code, is just 
+two simple instructions. 
+
+69
+00:05:54,060 --> 00:06:00,070
+the very first instruction computes the 
+offset into the struct. 
+
+70
+00:06:00,070 --> 00:06:05,229
+So in this case, the offset is is four 
+times the index to get to the right 
+
+71
+00:06:05,229 --> 00:06:12,640
+position within the array. 
+you'll then notice we'll take that value, 
+
+72
+00:06:12,640 --> 00:06:18,080
+which we store in eax, here and add 
+another 4 offset to it, because that 
+
+73
+00:06:18,080 --> 00:06:23,890
+array starts at four bytes into the 
+struct. 
+
+74
+00:06:23,890 --> 00:06:28,410
+then, of course, eax has the offset 
+within the array. 
+
+75
+00:06:28,410 --> 00:06:34,510
+And the edx is the starting address of 
+the struct, that first parameter. 
+
+76
+00:06:34,510 --> 00:06:39,408
+We add all of those together, so we start 
+from r, add on the 4 to get to the a 
+
+77
+00:06:39,408 --> 00:06:45,930
+portion of the struct, the array portion 
+of the struct. 
+
+78
+00:06:45,930 --> 00:06:50,352
+And then we add on the, 4 times the index 
+to get to the right element inside the 
+
+79
+00:06:50,352 --> 00:06:55,926
+array. 
+And since we're returning just the 
+
+80
+00:06:55,926 --> 00:07:00,278
+address, we can stop there after we've 
+computed the address, we don't need to 
+
+81
+00:07:00,278 --> 00:07:04,216
+actually do a memory reference. 
+

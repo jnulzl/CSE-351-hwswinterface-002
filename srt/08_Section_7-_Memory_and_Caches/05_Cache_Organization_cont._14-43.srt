@@ -1,0 +1,1004 @@
+1
+00:00:00,001 --> 00:00:05,778
+[MUSIC]. 
+
+2
+00:00:05,778 --> 00:00:10,133
+Okay, now we're going to see part two of 
+cache organization. 
+
+3
+00:00:10,133 --> 00:00:15,703
+Part two let's start with a general 
+organization, okay? 
+
+4
+00:00:15,703 --> 00:00:20,851
+So as I've said before, the cache has a 
+certain number of sets, that's where data 
+
+5
+00:00:20,851 --> 00:00:25,083
+can go. 
+And each set has a cert, certain number 
+
+6
+00:00:25,083 --> 00:00:29,500
+of lines or blocks. 
+By the way, line or blocks, cache block 
+
+7
+00:00:29,500 --> 00:00:34,045
+or cache line mean the same thing, okay, 
+I might use them interchangeably. 
+
+8
+00:00:34,045 --> 00:00:41,970
+so a set has a number of, lines, which is 
+the same thing as the way. 
+
+9
+00:00:41,970 --> 00:00:45,506
+If I say a cache has a four way 
+associative that means that we're 
+
+10
+00:00:45,506 --> 00:00:50,480
+going to have one, two, three, four lines 
+in a set, okay? 
+
+11
+00:00:50,480 --> 00:00:53,689
+So when a cache has two, two to the S 
+sets and two to the E lines, okay? 
+
+12
+00:00:53,689 --> 00:00:56,854
+So now in each, each line in the cache 
+has a bit of metadata right. 
+
+13
+00:00:56,854 --> 00:01:03,140
+So now in each, each line in the cache 
+has a bit of metadata right. 
+
+14
+00:01:03,140 --> 00:01:07,352
+The first one is the tag that we saw in 
+the previous video. 
+
+15
+00:01:07,352 --> 00:01:11,447
+Right, the tag in codes towards the rest 
+of the address, that cannot be figured 
+
+16
+00:01:11,447 --> 00:01:15,479
+out just with the set alone, okay, so we 
+know what data was stored in that block 
+
+17
+00:01:15,479 --> 00:01:20,080
+of the cache. 
+There's also valid bit here. 
+
+18
+00:01:20,080 --> 00:01:25,660
+The valid bit is used to determined 
+whether the data stored here, stored in 
+
+19
+00:01:25,660 --> 00:01:31,164
+the data is valid or not. 
+For example, when the cache starts up it 
+
+20
+00:01:31,164 --> 00:01:35,070
+starts up empty... 
+So if there's some random addresses 
+
+21
+00:01:35,070 --> 00:01:39,492
+there, we don't to that to get confused 
+with real, with valid data, so this valid 
+
+22
+00:01:39,492 --> 00:01:43,954
+bit is all set to 0. 
+The valid bit is also used in the context 
+
+23
+00:01:43,954 --> 00:01:46,834
+of multicores, when we might have to 
+validate data, when there's remote 
+
+24
+00:01:46,834 --> 00:01:49,807
+updates. 
+But this is subject to a more advanced 
+
+25
+00:01:49,807 --> 00:01:52,992
+computer architecture class, but the 
+valid bits is also used in the context of 
+
+26
+00:01:52,992 --> 00:01:57,230
+multi processor. 
+Finally so the, there's two to the B 
+
+27
+00:01:57,230 --> 00:02:03,057
+bytes in a, in a cache line, okay. 
+So the reason we are using powers of two 
+
+28
+00:02:03,057 --> 00:02:07,407
+here such that, it will be easy to 
+figured out how many bits we are going to 
+
+29
+00:02:07,407 --> 00:02:14,726
+to need for, for the address, okay. 
+and cache line cache block here in our 
+
+30
+00:02:14,726 --> 00:02:20,750
+example is has as many bytes as the value 
+of this B variable here. 
+
+31
+00:02:20,750 --> 00:02:24,694
+So that means that the cache size is S, 
+which is the total number of sets 
+
+32
+00:02:24,694 --> 00:02:29,046
+multiplied by the number of ways or the 
+number of lines per set, multiplied by 
+
+33
+00:02:29,046 --> 00:02:37,030
+the size of the block, capital B. 
+Let's see how a cache read works now. 
+
+34
+00:02:37,030 --> 00:02:41,452
+There's multiple steps in a cache read. 
+When the processor sends an address to 
+
+35
+00:02:41,452 --> 00:02:45,295
+the cache to be looked up, the first 
+thing the cache has to do is locate the 
+
+36
+00:02:45,295 --> 00:02:51,401
+set where the, the data goes, okay? 
+So remember that we saw in the previous 
+
+37
+00:02:51,401 --> 00:02:55,797
+example determining where the data goes. 
+We found there's some, we saw that 
+
+38
+00:02:55,797 --> 00:02:59,080
+there's some bits of the address that are 
+used to determine in which sets the data 
+
+39
+00:02:59,080 --> 00:03:02,274
+goes, okay. 
+And those bits are here in the middle, 
+
+40
+00:03:02,274 --> 00:03:05,358
+right? 
+So we're going to have S bits, because if 
+
+41
+00:03:05,358 --> 00:03:09,804
+I have two to the S, little s sets, I'm 
+going to use little s bits as the set 
+
+42
+00:03:09,804 --> 00:03:15,096
+index, okay. 
+So I'm going to use that part of the 
+
+43
+00:03:15,096 --> 00:03:21,552
+address, as an index to the cache. 
+In[INAUDIBLE] this is zero, one, two, 
+
+44
+00:03:21,552 --> 00:03:26,898
+until you know s minus 1, and we use that 
+value to determine which set here, we're 
+
+45
+00:03:26,898 --> 00:03:32,736
+going to deduce, okay? 
+And once we do that, what we're going to 
+
+46
+00:03:32,736 --> 00:03:37,020
+do is we're going to see whether the, the 
+tag of the address, these t bits, the 
+
+47
+00:03:37,020 --> 00:03:43,240
+upper part, of the address matches the 
+tag stored in the block. 
+
+48
+00:03:43,240 --> 00:03:49,050
+And okay. 
+So that's what we're going to do. 
+
+49
+00:03:49,050 --> 00:03:53,405
+Now and then we're going to use the lower 
+part of the address the block offset, to 
+
+50
+00:03:53,405 --> 00:04:00,308
+determine which parts of the block. 
+We are going to read because as it's said 
+
+51
+00:04:00,308 --> 00:04:03,500
+a cache blog or a cache line can be 16, 
+32, 64 bytes but we often read one 
+
+52
+00:04:03,500 --> 00:04:07,140
+register's worth of data which could be 
+four or eight bytes, one byte so we have 
+
+53
+00:04:07,140 --> 00:04:14,580
+to get only part of the file. 
+So let's see now how this works. 
+
+54
+00:04:14,580 --> 00:04:18,297
+I'm going to show how this works for a 
+direct mapped cache And with the direct 
+
+55
+00:04:18,297 --> 00:04:21,897
+mapped cache there's a single block for 
+set. 
+
+56
+00:04:21,897 --> 00:04:29,040
+OK, so what we're going to do is we start 
+with our address. 
+
+57
+00:04:29,040 --> 00:04:33,112
+We're going to get find a set, so it 
+happens to be 0001 here. 
+
+58
+00:04:33,112 --> 00:04:37,321
+We know that we're interested in this 
+line here. 
+
+59
+00:04:37,321 --> 00:04:43,209
+What is the next step Well, the next step 
+is to, the term is to[UNKNOWN] that's 
+
+60
+00:04:43,209 --> 00:04:50,398
+select that line, and then determines 
+whether the tag matches. 
+
+61
+00:04:50,398 --> 00:04:52,518
+Okay. 
+if the tag, if the T bit, the upper part 
+
+62
+00:04:52,518 --> 00:04:55,670
+of the address matches the tag stored in 
+the cache. 
+
+63
+00:04:55,670 --> 00:05:00,142
+If it matches we have a hit. 
+If it doesn't match, we have a miss, 
+
+64
+00:05:00,142 --> 00:05:02,832
+okay? 
+So the next step in the sof so it doesn't 
+
+65
+00:05:02,832 --> 00:05:06,202
+if, if it matches and the bit is valid we 
+have a hitch. 
+
+66
+00:05:06,202 --> 00:05:09,984
+Okay, if either one of these are not true 
+if its either not valid or its not a 
+
+67
+00:05:09,984 --> 00:05:15,282
+match its going to be a mess. 
+Okay, so now let's assume that the cache 
+
+68
+00:05:15,282 --> 00:05:20,740
+block size is 8 bytes, which means that 
+now here we have 8 bytes, okay? 
+
+69
+00:05:20,740 --> 00:05:24,398
+So now depending on what's going to to 
+happen, we're going to use the block 
+
+70
+00:05:24,398 --> 00:05:27,994
+offsets to determine, it happens to be 
+1000 which is in this part of the 
+
+71
+00:05:27,994 --> 00:05:31,776
+address, so that's what we're going 
+to[UNKNOWN] , so these are the 4 bytes 
+
+72
+00:05:31,776 --> 00:05:38,375
+that are going to be read in this In this 
+example, okay? 
+
+73
+00:05:38,375 --> 00:05:43,554
+Great, so now if there's no match. 
+If it's if it's a cache miss, what's 
+
+74
+00:05:43,554 --> 00:05:46,690
+going to happen? 
+The old line, or whatever was here is 
+
+75
+00:05:46,690 --> 00:05:49,510
+going to be scraped, or is going to be 
+thrown away. 
+
+76
+00:05:49,510 --> 00:05:53,101
+And the data comes back from memory is 
+going to come back and replace the data 
+
+77
+00:05:53,101 --> 00:05:56,450
+that was there. 
+Okay. 
+
+78
+00:05:56,450 --> 00:06:00,040
+Now we know how this, how[UNKNOWN] work 
+on direct mapped cache. 
+
+79
+00:06:00,040 --> 00:06:03,370
+Let's here how[UNKNOWN] work on a set 
+associative cache. 
+
+80
+00:06:03,370 --> 00:06:06,674
+Okay. 
+In a generic E-way set-associative cache, 
+
+81
+00:06:06,674 --> 00:06:09,166
+okay. 
+In our example here let's make E equals 
+
+82
+00:06:09,166 --> 00:06:11,360
+2. 
+Means that it's a 2 way set-associative 
+
+83
+00:06:11,360 --> 00:06:14,040
+cache that means I have two lines per 
+set. 
+
+84
+00:06:14,040 --> 00:06:19,784
+Now I have two lines per set, okay? 
+What is the first thing we're going to 
+
+85
+00:06:19,784 --> 00:06:22,406
+do? 
+Again, we're going to use the middle part 
+
+86
+00:06:22,406 --> 00:06:25,870
+of the address, so find which set it 
+goes. 
+
+87
+00:06:25,870 --> 00:06:30,830
+Let's say that it goes again to, to set 
+one. 
+
+88
+00:06:30,830 --> 00:06:34,660
+But now what we're going to do, we're 
+going to select this, this set here. 
+
+89
+00:06:34,660 --> 00:06:38,747
+Now we are Focusing on two lines now it 
+means that the data here can go in two 
+
+90
+00:06:38,747 --> 00:06:42,901
+places in the cache so the comparison 
+with the t bits of the address with the 
+
+91
+00:06:42,901 --> 00:06:49,710
+tags now has to involve two values now 
+we're doing two comparisons. 
+
+92
+00:06:49,710 --> 00:06:56,245
+So, and then we go to the same thing. 
+If either one of them is valid, it it has 
+
+93
+00:06:56,245 --> 00:07:02,294
+a match then we have a hit. 
+Could be neither 1 of them. 
+
+94
+00:07:02,294 --> 00:07:04,736
+Of course we're not going to have both of 
+them otherwise it's probably there's a 
+
+95
+00:07:04,736 --> 00:07:07,566
+bug in your cache. 
+It should be either or the other but not 
+
+96
+00:07:07,566 --> 00:07:10,631
+in both, okay? 
+So we should[UNKNOWN] only of them, but 
+
+97
+00:07:10,631 --> 00:07:14,407
+if both of them is, have a miss, they do 
+not, either don't match or the bit is 
+
+98
+00:07:14,407 --> 00:07:19,980
+invalid, the invalid bit is set to 0 then 
+it's a cache miss, Okay? 
+
+99
+00:07:19,980 --> 00:07:21,730
+So let's say that we determine that this 
+is a hit. 
+
+100
+00:07:21,730 --> 00:07:25,305
+So now the same thing, we're going to get 
+the data, so now we just have, we happen 
+
+101
+00:07:25,305 --> 00:07:30,930
+to do a two byte, we'll do a short int 
+right, with only two bytes... 
+
+102
+00:07:30,930 --> 00:07:34,139
+That's where the offset starts. 
+We're going to get these two bytes here, 
+
+103
+00:07:34,139 --> 00:07:37,140
+read it and send it to the processor, 
+okay? 
+
+104
+00:07:37,140 --> 00:07:41,480
+So if there's no match, one one line, one 
+of those selected for, for eviction, and 
+
+105
+00:07:41,480 --> 00:07:46,267
+replaced. 
+As I said before we normally use this 
+
+106
+00:07:46,267 --> 00:07:52,347
+policy called least recently used, okay? 
+Okay, now let's look at these types of 
+
+107
+00:07:52,347 --> 00:07:56,310
+cache misses, many types of cache misses, 
+okay? 
+
+108
+00:07:56,310 --> 00:07:58,850
+There's three types. 
+Three types, okay? 
+
+109
+00:07:58,850 --> 00:08:01,060
+That's what we call the three Cs of cache 
+misses. 
+
+110
+00:08:01,060 --> 00:08:04,900
+There's actually a fourth one when 
+we[INAUDIBLE] processes, but so that 
+
+111
+00:08:04,900 --> 00:08:09,986
+might be for another time. 
+the first type of miss is called Code 
+
+112
+00:08:09,986 --> 00:08:15,039
+Miss or compose three miss. 
+That's a miss, there's nothing you can do 
+
+113
+00:08:15,039 --> 00:08:17,537
+about it. 
+So it's a code, it's the first time you 
+
+114
+00:08:17,537 --> 00:08:20,676
+accessed the data. 
+We haven't seen it before, so it's a 
+
+115
+00:08:20,676 --> 00:08:22,680
+miss. 
+It's the first time you see the data. 
+
+116
+00:08:22,680 --> 00:08:27,180
+In fact, I lied, something you cannot do 
+anything about. 
+
+117
+00:08:27,180 --> 00:08:31,297
+There's some techniques called[UNKNOWN] 
+that can reduce that. 
+
+118
+00:08:31,297 --> 00:08:36,022
+But typically a code miss its hard to 
+avoid and just because[UNKNOWN]. 
+
+119
+00:08:36,022 --> 00:08:39,707
+Now a conflict miss is a miss that 
+happens just because of the cache 
+
+120
+00:08:39,707 --> 00:08:45,387
+orginization when you have multiply the 
+system map into the same set. 
+
+121
+00:08:45,387 --> 00:08:49,912
+one could kick the other one out. 
+When that happebns your dealing with 
+
+122
+00:08:49,912 --> 00:08:53,560
+conflict, conflict is not normally a good 
+thing. 
+
+123
+00:08:53,560 --> 00:08:57,652
+And in the case of caches, you just kick 
+each other out, so that's going to reduce 
+
+124
+00:08:57,652 --> 00:09:02,611
+the effectiveness of your cache, okay? 
+So, and for example, if it's just one, if 
+
+125
+00:09:02,611 --> 00:09:05,080
+it's a direct map cache, you have more 
+conflict misses. 
+
+126
+00:09:05,080 --> 00:09:14,270
+As you increase the set associativity, 
+the number of ways in your cache. 
+
+127
+00:09:15,760 --> 00:09:20,224
+Okay, you're going to have lower conflict 
+miss because it will be fewer cases where 
+
+128
+00:09:20,224 --> 00:09:23,940
+data will kick other useful data out, 
+okay? 
+
+129
+00:09:23,940 --> 00:09:29,040
+So, conflict misses happen when cache is 
+large enough that multiple data objects 
+
+130
+00:09:29,040 --> 00:09:33,750
+map to the same slot, okay? 
+Great. 
+
+131
+00:09:33,750 --> 00:09:38,270
+Now the final type of cash miss is a 
+capacity miss. 
+
+132
+00:09:38,270 --> 00:09:41,564
+A capacity miss just means that the 
+amount of data that you cycle through, 
+
+133
+00:09:41,564 --> 00:09:44,966
+that you access repeatedly, which is 
+called the working set data, is larger 
+
+134
+00:09:44,966 --> 00:09:49,980
+than the cache, so[UNKNOWN] you'll be 
+kicking things out, okay? 
+
+135
+00:09:49,980 --> 00:09:52,782
+So one way to think of conflict misses 
+is, by the way... 
+
+136
+00:09:52,782 --> 00:09:58,437
+If you increase the[UNKNOWN] and the miss 
+will go away it's because there was a 
+
+137
+00:09:58,437 --> 00:10:02,829
+conflict miss. 
+Okay, so far we have talked only about 
+
+138
+00:10:02,829 --> 00:10:05,790
+reads, but writers are very important 
+too. 
+
+139
+00:10:05,790 --> 00:10:09,430
+The most important thing about writes is 
+that the data might occur in multiple 
+
+140
+00:10:09,430 --> 00:10:15,735
+places... 
+So if I have for example I have my CPU 
+
+141
+00:10:15,735 --> 00:10:25,260
+and I have my L1 cache, L2 cache and so 
+on. 
+
+142
+00:10:25,260 --> 00:10:28,608
+If I access a piece of data A here from 
+the CPU the data is going to be stored in 
+
+143
+00:10:28,608 --> 00:10:32,173
+tier one eventually and in tier two as 
+well. 
+
+144
+00:10:32,173 --> 00:10:35,325
+Now, but this, this is when I'm reading, 
+reading A. 
+
+145
+00:10:35,325 --> 00:10:39,305
+But what happens when I say I now write 
+2A. 
+
+146
+00:10:39,305 --> 00:10:46,370
+If I write only here, I'm going to 
+disagree what's here, and vice-versa. 
+
+147
+00:10:46,370 --> 00:10:49,470
+Okay, so the main problem is that the 
+copies of the thing that is spread over 
+
+148
+00:10:49,470 --> 00:10:53,290
+the caches in the hierarchy might 
+disagree with each other. 
+
+149
+00:10:53,290 --> 00:10:57,040
+That's not a good thing, disagreement is 
+not a good thing, okay? 
+
+150
+00:10:57,040 --> 00:11:01,120
+So, so what to do now? 
+Write hit, that's an important question. 
+
+151
+00:11:01,120 --> 00:11:05,546
+There's two basic policies. 
+One is called wire through, which, that 
+
+152
+00:11:05,546 --> 00:11:10,010
+means that if I, say have my CPU here and 
+I have an L1 cache and then here in our 
+
+153
+00:11:10,010 --> 00:11:16,310
+example, say that in this example, say 
+they have memory. 
+
+154
+00:11:16,310 --> 00:11:23,790
+When a processor says write A, so the CPU 
+sends data straight to memory. 
+
+155
+00:11:23,790 --> 00:11:26,840
+You might have to take whatever is in the 
+video one cache, but it sends data 
+
+156
+00:11:26,840 --> 00:11:30,006
+always. 
+And the bad thing about that is that 
+
+157
+00:11:30,006 --> 00:11:34,101
+every time the CPU writes, so something 
+always has to go to memory, even if it's 
+
+158
+00:11:34,101 --> 00:11:39,420
+in the cache right? 
+So because it's in the cache you do both. 
+
+159
+00:11:39,420 --> 00:11:42,003
+You write-through immediately to 
+immediately write it to memory updating 
+
+160
+00:11:42,003 --> 00:11:46,606
+the cache, okay? 
+Now, write-back works as follows, this is 
+
+161
+00:11:46,606 --> 00:11:51,442
+write-through. 
+With write-back, when the CPU writes to A 
+
+162
+00:11:51,442 --> 00:11:57,356
+here, it just writes to the cache. 
+And now there's a little bit here that 
+
+163
+00:11:57,356 --> 00:12:01,920
+got set, that says okay, this data is now 
+dirty. 
+
+164
+00:12:01,920 --> 00:12:06,094
+It means that the copy memory might not 
+be the same. 
+
+165
+00:12:06,094 --> 00:12:09,876
+So whenever this line is displaced, is 
+kicked out of the cache, it goes and 
+
+166
+00:12:09,876 --> 00:12:14,104
+sends the data to memory. 
+Okay, so we need a dirty bit to indicate 
+
+167
+00:12:14,104 --> 00:12:19,838
+if the line is different. 
+So, now this is what do in a write hit, 
+
+168
+00:12:19,838 --> 00:12:23,840
+but to do in a write miss you have two 
+options. 
+
+169
+00:12:23,840 --> 00:12:28,262
+One is called write allocate, should you 
+load it into the cache first and then do 
+
+170
+00:12:28,262 --> 00:12:32,295
+the write. 
+Or and that's good, because if you're 
+
+171
+00:12:32,295 --> 00:12:36,449
+going to write and then do more writes 
+that's a good thing because we're 
+
+172
+00:12:36,449 --> 00:12:39,820
+allocated the data. 
+Okay. 
+
+173
+00:12:39,820 --> 00:12:44,262
+the other option is no write allocate. 
+So you just write if its a message just 
+
+174
+00:12:44,262 --> 00:12:48,230
+write some memory don't do anything to 
+the cache's, okay? 
+
+175
+00:12:48,230 --> 00:12:51,569
+in another, another way that write 
+allocates is used for two is if you do a 
+
+176
+00:12:51,569 --> 00:12:55,014
+read if you do a write that's later going 
+to do a reads thats a good thing because 
+
+177
+00:12:55,014 --> 00:13:00,328
+its likely to be in the cache. 
+So typical cashes are either write back 
+
+178
+00:13:00,328 --> 00:13:03,879
+with write allocate usually that's the 
+common case, although write through and 
+
+179
+00:13:03,879 --> 00:13:07,320
+no write allocate occasionally you see 
+that. 
+
+180
+00:13:07,320 --> 00:13:10,300
+Especially some machines that have 
+multiple processors. 
+
+181
+00:13:11,690 --> 00:13:16,352
+to end this video let's revisit the 
+Pentium, the not Pentium, the Core i7 
+
+182
+00:13:16,352 --> 00:13:21,026
+cache hierarchy, okay? 
+Remember that I showed you there were 
+
+183
+00:13:21,026 --> 00:13:24,686
+multiple L1 caches, L2 caches, and 
+there's an L3 cache shared by all of the 
+
+184
+00:13:24,686 --> 00:13:29,750
+course, but now we can understand some of 
+the other data here. 
+
+185
+00:13:29,750 --> 00:13:34,300
+When I said that the L1 is A to[UNKNOWN] 
+associative that means that both he L1, 
+
+186
+00:13:34,300 --> 00:13:40,002
+the data L1 and the instruction L1. 
+The d-cache and i-cache are both sets 
+
+187
+00:13:40,002 --> 00:13:44,735
+of[UNKNOWN], they're not direct match. 
+And that's a pretty high sensitivity 
+
+188
+00:13:44,735 --> 00:13:48,310
+because the designer has decided that it 
+was worth throwing the complexion to 
+
+189
+00:13:48,310 --> 00:13:52,540
+reduce the type of misses, and to reduce 
+conflict misses. 
+
+190
+00:13:52,540 --> 00:13:58,419
+Now, the L2 unified cache, and by the 
+way, the L1 cache it 32 kilobytes each. 
+
+191
+00:13:58,419 --> 00:14:04,220
+The auto cache is eight times bigger, and 
+it's also an eight-way efficiency. 
+
+192
+00:14:04,220 --> 00:14:07,665
+And notice that the access time of the L1 
+is four cycles, the acces time of the L2 
+
+193
+00:14:07,665 --> 00:14:11,587
+is 11 cycles. 
+Now the L3 is all ready much much bigger, 
+
+194
+00:14:11,587 --> 00:14:16,210
+we're talking about eight megabytes and 
+even higher associativity to have even 
+
+195
+00:14:16,210 --> 00:14:22,121
+lower conflict misses. 
+And that's because the well, the, the 
+
+196
+00:14:22,121 --> 00:14:27,180
+access time is is also much slower than 
+the L2. 
+
+197
+00:14:27,180 --> 00:14:30,291
+But the reason that the L3 also has much 
+higher associativity is you want to 
+
+198
+00:14:30,291 --> 00:14:33,540
+reduce the misses. 
+When you reach the L3 you better hit, 
+
+199
+00:14:33,540 --> 00:14:36,561
+because if you don't you have to go to 
+memory, which is much, much more 
+
+200
+00:14:36,561 --> 00:14:40,631
+expensive, okay? 
+And a block size here is 64 bytes in all 
+
+201
+00:14:40,631 --> 00:14:43,300
+cases. 
+Okay, see you soon. 
+

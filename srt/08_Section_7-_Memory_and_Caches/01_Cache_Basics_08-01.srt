@@ -1,0 +1,605 @@
+1
+00:00:00,001 --> 00:00:05,014
+Hello, again. 
+Now, we are ready to start a new section. 
+
+2
+00:00:05,014 --> 00:00:11,734
+What we are going to be seeing now is how 
+we can use a special type of memory 
+
+3
+00:00:11,734 --> 00:00:20,880
+called caches to make the process of 
+memory interaction faster. 
+
+4
+00:00:20,880 --> 00:00:23,236
+The process memory is actually very, very 
+important for overall computer 
+
+5
+00:00:23,236 --> 00:00:26,612
+performance. 
+So, understanding that is very, very 
+
+6
+00:00:26,612 --> 00:00:29,077
+important. 
+So here's what we're going to see in this 
+
+7
+00:00:29,077 --> 00:00:31,436
+section. 
+We're going to see the basics of caches, 
+
+8
+00:00:31,436 --> 00:00:34,468
+then we're going to understand why caches 
+work. 
+
+9
+00:00:34,468 --> 00:00:40,097
+we're going to see how to put several 
+caches together into a hierarchy. 
+
+10
+00:00:40,097 --> 00:00:44,570
+We're going to see how we organize caches 
+In a way that makes them fast and 
+
+11
+00:00:44,570 --> 00:00:48,835
+effective. 
+And finally, we're going to see how we 
+
+12
+00:00:48,835 --> 00:00:55,938
+can make software better at using caches. 
+So, let's start with a question. 
+
+13
+00:00:55,938 --> 00:01:01,800
+So, how does execution time of this 
+program go, grows with the value of size? 
+
+14
+00:01:01,800 --> 00:01:07,339
+So, in, in this example we have. 
+We have an array with as many elements as 
+
+15
+00:01:07,339 --> 00:01:15,560
+the value of this size, the size define, 
+and we have a variable called a. 
+
+16
+00:01:15,560 --> 00:01:20,388
+And all this is doing is adding the value 
+of several of the array elements into a 
+
+17
+00:01:20,388 --> 00:01:25,913
+we're accumlating them into a. 
+This inner loop here is iterating over 
+
+18
+00:01:25,913 --> 00:01:29,994
+the array repeatedly. 
+Now as so it iterating over the entire 
+
+19
+00:01:29,994 --> 00:01:32,779
+array. 
+And the outer loop is iterating over the 
+
+20
+00:01:32,779 --> 00:01:36,405
+entire array repeatedly. 
+So we have an inner loop and an outer 
+
+21
+00:01:36,405 --> 00:01:38,450
+loop. 
+Okay. 
+
+22
+00:01:38,450 --> 00:01:44,545
+So how to expect the plot of execution 
+time to do with respect to size. 
+
+23
+00:01:44,545 --> 00:01:48,632
+Certainly this doesn't go down it 
+probably goes up because as size goes as 
+
+24
+00:01:48,632 --> 00:01:52,786
+a value size, goes up this[INAUDIBLE] is 
+going to take longer the because the 
+
+25
+00:01:52,786 --> 00:01:59,789
+inner loop is going to be longer. 
+So let's see how it looks, so here's the 
+
+26
+00:01:59,789 --> 00:02:03,913
+actual data of this experiment. 
+Okay. 
+
+27
+00:02:03,913 --> 00:02:08,140
+So we had was here's time, and here's 
+size. 
+
+28
+00:02:08,140 --> 00:02:11,010
+And there's two interesting things to 
+note here. 
+
+29
+00:02:11,010 --> 00:02:13,922
+First is, there's a knee in this curve, 
+here. 
+
+30
+00:02:13,922 --> 00:02:18,135
+Okay, there's a knee here. 
+And then there's too other essentially 
+
+31
+00:02:18,135 --> 00:02:22,183
+flatlines here. 
+And, and they don't have exactly the same 
+
+32
+00:02:22,183 --> 00:02:25,408
+slope. 
+So at some point, there's some threshold 
+
+33
+00:02:25,408 --> 00:02:30,016
+that makes, that after you go above the 
+threshold in size, the execution time 
+
+34
+00:02:30,016 --> 00:02:34,732
+grows. 
+Faster, so something is getting slower as 
+
+35
+00:02:34,732 --> 00:02:40,336
+we grow the value of size. 
+Distance height turns out to be exactly 
+
+36
+00:02:40,336 --> 00:02:44,293
+the cashes. 
+If the array, if the array fits in cash 
+
+37
+00:02:44,293 --> 00:02:48,892
+entirely we're going to have a slope as 
+long as it does not fit in cash any more 
+
+38
+00:02:48,892 --> 00:02:54,580
+we're going to start to have to go memory 
+more often. 
+
+39
+00:02:54,580 --> 00:02:57,496
+Then your going to have a different 
+curve. 
+
+40
+00:02:57,496 --> 00:03:00,169
+We have a different slope. 
+Okay. 
+
+41
+00:03:00,169 --> 00:03:04,861
+So and the problem here is that, there's 
+this processor memory bottle neck that we 
+
+42
+00:03:04,861 --> 00:03:09,232
+need to address. 
+And the reason this bottle neck exist is 
+
+43
+00:03:09,232 --> 00:03:14,312
+that the CPU it's self had it's 
+performance growing every 18 months. 
+
+44
+00:03:14,312 --> 00:03:17,303
+Okay, growing very, very fast. 
+That's why we have super fast computers 
+
+45
+00:03:17,303 --> 00:03:19,210
+today. 
+And as we saw early on in this course, 
+
+46
+00:03:19,210 --> 00:03:22,530
+you see there was a dramatic increase in 
+number of transistors. 
+
+47
+00:03:22,530 --> 00:03:24,516
+Dramatic increase in performance, and so 
+on. 
+
+48
+00:03:24,516 --> 00:03:30,860
+Memory, although memory also evolved, it 
+did not evolve as fast as the processor. 
+
+49
+00:03:30,860 --> 00:03:36,751
+Not the memory latency. 
+Nor the, the bandwidth to move data in 
+
+50
+00:03:36,751 --> 00:03:41,275
+and out of the processor. 
+So the, the problem here is that there's 
+
+51
+00:03:41,275 --> 00:03:46,040
+a lot of waiting fundamentally, right? 
+If the process is getting faster, much 
+
+52
+00:03:46,040 --> 00:03:50,580
+quicker than memory's getting faster, 
+that means the disparity is going up. 
+
+53
+00:03:50,580 --> 00:03:52,994
+It is also known as a memory wall. 
+Okay? 
+
+54
+00:03:52,994 --> 00:03:58,740
+So, ultimately, the big problem is that 
+there will be lots of waiting on memory. 
+
+55
+00:03:58,740 --> 00:04:01,540
+Processors do not like to wait. 
+If they're waiting, they're wasting time, 
+
+56
+00:04:01,540 --> 00:04:04,741
+it hurts performance. 
+But because memory, didn't get as fast, 
+
+57
+00:04:04,741 --> 00:04:09,350
+can it get fast enough compared to the 
+processor that will be waiting? 
+
+58
+00:04:09,350 --> 00:04:12,962
+So how do we solve this problem? 
+Well, what we're going to do is put this 
+
+59
+00:04:12,962 --> 00:04:16,370
+little bit of memory closer to the 
+processor here, okay? 
+
+60
+00:04:16,370 --> 00:04:20,182
+Called the cache, okay? 
+And that's going to hold data that's 
+
+61
+00:04:20,182 --> 00:04:23,692
+accessed frequently. 
+And since the cache is smaller and closer 
+
+62
+00:04:23,692 --> 00:04:28,548
+to the processor, it's much much faster 
+to access data stored in the cache. 
+
+63
+00:04:28,548 --> 00:04:30,240
+Okay? 
+One of the reasons that caches are fast 
+
+64
+00:04:30,240 --> 00:04:32,025
+is because they are small. 
+Right? 
+
+65
+00:04:32,025 --> 00:04:35,337
+Fundamentally[INAUDIBLE] speed of light, 
+so if you make things small, it can make 
+
+66
+00:04:35,337 --> 00:04:37,888
+them fast. 
+The larger you make them, fundamentally 
+
+67
+00:04:37,888 --> 00:04:39,540
+they're going to be slower. 
+Okay? 
+
+68
+00:04:39,540 --> 00:04:44,140
+So let's think about the word cache for a 
+second. 
+
+69
+00:04:44,140 --> 00:04:47,959
+The English definition is a hidden 
+storage, space for, hidden storage space 
+
+70
+00:04:47,959 --> 00:04:52,910
+for provisions, weapons, or treasures. 
+In our case, our treasure is data, okay? 
+
+71
+00:04:52,910 --> 00:04:57,600
+In Computer Science, the definition is a 
+computer memory with short access time 
+
+72
+00:04:57,600 --> 00:05:02,780
+used for storage of data that's accessed, 
+data or codes that's accessed, frequently 
+
+73
+00:05:02,780 --> 00:05:06,140
+or recently. 
+'Kay? 
+
+74
+00:05:07,240 --> 00:05:11,216
+So and more generally the section used to 
+optimize data transfers between system 
+
+75
+00:05:11,216 --> 00:05:14,510
+elements with different characteristics. 
+Okay? 
+
+76
+00:05:14,510 --> 00:05:17,810
+You could imagine caches, you, you know 
+we have a, a caches cache for pages in 
+
+77
+00:05:17,810 --> 00:05:22,045
+your browser's a form of cache. 
+You can cash you know to disk, because 
+
+78
+00:05:22,045 --> 00:05:25,770
+disks are also not very fast. 
+So if you access it repeatedly you can 
+
+79
+00:05:25,770 --> 00:05:30,490
+put data in a faster memory these, these 
+are all forms of caches, okay? 
+
+80
+00:05:30,490 --> 00:05:33,788
+So let's see now have the general cache 
+mechanics works. 
+
+81
+00:05:33,788 --> 00:05:36,426
+Okay, so we have our cache here. 
+And we have memory. 
+
+82
+00:05:36,426 --> 00:05:39,770
+And memory's going to have a bunch of 
+locations or blocks. 
+
+83
+00:05:39,770 --> 00:05:47,112
+And so, and the, the unit of transfer 
+between memory and caches is this block. 
+
+84
+00:05:47,112 --> 00:05:49,509
+Okay? 
+So that means we're now going to move a 
+
+85
+00:05:49,509 --> 00:05:51,626
+byte at a time. 
+And we're going to see that actually 
+
+86
+00:05:51,626 --> 00:05:53,680
+helps us a lot. 
+We're going to that why soon. 
+
+87
+00:05:53,680 --> 00:05:55,944
+But here see the, let's see the 
+mechanics. 
+
+88
+00:05:55,944 --> 00:05:57,980
+Okay? 
+So and one thing that's important to note 
+
+89
+00:05:57,980 --> 00:06:01,922
+here, by the way, is that the cache 
+stores a subset of memory. 
+
+90
+00:06:01,922 --> 00:06:04,238
+Okay? 
+So again, the reason that caches are fast 
+
+91
+00:06:04,238 --> 00:06:06,962
+is because they're small. 
+So they're going to be much smaller than 
+
+92
+00:06:06,962 --> 00:06:09,940
+memory. 
+So it can only hold a subset. 
+
+93
+00:06:09,940 --> 00:06:16,310
+Of the data stored in in memory. 
+So the first concept is what we call a 
+
+94
+00:06:16,310 --> 00:06:18,070
+hit. 
+'Kay. 
+
+95
+00:06:18,070 --> 00:06:20,282
+A hit means whenever you want to access 
+the data. 
+
+96
+00:06:20,282 --> 00:06:24,430
+'Kay, let's say that the processor that's 
+right here, 'kay, that's, that's where 
+
+97
+00:06:24,430 --> 00:06:29,220
+the CPU is, asks for 14. 
+Well, it happens to be in the cache. 
+
+98
+00:06:29,220 --> 00:06:32,212
+We call a hit. 
+It means that the data, the CPU asks for 
+
+99
+00:06:32,212 --> 00:06:36,079
+the data and then the cash can provide 
+the data back. 
+
+100
+00:06:36,079 --> 00:06:39,861
+So that's much, that's fast, right, 
+because we took advantage of, that's a 
+
+101
+00:06:39,861 --> 00:06:43,521
+good thing, right, we took advantage of 
+the fact that caches are fast and 
+
+102
+00:06:43,521 --> 00:06:49,199
+provided that they're in the cache. 
+This is in contrast to what we call a 
+
+103
+00:06:49,199 --> 00:06:53,670
+miss, so suppose that a data block these 
+needed by the CPU here. 
+
+104
+00:06:53,670 --> 00:06:57,268
+Okay and we happen to need 12, so we're 
+going to ask does it, is 12 here. 
+
+105
+00:06:57,268 --> 00:06:59,928
+Well, the answer is, no it's not. 
+Okay so, it's a miss. 
+
+106
+00:06:59,928 --> 00:07:05,182
+So, what happens now? 
+What do you think? 
+
+107
+00:07:05,182 --> 00:07:07,890
+Well, we're going to have to go to memory 
+and get the data. 
+
+108
+00:07:07,890 --> 00:07:12,292
+So the cache requests 12 from memory, so 
+the[INAUDIBLE] 12 is gotten, is obtained 
+
+109
+00:07:12,292 --> 00:07:16,105
+from memory. 
+And then it gets transferred to the cash 
+
+110
+00:07:16,105 --> 00:07:20,074
+and now it's stored in the cache. 
+And note, let me show you, notice 
+
+111
+00:07:20,074 --> 00:07:22,790
+something else got kicked out. 
+What happened? 
+
+112
+00:07:22,790 --> 00:07:26,670
+Nine has to be kicked out. 
+To store 12. 
+
+113
+00:07:26,670 --> 00:07:30,290
+We're going to see in detail later why 
+this is this is important. 
+
+114
+00:07:30,290 --> 00:07:32,222
+And since the cache is finite I've had to 
+kick things out. 
+
+115
+00:07:32,222 --> 00:07:36,623
+So, the choice of what's going to be 
+kicked out is very, very important. 
+
+116
+00:07:36,623 --> 00:07:39,973
+Okay? 
+So, one thing I don't want you to forget 
+
+117
+00:07:39,973 --> 00:07:45,889
+from this, this first video on caches, is 
+that a cache is this little bit of very 
+
+118
+00:07:45,889 --> 00:07:53,288
+very fast memory in between CPU and lots 
+of lower memory. 
+
+119
+00:07:53,288 --> 00:07:55,664
+'Kay? 
+So we can give the CPU the illusion that 
+
+120
+00:07:55,664 --> 00:07:59,936
+memory is faster by putting a little bit 
+of storage closer to it. 
+
+121
+00:07:59,936 --> 00:08:01,499
+'Kay? 
+See you soon. 
+

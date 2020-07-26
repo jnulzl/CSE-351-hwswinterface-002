@@ -1,0 +1,568 @@
+1
+00:00:00,8 --> 00:00:05,247
+[MUSIC]. 
+
+2
+00:00:05,247 --> 00:00:09,224
+Let's take a look at our road map. 
+We're at our first section that will 
+
+3
+00:00:09,224 --> 00:00:12,208
+address the issues of data and 
+addressing. 
+
+4
+00:00:12,208 --> 00:00:16,112
+Namely, how do we store information in 
+memory, how do we represent it in terms 
+
+5
+00:00:16,112 --> 00:00:19,500
+of 0's and 1's. 
+And how do we reference that data, in 
+
+6
+00:00:19,500 --> 00:00:22,650
+other words, what addresses do we provide 
+so we can find the data we've put in 
+
+7
+00:00:22,650 --> 00:00:27,870
+memory again. 
+So to before we get into that. 
+
+8
+00:00:27,870 --> 00:00:31,228
+And the other topics in this section. 
+We're going to start with a few 
+
+9
+00:00:31,228 --> 00:00:34,340
+preliminaries about how we organize our 
+hardware. 
+
+10
+00:00:34,340 --> 00:00:39,96
+Lets take a look at this first picture 
+that is a logical view of a modern 
+
+11
+00:00:39,96 --> 00:00:43,580
+computing system. 
+You'll notice that very prominently are 
+
+12
+00:00:43,580 --> 00:00:47,80
+the CPU, the Central Processing Unit, and 
+the memory. 
+
+13
+00:00:47,80 --> 00:00:51,370
+There's a hide bandwidth channel between 
+the memory and the CPU because the CPU 
+
+14
+00:00:51,370 --> 00:00:55,335
+has to go to that memory to get all the 
+data and instructions it will need in 
+
+15
+00:00:55,335 --> 00:01:00,548
+order to know what to do and to what 
+pieces data. 
+
+16
+00:01:00,548 --> 00:01:04,188
+So that is going to be a very big focus 
+of this course that connection is 
+
+17
+00:01:04,188 --> 00:01:10,690
+actually going to be a little bit more 
+complex than shown in this diagram. 
+
+18
+00:01:10,690 --> 00:01:14,782
+There's going to be various levels of 
+memory that we'll be looking at. 
+
+19
+00:01:14,782 --> 00:01:18,814
+in addition, the CPU and memory are 
+connected to a common bus that allows 
+
+20
+00:01:18,814 --> 00:01:23,170
+data to flow between all the elements of 
+a computer. 
+
+21
+00:01:23,170 --> 00:01:27,522
+Some of the other elements are disks, 
+which provide even more memory for us to 
+
+22
+00:01:27,522 --> 00:01:32,60
+use. 
+But are slower and little bit further 
+
+23
+00:01:32,60 --> 00:01:37,213
+away from the CPU will also have a 
+connection to the network. 
+
+24
+00:01:37,213 --> 00:01:42,253
+So that we can get data over the internet 
+we'll also have connections to peripheral 
+
+25
+00:01:42,253 --> 00:01:46,523
+devices like mice and keyboards and 
+cameras and those are often over a USB 
+
+26
+00:01:46,523 --> 00:01:52,300
+interfaces. 
+universal serial bus as well as others 
+
+27
+00:01:52,300 --> 00:01:58,100
+that might be available depending on the 
+computing, computing system you have. 
+
+28
+00:01:58,100 --> 00:02:01,60
+Let's go a little deeper and look at a 
+semi logical view. 
+
+29
+00:02:01,60 --> 00:02:06,511
+In this case we're breaking things down a 
+little bit, not only into a main CPU 
+
+30
+00:02:06,511 --> 00:02:12,3
+shown here at the top. 
+you'll notice that it's connected to a 
+
+31
+00:02:12,3 --> 00:02:16,163
+bunch of memory on one side and maybe 
+some specialized memory and processing 
+
+32
+00:02:16,163 --> 00:02:23,218
+for graphics functions on the other. 
+below it is another large chip that's 
+
+33
+00:02:23,218 --> 00:02:29,445
+often common in most computers. 
+And that's a IO controller, something 
+
+34
+00:02:29,445 --> 00:02:35,140
+that really orchestrates that common buss 
+that connects to all the other devices. 
+
+35
+00:02:35,140 --> 00:02:41,856
+Some of those other devices might be the 
+audio system the hard disc drives the USB 
+
+36
+00:02:41,856 --> 00:02:47,106
+interfaces and so on. 
+That are, make up the rest of the 
+
+37
+00:02:47,106 --> 00:02:50,745
+computer. 
+If we go yet a level deeper and go to the 
+
+38
+00:02:50,745 --> 00:02:56,140
+physical view of the device. 
+here we'll see a, a, a motherboard. 
+
+39
+00:02:56,140 --> 00:03:01,340
+A board that includes all those major 
+components of a computer. 
+
+40
+00:03:01,340 --> 00:03:10,0
+Here in the center is the the CPU chip. 
+it's surrounded by an IO chip, that 
+
+41
+00:03:10,0 --> 00:03:18,721
+controls those peripherals connections 
+for adding memory to the system. 
+
+42
+00:03:18,721 --> 00:03:26,290
+And connections for hard disk drives to 
+be connected to that common bus. 
+
+43
+00:03:26,290 --> 00:03:29,314
+In addition, at the back of the machine, 
+we'll typically see a whole bunch of 
+
+44
+00:03:29,314 --> 00:03:35,410
+connections to those peripheral devices. 
+Including audio components, mice, 
+
+45
+00:03:35,410 --> 00:03:41,45
+keyboards and networks. 
+If we focus then on the part that will be 
+
+46
+00:03:41,45 --> 00:03:45,620
+most concerned with, namely the CPU and 
+memory that we say at the top of our 
+
+47
+00:03:45,620 --> 00:03:50,920
+first figure. 
+We go a little deeper in and we'll see 
+
+48
+00:03:50,920 --> 00:03:55,80
+that the CPU is composed of some things 
+that hold data, we're going to call these 
+
+49
+00:03:55,80 --> 00:03:59,521
+registers. 
+And some things that hold instructions 
+
+50
+00:03:59,521 --> 00:04:03,554
+and that will typically be called an 
+instruction cache. 
+
+51
+00:04:03,554 --> 00:04:08,98
+the thing that we need to understand at a 
+very high level for now we'll get into a 
+
+52
+00:04:08,98 --> 00:04:14,690
+lot more detail on this later but for now 
+we need to understand that data. 
+
+53
+00:04:14,690 --> 00:04:19,680
+Namely, the things we operate on are 
+moved from memory to the registers. 
+
+54
+00:04:19,680 --> 00:04:25,420
+That's where the CPU can actually have 
+operations on that data. 
+
+55
+00:04:25,420 --> 00:04:29,820
+And then, the results from those 
+registers are moved back to memory. 
+
+56
+00:04:29,820 --> 00:04:33,720
+This is done on the program control. 
+In other words, we'll have specific 
+
+57
+00:04:33,720 --> 00:04:37,800
+instructions to go get memory at a 
+particular location in the memory and 
+
+58
+00:04:37,800 --> 00:04:43,498
+bring it into a particular register. 
+And similarly going in the other 
+
+59
+00:04:43,498 --> 00:04:48,640
+direction from a specific register to a 
+specific location in memory. 
+
+60
+00:04:48,640 --> 00:04:53,332
+We'll also be getting instructions from 
+memory into our instruction cache where 
+
+61
+00:04:53,332 --> 00:04:57,879
+the CPU will find. 
+The instructions to execute. 
+
+62
+00:04:57,879 --> 00:05:03,333
+this is done under hardware control. 
+In other words, the CPU has it's own 
+
+63
+00:05:03,333 --> 00:05:07,920
+devices for getting that ins- next 
+instruction. 
+
+64
+00:05:07,920 --> 00:05:11,133
+And figure out whether it needs to go to 
+the memory to find it, or if it already 
+
+65
+00:05:11,133 --> 00:05:15,790
+has it in it's cache. 
+why might it already have it in its 
+
+66
+00:05:15,790 --> 00:05:18,794
+cache? 
+Well if it's executing a loop for example 
+
+67
+00:05:18,794 --> 00:05:22,698
+or a common procedure that had just 
+recently executed, it might already be in 
+
+68
+00:05:22,698 --> 00:05:26,332
+the cache. 
+But that's done on the hardware control, 
+
+69
+00:05:26,332 --> 00:05:29,360
+we don't worry about where to get the 
+next instruction. 
+
+70
+00:05:29,360 --> 00:05:32,832
+What we worry about in our programs is 
+where to get the data, and where to put 
+
+71
+00:05:32,832 --> 00:05:40,562
+the date once we've operated on it. 
+We also want to talk about the 
+
+72
+00:05:40,562 --> 00:05:44,234
+performance of our computing systems and 
+performance is not just about CPU speed 
+
+73
+00:05:44,234 --> 00:05:47,744
+mainly the clock rate the, the speed at 
+which we connect to get one instruction 
+
+74
+00:05:47,744 --> 00:05:52,590
+after another. 
+Its also about getting those instructions 
+
+75
+00:05:52,590 --> 00:05:56,584
+and the data they have to operate on from 
+memory to the CPU. 
+
+76
+00:05:58,670 --> 00:06:01,890
+That CPU memory bandwidth can limit 
+performance. 
+
+77
+00:06:01,890 --> 00:06:06,630
+And we have two common strategies for 
+trying to improve that performance. 
+
+78
+00:06:06,630 --> 00:06:11,396
+The first tries to make the memory wider. 
+Namely we get more bits at once from the 
+
+79
+00:06:11,396 --> 00:06:14,330
+memory. 
+So, rather than getting. 
+
+80
+00:06:14,330 --> 00:06:18,42
+one instruction at a time, we might get 
+several instructions at a time, or not 
+
+81
+00:06:18,42 --> 00:06:23,562
+one piece of data but several. 
+Another, possibility is to move some of 
+
+82
+00:06:23,562 --> 00:06:28,602
+the memory into the CPU itself, and 
+actually have a smaller, but much faster 
+
+83
+00:06:28,602 --> 00:06:35,460
+memory available to the CPU. 
+This works particularly well when The 
+
+84
+00:06:35,460 --> 00:06:40,270
+data and instructions are located near 
+each other. 
+
+85
+00:06:40,270 --> 00:06:46,54
+Or are a very small set of the all the 
+possible locations in memory. 
+
+86
+00:06:46,54 --> 00:06:51,970
+So, this memory in the CPU will be much 
+smaller than the larger main memory. 
+
+87
+00:06:51,970 --> 00:06:56,810
+We call this a cache, namely some place 
+where we store our valuables. 
+
+88
+00:06:56,810 --> 00:07:01,233
+nearby so that we can get to it easy. 
+Now that we've talked about how our 
+
+89
+00:07:01,233 --> 00:07:04,991
+computers are organized. 
+we also have to talk about how we 
+
+90
+00:07:04,991 --> 00:07:08,810
+represent those zeros and ones that we're 
+going to be building all of our data and 
+
+91
+00:07:08,810 --> 00:07:13,282
+instructions from. 
+You'll notice that that bottom in this 
+
+92
+00:07:13,282 --> 00:07:17,186
+slide, there's a figure that shows that, 
+in fact, the 0 is represented by a low 
+
+93
+00:07:17,186 --> 00:07:21,180
+voltage. 
+A 1 represented by a high voltage. 
+
+94
+00:07:21,180 --> 00:07:25,360
+And those can fluctuate a little bit. 
+And it also takes a little bit of time to 
+
+95
+00:07:25,360 --> 00:07:30,80
+go from a 0 to a 1 when we have some 
+voltages that are intermediate. 
+
+96
+00:07:30,80 --> 00:07:34,130
+We really don't want to be in this region 
+because that can be confusing. 
+
+97
+00:07:34,130 --> 00:07:39,892
+And that is in fact what limits the speed 
+of our computing systems, how quickly we 
+
+98
+00:07:39,892 --> 00:07:45,950
+can make these transitions between 0 and 
+1 and 1 to 0. 
+
+99
+00:07:45,950 --> 00:07:52,484
+So electronics are designed to make it 
+easy to represent a value at this voltage 
+
+100
+00:07:52,484 --> 00:08:01,900
+and a value at a low voltage and not 
+worry about the values in between. 
+
+101
+00:08:01,900 --> 00:08:07,126
+Rather, we restore our values as often as 
+we can to these nicer voltages at the top 
+
+102
+00:08:07,126 --> 00:08:10,760
+and bottom. 
+How do we represent numbers? 
+
+103
+00:08:10,760 --> 00:08:15,472
+Well here's a number in base 10 the 
+number 351, that's the number of this 
+
+104
+00:08:15,472 --> 00:08:20,34
+course here at UW. 
+And this is in base 10 we're very 
+
+105
+00:08:20,34 --> 00:08:26,8
+familiar with this number representation, 
+we've seen it since elementary school. 
+
+106
+00:08:26,8 --> 00:08:30,774
+the binary representation, of 351, is 
+this number. 
+
+107
+00:08:30,774 --> 00:08:35,460
+Now, how did I decide on how many 0's and 
+1's to use? 
+
+108
+00:08:35,460 --> 00:08:40,926
+Well, that was kind of arbitrary. 
+In this, I could have also represented it 
+
+109
+00:08:40,926 --> 00:08:47,6
+by the much shorter string of 1's and 0's 
+that doesn't have that leading set of 
+
+110
+00:08:47,6 --> 00:08:52,732
+0's. 
+That would be the same thing as writing 
+
+111
+00:08:52,732 --> 00:08:58,820
+351 base 10 or 0's, 0, 0, 351 base 10. 
+You'll notice that we can always put 
+
+112
+00:08:58,820 --> 00:09:03,215
+leading 0's in front of something that 
+doesn't change the actual value. 
+
+113
+00:09:03,215 --> 00:09:09,560
+So we'll have to decide how many bits we 
+want to use to represent numbers. 
+
+114
+00:09:09,560 --> 00:09:13,303
+And that's where we'll be going next. 
+

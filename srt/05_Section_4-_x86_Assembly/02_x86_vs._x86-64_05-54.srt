@@ -1,0 +1,360 @@
+1
+00:00:00,000 --> 00:00:02,850
+[MUSIC]. 
+Now I'll tell a little bit about, x86-64. 
+
+2
+00:00:02,850 --> 00:00:05,538
+I'm also going to show you how to do the 
+swap example we saw in the previous 
+
+3
+00:00:05,538 --> 00:00:12,778
+video. 
+But now, with, x86-64 insertions as 
+
+4
+00:00:12,778 --> 00:00:19,400
+opposed to the 32 bit. 
+Instructions, okay? 
+
+5
+00:00:19,400 --> 00:00:28,225
+So x86-64 has 16 registers, okay? 
+And just, just like I32, there's some 
+
+6
+00:00:28,225 --> 00:00:32,320
+registers that have special use, but 
+there's a lot more general purpose 
+
+7
+00:00:32,320 --> 00:00:37,238
+registers. 
+Like all of these registers here are only 
+
+8
+00:00:37,238 --> 00:00:44,488
+present in the 64 bit of x86. 
+And also know that while these registers 
+
+9
+00:00:44,488 --> 00:00:50,240
+Are 64 bits wide. 
+You can also access the lower 32 bits of 
+
+10
+00:00:50,240 --> 00:00:57,176
+them as a register, as well. 
+For example, you know, eax, which is also 
+
+11
+00:00:57,176 --> 00:01:03,153
+present in IA-32, is the low order 32 
+bits of register. 
+
+12
+00:01:04,160 --> 00:01:07,210
+Rax in x86-64. 
+Okay. 
+
+13
+00:01:07,210 --> 00:01:12,034
+So each look when we think about any 
+existing registers to 64 bits plus adding 
+
+14
+00:01:12,034 --> 00:01:17,976
+eight new registers. 
+and now the way we look at operands in 32 
+
+15
+00:01:17,976 --> 00:01:23,696
+versus 64 bit modes the following 
+Remember that we had, in, in I 32, look 
+
+16
+00:01:23,696 --> 00:01:29,520
+at move l. 
+And l referred to moving 4 bytes worth of 
+
+17
+00:01:29,520 --> 00:01:33,813
+data. 
+Now what we have in x86-64 is move q, 
+
+18
+00:01:33,813 --> 00:01:42,435
+it's a new type of data size that it's 8 
+bytes or 64 bits long. 
+
+19
+00:01:42,435 --> 00:01:45,370
+Okay. 
+Now we also have other instructions, like 
+
+20
+00:01:45,370 --> 00:01:48,451
+addl that's presently in 32. 
+Now we have addq. 
+
+21
+00:01:48,451 --> 00:01:51,426
+And then shift l and we can have shift q, 
+and so on. 
+
+22
+00:01:51,426 --> 00:01:57,478
+So and also note that x86-64 can also use 
+all the 32-bits instructions that 30, 
+
+23
+00:01:57,478 --> 00:02:03,430
+that generate 32-bit results. 
+Okay? 
+
+24
+00:02:03,430 --> 00:02:06,390
+So ends like I showed you in the previous 
+slide. 
+
+25
+00:02:06,390 --> 00:02:10,050
+We can use, we can reference the low 
+order 32 bits of some 64 bit registers 
+
+26
+00:02:10,050 --> 00:02:13,700
+with the same name as we use in 32-bit 
+ISA. 
+
+27
+00:02:13,700 --> 00:02:21,053
+And the, the high order 32 bits are set 
+to zero. 
+
+28
+00:02:23,060 --> 00:02:25,818
+here's the example that we saw in a 
+previous video. 
+
+29
+00:02:25,818 --> 00:02:32,010
+we had this swap function, that received 
+two pointers, xp and xy, as parameters. 
+
+30
+00:02:32,010 --> 00:02:35,700
+And then it swaps the contents of these 
+pointers, okay? 
+
+31
+00:02:35,700 --> 00:02:39,988
+remember that these two instructions 
+here, what they were doing is they were 
+
+32
+00:02:39,988 --> 00:02:44,724
+reading The pointers that were stored in 
+the stack because parameters in the I32, 
+
+33
+00:02:44,724 --> 00:02:50,980
+I, I32ABI passed by a, to stack. 
+'Kay, that's, that's one thing to note. 
+
+34
+00:02:50,980 --> 00:03:02,084
+And we've used all movl instructions. 
+Because we're moving four bytes worth of 
+
+35
+00:03:02,084 --> 00:03:03,680
+data. 
+Okay? 
+
+36
+00:03:03,680 --> 00:03:07,328
+So now, let's look at how this function, 
+this piece of code will look like in 64 
+
+37
+00:03:07,328 --> 00:03:12,415
+bits. 
+Okay, bam, the first thing to notice, 
+
+38
+00:03:12,415 --> 00:03:15,910
+what we have, movl. 
+Four of them. 
+
+39
+00:03:15,910 --> 00:03:22,110
+And also, note that we are passing the 
+parameters. 
+
+40
+00:03:22,110 --> 00:03:25,514
+My registers. 
+Okay, so directly as opposed to this 
+
+41
+00:03:25,514 --> 00:03:28,733
+text. 
+So XP, the XP parameter is stored in 
+
+42
+00:03:28,733 --> 00:03:34,222
+register RDI. 
+NYP is stored in register RSI, and these 
+
+43
+00:03:34,222 --> 00:03:43,575
+are 64 bit pointers because adversaries 
+in 64, in access 664 are 64 bit. 
+
+44
+00:03:43,575 --> 00:03:46,610
+long. 
+And look how interesting. 
+
+45
+00:03:46,610 --> 00:03:51,442
+Now we have only four instructions. 
+We're no longer reading the parameters 
+
+46
+00:03:51,442 --> 00:03:54,430
+from the stack, which is a big advantage, 
+right. 
+
+47
+00:03:54,430 --> 00:03:57,954
+So it's, it's much faster, don't have to 
+store it to memory and read it back. 
+
+48
+00:03:57,954 --> 00:04:03,239
+And we have much fewer instructions. 
+And now here, what we're doing is this 
+
+49
+00:04:03,239 --> 00:04:07,517
+first instruction gets the contents of 
+the, the of xp, and stores it in a 
+
+50
+00:04:07,517 --> 00:04:12,410
+temporary variable. 
+In this case t0, right? 
+
+51
+00:04:12,410 --> 00:04:16,620
+That happens to be mapped to adx. 
+We get yp, it's contents, right? 
+
+52
+00:04:16,620 --> 00:04:18,320
+That's why we're using the parentheses 
+here. 
+
+53
+00:04:18,320 --> 00:04:23,794
+We're just referencing the, the address. 
+Storing the other temporary variable, t1, 
+
+54
+00:04:23,794 --> 00:04:29,512
+happens to be map, mapped to eax. 
+And staying with just storing the 
+
+55
+00:04:29,512 --> 00:04:32,860
+temporary variable back into the 
+pointers, and then we return. 
+
+56
+00:04:32,860 --> 00:04:38,090
+It's much simpler, right? 
+And because the main reason it's simpler 
+
+57
+00:04:38,090 --> 00:04:43,030
+is because we don't have to, to use the 
+stack at all. 
+
+58
+00:04:43,030 --> 00:04:48,255
+No stack operations required, and note 
+that we still moved. 
+
+59
+00:04:48,255 --> 00:04:52,472
+32 bits worth of data. 
+Why is that? 
+
+60
+00:04:52,472 --> 00:04:58,930
+Well, because this integer's here. 
+Happens to be four bytes long. 
+
+61
+00:04:58,930 --> 00:05:02,650
+Even though the pointer itself is 64 
+bits, the unit of data that it points to 
+
+62
+00:05:02,650 --> 00:05:05,305
+is a four byte. 
+Integer. 
+
+63
+00:05:05,305 --> 00:05:14,020
+and, and we also use Move L tool. 
+Because we're moving 4 bytes of data. 
+
+64
+00:05:14,020 --> 00:05:16,722
+We're still using the same type of 
+instructions. 
+
+65
+00:05:16,722 --> 00:05:23,083
+Now suppose that we had long ends. 
+Now if you're saying long ends here. 
+
+66
+00:05:23,083 --> 00:05:26,515
+We're saying that the union of data is 8 
+bytes here. 
+
+67
+00:05:26,515 --> 00:05:29,543
+'Kay? 
+So, even if there is a byte, now the move 
+
+68
+00:05:29,543 --> 00:05:33,870
+operation itself has to be eight bytes 
+long. 
+
+69
+00:05:33,870 --> 00:05:37,765
+Remember that q refers to eight byte 
+words. 
+
+70
+00:05:37,765 --> 00:05:41,427
+Okay? 
+So and now since the long int is eight 
+
+71
+00:05:41,427 --> 00:05:46,694
+bytes as well, we have to use movq 
+instructions. 
+
+72
+00:05:46,694 --> 00:05:54,542
+'Kay? 
+So, alright see you next time. 
+

@@ -1,0 +1,464 @@
+1
+00:00:06,250 --> 00:00:14,900
+[MUSIC] The last part of the discussion 
+of floating point numbers[SOUND] . 
+
+2
+00:00:14,900 --> 00:00:18,027
+The last part of our discussion of 
+floating numbers, is how we deal with 
+
+3
+00:00:18,027 --> 00:00:23,330
+them in the C language. 
+C offers two levels of precision for 
+
+4
+00:00:23,330 --> 00:00:26,319
+floating point numbers, as we've already 
+seen in the IEEE floating point 
+
+5
+00:00:26,319 --> 00:00:31,147
+representation. 
+Bot a 32 bit representation for floats as 
+
+6
+00:00:31,147 --> 00:00:37,150
+they're referred to and a 64 bit 
+representation for doubles. 
+
+7
+00:00:37,150 --> 00:00:41,014
+the, the fault rounding mode is round to 
+even, to avoid that bias in rounding and 
+
+8
+00:00:41,014 --> 00:00:45,656
+always in one direction. 
+And there's an, a another header file 
+
+9
+00:00:45,656 --> 00:00:50,060
+that we can include that has some 
+important constants called math.h 
+
+10
+00:00:50,060 --> 00:00:53,756
+That has constants, for example for 
+infinity and not a number that we can use 
+
+11
+00:00:53,756 --> 00:00:57,878
+in our programs. 
+One thing to keep reiterating and you 
+
+12
+00:00:57,878 --> 00:01:00,806
+need to remember is, never to use 
+equality comparison for floating point 
+
+13
+00:01:00,806 --> 00:01:04,790
+numbers. 
+There's just too many slight differences 
+
+14
+00:01:04,790 --> 00:01:09,398
+that could occur in rounding or in how an 
+expression is evaluated associatively or 
+
+15
+00:01:09,398 --> 00:01:14,062
+distributively. 
+And we can often get unexpected results 
+
+16
+00:01:14,062 --> 00:01:18,279
+for our equality comparisons. 
+The best thing to do with floating point 
+
+17
+00:01:18,279 --> 00:01:22,505
+numbers is to avoid equality comparisons. 
+And always do a subtraction of the two 
+
+18
+00:01:22,505 --> 00:01:25,508
+values. 
+And then a test that there, those two 
+
+19
+00:01:25,508 --> 00:01:31,070
+that, that difference is small. 
+Okay. 
+
+20
+00:01:31,070 --> 00:01:33,410
+Another thing we should talk about is 
+casting in C. 
+
+21
+00:01:33,410 --> 00:01:37,570
+unlike casting between signed and 
+unsigned integers, in this case, we do 
+
+22
+00:01:37,570 --> 00:01:42,406
+change the bit representation. 
+So, for example, when we want to go from 
+
+23
+00:01:42,406 --> 00:01:46,627
+an int to a float and cast, an integer 
+value into a floating point value, we 
+
+24
+00:01:46,627 --> 00:01:51,390
+actually have to normalize that integer 
+value. 
+
+25
+00:01:51,390 --> 00:01:54,134
+Right? 
+Get its exponent, figure out its mantissa 
+
+26
+00:01:54,134 --> 00:01:58,420
+and then represent that in the floating 
+point notation. 
+
+27
+00:01:58,420 --> 00:02:03,145
+So, that means that integer may in fact 
+get rounded however, overflow is not 
+
+28
+00:02:03,145 --> 00:02:07,637
+possible. 
+Floating point numbers can represent much 
+
+29
+00:02:07,637 --> 00:02:13,804
+larger values than we can get to with our 
+integer representation, okay. 
+
+30
+00:02:13,804 --> 00:02:18,592
+When we go from int to double, we can 
+actually get an exact conversion as long 
+
+31
+00:02:18,592 --> 00:02:24,709
+as the int is less than 53 bits. 
+Because now in the double notation the 
+
+32
+00:02:24,709 --> 00:02:30,257
+fractional part is 52 bits long plus that 
+one extra bit that one point that sits in 
+
+33
+00:02:30,257 --> 00:02:36,469
+front of the mantissa. 
+So, we get 53 bit word size and our 
+
+34
+00:02:36,469 --> 00:02:41,372
+integers if they're 32 bits can fit 
+completely in that. 
+
+35
+00:02:41,372 --> 00:02:46,984
+so there's going to be exact conversion. 
+if we have a 64-bit integer, we might 
+
+36
+00:02:46,984 --> 00:02:51,336
+have some rounding again. 
+And of course if we go from float to 
+
+37
+00:02:51,336 --> 00:02:56,088
+double, we also get an exact an exact 
+casting because a float is 32-bits a 
+
+38
+00:02:56,088 --> 00:03:03,700
+double is 64, and it has a larger 
+fraction, a larger exponent field. 
+
+39
+00:03:03,700 --> 00:03:07,660
+So, it can definitely handle any number 
+that is in the float representation. 
+
+40
+00:03:08,730 --> 00:03:12,848
+In doing conversions of doubles or floats 
+to integers we have a couple of issues to 
+
+41
+00:03:12,848 --> 00:03:16,340
+think about. 
+One is that the, the fractional part of 
+
+42
+00:03:16,340 --> 00:03:19,173
+the floating point number may be 
+truncated. 
+
+43
+00:03:19,173 --> 00:03:22,583
+Because as we adjust it to take into 
+account the exponent, we may shift it in 
+
+44
+00:03:22,583 --> 00:03:27,942
+such a way to lose a few bits. 
+by convention we're going to always round 
+
+45
+00:03:27,942 --> 00:03:31,362
+these values towards zero as we do the 
+conversion. 
+
+46
+00:03:31,362 --> 00:03:35,646
+Another issue is when the double or float 
+is bigger or smaller than we can actually 
+
+47
+00:03:35,646 --> 00:03:41,184
+represent in our integer notation. 
+In that case we'll use the convention to 
+
+48
+00:03:41,184 --> 00:03:45,950
+set the value to Tmin, the two's 
+compliment minimum value. 
+
+49
+00:03:45,950 --> 00:03:49,732
+And we'll probably also do that for 
+things like, not a number or infinities 
+
+50
+00:03:49,732 --> 00:03:54,250
+and infinities, we might set to Tmax and 
+Tmin, for example. 
+
+51
+00:03:57,390 --> 00:04:01,800
+Okay, so to summarize our floating point 
+representations, here I've shown five 
+
+52
+00:04:01,800 --> 00:04:06,210
+different possibilities. 
+So, the zero in floating point is the 
+
+53
+00:04:06,210 --> 00:04:09,744
+sting of all zeros and we do that for 
+convenience because now if we ever test 
+
+54
+00:04:09,744 --> 00:04:15,350
+for zero, all we have to do is the same 
+test we did for intervals. 
+
+55
+00:04:15,350 --> 00:04:19,434
+We just look for an all zero bit pattern, 
+and we know its a zero. 
+
+56
+00:04:19,434 --> 00:04:23,526
+Then we talked about normalized values 
+where the exponent is anywhere from one 
+
+57
+00:04:23,526 --> 00:04:29,480
+to two to the k minus two where k is the 
+number if bits of the exponent. 
+
+58
+00:04:29,480 --> 00:04:35,055
+And the significand is 1 point m. 
+Where m is the mantisa, what's 
+
+59
+00:04:35,055 --> 00:04:38,980
+represented in that blue portion of the 
+of the number. 
+
+60
+00:04:40,030 --> 00:04:44,386
+we also mentioned that we reserved the 
+exponent of all ones to represent 
+
+61
+00:04:44,386 --> 00:04:48,960
+positive and negative infinity. 
+Okay. 
+
+62
+00:04:48,960 --> 00:04:52,405
+And we're actually going to put a further 
+condition on that, that it's going to be 
+
+63
+00:04:52,405 --> 00:04:55,665
+all ones and all zeros in the fractional 
+part. 
+
+64
+00:04:55,665 --> 00:04:58,899
+So, all ones in the exponent, all zeros 
+in the fractional part, and of course the 
+
+65
+00:04:58,899 --> 00:05:04,339
+sine can be positive or negative. 
+For not a number, we actually have many 
+
+66
+00:05:04,339 --> 00:05:08,735
+possibilities. 
+the exponent is still all ones, but now 
+
+67
+00:05:08,735 --> 00:05:13,972
+the fractional part is non-zero. 
+That gives us many, many values possible 
+
+68
+00:05:13,972 --> 00:05:17,860
+for not a number. 
+And in fact, these are used to signify 
+
+69
+00:05:17,860 --> 00:05:22,194
+different conditions under which the not 
+a number arose. 
+
+70
+00:05:22,194 --> 00:05:27,304
+And finally we have denormalized values 
+where the exponent is zero, but we treat 
+
+71
+00:05:27,304 --> 00:05:33,470
+the signifcand a little differently. 
+And you'll notice that in this case we'll 
+
+72
+00:05:33,470 --> 00:05:40,076
+put a zero in front of it, rather than 
+our typical one for normalized values. 
+
+73
+00:05:40,076 --> 00:05:44,768
+And this is used to represent values to 
+more densely represent the values near 
+
+74
+00:05:44,768 --> 00:05:48,260
+zero, okay? 
+we're not going to talk about 
+
+75
+00:05:48,260 --> 00:05:53,078
+denormalized values here but they are 
+treated in more detail in the recommended 
+
+76
+00:05:53,078 --> 00:05:59,075
+text by Bryant and O'Halloran, if you 
+want to learn more about that. 
+
+77
+00:05:59,075 --> 00:06:03,966
+finally, we always have to remember that 
+all these representations suffer from the 
+
+78
+00:06:03,966 --> 00:06:08,321
+problem that there's a fixed number of 
+bits, and that means we can get overflow 
+
+79
+00:06:08,321 --> 00:06:12,962
+or underflow. 
+in floating point we also have to 
+
+80
+00:06:12,962 --> 00:06:16,558
+consider the fact that even simple 
+fractions like 0.2, do not have an exact 
+
+81
+00:06:16,558 --> 00:06:20,546
+representation. 
+In fact it, it, it's a repeating 
+
+82
+00:06:20,546 --> 00:06:25,585
+representation that we have to truncate 
+at some point and round okay. 
+
+83
+00:06:25,585 --> 00:06:30,005
+So, we can lose precision unlike every 
+operation gets a slightly wrong result 
+
+84
+00:06:30,005 --> 00:06:35,653
+that is rounded from the exact result. 
+And these can pile up and that's why we 
+
+85
+00:06:35,653 --> 00:06:42,234
+do that round to even, to make sure it 
+doesn't go in one direction all the time. 
+
+86
+00:06:42,234 --> 00:06:44,404
+Okay. 
+the other thing we need to remember is 
+
+87
+00:06:44,404 --> 00:06:48,300
+that we might get different results as we 
+apply associativity and distributivity. 
+
+88
+00:06:48,300 --> 00:06:54,204
+Those operations, those laws do not apply 
+in floating point numbers because of 
+
+89
+00:06:54,204 --> 00:07:00,500
+these inexact results to every operation. 
+And lastly, yet again I want to remind 
+
+90
+00:07:00,500 --> 00:07:04,350
+you never test floating point values for 
+equality. 
+
+91
+00:07:04,350 --> 00:07:07,320
+Okay, that can get you in a lot of 
+trouble because of these rounding 
+
+92
+00:07:07,320 --> 00:07:10,302
+effects. 
+Alright, that concludes our discussion of 
+
+93
+00:07:10,302 --> 00:07:11,720
+number representations. 
+

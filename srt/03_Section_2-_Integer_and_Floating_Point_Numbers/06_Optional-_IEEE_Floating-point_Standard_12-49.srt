@@ -1,0 +1,778 @@
+1
+00:00:00,001 --> 00:00:05,290
+[MUSIC]. 
+
+2
+00:00:05,290 --> 00:00:10,560
+Alright, time to turn our attention to 
+how we represent floating-point numbers. 
+
+3
+00:00:10,560 --> 00:00:15,885
+And specifically using the IEEE standard 
+notation for floating-point numbers, 
+
+4
+00:00:15,885 --> 00:00:23,410
+which all modern computing systems use. 
+Alright, so floating-point is analagous 
+
+5
+00:00:23,410 --> 00:00:28,123
+to scientific notation. 
+you remember maybe in some of your 
+
+6
+00:00:28,123 --> 00:00:33,927
+science classes, that you wouldn't 
+represent a number like, 12 million. 
+
+7
+00:00:33,927 --> 00:00:40,610
+written with all those zeros behind it, 
+but rather as 1.2 times 10 to the 7th. 
+
+8
+00:00:40,610 --> 00:00:47,666
+Similarly a really tiny number like this 
+one 0.0000012, we can represent as 1.2 
+
+9
+00:00:47,666 --> 00:00:54,326
+times 10 to the minus 6. 
+In fact, C supports this notation, by 
+
+10
+00:00:54,326 --> 00:01:00,002
+letting you describe floating-point 
+numbers as 1.2e7 and, 1.2e minus 6 for 
+
+11
+00:01:00,002 --> 00:01:06,451
+the two examples above. 
+Alright this is this goes back to IEEE 
+
+12
+00:01:06,451 --> 00:01:11,191
+standard 754 which was established in 
+1985 as a uniform standard for 
+
+13
+00:01:11,191 --> 00:01:17,280
+floating-point arithmetic. 
+Before that, there were all kinds of 
+
+14
+00:01:17,280 --> 00:01:20,870
+different formats that were very 
+difficult to combine. 
+
+15
+00:01:20,870 --> 00:01:24,775
+but today's CPUs all use this same 
+standard. 
+
+16
+00:01:24,775 --> 00:01:28,822
+And it's really driven by, the 
+standardization was really driven by 
+
+17
+00:01:28,822 --> 00:01:34,028
+numerical concerns. 
+standards for handling routing overflow 
+
+18
+00:01:34,028 --> 00:01:39,740
+and underflow, representing 
+Rep, representing things like division by 
+
+19
+00:01:39,740 --> 00:01:44,166
+zero and so on. 
+And it ended up creating a standard that 
+
+20
+00:01:44,166 --> 00:01:50,280
+is very hard to make fast in hardware, 
+but is numerically very well behaved. 
+
+21
+00:01:50,280 --> 00:01:53,665
+And those concerns dominated that 
+standardization effort. 
+
+22
+00:01:53,665 --> 00:01:59,150
+Let's take a look at the details of of 
+the IEEE floating-point representation. 
+
+23
+00:01:59,150 --> 00:02:05,570
+If we have a value in base 10 we are 
+going to represent it as a magnitude. 
+
+24
+00:02:05,570 --> 00:02:11,610
+And then exponent for a power of 2 since 
+we are going to binary numbers. 
+
+25
+00:02:11,610 --> 00:02:15,020
+And then we will also have a sign bit for 
+the entire number, so this is back to 
+
+26
+00:02:15,020 --> 00:02:19,476
+sign and magnitude notation. 
+Okay, so the sign bit is going to 
+
+27
+00:02:19,476 --> 00:02:22,800
+determine whether the number is negative 
+or positive. 
+
+28
+00:02:22,800 --> 00:02:28,600
+Then the significand, or the mantissa, M 
+is normally a fractional value. 
+
+29
+00:02:28,600 --> 00:02:34,020
+Something in the range of 1.0 to 2. 
+And you notice that it can be exactly 
+
+30
+00:02:34,020 --> 00:02:38,720
+1.0, but just a smidgen less than 2. 
+That's why we use the rounded parentheses 
+
+31
+00:02:38,720 --> 00:02:42,970
+on that side. 
+And then the exponent is possibly 
+
+32
+00:02:42,970 --> 00:02:49,316
+negative, of course. 
+And can multiplies the mantissa by that 
+
+33
+00:02:49,316 --> 00:02:52,500
+power of 2. 
+Okay. 
+
+34
+00:02:52,500 --> 00:02:56,205
+So the representation then in memory is 
+going to be that we're going to have one 
+
+35
+00:02:56,205 --> 00:03:00,390
+bit, since that's all we need for the 
+sign bit. 
+
+36
+00:03:00,390 --> 00:03:04,870
+some number of bits for the exponent, 
+we're going to use, have a field called 
+
+37
+00:03:04,870 --> 00:03:09,127
+exp for that. 
+we're going to notice that it's going to 
+
+38
+00:03:09,127 --> 00:03:13,330
+encode, the value of E, but it is not 
+exactly E. 
+
+39
+00:03:13,330 --> 00:03:17,845
+We'll see what I mean by that in a bit. 
+And then a fractional field that encodes, 
+
+40
+00:03:17,845 --> 00:03:22,786
+encodes the mantissa, but again is not 
+exactly equal to the mantissa. 
+
+41
+00:03:22,786 --> 00:03:27,635
+And we'll see what the difference is in 
+just a sec. 
+
+42
+00:03:27,635 --> 00:03:31,570
+So let's, get to that. 
+so now, how many bits do we assign to 
+
+43
+00:03:31,570 --> 00:03:34,920
+each of these, fields? 
+We said that we're going to have one bit 
+
+44
+00:03:34,920 --> 00:03:40,616
+for the sign, that's easy enough. 
+for floating-point number represented in 
+
+45
+00:03:40,616 --> 00:03:43,385
+32 bits. 
+the actual police standard says we're 
+
+46
+00:03:43,385 --> 00:03:47,194
+going to use 8 bits for the exponent. 
+That's going to limit how large and how 
+
+47
+00:03:47,194 --> 00:03:51,246
+small our numbers can get. 
+And then um,, we're going to use the 
+
+48
+00:03:51,246 --> 00:03:58,720
+remaining 23 bits for the representing 
+that mantissa or the fractional part. 
+
+49
+00:03:58,720 --> 00:04:02,050
+And that will determine our precision, 
+okay. 
+
+50
+00:04:02,050 --> 00:04:05,890
+So we have range and precision, and of 
+course the trade-off between the two is 
+
+51
+00:04:05,890 --> 00:04:11,545
+how many bits we use for each. 
+So in IEEE floating-point, there's also a 
+
+52
+00:04:11,545 --> 00:04:15,830
+64 bit representation of floats or 
+doubles. 
+
+53
+00:04:15,830 --> 00:04:20,890
+that uses 11 bits for the exponent and 52 
+for the fractions. 
+
+54
+00:04:20,890 --> 00:04:25,915
+So quite a bit more range and also more 
+quite a bit more precision and also a bit 
+
+55
+00:04:25,915 --> 00:04:32,122
+more range. 
+Alright so lets talk about the mantissa 
+
+56
+00:04:32,122 --> 00:04:34,950
+first. 
+The the significant. 
+
+57
+00:04:36,620 --> 00:04:40,524
+We're going to talk about normalized 
+numbers, meaning that the mantissa is 
+
+58
+00:04:40,524 --> 00:04:45,195
+always going to be of the form one point 
+xxxxx some binary bits. 
+
+59
+00:04:45,195 --> 00:04:50,235
+this is analgous to what we do with 
+floating-point notation scientific 
+
+60
+00:04:50,235 --> 00:04:55,878
+notation , in decimal numbers. 
+We always have values that start with one 
+
+61
+00:04:55,878 --> 00:05:00,878
+point something, okay. 
+So if wanted to represent the number .011 
+
+62
+00:05:00,878 --> 00:05:08,600
+times 2 to the 5th, we would normalize 
+that to be 1.1 times 2 to the 3. 
+
+63
+00:05:08,600 --> 00:05:10,418
+Okay? 
+And those are exactly the same. 
+
+64
+00:05:10,418 --> 00:05:13,490
+But the latter makes better use of the 
+variable bits, because we don't have to 
+
+65
+00:05:13,490 --> 00:05:18,950
+bother with those extra zeros. 
+And actually since we now the mantissas 
+
+66
+00:05:18,950 --> 00:05:22,910
+always going to start with that one point 
+at the beginning, we not even going to 
+
+67
+00:05:22,910 --> 00:05:26,932
+bother to store that in our 
+representation. 
+
+68
+00:05:26,932 --> 00:05:30,767
+Why waste the bit on somethign we know is 
+always goign to be there, so that's why 
+
+69
+00:05:30,767 --> 00:05:35,170
+the fraction doesnt include the mantissa 
+exactly. 
+
+70
+00:05:35,170 --> 00:05:39,760
+The fraction only encodes this part of 
+the mantissa. 
+
+71
+00:05:39,760 --> 00:05:43,385
+those binary digits to the right of the 
+binary point. 
+
+72
+00:05:43,385 --> 00:05:50,150
+It does not encode the one to the left, 
+okay? 
+
+73
+00:05:50,150 --> 00:05:54,014
+But now we have to also ask ourselves a 
+question, for, how do we represent the 
+
+74
+00:05:54,014 --> 00:05:59,980
+number 0.0? 
+Ideally we'd like it to be the all zeros 
+
+75
+00:05:59,980 --> 00:06:04,482
+number as well. 
+You know, if we have zeros throughout our 
+
+76
+00:06:04,482 --> 00:06:08,540
+32 bits, I would still like that to 
+correspond to zero. 
+
+77
+00:06:08,540 --> 00:06:13,650
+So, we have to figure out how to get that 
+to work out exactly. 
+
+78
+00:06:13,650 --> 00:06:17,000
+so that's going to pose some challenges 
+for us. 
+
+79
+00:06:17,000 --> 00:06:22,254
+And then what about values that like 1 
+divided by 0, which yield a basically 
+
+80
+00:06:22,254 --> 00:06:27,930
+something that is not a number. 
+How are we going to encode that? 
+
+81
+00:06:27,930 --> 00:06:33,880
+So what we're going to do is reserve a 
+couple of exponent values, exponent field 
+
+82
+00:06:33,880 --> 00:06:38,685
+values. 
+to handle these cases. 
+
+83
+00:06:38,685 --> 00:06:43,503
+The special values we're most interested 
+in, as I've already mentioned, is the 
+
+84
+00:06:43,503 --> 00:06:48,960
+case of having the bit pattern of all 
+zeros represent a zero. 
+
+85
+00:06:48,960 --> 00:06:54,306
+So any exponent that has all zero bits 
+here, should be help, should be used to 
+
+86
+00:06:54,306 --> 00:07:00,760
+help us represent that zero. 
+we're also going to reserve an exponent 
+
+87
+00:07:00,760 --> 00:07:05,190
+of all ones for two other kinds of values 
+that we need. 
+
+88
+00:07:05,190 --> 00:07:10,215
+if the exponent is all ones, and the 
+fractional part is all zeros, then that's 
+
+89
+00:07:10,215 --> 00:07:15,425
+going to represent infinity and or a very 
+large number. 
+
+90
+00:07:15,425 --> 00:07:20,535
+and of course we'll have positive 
+infinity and negative infinity because we 
+
+91
+00:07:20,535 --> 00:07:25,170
+can have the sign bit represent that for 
+us. 
+
+92
+00:07:25,170 --> 00:07:29,274
+similarly if the fraction is not zero, 
+we're going to use that to represent not 
+
+93
+00:07:29,274 --> 00:07:33,510
+a number. 
+That's still within exponent of all ones. 
+
+94
+00:07:33,510 --> 00:07:36,950
+And not a number is an important value to 
+use. 
+
+95
+00:07:36,950 --> 00:07:39,770
+For operations that have an undefined 
+result. 
+
+96
+00:07:39,770 --> 00:07:44,460
+Things like the square root of minus one, 
+infinity minus infinity or an infinity 
+
+97
+00:07:44,460 --> 00:07:48,961
+times zero. 
+those are clearly not ones we can come up 
+
+98
+00:07:48,961 --> 00:07:54,606
+with a numeric value for. 
+So we're going to reserve these exponents 
+
+99
+00:07:54,606 --> 00:08:00,145
+of zero and all ones for this purpose. 
+So now let's turn our attention to how we 
+
+100
+00:08:00,145 --> 00:08:05,241
+deal with that exponent field. 
+Since we can't use zero, all zeros and 
+
+101
+00:08:05,241 --> 00:08:10,435
+all ones because we need those for those 
+special values. 
+
+102
+00:08:10,435 --> 00:08:15,220
+we're going to encode the exponent using 
+a Bias value. 
+
+103
+00:08:15,220 --> 00:08:21,030
+Basically, the real exponent that we want 
+on the number the value E, the exponent 
+
+104
+00:08:21,030 --> 00:08:26,929
+of the power of 2. 
+is going to be represented using this exp 
+
+105
+00:08:26,929 --> 00:08:31,840
+field, the exponent field, minus a Bias, 
+okay. 
+
+106
+00:08:31,840 --> 00:08:37,054
+And the Bias is an unsigned value ranging 
+from 1 to 2 to the k minus 2, where k is 
+
+107
+00:08:37,054 --> 00:08:45,086
+the number of bits in the exponent field. 
+So we're going to use a Bias of 2 to the 
+
+108
+00:08:45,086 --> 00:08:49,110
+k minus 1 minus 1. 
+Alright, let's see what that really 
+
+109
+00:08:49,110 --> 00:08:52,808
+means. 
+for single precision, that value turns 
+
+110
+00:08:52,808 --> 00:08:57,303
+out to be 127. 
+That means that since we can have 
+
+111
+00:08:57,303 --> 00:09:03,964
+exponents from 1 to 254 using 8 bits. 
+Remember we're not using zero and we're 
+
+112
+00:09:03,964 --> 00:09:08,880
+not using 255, because those are reserved 
+special values. 
+
+113
+00:09:08,880 --> 00:09:13,740
+That will then correspond to an exponent 
+from minus 126 to 127. 
+
+114
+00:09:13,740 --> 00:09:19,155
+So what that Bias lets us do, is 
+represent both positive and negative 
+
+115
+00:09:19,155 --> 00:09:25,031
+exponents. 
+In that range of 1 to 254 for the bit 
+
+116
+00:09:25,031 --> 00:09:31,709
+patterns in the exponent field. 
+For double precision, of course we have 
+
+117
+00:09:31,709 --> 00:09:35,013
+11 bits. 
+So we go from 1 to 2046, and the Bias is 
+
+118
+00:09:35,013 --> 00:09:39,750
+going to be a little bit more, it's 
+going to be 1023. 
+
+119
+00:09:39,750 --> 00:09:46,153
+So that the exponent we can represent are 
+minus 1022 to positive 1023. 
+
+120
+00:09:46,153 --> 00:09:52,432
+Okay, so these enable both these large 
+positive exponents for representing large 
+
+121
+00:09:52,432 --> 00:09:56,751
+numbers. 
+And very small values by having a 
+
+122
+00:09:56,751 --> 00:10:01,805
+negative exponent. 
+Okay, so the significand as I've 
+
+123
+00:10:01,805 --> 00:10:08,306
+mentioned is then encoded without that 
+leaving 1 on the mantissa. 
+
+124
+00:10:08,306 --> 00:10:14,133
+We just represent those other bits. 
+And a significand that has all zeros 
+
+125
+00:10:14,133 --> 00:10:20,096
+would correspond to 1 minus 0 1.0 because 
+the 1 point is assumed and then zeros 
+
+126
+00:10:20,096 --> 00:10:26,598
+following. 
+If we have a mantissa that is all ones, 
+
+127
+00:10:26,598 --> 00:10:34,280
+that's equivalent 1.11111, which is very 
+close to 2, but not quite 2. 
+
+128
+00:10:34,280 --> 00:10:36,098
+Okay. 
+So we get that leading extra bit for 
+
+129
+00:10:36,098 --> 00:10:39,898
+free. 
+So now we've seen how we encode both the 
+
+130
+00:10:39,898 --> 00:10:45,080
+E and the M in our exponent and 
+fractional parts. 
+
+131
+00:10:45,080 --> 00:10:47,507
+Okay? 
+That's why it's not an exact 
+
+132
+00:10:47,507 --> 00:10:50,895
+representation of those but rather an 
+encoding. 
+
+133
+00:10:50,895 --> 00:10:57,600
+Alright, so let's look at the 
+floating-point number 12345.0. 
+
+134
+00:10:57,600 --> 00:11:02,090
+remember, that is that same old bit 
+pattern for 12345. 
+
+135
+00:11:02,090 --> 00:11:06,422
+and now we have to normalize it. 
+put it in a form where there the 
+
+136
+00:11:06,422 --> 00:11:11,946
+significance starts with one point. 
+So the way we would that is by moving 
+
+137
+00:11:11,946 --> 00:11:19,350
+that binary point 13 positions over to be 
+right after the leading one. 
+
+138
+00:11:19,350 --> 00:11:22,470
+And then we have an exponent of 2 to the 
+13. 
+
+139
+00:11:22,470 --> 00:11:29,056
+So that's our normalized form, and now we 
+can encode the significand which is just 
+
+140
+00:11:29,056 --> 00:11:35,328
+this value brought down here. 
+And of course we're not going to bother 
+
+141
+00:11:35,328 --> 00:11:38,568
+with the leading 1, we're just going to 
+use the rest of the bits for the 
+
+142
+00:11:38,568 --> 00:11:43,571
+fractional part. 
+And that will lead to a fractional 23 
+
+143
+00:11:43,571 --> 00:11:47,810
+bits that we'll be using that will look 
+like this. 
+
+144
+00:11:47,810 --> 00:11:52,165
+And you notice we've just padded with 
+trailing zeros at the end because we have 
+
+145
+00:11:52,165 --> 00:11:56,939
+to have some bit values there. 
+So we don't want to change the value we 
+
+146
+00:11:56,939 --> 00:12:00,449
+use all zeros. 
+Alright, the exponent, remember we have 
+
+147
+00:12:00,449 --> 00:12:04,933
+to use that Bias so our exponent field is 
+going to be the value of E, plus the 
+
+148
+00:12:04,933 --> 00:12:09,740
+bias. 
+And the Bias remember was 127, so our 
+
+149
+00:12:09,740 --> 00:12:15,830
+exponent is 13, when we add 127, we have 
+an exponent of 140. 
+
+150
+00:12:15,830 --> 00:12:20,294
+And that will be the bit pattern for 140 
+that we will use in, in the 8 bit field 
+
+151
+00:12:20,294 --> 00:12:27,598
+for the exponent. 
+So the result is this representation for 
+
+152
+00:12:27,598 --> 00:12:35,930
+our floating-point number 12,345.0. 
+Okay, not immediately obvious at all by 
+
+153
+00:12:35,930 --> 00:12:39,070
+looking at those bits. 
+But you can see the process that we go 
+
+154
+00:12:39,070 --> 00:12:42,512
+though. 
+first that normalization, then taking the 
+
+155
+00:12:42,512 --> 00:12:47,658
+fractional part of the mantissa. 
+And then, adding the Bias to the 
+
+156
+00:12:47,658 --> 00:12:49,411
+exponent, okay? 
+

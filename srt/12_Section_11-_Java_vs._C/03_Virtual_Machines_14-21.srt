@@ -1,0 +1,859 @@
+1
+00:00:06,432 --> 00:00:08,230
+[MUSIC]. 
+To close up this section, after we've 
+
+2
+00:00:08,230 --> 00:00:12,348
+discussed how data is represented in in a 
+Java implementation and how procedures 
+
+3
+00:00:12,348 --> 00:00:16,118
+are represented.Uh, we're now going to 
+talk about how we actually execute the 
+
+4
+00:00:16,118 --> 00:00:21,090
+code. 
+And the runtime environment that Java 
+
+5
+00:00:21,090 --> 00:00:28,115
+provides and a topic of virtual machines 
+that help us with this kind of code. 
+
+6
+00:00:28,115 --> 00:00:32,910
+So, first let's let's talk about 
+implementing programming languages. 
+
+7
+00:00:32,910 --> 00:00:37,210
+There's actually many choices to how to 
+implement programming models. 
+
+8
+00:00:37,210 --> 00:00:40,590
+for the most part in this course, we've 
+talked about compilation. 
+
+9
+00:00:40,590 --> 00:00:46,470
+taking a C program, compiling it into 
+assembly language instructions, which in 
+
+10
+00:00:46,470 --> 00:00:50,455
+turn are further compiled into the actual 
+machine code that runs on our, on our 
+
+11
+00:00:50,455 --> 00:00:53,443
+CPU. 
+But we can also interpret a language, and 
+
+12
+00:00:53,443 --> 00:00:59,004
+by interpret we mean actually execute it 
+line by line in the original source code, 
+
+13
+00:00:59,004 --> 00:01:02,905
+so we don't go through these extra 
+translation steps. 
+
+14
+00:01:02,905 --> 00:01:06,619
+So this is obviously a lot less work for 
+the compiler to do. 
+
+15
+00:01:06,619 --> 00:01:11,480
+In fact, we don't have a compiler at all, 
+we have an interpreter and all the work 
+
+16
+00:01:11,480 --> 00:01:15,230
+is done at runtime. 
+This makes code a lot easier to debug 
+
+17
+00:01:15,230 --> 00:01:17,590
+because we're always working off of the 
+source code. 
+
+18
+00:01:17,590 --> 00:01:21,890
+We're not looking at a machine code 
+instructions or some believe, language 
+
+19
+00:01:21,890 --> 00:01:26,040
+instructions that Lose a lot of the 
+context that we might have had in our 
+
+20
+00:01:26,040 --> 00:01:29,460
+original code. 
+It's also easier to make languages run on 
+
+21
+00:01:29,460 --> 00:01:32,560
+different architectures, because 
+essentially we're running the program in 
+
+22
+00:01:32,560 --> 00:01:38,239
+a simulated environment that is part of 
+the interpretation of the languages. 
+
+23
+00:01:38,239 --> 00:01:43,310
+So, rather than having to know what the 
+detailed instructions are that the CPU 
+
+24
+00:01:43,310 --> 00:01:46,210
+can execute those machine code 
+instructions. 
+
+25
+00:01:46,210 --> 00:01:49,480
+we can just interpret the language 
+directly. 
+
+26
+00:01:49,480 --> 00:01:53,520
+Interpreted languages have a long, long 
+history, actually one of the first 
+
+27
+00:01:53,520 --> 00:01:57,600
+programming languages called Lisp was an 
+interpreted language. 
+
+28
+00:01:57,600 --> 00:02:01,750
+And there's still many interpreted 
+implementations very much with us today. 
+
+29
+00:02:01,750 --> 00:02:07,830
+not only Java, but also Python, 
+JavaScript, Ruby, Matlab, a lot of 
+
+30
+00:02:07,830 --> 00:02:11,130
+languages you might have heard of 
+mentioned. 
+
+31
+00:02:12,780 --> 00:02:18,250
+So, there's actually a continuum from in, 
+fully interpreted languages like To 
+
+32
+00:02:18,250 --> 00:02:23,100
+compile languages like C. 
+Java sits somewhere in the middle. 
+
+33
+00:02:23,100 --> 00:02:27,810
+it's partly compiled and partly 
+interpreted, and what do we mean by that? 
+
+34
+00:02:27,810 --> 00:02:33,930
+What we mean is that Java programs are 
+compiled into an intermediate language 
+
+35
+00:02:33,930 --> 00:02:39,202
+that is run by a virtual machine. 
+It's not a real architecture; there's no 
+
+36
+00:02:39,202 --> 00:02:41,059
+CPU. 
+That actually executes those 
+
+37
+00:02:41,059 --> 00:02:45,885
+instructions, but it's very easy for us 
+to interpret those instructions on any 
+
+38
+00:02:45,885 --> 00:02:49,960
+CPU. 
+So, it's kind of this intermediate level 
+
+39
+00:02:49,960 --> 00:02:54,050
+of programming language. 
+A partly compiled language if you will. 
+
+40
+00:02:54,050 --> 00:02:59,510
+And for Java it's called a bytecode 
+because it tries to pack Instructions 
+
+41
+00:02:59,510 --> 00:03:05,570
+into single bytes. 
+Java can also be compiled ahead of time, 
+
+42
+00:03:05,570 --> 00:03:12,360
+just like C is, and turned into a target 
+machine code for a particular CPU we 
+
+43
+00:03:12,360 --> 00:03:20,039
+refer to those those are compilers and 
+they can be either at compile time, ahead 
+
+44
+00:03:20,039 --> 00:03:22,935
+of time, or they can be just in time 
+compilers. 
+
+45
+00:03:22,935 --> 00:03:30,180
+So if we look at this pictorially, we 
+have a high level language program 
+
+46
+00:03:30,180 --> 00:03:35,860
+written in a language like Java, a native 
+machine language, the code, the machine 
+
+47
+00:03:35,860 --> 00:03:40,720
+code and instructions for a particular 
+CPU And the virtual machine language sits 
+
+48
+00:03:40,720 --> 00:03:44,770
+somewhere in the middle. 
+So we can have a Bytecode compiler that 
+
+49
+00:03:44,770 --> 00:03:48,780
+turns our high level language into this 
+virtual machine language. 
+
+50
+00:03:48,780 --> 00:03:57,503
+From there, we can go to different CPUs 
+for example, and easily re-target our 
+
+51
+00:03:57,503 --> 00:04:02,250
+code. 
+That can be done we can do that using a 
+
+52
+00:04:02,250 --> 00:04:05,640
+virtual machine interpreter or a JIT 
+compiler. 
+
+53
+00:04:05,640 --> 00:04:11,710
+JIT remember stands for just in time. 
+the virtual machine interpreter is 
+
+54
+00:04:11,710 --> 00:04:16,360
+actually going to look at the, at the 
+virtual machine language instructions, 
+
+55
+00:04:16,360 --> 00:04:20,210
+the bytecodes. 
+And for each one, interpret it, decide 
+
+56
+00:04:20,210 --> 00:04:24,370
+what it has to do. 
+the JIT compiler on the other hand, will 
+
+57
+00:04:24,370 --> 00:04:29,380
+translate those instructions into the low 
+level native machine language. 
+
+58
+00:04:29,380 --> 00:04:33,940
+And of course, we have the ahead of time 
+compiler that does that directly from the 
+
+59
+00:04:33,940 --> 00:04:37,760
+high level language program. 
+So the reason for this virtual machine is 
+
+60
+00:04:37,760 --> 00:04:45,920
+to create sort of a place where it's very 
+easy for us to compile or interpret to 
+
+61
+00:04:45,920 --> 00:04:49,835
+different architectures. 
+That's what makes Java more portable. 
+
+62
+00:04:49,835 --> 00:04:54,450
+All right, so let's focus in on the Java 
+virtual machine. 
+
+63
+00:04:55,600 --> 00:04:59,250
+As we said, this is what makes Java more 
+machine independent than some other 
+
+64
+00:04:59,250 --> 00:05:02,510
+languages. 
+The Java virtual machine also provides 
+
+65
+00:05:02,510 --> 00:05:07,180
+some very strong protections for the 
+language that sort of keep people out of 
+
+66
+00:05:07,180 --> 00:05:12,340
+trouble, programmers out of trouble, 
+unlike C which lets us run amok and do 
+
+67
+00:05:12,340 --> 00:05:19,060
+anything we want with the memory of and, 
+and references into that memory. 
+
+68
+00:05:19,060 --> 00:05:24,030
+Java uses a stack based execution model 
+and there are many different kinds of 
+
+69
+00:05:24,030 --> 00:05:28,150
+Java virtual machines. 
+Some do more interpretation, some compile 
+
+70
+00:05:28,150 --> 00:05:32,270
+the, into assembly. 
+they're usually implemented in a language 
+
+71
+00:05:32,270 --> 00:05:38,662
+like C however. 
+So here's a model for the vitual machine. 
+
+72
+00:05:38,662 --> 00:05:43,900
+in in most java virtual machines, there's 
+a concept of an operand stack where we 
+
+73
+00:05:43,900 --> 00:05:51,390
+put operands that we're going to operate 
+on in our procedures and code. 
+
+74
+00:05:51,390 --> 00:05:58,930
+And then a variable table where we can 
+store arguments and local variables. 
+
+75
+00:05:58,930 --> 00:06:05,120
+typically, the zero element of the 
+variable table always holds a pointer to 
+
+76
+00:06:05,120 --> 00:06:10,270
+the current object whose code we're 
+executing, so it would hold that pointer 
+
+77
+00:06:10,270 --> 00:06:16,770
+to this, that, that the object in which 
+execution is currently. 
+
+78
+00:06:16,770 --> 00:06:22,360
+then there's space for other arguments to 
+the method in the table and other local 
+
+79
+00:06:22,360 --> 00:06:27,250
+variables that might be in that method. 
+Okay. 
+
+80
+00:06:27,250 --> 00:06:33,250
+Let's take a look at a quick example. 
+Here's a Java bytecode for a very simple 
+
+81
+00:06:33,250 --> 00:06:39,450
+operation namely taking two arguments 
+adding them together and And storing the 
+
+82
+00:06:39,450 --> 00:06:42,910
+result. 
+So you'll see we have four byte codes 
+
+83
+00:06:44,440 --> 00:06:47,820
+listed here. 
+looks kind of like assembly language, but 
+
+84
+00:06:47,820 --> 00:06:54,210
+it's a, it's a little bit different. 
+You'll notice that there's no names for 
+
+85
+00:06:54,210 --> 00:06:58,680
+registers. 
+what we're doing is just getting some 
+
+86
+00:06:58,680 --> 00:07:02,875
+arguments and the first two instructions 
+and putting them on the stack. 
+
+87
+00:07:02,875 --> 00:07:07,990
+we're pushing the first argument of our 
+function on to the stack, the second 
+
+88
+00:07:07,990 --> 00:07:13,190
+argument and then we use an instruction 
+called add that pops the two elements 
+
+89
+00:07:13,190 --> 00:07:18,870
+from the stack, adds them together, 
+pushes the result back on And then yet 
+
+90
+00:07:18,870 --> 00:07:25,840
+another byte code called istore that 
+takes the result and puts it back into 
+
+91
+00:07:25,840 --> 00:07:31,860
+the table at location number three and 
+that's the basics of byte codes. 
+
+92
+00:07:31,860 --> 00:07:36,876
+No knowledge of registers, it just uses 
+those references into the Into the 
+
+93
+00:07:36,876 --> 00:07:40,517
+variable table. 
+You'll also notice that these 
+
+94
+00:07:40,517 --> 00:07:47,224
+instructions are pre-fixed with a letter 
+that signifies the data type that we're 
+
+95
+00:07:47,224 --> 00:07:51,634
+working with. 
+so I stands for integer, A for reference 
+
+96
+00:07:51,634 --> 00:07:58,370
+or address, B for byte, C for card, D for 
+double and so on, there's a few more but 
+
+97
+00:07:58,370 --> 00:08:03,460
+that's basically it. 
+Four bytes, four instructions that tell 
+
+98
+00:08:03,460 --> 00:08:08,360
+our virtual machine what to do. 
+So the C program that implements the 
+
+99
+00:08:08,360 --> 00:08:14,130
+virtual machine, reads each one of these 
+bytes, and so oh, I load one. 
+
+100
+00:08:14,130 --> 00:08:21,450
+That means it wants me to get an integer 
+from the variable table at location one 
+
+101
+00:08:21,450 --> 00:08:27,150
+and place that on the stack, and just 
+proceeds along executing one byte code 
+
+102
+00:08:27,150 --> 00:08:31,720
+after another. 
+If this were assembly language 
+
+103
+00:08:31,720 --> 00:08:34,200
+instructions, we might have something 
+that looks like this. 
+
+104
+00:08:34,200 --> 00:08:36,410
+You notice there's a lot more detail 
+here. 
+
+105
+00:08:36,410 --> 00:08:39,510
+There's names of specific registers in 
+which to store things. 
+
+106
+00:08:39,510 --> 00:08:44,990
+There are specific addresses where to, in 
+memory, when where, we have to go and put 
+
+107
+00:08:44,990 --> 00:08:50,230
+and get those values that's not present 
+here. 
+
+108
+00:08:50,230 --> 00:08:54,940
+Here we're dealing with just a stack in a 
+variable table all the locations are 
+
+109
+00:08:54,940 --> 00:08:58,890
+implicit based on that. 
+And we're not worrying about addresses 
+
+110
+00:08:58,890 --> 00:09:02,000
+and where things are. 
+We're leaving that up to the C program 
+
+111
+00:09:02,000 --> 00:09:04,750
+that interprets those instructions to 
+design. 
+
+112
+00:09:07,200 --> 00:09:13,970
+Here's a simple Java method this method 
+might be from a program that deals with a 
+
+113
+00:09:13,970 --> 00:09:20,690
+database of employee names This method is 
+called get employee name and of it has no 
+
+114
+00:09:20,690 --> 00:09:22,990
+arguments. 
+It's just going to be running in an 
+
+115
+00:09:22,990 --> 00:09:29,520
+object that pro, has access to the name 
+of the employee and you'll notice that 
+
+116
+00:09:29,520 --> 00:09:34,480
+the first bytecode is a reference load, a 
+load. 
+
+117
+00:09:34,480 --> 00:09:40,450
+Get the value of this. 
+stored at variable at zero in the var 
+
+118
+00:09:40,450 --> 00:09:43,415
+table. 
+And put that on the stack. 
+
+119
+00:09:43,415 --> 00:09:50,660
+The next bytecodes is getfield. 
+It's as pop the stack. 
+
+120
+00:09:50,660 --> 00:09:55,440
+go to that address. 
+offset it to the fifth field of the 
+
+121
+00:09:55,440 --> 00:10:00,019
+object. 
+at that address, and there you'll find 
+
+122
+00:10:00,019 --> 00:10:05,380
+the reference to a string for the name. 
+get that reference and put it back on the 
+
+123
+00:10:05,380 --> 00:10:09,660
+stack. 
+All of that is done in that one byte code 
+
+124
+00:10:09,660 --> 00:10:12,930
+instruction. 
+And then finally, the last instruction. 
+
+125
+00:10:12,930 --> 00:10:17,630
+Is a return with an address value with a 
+reference value. 
+
+126
+00:10:17,630 --> 00:10:21,690
+And it just pops the value that's 
+currently on the stack and returns that 
+
+127
+00:10:21,690 --> 00:10:26,630
+as the return value of the procedure. 
+In this case, a reference to that 
+
+128
+00:10:26,630 --> 00:10:30,560
+employee name. 
+So, that's the basic structure of a 
+
+129
+00:10:30,560 --> 00:10:32,880
+method. 
+This URL at the bottom. 
+
+130
+00:10:32,880 --> 00:10:37,710
+can point you to, it points you to all 
+the, the possible byte codes that might 
+
+131
+00:10:37,710 --> 00:10:45,450
+exist for Java implementation. 
+This code occupies five bytes of memory. 
+
+132
+00:10:45,450 --> 00:10:49,630
+A load is in the first byte, get field is 
+in the second byte. 
+
+133
+00:10:49,630 --> 00:10:54,600
+Now get field is actually a byte code 
+that requires two more bytes. 
+
+134
+00:10:54,600 --> 00:10:57,860
+To tell it which particular field in the 
+object to go get. 
+
+135
+00:10:57,860 --> 00:11:02,060
+So these two bytes together are the 
+number five. 
+
+136
+00:11:02,060 --> 00:11:06,810
+And then the last bytecode the return. 
+So they might be represented by these 
+
+137
+00:11:06,810 --> 00:11:10,910
+codes. 
+This is what is in the Java class file 
+
+138
+00:11:10,910 --> 00:11:18,950
+corresponding to this particular method. 
+The Java class file has everything that's 
+
+139
+00:11:18,950 --> 00:11:25,210
+associated with a class in Java. 
+And there's ten sections actually to a 
+
+140
+00:11:25,210 --> 00:11:28,620
+class file. 
+There's a magic number that starts things 
+
+141
+00:11:28,620 --> 00:11:33,570
+off at the beginning. 
+a version of the format that's being used 
+
+142
+00:11:33,570 --> 00:11:36,750
+just to keep things straight as Java's 
+updated. 
+
+143
+00:11:36,750 --> 00:11:41,290
+a set of constant values that are 
+going to be used in this class. 
+
+144
+00:11:42,850 --> 00:11:48,160
+some special flags to differentiate 
+whether this class or is abstract or 
+
+145
+00:11:48,160 --> 00:11:52,660
+static. 
+the name of the, of the class, it's super 
+
+146
+00:11:52,660 --> 00:11:57,490
+class that it inherits things from. 
+any interfaces it implements. 
+
+147
+00:11:58,590 --> 00:12:02,380
+Then it's fields, it's methods, it's 
+attributes. 
+
+148
+00:12:02,380 --> 00:12:07,460
+All of these are packaged together in a 
+single file. 
+
+149
+00:12:07,460 --> 00:12:10,430
+The methods here are the ones that are 
+going to have the byte codes. 
+
+150
+00:12:10,430 --> 00:12:18,170
+Corresponding to the code for each of the 
+methods in this class. 
+
+151
+00:12:18,170 --> 00:12:25,900
+And this is packaged up into a JAR file 
+that collects all of the class files 
+
+152
+00:12:25,900 --> 00:12:32,690
+associated with a Java program. 
+Give, given that we now have lots of Java 
+
+153
+00:12:32,690 --> 00:12:37,550
+virtual machines up there many designers 
+have developed new languages. 
+
+154
+00:12:37,550 --> 00:12:42,800
+That use the same byte codes as Java. 
+but totally different syntax. 
+
+155
+00:12:42,800 --> 00:12:47,042
+So this is a list of some of the 
+languages, like AspectJ, and JRuby, 
+
+156
+00:12:47,042 --> 00:12:55,010
+Jython Scala that are built on top of 
+Java virtual machines. 
+
+157
+00:12:55,010 --> 00:12:57,990
+use Java bytecodes but are not Java 
+programs. 
+
+158
+00:12:57,990 --> 00:13:02,810
+They're just using, exploiting that 
+intermediate language in order to compile 
+
+159
+00:13:02,810 --> 00:13:06,970
+to that, and then have access to all the 
+machines on which these Java virtual 
+
+160
+00:13:06,970 --> 00:13:11,000
+machines can run. 
+So this is another way that creating this 
+
+161
+00:13:11,000 --> 00:13:16,540
+intermediate layer Has helped spur 
+language design in many different kinds 
+
+162
+00:13:16,540 --> 00:13:24,430
+of languages for different tasks. 
+Microsoft C# and .NET Framework are 
+
+163
+00:13:24,430 --> 00:13:29,630
+another example of these same concepts. 
+C# has a lot of the similar motivations 
+
+164
+00:13:29,630 --> 00:13:35,390
+to Java and the virtual machine in this 
+case rather than being a JVM Is called 
+
+165
+00:13:35,390 --> 00:13:40,560
+the common language runtime and theres a 
+common intermediate language that takes 
+
+166
+00:13:40,560 --> 00:13:44,947
+the place of the bytecodes. 
+In the case of C# and just like in the 
+
+167
+00:13:44,947 --> 00:13:50,670
+case of Java with many other languages 
+using the Java bytecodes there are many 
+
+168
+00:13:50,670 --> 00:13:55,960
+languages that use the common 
+intermediate language or CIL that 
+
+169
+00:13:55,960 --> 00:14:01,040
+Microsoft developed. 
+In this case things like J#, Visual Basic 
+
+170
+00:14:01,040 --> 00:14:06,470
+are all languages that compile to the 
+same common intermediate language that 
+
+171
+00:14:06,470 --> 00:14:19,440
+then is translated to the particular 
+machine and CPU that we want to run our 
+
+172
+00:14:19,440 --> 00:14:19,890
+code on. 
+

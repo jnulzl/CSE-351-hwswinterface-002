@@ -1,0 +1,434 @@
+1
+00:00:00,002 --> 00:00:05,673
+[MUSIC]. 
+
+2
+00:00:05,673 --> 00:00:10,063
+It's time for another section. 
+This one on virtual memory, is going to 
+
+3
+00:00:10,063 --> 00:00:14,160
+be a very important one for for the 
+course. 
+
+4
+00:00:14,160 --> 00:00:19,124
+because virtual memory is a critical 
+component of modern computers that allows 
+
+5
+00:00:19,124 --> 00:00:24,490
+us to allows our programs. 
+To take advantage of the huge address 
+
+6
+00:00:24,490 --> 00:00:28,900
+space we can provide especially with a 64 
+bit address. 
+
+7
+00:00:28,900 --> 00:00:33,005
+but still realize things on the limited 
+amount of memory that we have. 
+
+8
+00:00:33,005 --> 00:00:37,097
+As, as always with our sections, we're 
+going to start off with a, a quick 
+
+9
+00:00:37,097 --> 00:00:43,408
+overview and motivation for the topic. 
+and then we'll get into some of the 
+
+10
+00:00:43,408 --> 00:00:47,730
+details of how virtual memory is actually 
+implemented. 
+
+11
+00:00:47,730 --> 00:00:51,951
+How it serves as a great tool for caching 
+at a different level than the caches 
+
+12
+00:00:51,951 --> 00:00:58,980
+we've already looked at, and how it helps 
+with memory management and protection. 
+
+13
+00:00:58,980 --> 00:01:03,264
+finally we'll conclude with a detailed 
+example of mirtual, virtual memory in 
+
+14
+00:01:03,264 --> 00:01:06,630
+action. 
+Okay. 
+
+15
+00:01:06,630 --> 00:01:10,914
+So, you'll remember, from the last 
+section, that a process is, an instance 
+
+16
+00:01:10,914 --> 00:01:16,442
+of a running program. 
+It is a really important idea in computer 
+
+17
+00:01:16,442 --> 00:01:23,970
+science and there's two key abstractions 
+that a process model provides. 
+
+18
+00:01:23,970 --> 00:01:28,585
+And that is one of logical control flow 
+that, namely that each process seems to 
+
+19
+00:01:28,585 --> 00:01:33,390
+have full control of the CPU. 
+It does everything it needs to do and 
+
+20
+00:01:33,390 --> 00:01:37,480
+doesn't really worry about other 
+processes that are running. 
+
+21
+00:01:37,480 --> 00:01:40,960
+That's what we learned about in the, in 
+the previous section. 
+
+22
+00:01:40,960 --> 00:01:44,550
+how we can interleave multiple processes 
+and so on. 
+
+23
+00:01:44,550 --> 00:01:49,023
+The other key abstraction that a process 
+provides is that it let's the programmer 
+
+24
+00:01:49,023 --> 00:01:52,803
+think about their process, or their 
+program, running in that process as 
+
+25
+00:01:52,803 --> 00:02:00,479
+having it's own private address space. 
+an address space that is huge, 64 bits of 
+
+26
+00:02:00,479 --> 00:02:05,610
+addressing and again, exclusive use of 
+that memory. 
+
+27
+00:02:05,610 --> 00:02:08,684
+Now that's not really true of course 
+because we're going to be running 
+
+28
+00:02:08,684 --> 00:02:13,965
+multiple processes on the same processor. 
+They're all going to want to use memory, 
+
+29
+00:02:13,965 --> 00:02:19,160
+so this is not going to be a perfect 
+exclusive use. 
+
+30
+00:02:19,160 --> 00:02:24,260
+And then in addition we're going to have 
+a much larger virtual memory than a 
+
+31
+00:02:24,260 --> 00:02:28,835
+physical memory, that we can really 
+realize in the CP, in the computer 
+
+32
+00:02:28,835 --> 00:02:33,638
+system. 
+So virtual memory is going to help us 
+
+33
+00:02:33,638 --> 00:02:38,350
+with both of these things. 
+exclusive use and a huge virtual memory, 
+
+34
+00:02:38,350 --> 00:02:43,662
+even when we have a small one. 
+So, lets take a look at what we know 
+
+35
+00:02:43,662 --> 00:02:50,521
+about Virtual Memory so far. 
+so programs refer to addresses in memory 
+
+36
+00:02:50,521 --> 00:02:53,970
+and these are really virtual memory 
+addresses. 
+
+37
+00:02:53,970 --> 00:02:57,690
+So, every time we write an instruction 
+like this and use an address, in this 
+
+38
+00:02:57,690 --> 00:03:01,292
+case an address stored in the register 
+ECX. 
+
+39
+00:03:01,292 --> 00:03:05,714
+Remember the parenthesis tell us to go to 
+that address in memory and get the value 
+
+40
+00:03:05,714 --> 00:03:10,530
+stored there, move it to a register in 
+this case. 
+
+41
+00:03:10,530 --> 00:03:13,096
+Alright? 
+What we're really doing is going to a 64 
+
+42
+00:03:13,096 --> 00:03:17,064
+bit address, which may or may not exist 
+physically in a particular place in 
+
+43
+00:03:17,064 --> 00:03:21,838
+memory. 
+But exists virtually, in that we have 
+
+44
+00:03:21,838 --> 00:03:26,773
+this huge array of bytes, each byte has 
+its own address. 
+
+45
+00:03:26,773 --> 00:03:31,829
+And the system is going to provide, a 
+private address base for each one of our 
+
+46
+00:03:31,829 --> 00:03:35,934
+processes. 
+Okay, the compiler and the runtime system 
+
+47
+00:03:35,934 --> 00:03:41,420
+is going to worry about how to allocate 
+stuff in memory, we've seen this already. 
+
+48
+00:03:41,420 --> 00:03:45,918
+to a, to a certain extent, we'll see a 
+little bit more later on. 
+
+49
+00:03:45,918 --> 00:03:50,598
+But basically, uh,the compiler is 
+deciding where different program objects 
+
+50
+00:03:50,598 --> 00:03:55,638
+should be stored in that larger array of 
+memory and, where data should be stored, 
+
+51
+00:03:55,638 --> 00:04:00,972
+and so on. 
+So, what problems does virtual memory 
+
+52
+00:04:00,972 --> 00:04:06,770
+solve that physical memory, doesn't solve 
+for us? 
+
+53
+00:04:06,770 --> 00:04:11,330
+Okay, so the first problem is that how 
+does everything fit? 
+
+54
+00:04:11,330 --> 00:04:17,620
+We have this huge address space, 64 bit 
+addresses, 16 Exabytes of data. 
+
+55
+00:04:17,620 --> 00:04:20,710
+We don't have computers with that much 
+physical memory. 
+
+56
+00:04:20,710 --> 00:04:25,650
+The physical memory we have is a tiny, 
+tiny amount compared to that address 
+
+57
+00:04:25,650 --> 00:04:29,785
+space. 
+so how do we fit all of this stuff that 
+
+58
+00:04:29,785 --> 00:04:35,980
+could be in here for our programs into 
+this tiny little space? 
+
+59
+00:04:35,980 --> 00:04:38,660
+Clearly we can't fit it all in at the 
+same time. 
+
+60
+00:04:38,660 --> 00:04:41,790
+We're going to have to decide what to put 
+in when. 
+
+61
+00:04:41,790 --> 00:04:46,398
+and that is one of the important things 
+that virtual memory is going to do for 
+
+62
+00:04:46,398 --> 00:04:50,642
+us. 
+Another aspect is that we have multiple 
+
+63
+00:04:50,642 --> 00:04:55,420
+processes, each one of them thinking they 
+have that huge address space. 
+
+64
+00:04:55,420 --> 00:04:58,400
+each one of them has a bunch of things in 
+memory. 
+
+65
+00:04:58,400 --> 00:05:02,380
+It's stack, it's heap, it's program and 
+it's data. 
+
+66
+00:05:02,380 --> 00:05:05,298
+Static data. 
+And what is going to go where in the 
+
+67
+00:05:05,298 --> 00:05:09,310
+physical memory, that little piece of 
+physical, main memory. 
+
+68
+00:05:09,310 --> 00:05:13,636
+How are we going to fit it in there? 
+And how are we going to multiplex between 
+
+69
+00:05:13,636 --> 00:05:17,914
+all of these so that when one process is 
+running, its memory is available in 
+
+70
+00:05:17,914 --> 00:05:23,354
+physical main memory. 
+And when a different process is running, 
+
+71
+00:05:23,354 --> 00:05:27,220
+its memory is available. 
+and those have to be kept separate and 
+
+72
+00:05:27,220 --> 00:05:31,914
+distinct. 
+So, we're going to want to protect one 
+
+73
+00:05:31,914 --> 00:05:37,907
+process from another, in that if one 
+process has a portion of memory. 
+
+74
+00:05:37,907 --> 00:05:43,075
+that it uses, we don't want to have 
+another process write to that, and maybe 
+
+75
+00:05:43,075 --> 00:05:47,735
+clobber data that the first process 
+needed. 
+
+76
+00:05:47,735 --> 00:05:50,574
+Okay. 
+So, we got to keep these separate from 
+
+77
+00:05:50,574 --> 00:05:54,150
+each other and protect them from each 
+others interactions. 
+
+78
+00:05:55,780 --> 00:05:58,801
+And then, the flip side of that is that 
+we also may want to share memory 
+
+79
+00:05:58,801 --> 00:06:02,300
+sometimes. 
+For example, suppose that we have a chunk 
+
+80
+00:06:02,300 --> 00:06:05,865
+of memory that represents a shared 
+library of code. 
+
+81
+00:06:05,865 --> 00:06:11,241
+So, quick example, right, those print F 
+and scan F routines that are commonly 
+
+82
+00:06:11,241 --> 00:06:17,070
+used by C programs. 
+We don't want to have to put those in 
+
+83
+00:06:17,070 --> 00:06:20,775
+memory multiple times, so we like 
+processes to be able to share those 
+
+84
+00:06:20,775 --> 00:06:25,480
+pieces especially if they're read only, 
+right? 
+
+85
+00:06:25,480 --> 00:06:30,450
+that we're not writing new values to 
+those locations. 
+
+86
+00:06:30,450 --> 00:06:34,604
+So, this is an important aspect of 
+sharing parts of memory and making it 
+
+87
+00:06:34,604 --> 00:06:40,620
+more efficient for the small physical 
+memory to handle many processes. 
+

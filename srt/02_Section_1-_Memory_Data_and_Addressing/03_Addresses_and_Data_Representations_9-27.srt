@@ -1,0 +1,543 @@
+1
+00:00:00,12 --> 00:00:05,681
+[MUSIC]. 
+
+2
+00:00:05,681 --> 00:00:10,368
+There's a lot more to talk about in how 
+we organize and address data in memory. 
+
+3
+00:00:10,368 --> 00:00:14,80
+Let's start with a very important 
+distinction between addresses and 
+
+4
+00:00:14,80 --> 00:00:19,662
+pointers. 
+You'll notice that I've drawn a memory on 
+
+5
+00:00:19,662 --> 00:00:24,982
+this slide, that has bytes grouped into 
+four byte units. 
+
+6
+00:00:24,982 --> 00:00:31,42
+That, that are 32 byte words. 
+You'll also notice that the first word is 
+
+7
+00:00:31,42 --> 00:00:37,930
+shown at address 0. 
+The second word at address four then 
+
+8
+00:00:37,930 --> 00:00:40,330
+eight. 
+And then c. 
+
+9
+00:00:40,330 --> 00:00:47,229
+This is now in hexadecimal notation. 
+So c corresponds to the decimal 12. 
+
+10
+00:00:47,229 --> 00:00:53,860
+Hexadecimal one zero corresponds to the 
+decimal 16. 
+
+11
+00:00:53,860 --> 00:00:57,952
+So here we're adding four for each 
+address as we move down our memory, since 
+
+12
+00:00:57,952 --> 00:01:03,542
+we're takling about words. 
+In this particular case, I've shown you 
+
+13
+00:01:03,542 --> 00:01:11,520
+the detail of one word that happens to 
+have the value 00001015F in hexadecimal. 
+
+14
+00:01:11,520 --> 00:01:15,264
+That corresponds to the decimal number 
+351. 
+
+15
+00:01:15,264 --> 00:01:20,620
+Now, an address is a location in memory, 
+as we've said. 
+
+16
+00:01:20,620 --> 00:01:25,740
+So we have these different addresses here 
+from 00 hex to down to 24 hex, for all 
+
+17
+00:01:25,740 --> 00:01:32,724
+these various locations in memory. 
+A pointer, unlike an address, is a data 
+
+18
+00:01:32,724 --> 00:01:38,782
+object that contains an address. 
+So, let me give you an example. 
+
+19
+00:01:38,782 --> 00:01:45,106
+I can put a pointer to that address of 
+0004, at a different memory location, 
+
+20
+00:01:45,106 --> 00:01:53,720
+let's say at the address 001C. 
+So now you'll see that what I've shown in 
+
+21
+00:01:53,720 --> 00:01:59,210
+the memory is that at that location, 
+001C, I have a value that happens to be 
+
+22
+00:01:59,210 --> 00:02:05,280
+the address of another location in 
+memory. 
+
+23
+00:02:05,280 --> 00:02:09,110
+That's what makes it a pointer, the fact 
+that I interpret it that way. 
+
+24
+00:02:09,110 --> 00:02:13,86
+I could have just as easily have 
+interpreted that number as just the 
+
+25
+00:02:13,86 --> 00:02:17,116
+number 4. 
+That would have been a beta value stored 
+
+26
+00:02:17,116 --> 00:02:21,934
+at that location but I am now choosing to 
+interpret it as an address in which case 
+
+27
+00:02:21,934 --> 00:02:30,344
+it is a pointer to a different location. 
+Let's take a look at another example I 
+
+28
+00:02:30,344 --> 00:02:37,412
+can have a pointer to that location in 
+the address 0024 by placing the value 
+
+29
+00:02:37,412 --> 00:02:47,374
+0000001C at the location 0024 in memory. 
+Again, I am choosing to interpret this as 
+
+30
+00:02:47,374 --> 00:02:54,240
+a, as an address, therefore, it is a 
+pointer to another memory location. 
+
+31
+00:02:54,240 --> 00:02:58,810
+If I had interpreted as just a number, 
+what number would it be? 
+
+32
+00:02:58,810 --> 00:03:06,330
+It would be the, the hex number 1C, which 
+is 16 plus 12, or 28 decimal. 
+
+33
+00:03:06,330 --> 00:03:09,222
+And not an address. 
+Okay. 
+
+34
+00:03:09,222 --> 00:03:14,410
+So, it's purely a an interpretation 
+question. 
+
+35
+00:03:14,410 --> 00:03:17,938
+Will I interpret this value as a pointer 
+and therefore an address to another 
+
+36
+00:03:17,938 --> 00:03:20,956
+location. 
+Or will I interpret it as a value. 
+
+37
+00:03:20,956 --> 00:03:27,110
+That's the distinction between addresses 
+and pointers. 
+
+38
+00:03:27,110 --> 00:03:32,402
+Another example is if in that memory 
+location zero zero one four I had put the 
+
+39
+00:03:32,402 --> 00:03:37,450
+value zero c. 
+Well is that an address? 
+
+40
+00:03:37,450 --> 00:03:41,546
+Well it could be an address. 
+It's part of our memory certainly, there 
+
+41
+00:03:41,546 --> 00:03:47,830
+is a, a, word with that address but am I 
+interpreting it as an address. 
+
+42
+00:03:47,830 --> 00:03:53,374
+Well I maybe, or it maybe just a number 
+12 corresponding to that hexidecimal c. 
+
+43
+00:03:54,650 --> 00:03:59,940
+In in C, in C and in Java we have many 
+different data types. 
+
+44
+00:03:59,940 --> 00:04:05,194
+And how we represent them in our machines 
+varies because of the amount of bits that 
+
+45
+00:04:05,194 --> 00:04:11,161
+we need to represent them. 
+So, this table just gives you a quick 
+
+46
+00:04:11,161 --> 00:04:18,544
+comparison of how that's done. 
+In both the 32-bit machine, and a 64-bit 
+
+47
+00:04:18,544 --> 00:04:22,910
+machine. 
+So, you'll see that a boolean data type 
+
+48
+00:04:22,910 --> 00:04:27,694
+requires just one byte. 
+Now, in reality, we can probably do it in 
+
+49
+00:04:27,694 --> 00:04:31,918
+one bit, but it's since we address things 
+in terms of bytes It's going to take up 
+
+50
+00:04:31,918 --> 00:04:38,990
+eight bits to do that. 
+a byte, of course, requires one byte. 
+
+51
+00:04:38,990 --> 00:04:44,230
+In C, a byte is also a character in a 
+character string. 
+
+52
+00:04:44,230 --> 00:04:48,12
+Java has a more complex structure for 
+characters we'll, that we'll get to a 
+
+53
+00:04:48,12 --> 00:04:53,214
+little bit later on. 
+That takes up two bytes per character. 
+
+54
+00:04:53,214 --> 00:04:59,342
+a, a short integer or a 16-bit integer 
+takes up two bytes in both. 
+
+55
+00:04:59,342 --> 00:05:04,980
+While a regular integer takes up four. 
+This is, based on the fact that we have a 
+
+56
+00:05:04,980 --> 00:05:09,304
+lot of programs that were written for 
+32-bit machines. 
+
+57
+00:05:09,304 --> 00:05:12,810
+A floating point number also takes up 
+four bytes. 
+
+58
+00:05:12,810 --> 00:05:15,648
+We'll discuss. 
+How we represent floaty point numbers 
+
+59
+00:05:15,648 --> 00:05:18,584
+later. 
+On 64-bit machines, we also have a 
+
+60
+00:05:18,584 --> 00:05:24,412
+long-end data type, an integer that takes 
+up 64 bits or 8 bytes. 
+
+61
+00:05:24,412 --> 00:05:31,198
+we also have double floats and long longs 
+and long doubles that can be particularly 
+
+62
+00:05:31,198 --> 00:05:36,520
+Large range of numbers taking up 16 
+bytes. 
+
+63
+00:05:36,520 --> 00:05:41,280
+And then we have addresses or references 
+or pointers which in a 32 bit machine can 
+
+64
+00:05:41,280 --> 00:05:48,88
+be up to four bytes by definition. 
+And in 64 bit machine can be up to eight 
+
+65
+00:05:48,88 --> 00:05:57,642
+bytes by definition. 
+Alright the next question is how do we 
+
+66
+00:05:57,642 --> 00:06:02,610
+order the bytes within a word, there's 
+actually two ways to do that one way is 
+
+67
+00:06:02,610 --> 00:06:08,552
+what's called big endian and the other is 
+little endian. 
+
+68
+00:06:08,552 --> 00:06:11,65
+Yeah. 
+And these two different conventions come 
+
+69
+00:06:11,65 --> 00:06:14,500
+from the names for them come from 
+Gulliver's Travels. 
+
+70
+00:06:14,500 --> 00:06:19,44
+You can read about this in the in the 
+textbook by Bryant and O'Halloran that 
+
+71
+00:06:19,44 --> 00:06:23,316
+we're using as a reference text for this 
+class. 
+
+72
+00:06:23,316 --> 00:06:29,796
+but basically the idea is that in in a 
+big endian notation, the most significant 
+
+73
+00:06:29,796 --> 00:06:35,482
+byte of the number goes to the lowest 
+address. 
+
+74
+00:06:35,482 --> 00:06:39,822
+and in the little endian notation, the 
+least significant byte goes to the lowest 
+
+75
+00:06:39,822 --> 00:06:42,970
+address. 
+So let's do a quick little example to 
+
+76
+00:06:42,970 --> 00:06:46,304
+demonstrate that. 
+Suppose I have the following eight digit 
+
+77
+00:06:46,304 --> 00:06:48,550
+hexadecimal number. 
+01234567, okay. 
+
+78
+00:06:48,550 --> 00:06:50,535
+And I want to store that at a word at 
+address 100 hex. 
+
+79
+00:06:50,535 --> 00:07:03,770
+Now, in a big Endian computer system, it 
+would be stored as follows. 
+
+80
+00:07:03,770 --> 00:07:09,805
+Okay, the most significant byte In other 
+words the highest ordered digit go to the 
+
+81
+00:07:09,805 --> 00:07:14,980
+first byte. 
+Then the next two go to the next byte. 
+
+82
+00:07:14,980 --> 00:07:20,320
+The and so on until the lowest 
+significant digits go in the last one at 
+
+83
+00:07:20,320 --> 00:07:23,638
+103. 
+And little in the end notation well it's 
+
+84
+00:07:23,638 --> 00:07:28,620
+in the opposite order. 
+The lowest order digits come in first, at 
+
+85
+00:07:28,620 --> 00:07:32,786
+address 100. 
+And the highest order digits end up going 
+
+86
+00:07:32,786 --> 00:07:35,844
+at 103. 
+These are two, these are the two natural 
+
+87
+00:07:35,844 --> 00:07:39,324
+choices to do, and you notice that the 
+little endian one looks a little 
+
+88
+00:07:39,324 --> 00:07:45,805
+backwards from our original number. 
+but that is in fact, the one that the x86 
+
+89
+00:07:45,805 --> 00:07:49,632
+architecture uses. 
+So, that's what we'll be seeing a lot in 
+
+90
+00:07:49,632 --> 00:07:53,920
+the memory maps that we'll be looking at, 
+and when we look at memory values and 
+
+91
+00:07:53,920 --> 00:08:00,502
+memory, they will be arranged this way. 
+Just a quick another example. 
+
+92
+00:08:00,502 --> 00:08:09,470
+looking at the decimal value 12345. 
+in binary that's represented right below 
+
+93
+00:08:09,470 --> 00:08:15,890
+as those binary digits which are the hex 
+three zero three nine. 
+
+94
+00:08:15,890 --> 00:08:18,960
+Okay so you'll see that in a 32 bit 
+architecture. 
+
+95
+00:08:18,960 --> 00:08:25,80
+We put the least significant digits at 
+the lowest address. 
+
+96
+00:08:25,80 --> 00:08:28,50
+And the most significant digits at the 
+highest address. 
+
+97
+00:08:28,50 --> 00:08:33,833
+While it's in the opposite order on a Big 
+Endian Architecture. 
+
+98
+00:08:33,833 --> 00:08:37,981
+for negative number, and don't worry 
+about the, this right now, but this is 
+
+99
+00:08:37,981 --> 00:08:41,580
+the number minus 1, 2, 3, 4, 5 
+represented in two's complement notation 
+
+100
+00:08:41,580 --> 00:08:48,155
+that we will get to a bit later. 
+But again, the lowest significant digits 
+
+101
+00:08:48,155 --> 00:08:53,244
+are represented first while in the big 
+end, it's the other way around. 
+
+102
+00:08:53,244 --> 00:08:58,281
+Now, here you'll see why little end might 
+be somehow, somewhat advantageous in a 
+
+103
+00:08:58,281 --> 00:09:02,352
+32-bit architecture to a 64-bit 
+architecture, you'll notice that the 
+
+104
+00:09:02,352 --> 00:09:07,850
+correspondence of those locations is the 
+same. 
+
+105
+00:09:07,850 --> 00:09:11,694
+When then there's a lot more zeros, of 
+course, in the 64-bit notation to pad 
+
+106
+00:09:11,694 --> 00:09:16,274
+things out. 
+While in the big NDN notation we can't 
+
+107
+00:09:16,274 --> 00:09:21,230
+just simply extend in this direction with 
+zeros. 
+
+108
+00:09:21,230 --> 00:09:25,198
+We have to actually go in the other 
+direction, and move this down, which is a 
+
+109
+00:09:25,198 --> 00:09:27,323
+bit more complex. 
+

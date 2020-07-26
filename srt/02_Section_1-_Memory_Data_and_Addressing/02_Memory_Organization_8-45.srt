@@ -1,0 +1,523 @@
+1
+00:00:00,8 --> 00:00:06,524
+[MUSIC]. 
+
+2
+00:00:06,524 --> 00:00:10,879
+Let's take a look at how we represent 
+information using these zero's and one's 
+
+3
+00:00:10,879 --> 00:00:16,523
+these low voltages and high voltages. 
+We're going to group our binary digits, 
+
+4
+00:00:16,523 --> 00:00:20,954
+bits, into groups of eight, that we're 
+going to call bytes. 
+
+5
+00:00:20,954 --> 00:00:27,674
+And, if we do that, you'll notice that we 
+can have a range of values that go from 
+
+6
+00:00:27,674 --> 00:00:33,538
+000 to 11111. 
+And that gives a range for the kinds of 
+
+7
+00:00:33,538 --> 00:00:37,480
+numbers we can represent in a, in a 
+single byte. 
+
+8
+00:00:37,480 --> 00:00:44,320
+That's going to correspond to zero 
+decimal to 255. 
+
+9
+00:00:44,320 --> 00:00:48,532
+And how did we get that 255? 
+Well, if we think about numbers being 
+
+10
+00:00:48,532 --> 00:00:54,262
+represented by a ones digit. 
+And then of course in decimal we would 
+
+11
+00:00:54,262 --> 00:00:58,654
+have a 10's digit here, but in binary 
+that's a 2's digit and then a 4's digit 
+
+12
+00:00:58,654 --> 00:01:03,782
+and an 8's and 16's and 32's, 64's and 
+128's. 
+
+13
+00:01:03,782 --> 00:01:11,12
+So, if we add all of those values we 
+would get 255. 
+
+14
+00:01:11,12 --> 00:01:17,752
+As a little example. 
+Let's take a look at this number here. 
+
+15
+00:01:17,752 --> 00:01:23,222
+00101011. 
+That corresponds to a 1 in the 32's 
+
+16
+00:01:23,222 --> 00:01:27,858
+column, a 1 in the 8's column, a 1 in the 
+2's column, and lastly, a 1 in the 1's 
+
+17
+00:01:27,858 --> 00:01:32,784
+column. 
+When we add those values, we get the 
+
+18
+00:01:32,784 --> 00:01:37,912
+decimal number 43. 
+In the other direction, if we started 
+
+19
+00:01:37,912 --> 00:01:46,590
+with the number 26 in decimal, that's a 
+16 plus an 8 plus a 2, all powers of 2. 
+
+20
+00:01:46,590 --> 00:01:53,514
+And that yields the following binary 
+number, 00101010. 
+
+21
+00:01:54,830 --> 00:01:58,745
+So the conversion is pretty simple. 
+It pretty much involves just the powers 
+
+22
+00:01:58,745 --> 00:02:02,396
+of two. 
+Now, one of things that we do because it 
+
+23
+00:02:02,396 --> 00:02:08,90
+gets tiring to say zero zero one zero one 
+zero one zero, 
+
+24
+00:02:08,90 --> 00:02:13,97
+We'll take a byte and represent it as. 
+Two hexadecimal digits. 
+
+25
+00:02:13,97 --> 00:02:19,656
+Hexadecimal digits are base 16 digits. 
+So now instead of a ones column or a twos 
+
+26
+00:02:19,656 --> 00:02:24,820
+column. 
+We have a ones column and a 16 columns. 
+
+27
+00:02:24,820 --> 00:02:30,420
+So in this case we would represent a byte 
+by the digits 0, 0. 
+
+28
+00:02:30,420 --> 00:02:34,310
+Each one of these is a group of four 
+binary digits. 
+
+29
+00:02:34,310 --> 00:02:40,785
+And we can range all the way up to FF. 
+The, case of all one binary digits, like 
+
+30
+00:02:40,785 --> 00:02:45,50
+we had above. 
+The table on the right, shows you the 
+
+31
+00:02:45,50 --> 00:02:51,490
+correspondence of the numbers from 0 to 
+15, in both binary and hexadecimal. 
+
+32
+00:02:51,490 --> 00:02:55,970
+So, you can see that we use the numbers 0 
+through 9 because we're already familiar 
+
+33
+00:02:55,970 --> 00:02:59,544
+with those. 
+We use those in our, in our decimal 
+
+34
+00:02:59,544 --> 00:03:03,387
+system, but those other six values we 
+need from 10 to 15 in bay 16, we'll use 
+
+35
+00:03:03,387 --> 00:03:09,245
+the letters A through F. 
+And the correspondence to the binary 
+
+36
+00:03:09,245 --> 00:03:14,580
+digits is right here. 
+So, we can see we can go, we go from the 
+
+37
+00:03:14,580 --> 00:03:19,488
+initials all 0's to a final all 1's. 
+'Kay. 
+
+38
+00:03:19,488 --> 00:03:25,336
+In the C language, we can write these 
+expressions these values, very easily by 
+
+39
+00:03:25,336 --> 00:03:30,745
+using the notation 0x to indicate a hex 
+number. 
+
+40
+00:03:30,745 --> 00:03:35,946
+And a number in base 16. 
+Here, we see an eight digit hexidecimal 
+
+41
+00:03:35,946 --> 00:03:39,794
+number. 
+Since the digits of 4 bits each, that's a 
+
+42
+00:03:39,794 --> 00:03:45,660
+32 bit long number that will be 
+represented in for bytes. 
+
+43
+00:03:45,660 --> 00:03:49,250
+And in C, it doesn't matter whether we 
+use upper case or lower case letters. 
+
+44
+00:03:49,250 --> 00:03:53,177
+Either one will work. 
+Okay, so now that we have an idea of how 
+
+45
+00:03:53,177 --> 00:03:58,170
+the numb-, numbers are represented we'll 
+be going a lot more into that soon. 
+
+46
+00:03:58,170 --> 00:04:04,440
+But we have our basic integers here. 
+How do we find these in memory? 
+
+47
+00:04:04,440 --> 00:04:08,326
+So the first thing we should understand 
+is that memory has been organized also in 
+
+48
+00:04:08,326 --> 00:04:11,792
+bytes. 
+Basically it's just a big long list of 
+
+49
+00:04:11,792 --> 00:04:16,256
+bytes, and each one of these bytes has 
+and address or an index that we can use 
+
+50
+00:04:16,256 --> 00:04:23,220
+to refer to it. 
+the if we start at the index that begins 
+
+51
+00:04:23,220 --> 00:04:28,710
+with all zeros and we end at the index of 
+all one's or all f's in hexidecimal 
+
+52
+00:04:28,710 --> 00:04:35,215
+notation. 
+All right, so basically we have a byte. 
+
+53
+00:04:35,215 --> 00:04:40,655
+At the start followed by another byte 
+another byte another byte all the way to 
+
+54
+00:04:40,655 --> 00:04:44,500
+the end. 
+How many bytes do we have? 
+
+55
+00:04:44,500 --> 00:04:48,682
+Well, that depends on how many bits we 
+have in the address. 
+
+56
+00:04:48,682 --> 00:04:53,104
+that's possible and we're going to see 
+that we have 32-bit machines that use 
+
+57
+00:04:53,104 --> 00:04:57,582
+32-bit addresses. 
+And the more modern 64-bit machines that 
+
+58
+00:04:57,582 --> 00:05:01,80
+use 64-bits of address. 
+All right. 
+
+59
+00:05:01,80 --> 00:05:05,908
+Where do those numbers go in these little 
+bytes in memory, these locations, is 
+
+60
+00:05:05,908 --> 00:05:11,700
+dependent on the compiler and the 
+run-time system of our machine. 
+
+61
+00:05:11,700 --> 00:05:16,530
+It will decide where the various numbers 
+are stored, and allocates them by finding 
+
+62
+00:05:16,530 --> 00:05:21,984
+a place for them in that memory. 
+Alright so let's talk a little bit about 
+
+63
+00:05:21,984 --> 00:05:26,16
+machine words we've been I've been 
+mentioned that maybe we'll have machines 
+
+64
+00:05:26,16 --> 00:05:30,100
+with 32-bit addresses or 64-bit 
+addresses. 
+
+65
+00:05:30,100 --> 00:05:36,660
+that, that amount corresponds to the word 
+size of the machine. 
+
+66
+00:05:36,660 --> 00:05:41,551
+its all the word sizes also the nominal 
+size of all the integer values we use so 
+
+67
+00:05:41,551 --> 00:05:48,510
+when a 32-bit machine will have integers 
+that can go up to 32 binary digits. 
+
+68
+00:05:48,510 --> 00:05:52,850
+And this includes address represented in 
+words. 
+
+69
+00:05:52,850 --> 00:05:57,128
+So what, as I mentioned before, until 
+recently, most machines used 32-bits, or 
+
+70
+00:05:57,128 --> 00:06:00,680
+4 byte words. 
+In the old days, we also had machines 
+
+71
+00:06:00,680 --> 00:06:05,0
+with 16-bit words or even at the very 
+beginning, 8-bit words. 
+
+72
+00:06:05,0 --> 00:06:09,588
+This limits addresses to 4 gigabytes. 
+That's how many different numbers we can 
+
+73
+00:06:09,588 --> 00:06:13,718
+have in 32-bits. 
+Therefore how many different addresses 
+
+74
+00:06:13,718 --> 00:06:18,390
+that we can have in the memory. 
+This has become now too small for memory, 
+
+75
+00:06:18,390 --> 00:06:22,500
+memory for many memory intensive 
+applications. 
+
+76
+00:06:22,500 --> 00:06:25,860
+Many of our applications use much more 
+space than that. 
+
+77
+00:06:25,860 --> 00:06:30,900
+So computers have changed to use 64 bit 
+words 8 bytes long and now we can have 2 
+
+78
+00:06:30,900 --> 00:06:39,115
+to the 64 different addresses. 
+Which leads to 18 exabytes of data to be 
+
+79
+00:06:39,115 --> 00:06:43,491
+addressed. 
+That's a huge amount, and we haven't run 
+
+80
+00:06:43,491 --> 00:06:47,342
+into that wall yet, but we probably will 
+one day. 
+
+81
+00:06:47,342 --> 00:06:51,698
+So for backward compatibility though, 
+many CPUs still support different word 
+
+82
+00:06:51,698 --> 00:06:56,41
+sizes. 
+we'll be looking primarily at 64 and 
+
+83
+00:06:56,41 --> 00:06:59,532
+32-bits. 
+But there are some instructions that 
+
+84
+00:06:59,532 --> 00:07:04,212
+you'll encounter that might manipulate 
+16-bit quantities or 8-bit, one byte 
+
+85
+00:07:04,212 --> 00:07:08,476
+quantities. 
+Alright, so how do we refer to then these 
+
+86
+00:07:08,476 --> 00:07:12,955
+larger things in memory? 
+We have mentioned bytes so far. 
+
+87
+00:07:12,955 --> 00:07:17,910
+Well, that's what we see here on the 
+right, in the slide. 
+
+88
+00:07:17,910 --> 00:07:21,942
+We have an address corresponding to each 
+byte of the memory, each individual 
+
+89
+00:07:21,942 --> 00:07:25,790
+little cell, where we can put an 8 bit 
+quantity. 
+
+90
+00:07:25,790 --> 00:07:30,548
+But I just said that we use 32-bit words 
+to represent numbers in many of our 
+
+91
+00:07:30,548 --> 00:07:34,639
+machines. 
+So 4 bytes will have to be grouped 
+
+92
+00:07:34,639 --> 00:07:40,532
+together to represent a single word. 
+Well, what address are we going to give 
+
+93
+00:07:40,532 --> 00:07:44,343
+that word? 
+The next one after it will also require 
+
+94
+00:07:44,343 --> 00:07:53,217
+an address what will we use for that. 
+In a 64-bit machine of course, will have 
+
+95
+00:07:53,217 --> 00:07:58,269
+to group the first 8 bytes into a word. 
+And then we have to decide on the address 
+
+96
+00:07:58,269 --> 00:08:01,461
+for that. 
+To have a uniform policy, what we do is 
+
+97
+00:08:01,461 --> 00:08:08,180
+we say, the address of the word is the 
+address of the first byte in the word. 
+
+98
+00:08:08,180 --> 00:08:13,31
+So in this case we would have the first 
+32-bit word would have the address 000 
+
+99
+00:08:13,31 --> 00:08:20,860
+because it starts at that byte. 
+The next word's address though is 0004. 
+
+100
+00:08:20,860 --> 00:08:24,166
+And it doesn't make any sense to talk 
+about the words between those at 
+
+101
+00:08:24,166 --> 00:08:29,330
+addresses 1, 2, and 3, because we're 
+going to be grouping things. 
+
+102
+00:08:29,330 --> 00:08:33,256
+In this 4 byte structure. 
+So we want to move on to the next four 
+
+103
+00:08:33,256 --> 00:08:36,800
+byte structure. 
+So the next address will be four, the 
+
+104
+00:08:36,800 --> 00:08:42,890
+next address will be eight, the next 
+address after that will be 12, and so on. 
+
+105
+00:08:42,890 --> 00:08:45,954
+And these are in base 10. 
+

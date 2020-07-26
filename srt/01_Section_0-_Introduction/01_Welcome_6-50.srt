@@ -1,0 +1,549 @@
+1
+00:00:00,1 --> 00:00:06,708
+[MUSIC] Welcome to the hardware, software 
+interface. 
+
+2
+00:00:06,708 --> 00:00:08,593
+My name is Gaetano Borriello. 
+
+3
+00:00:08,593 --> 00:00:10,319
+ >> And my name is Luis Ceze. 
+
+4
+00:00:10,319 --> 00:00:14,543
+ >> And we're going to tell you a little bit 
+ourselves, about ourselves to start 
+
+5
+00:00:14,543 --> 00:00:19,250
+things off. 
+Ah,I've been at UW since 1988. 
+
+6
+00:00:19,250 --> 00:00:22,489
+I have a PhD from UC Berkeley in Computer 
+Science. 
+
+7
+00:00:22,489 --> 00:00:26,969
+And my hometown is Naples, Italy where 
+we're famous for wood fired ovens that 
+
+8
+00:00:26,969 --> 00:00:31,725
+make delicious pizza. 
+And I have a research trajectory that's 
+
+9
+00:00:31,725 --> 00:00:35,510
+taken me through quite a few research 
+communities. 
+
+10
+00:00:35,510 --> 00:00:39,410
+I started off as an integrated circuit 
+designer and moved through network 
+
+11
+00:00:39,410 --> 00:00:42,704
+sensors. 
+And now, I am building mobile 
+
+12
+00:00:42,704 --> 00:00:45,602
+applications in the developing world. 
+
+13
+00:00:45,602 --> 00:00:49,246
+ >> And I'm Luis Ceze. 
+I was born and raised and San Paolo, 
+
+14
+00:00:49,246 --> 00:00:51,636
+Brazil. 
+I haven't been at UW quite as long as 
+
+15
+00:00:51,636 --> 00:00:54,134
+Gaetano. 
+About, you know, 20 years later, I 
+
+16
+00:00:54,134 --> 00:00:56,958
+started UW. 
+And I got my PhD at University of 
+
+17
+00:00:56,958 --> 00:01:00,307
+Illinois. 
+And I did work on computer architecture 
+
+18
+00:01:00,307 --> 00:01:03,358
+and compilers. 
+And now it's[INAUDIBLE] work in those 
+
+19
+00:01:03,358 --> 00:01:07,847
+areas as well as energy efficiency. 
+So Brazil is known for beaches and I love 
+
+20
+00:01:07,847 --> 00:01:11,215
+going to the beach. 
+However Brazil is also known for soccer, 
+
+21
+00:01:11,215 --> 00:01:13,816
+but I do not like soccer. 
+So don't talk to me about soccer, I don't 
+
+22
+00:01:13,816 --> 00:01:14,882
+know anything about it. 
+
+23
+00:01:14,882 --> 00:01:18,752
+ >> Okay, we also wanted to show you where we 
+work. 
+
+24
+00:01:18,752 --> 00:01:22,250
+that's the Paul G Allen Center for 
+Computer Science and Engineering, at the 
+
+25
+00:01:22,250 --> 00:01:26,520
+University of Washington. 
+And it's a gorgeous building, with a 
+
+26
+00:01:26,520 --> 00:01:32,27
+beautiful six story high atrium. 
+And we're also known for the cherry 
+
+27
+00:01:32,27 --> 00:01:37,490
+blossoms on our campus. 
+Which just recently bloomed, this March 
+
+28
+00:01:37,490 --> 00:01:43,684
+and our mascot the husky. 
+lastly, we're also known for Mt Rainier 
+
+29
+00:01:43,684 --> 00:01:50,60
+and some of the gorgeous mountain views 
+around campus. 
+
+30
+00:01:50,60 --> 00:01:50,210
+ >> Who are you? 
+
+31
+00:01:50,210 --> 00:01:53,828
+So there are literally thousands of you 
+and, so that means we don't get to know 
+
+32
+00:01:53,828 --> 00:01:56,650
+you face to face. 
+It's too bad. 
+
+33
+00:01:56,650 --> 00:02:00,702
+But please do fill out our online forms, 
+so we get to know a few things about you. 
+
+34
+00:02:00,702 --> 00:02:04,203
+And we're going to report aggregate 
+statistics so we know who you all are. 
+
+35
+00:02:05,710 --> 00:02:07,300
+ >> Hi, so what is this class about. 
+
+36
+00:02:07,300 --> 00:02:11,160
+The has an interesting title. 
+The hardware, software interface. 
+
+37
+00:02:11,160 --> 00:02:13,549
+And so, what is hardware? 
+And what is software? 
+
+38
+00:02:13,549 --> 00:02:17,340
+And what do we need to understand about 
+this inner, interface in between. 
+
+39
+00:02:17,340 --> 00:02:22,150
+So hardware of course, is the, the, 
+physical hardware. 
+
+40
+00:02:22,150 --> 00:02:26,366
+The chips that run the instructions that 
+make all of our modern computing systems 
+
+41
+00:02:26,366 --> 00:02:29,984
+possible. 
+Software is the code that we take through 
+
+42
+00:02:29,984 --> 00:02:33,140
+a series of steps. 
+And compile down to the basic 
+
+43
+00:02:33,140 --> 00:02:36,900
+instructions that, that hardware knows 
+how to execute. 
+
+44
+00:02:36,900 --> 00:02:40,728
+And what this class is about is how do we 
+get from those high level languages down 
+
+45
+00:02:40,728 --> 00:02:46,380
+to the primitive instructions that are 
+present in our hardware processors. 
+
+46
+00:02:46,380 --> 00:02:49,43
+That's what the hardware software 
+interface is about. 
+
+47
+00:02:51,90 --> 00:02:53,572
+ >> So we expect you to, to know some, some 
+
+48
+00:02:53,572 --> 00:02:57,366
+things. 
+For example basics of Binary numbers. 
+
+49
+00:02:57,366 --> 00:03:00,929
+So we have an example, we have two 
+numbers both base 2. 
+
+50
+00:03:00,929 --> 00:03:05,358
+So they're both Binary numbers and say if 
+you're trying to add 1001. 
+
+51
+00:03:05,358 --> 00:03:12,85
+With 001, you get 1010. 
+We also expect you to binary logic 
+
+52
+00:03:12,85 --> 00:03:18,569
+operators like And, Or and Not. 
+For example A and B, A and B is true if 
+
+53
+00:03:18,569 --> 00:03:25,520
+and only if A is true and B is true or 
+false otherwise, okay. 
+
+54
+00:03:25,520 --> 00:03:29,510
+We also expect you to know introductory 
+programming in Java or C would be even 
+
+55
+00:03:29,510 --> 00:03:32,770
+better 
+And none of the fancy stuff, just if 
+
+56
+00:03:32,770 --> 00:03:36,830
+statements, loops, and procedures and 
+methods would be enough. 
+
+57
+00:03:36,830 --> 00:03:39,949
+We also expect you to have access to 
+modern personal computer. 
+
+58
+00:03:39,949 --> 00:03:43,723
+So you can run the tools required to run 
+the assignments in this class. 
+
+59
+00:03:44,890 --> 00:03:46,316
+ >> Okay, so what are the outcomes of this 
+
+60
+00:03:46,316 --> 00:03:48,680
+course? 
+As Louise said, we just expect you to 
+
+61
+00:03:48,680 --> 00:03:52,800
+have some of the basics of computer 
+programming, nothing too fancy. 
+
+62
+00:03:52,800 --> 00:03:56,40
+most of our students here, at UW know 
+Java. 
+
+63
+00:03:56,40 --> 00:03:59,171
+But other languages are probably just as 
+good. 
+
+64
+00:03:59,171 --> 00:04:03,863
+we are going to take you into this class 
+to help you understand those abstractions 
+
+65
+00:04:03,863 --> 00:04:10,200
+that exist between those programs. 
+And that hardware that they run on. 
+
+66
+00:04:10,200 --> 00:04:13,698
+But not only what those abstractions are, 
+but why they exist, and how they build 
+
+67
+00:04:13,698 --> 00:04:16,964
+upon each other. 
+That's really the important aspect of 
+
+68
+00:04:16,964 --> 00:04:19,235
+this course. 
+And to do that, we're going to take you 
+
+69
+00:04:19,235 --> 00:04:23,370
+through some of the implementation 
+details of these underlying abstractions. 
+
+70
+00:04:23,370 --> 00:04:27,460
+The hope here, is that this will make you 
+more effective programmers. 
+
+71
+00:04:27,460 --> 00:04:31,24
+Able to understand the many factors that 
+influence a programs correctness and 
+
+72
+00:04:31,24 --> 00:04:34,289
+performance. 
+So, in the end we hope you'll be much 
+
+73
+00:04:34,289 --> 00:04:39,69
+better setup for following on to future 
+classes in computing. 
+
+74
+00:04:39,69 --> 00:04:44,750
+With a good solid foundation for how this 
+stuff really comes together. 
+
+75
+00:04:44,750 --> 00:04:45,974
+ >> And to achieve the outcomes that Gaetano 
+
+76
+00:04:45,974 --> 00:04:48,100
+just told you, here's what we're going to 
+have you do. 
+
+77
+00:04:48,100 --> 00:04:50,680
+You're going to have 5 programming 
+assignments. 
+
+78
+00:04:50,680 --> 00:04:54,700
+1 every 1 to 2 weeks. 
+And we're also going to recommend pencil 
+
+79
+00:04:54,700 --> 00:04:58,739
+and paper problems for your own benefit. 
+And we're going to point you to relevant 
+
+80
+00:04:58,739 --> 00:05:02,80
+sections of the book. 
+So we are, that said we really want to 
+
+81
+00:05:02,80 --> 00:05:06,258
+make the lecture self contained. 
+And review the text book main 
+
+82
+00:05:06,258 --> 00:05:08,830
+supplementary material for second point 
+of view. 
+
+83
+00:05:08,830 --> 00:05:10,233
+But we do expect you to read them. 
+
+84
+00:05:11,260 --> 00:05:15,455
+ >> Okay, so about those reference texts. 
+And again, these are purely recommended, 
+
+85
+00:05:15,455 --> 00:05:18,494
+they're not required in by, in it, by any 
+means. 
+
+86
+00:05:18,494 --> 00:05:23,142
+but you might find them helpful. 
+the, the first is the Computer Systems 
+
+87
+00:05:23,142 --> 00:05:27,710
+text by Bryant and O'Hallaron. 
+This is a great book that the second 
+
+88
+00:05:27,710 --> 00:05:33,970
+edition came out just a few years ago. 
+And, you can get it from lots of places. 
+
+89
+00:05:33,970 --> 00:05:38,44
+The book also has an extensive web site 
+at CMU. 
+
+90
+00:05:38,44 --> 00:05:41,528
+And, we also would like you to have a 
+reference for the C programming language 
+
+91
+00:05:41,528 --> 00:05:46,362
+which we'll be using in this class. 
+Now there's lots of options here. 
+
+92
+00:05:46,362 --> 00:05:50,0
+we recommend, we have a few 
+recommendations here on the slide. 
+
+93
+00:05:50,0 --> 00:05:53,175
+But really anything will do. 
+And there's lots of info even available 
+
+94
+00:05:53,175 --> 00:05:56,572
+on the web, if you don't want to bother 
+purchasing a text. 
+
+95
+00:05:56,572 --> 00:05:58,225
+ >> it takes a lot work to put a class 
+
+96
+00:05:58,225 --> 00:06:02,862
+together, and this class is no exception. 
+So there's a lot of people that were 
+
+97
+00:06:02,862 --> 00:06:07,457
+behind in, in making this course happen. 
+First the TA's that work behind the 
+
+98
+00:06:07,457 --> 00:06:10,94
+scenes. 
+In as well as the previous Coursera 
+
+99
+00:06:10,94 --> 00:06:13,38
+instructures, instructors at UW who 
+taught us about all of the things that we 
+
+100
+00:06:13,38 --> 00:06:16,364
+should and should not do when teaching 
+this class. 
+
+101
+00:06:16,364 --> 00:06:19,744
+and this class actually being taught, 
+this, version of this class is being 
+
+102
+00:06:19,744 --> 00:06:23,500
+taught in many places. 
+In, including CMU where the authors of 
+
+103
+00:06:23,500 --> 00:06:28,91
+the book that we just talked about are. 
+Like Randy Bryant and David O'Hallaron 
+
+104
+00:06:28,91 --> 00:06:31,298
+and all the instructors at CMU. 
+And you know? 
+
+105
+00:06:31,298 --> 00:06:33,160
+Mike, Matt Welsh, she used to be at 
+Harvard,. 
+
+106
+00:06:33,160 --> 00:06:36,660
+And now a Google's Shadow also taught 
+this class, and gave us a lot of material 
+
+107
+00:06:36,660 --> 00:06:40,435
+and feedback. 
+And the instructors at UW Peter Hornyack, 
+
+108
+00:06:40,435 --> 00:06:42,822
+Hal Perkins, and John Zajhorjan. 
+
+109
+00:06:42,822 --> 00:06:46,45
+ >> Alright, so thank you. 
+And we look forward to having you in the 
+
+110
+00:06:46,45 --> 00:06:46,866
+class. 
+
+111
+00:06:46,866 --> 00:06:48,140
+ >> Definitely, see you soon. 
+
+112
+00:06:48,140 --> 00:06:49,400
+ >> Bye bye. 
+
+113
+00:06:49,400 --> 00:06:50,975
+ >> Bye. 
+

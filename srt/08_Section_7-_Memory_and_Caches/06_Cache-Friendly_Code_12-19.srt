@@ -1,0 +1,864 @@
+1
+00:00:07,030 --> 00:00:10,790
+Now, we're going to do our last topic in 
+our memory and caches section. 
+
+2
+00:00:10,790 --> 00:00:14,370
+We're going to talk about program 
+optimizations that considered cache. 
+
+3
+00:00:14,370 --> 00:00:17,630
+Okay. 
+So the optimization code for the memory 
+
+4
+00:00:17,630 --> 00:00:23,220
+hierarchy has, you know, essentially 
+boils down to write code that has better 
+
+5
+00:00:23,220 --> 00:00:26,132
+locality. 
+Okay. 
+
+6
+00:00:26,132 --> 00:00:29,040
+That has better locality properties. 
+And remember, there are two types of 
+
+7
+00:00:29,040 --> 00:00:31,478
+locality spatial locality and temporal 
+locality. 
+
+8
+00:00:31,478 --> 00:00:34,549
+Okay . 
+And spatial locality, what we want to do 
+
+9
+00:00:34,549 --> 00:00:38,964
+is symmetrically access data contiguously 
+as much as possible. 
+
+10
+00:00:38,964 --> 00:00:42,660
+Even lays out data in memory in a way 
+that increases . 
+
+11
+00:00:42,660 --> 00:00:46,860
+the spatial locality properties. 
+And the second one is temporal locality. 
+
+12
+00:00:46,860 --> 00:00:50,545
+Make sure the algorithm, the code should 
+make sure that if there's a data item 
+
+13
+00:00:50,545 --> 00:00:55,645
+that's going to be accessed multiple 
+times, try to access them closer in time. 
+
+14
+00:00:55,645 --> 00:00:59,330
+So you can take advantage of temporal 
+locality and increase the likelihood that 
+
+15
+00:00:59,330 --> 00:01:05,269
+the data is going to be in the cache... 
+And ways of achieving that, there's 
+
+16
+00:01:05,269 --> 00:01:08,434
+multiple ways. 
+Two basic ones, one is a proper choice of 
+
+17
+00:01:08,434 --> 00:01:11,699
+algorithm. 
+Of course the algorithm itself determines 
+
+18
+00:01:11,699 --> 00:01:16,940
+a lot of the, how the data is laid out 
+and the order of operations in the data. 
+
+19
+00:01:16,940 --> 00:01:18,650
+And the second one is loop 
+transformations. 
+
+20
+00:01:18,650 --> 00:01:22,220
+How to reorder loops when you're 
+traversing data structures. 
+
+21
+00:01:22,220 --> 00:01:25,410
+So let me give you an example that's 
+going to showcase how important this is. 
+
+22
+00:01:25,410 --> 00:01:30,494
+When we talk about matrix multiplication. 
+In matrix multiplication, what happens is 
+
+23
+00:01:30,494 --> 00:01:35,564
+for example, suppose that i have a matrix 
+c that multiplier by multiplication 
+
+24
+00:01:35,564 --> 00:01:44,446
+between matrix a and matrix b. 
+So this element here of c which is 
+
+25
+00:01:44,446 --> 00:01:52,410
+element i, j is equals. 
+First column of the ith row of a 
+
+26
+00:01:52,410 --> 00:01:59,110
+multiplied by the first row of column j 
+in matrix b plus this one times this one 
+
+27
+00:01:59,110 --> 00:02:08,305
+plus this one times this one, this one 
+times this one and so on. 
+
+28
+00:02:08,305 --> 00:02:11,494
+Okay. 
+So that means that the, this loop here, I 
+
+29
+00:02:11,494 --> 00:02:15,322
+don't want to read the corner detail 
+because it's going to be it's going to be 
+
+30
+00:02:15,322 --> 00:02:19,567
+hard for you. 
+So, but, what you need to understand is 
+
+31
+00:02:19,567 --> 00:02:23,579
+that this code is reading this, reading 
+this, and then reading this, then reading 
+
+32
+00:02:23,579 --> 00:02:28,000
+this, then reading this, then reading 
+this. 
+
+33
+00:02:28,000 --> 00:02:31,602
+And so on. 
+It's going to read the entire row of a 
+
+34
+00:02:31,602 --> 00:02:37,135
+and this entire column of b. 
+Just to produce a single element in, in 
+
+35
+00:02:37,135 --> 00:02:38,520
+c. 
+Okay? 
+
+36
+00:02:38,520 --> 00:02:43,612
+So this is a matrix that's n by n 
+elements, okay? 
+
+37
+00:02:43,612 --> 00:02:48,600
+So we're going to do n squared of these 
+operations. 
+
+38
+00:02:48,600 --> 00:02:49,570
+Okay? 
+So it's a lot. 
+
+39
+00:02:49,570 --> 00:02:53,290
+It could, specially if the matrix as big, 
+this could be a lot of operation. 
+
+40
+00:02:53,290 --> 00:02:58,810
+So now, let's look at Cache Miss Analysis 
+of this matrix duplication, okay? 
+
+41
+00:02:58,810 --> 00:03:02,660
+We are going to assume that matrix 
+elements are doubles, o they take 8 
+
+42
+00:03:02,660 --> 00:03:06,379
+bytes. 
+And if our cache block is 64 bytes, each 
+
+43
+00:03:06,379 --> 00:03:10,690
+cache line, each cache block holds 8 
+doubles. 
+
+44
+00:03:12,480 --> 00:03:18,910
+Let's also say that our cache size c, 
+capital c it's much smaller than, than n. 
+
+45
+00:03:18,910 --> 00:03:23,190
+'Kay, which is the dimension of our, our 
+which is our dimension of our matrix. 
+
+46
+00:03:23,190 --> 00:03:28,522
+The dimension of our matrix n by n. 
+So let's see what happens in the first 
+
+47
+00:03:28,522 --> 00:03:30,963
+situation. 
+Remember, in the first situation we're 
+
+48
+00:03:30,963 --> 00:03:34,329
+going to be arranging entire row of this 
+matrix and entire columns of this matrix, 
+
+49
+00:03:34,329 --> 00:03:38,180
+okay. 
+So one thin to keep your mind to, the way 
+
+50
+00:03:38,180 --> 00:03:43,423
+data's laid out in memory. 
+What we're doing is, we are storing an 
+
+51
+00:03:43,423 --> 00:03:46,910
+entire row in memory, then another row, 
+then another row. 
+
+52
+00:03:46,910 --> 00:03:49,870
+Then another row, and so on. 
+So, let's say if this is row zero, row 
+
+53
+00:03:49,870 --> 00:03:53,790
+one, row two, and row three. 
+The way it's laid out in memory here. 
+
+54
+00:03:55,110 --> 00:03:59,430
+Is we're going to have entire row zero, 
+then entire row one, entire row two, 
+
+55
+00:03:59,430 --> 00:04:03,095
+entire row three. 
+And so on. 
+
+56
+00:04:03,095 --> 00:04:08,230
+'Kay, so the number of misses that we're 
+going to have is going to be, what, it's 
+
+57
+00:04:08,230 --> 00:04:14,204
+going to be n divided by 8. 
+Because as we're reading this one line 
+
+58
+00:04:14,204 --> 00:04:21,700
+here, we know that, since each line here, 
+each cache line, each cache block has. 
+
+59
+00:04:21,700 --> 00:04:27,620
+Eight doubles. 
+So like, 1, 2, 3, 4, 5, 6, 7, 8. 
+
+60
+00:04:27,620 --> 00:04:30,130
+We go back to the first one's going to be 
+a miss. 
+
+61
+00:04:30,130 --> 00:04:32,785
+Then the second one's going to hit, a 
+hit, a hit, a hit, a hit, a hit, and then 
+
+62
+00:04:32,785 --> 00:04:38,580
+the next one here is going to be a miss. 
+So that's why it's n divided by 8. 
+
+63
+00:04:38,580 --> 00:04:41,892
+Okay, that's taking advantage of that, 
+because of spacial locality, we're taking 
+
+64
+00:04:41,892 --> 00:04:44,420
+only n over 8. 
+'Kay? 
+
+65
+00:04:44,420 --> 00:04:49,365
+Now, we're going to add n here because 
+for each column here, 'kay? 
+
+66
+00:04:49,365 --> 00:04:54,265
+So each, each for each column here we're 
+going to, so for this column here, for 
+
+67
+00:04:54,265 --> 00:04:59,960
+each row of this column, we're going to 
+have a cache miss, right? 
+
+68
+00:04:59,960 --> 00:05:02,502
+We're going to mess up this one and then 
+this one, this one, this one, this one, 
+
+69
+00:05:02,502 --> 00:05:04,890
+so forth. 
+Like all of them, because. 
+
+70
+00:05:04,890 --> 00:05:10,128
+Just this is, bigger than a block. 
+Remember that if the cache is much 
+
+71
+00:05:10,128 --> 00:05:14,050
+smaller than n, definitely a blocks much 
+smaller than n. 
+
+72
+00:05:15,420 --> 00:05:20,028
+So, and then when we are done with the 
+saturation, only this part and this part 
+
+73
+00:05:20,028 --> 00:05:23,931
+is going to be in the cache. 
+And why is it? 
+
+74
+00:05:23,931 --> 00:05:26,892
+It is because we just read the first 
+element, and everything else, we didn't 
+
+75
+00:05:26,892 --> 00:05:29,910
+read. 
+Okay? 
+
+76
+00:05:29,910 --> 00:05:33,417
+Great. 
+So we're going to have 9n over 8 misses 
+
+77
+00:05:33,417 --> 00:05:38,570
+for the first iterations. 
+Now, if we extend this to all of the 
+
+78
+00:05:38,570 --> 00:05:42,110
+other iterations, what we're going to do 
+is going to have 9n over 8 misses 
+
+79
+00:05:42,110 --> 00:05:47,053
+multiplied by n squared, which is the 
+number of iterations. 
+
+80
+00:05:47,053 --> 00:05:49,939
+Remember that we're going to do this, 
+this is n. 
+
+81
+00:05:51,030 --> 00:05:54,102
+By n, and we're do this for each one of 
+the elements here, so that means there's 
+
+82
+00:05:54,102 --> 00:05:58,100
+n square elements. 
+So this, that means that our final cache 
+
+83
+00:05:58,100 --> 00:06:02,930
+miss the number of cache misses is 9 over 
+8, multiplied by n squared, so it's a lot 
+
+84
+00:06:02,930 --> 00:06:08,450
+of cache misses. 
+'Kay? 
+
+85
+00:06:08,450 --> 00:06:11,978
+So one way to solve this problem is to do 
+what we call a blocked matrix 
+
+86
+00:06:11,978 --> 00:06:15,770
+multiplication. 
+So instead of doing an entire row and 
+
+87
+00:06:15,770 --> 00:06:19,530
+entire column, were going to do this 
+block by block, okay. 
+
+88
+00:06:19,530 --> 00:06:26,360
+Such that we're going to, when we read a 
+part of a here, we're going to read. 
+
+89
+00:06:26,360 --> 00:06:29,710
+All of these. 
+And then for b here, instead of reading 
+
+90
+00:06:29,710 --> 00:06:33,430
+just, just the first one we're going to 
+need, we're going to read multiple rows, 
+
+91
+00:06:33,430 --> 00:06:37,122
+'kay? 
+But smaller, in a subset of the row, such 
+
+92
+00:06:37,122 --> 00:06:40,685
+that this stays in cache and this stays 
+in cache. 
+
+93
+00:06:40,685 --> 00:06:43,846
+'Kay? 
+And then when we need to cycle over this 
+
+94
+00:06:43,846 --> 00:06:47,140
+multiple time we're not going to have to 
+take the miss again. 
+
+95
+00:06:47,140 --> 00:06:52,250
+Isn't that cool? 
+So, now lets, let's do a, cache miss 
+
+96
+00:06:52,250 --> 00:06:56,742
+analysis of this one, okay? 
+So now how many blocks are we going to 
+
+97
+00:06:56,742 --> 00:06:59,705
+have? 
+Well we're going to have n over b blocks, 
+
+98
+00:06:59,705 --> 00:07:05,988
+because b is the size of the block, okay? 
+So, and we know that three blocks fits in 
+
+99
+00:07:05,988 --> 00:07:10,894
+the cache. 
+Kay, so and, and that means that 3b 
+
+100
+00:07:10,894 --> 00:07:18,560
+squared is smaller than the cache size c. 
+So, now, what we're going to have is, 
+
+101
+00:07:18,560 --> 00:07:24,110
+we're going to have b squared over 8 
+misses for each block, right? 
+
+102
+00:07:24,110 --> 00:07:26,255
+Because we have this repeatedly. 
+And then. 
+
+103
+00:07:26,255 --> 00:07:33,447
+so if we do, when, when we add this up, 
+we're going to have 2n over b times b 
+
+104
+00:07:33,447 --> 00:07:43,280
+squared over 8 which then, which ends up 
+being nb over 4 misses. 
+
+105
+00:07:43,280 --> 00:07:46,269
+So now, in the end, after it went in the 
+cache, we're going to have, is we're 
+
+106
+00:07:46,269 --> 00:07:49,405
+going to have all of this, because we 
+access all of these blocks that happen to 
+
+107
+00:07:49,405 --> 00:07:54,410
+fit in the cache. 
+Great. 
+
+108
+00:07:54,410 --> 00:07:58,346
+So, now this is the first iteration. 
+When we do this over all iterations you 
+
+109
+00:07:58,346 --> 00:08:00,940
+know, all these are going to be the same 
+as the first one. 
+
+110
+00:08:00,940 --> 00:08:04,226
+We are going to do this. 
+But now, since we are dividing we do this 
+
+111
+00:08:04,226 --> 00:08:07,361
+in blocks, now we are doing n over b 
+squared. 
+
+112
+00:08:07,361 --> 00:08:11,001
+That would be, because were going to do 
+this one for each block but were going to 
+
+113
+00:08:11,001 --> 00:08:16,170
+do it a few times were going to do n over 
+b times square. 
+
+114
+00:08:16,170 --> 00:08:21,042
+So in the end what were going to do is 
+our caching is going to be n squared 
+
+115
+00:08:21,042 --> 00:08:28,090
+divided by 4b so there's a huge impact in 
+our cache miss. 
+
+116
+00:08:28,090 --> 00:08:32,570
+So in summary, if we don't do blocking 
+we're going to have 9 over 8 n squared 
+
+117
+00:08:32,570 --> 00:08:37,260
+misses, but if we do blocking it's going 
+to be 1 over 4b multiplied by n squared 
+
+118
+00:08:37,260 --> 00:08:40,700
+misses. 
+Okay. 
+
+119
+00:08:40,700 --> 00:08:44,296
+So if B equals 8, the difference is 36 
+times. 
+
+120
+00:08:44,296 --> 00:08:49,090
+If B is 16, the difference number of 
+misses is 72x. 
+
+121
+00:08:49,090 --> 00:08:52,720
+It's just really, really, really big. 
+Okay? 
+
+122
+00:08:52,720 --> 00:08:56,502
+So, and the reason for dramatic 
+difference is that, makes the duplication 
+
+123
+00:08:56,502 --> 00:09:01,314
+inherently has temporal locality. 
+But you have to reorder the operation in 
+
+124
+00:09:01,314 --> 00:09:04,210
+order to take advantage of that. 
+Okay. 
+
+125
+00:09:05,350 --> 00:09:11,113
+So they put data is 3n squared. 
+In the computations 2 and cube, so every 
+
+126
+00:09:11,113 --> 00:09:15,380
+element is accessed, order and times. 
+Okay. 
+
+127
+00:09:15,380 --> 00:09:18,666
+But the program really has to be written 
+properly otherwise the different 
+
+128
+00:09:18,666 --> 00:09:22,960
+localities are too far apart in time and 
+the cache can't capture it. 
+
+129
+00:09:22,960 --> 00:09:25,610
+Okay. 
+So... 
+
+130
+00:09:25,610 --> 00:09:30,225
+The important thing to re, to keep in 
+mind for cash friendly code is that the 
+
+131
+00:09:30,225 --> 00:09:35,730
+programmer, you, can optimize code for 
+case performance. 
+
+132
+00:09:35,730 --> 00:09:39,321
+But it really depends on how the data 
+structures are organized, how data are 
+
+133
+00:09:39,321 --> 00:09:44,060
+accessed How the loop nest structure 
+works is think about blocking. 
+
+134
+00:09:44,060 --> 00:09:47,362
+Because blocking is a general technique. 
+You can always try to reorganize how the 
+
+135
+00:09:47,362 --> 00:09:50,680
+order that you do things. 
+That you try to keep a dully of blocks. 
+
+136
+00:09:50,680 --> 00:09:53,330
+Only parts of it in memory. 
+Okay. 
+
+137
+00:09:53,330 --> 00:09:56,696
+So and one thing to keep in mind is that 
+all systems like cache-friendly code but 
+
+138
+00:09:56,696 --> 00:10:01,140
+to get absolutely optimum performance 
+really depends on the platform. 
+
+139
+00:10:01,140 --> 00:10:04,880
+Because it depends on knowing the actual 
+cache organization cache geometry. 
+
+140
+00:10:04,880 --> 00:10:08,075
+Things like cache sizes, line sizes, 
+associativities and so on. 
+
+141
+00:10:08,075 --> 00:10:12,039
+'Kay. 
+So you can get most of the advantage with 
+
+142
+00:10:12,039 --> 00:10:13,720
+generic code. 
+'Kay. 
+
+143
+00:10:13,720 --> 00:10:17,710
+So not, when you're writing generic code, 
+just keep in mind that keep working set 
+
+144
+00:10:17,710 --> 00:10:21,472
+size reasonably small so it fits in the 
+cache and you take advantage of temporal 
+
+145
+00:10:21,472 --> 00:10:25,823
+locality. 
+Uses small strides so you take advantage 
+
+146
+00:10:25,823 --> 00:10:30,220
+of spatial locality, right, because it's 
+to be close by. 
+
+147
+00:10:30,220 --> 00:10:35,170
+And focus on inner loop codes because 
+those are the ones that are going to be 
+
+148
+00:10:35,170 --> 00:10:40,605
+accessed close by in time, okay. 
+Let's edge our, memory and caches 
+
+149
+00:10:40,605 --> 00:10:43,370
+section, what we call the Memory 
+Mountain. 
+
+150
+00:10:43,370 --> 00:10:47,076
+Okay, this is, this is very cool. 
+Okay, we are, we are, we ran some 
+
+151
+00:10:47,076 --> 00:10:52,460
+experiments in Intel core I7, okay. 
+And what we're showing you here in the 
+
+152
+00:10:52,460 --> 00:10:55,590
+access in, is read through put, megabytes 
+per second. 
+
+153
+00:10:55,590 --> 00:10:58,936
+So that means, up is good, is better, 
+okay. 
+
+154
+00:10:58,936 --> 00:11:03,952
+And our one cache is 32 kilobytes, so and 
+this is the working set size which grows 
+
+155
+00:11:03,952 --> 00:11:09,130
+this way, and the stride size grows this 
+way, okay. 
+
+156
+00:11:09,130 --> 00:11:15,250
+First thing to notice, as you increase 
+the stride size, you see there's a 
+
+157
+00:11:15,250 --> 00:11:21,676
+general drop in throughput, because 
+you're not taking as much advantage of 
+
+158
+00:11:21,676 --> 00:11:27,868
+temporal locality. 
+Now, the other thing is if you go, if you 
+
+159
+00:11:27,868 --> 00:11:30,955
+increase the working set size, if it fits 
+in the L1 cache you'll have really, 
+
+160
+00:11:30,955 --> 00:11:35,189
+really good high through put... 
+But then as the, as this doesn't fit in 
+
+161
+00:11:35,189 --> 00:11:37,941
+the L1 cache, now we're going to drop to 
+the other plateau here which is whatever 
+
+162
+00:11:37,941 --> 00:11:41,414
+fits in the L2. 
+And then the next plateau is whatever 
+
+163
+00:11:41,414 --> 00:11:45,790
+fits in the L3, whatever doesn't fit here 
+in L3, have to go to memory. 
+
+164
+00:11:45,790 --> 00:11:48,249
+Isn't that cool? 
+So, that means if you keep the working 
+
+165
+00:11:48,249 --> 00:11:51,870
+set size as much higher, as low as small, 
+there's much higher chance to stay within 
+
+166
+00:11:51,870 --> 00:11:56,240
+the L1 which is good. 
+Or with the L2, and so on. 
+
+167
+00:11:56,240 --> 00:11:58,895
+So things to keep in mind is, take 
+advantage of spatial locality, so you 
+
+168
+00:11:58,895 --> 00:12:02,442
+keep the stride low. 
+Take advantage of the working set size, 
+
+169
+00:12:02,442 --> 00:12:05,478
+you can do blocking to keep to focus on 
+the working side size for reachable parts 
+
+170
+00:12:05,478 --> 00:12:08,270
+of your code. 
+Okay. 
+
+171
+00:12:08,270 --> 00:12:10,370
+And if you keep it small, you're going to 
+get very high throughput. 
+
+172
+00:12:10,370 --> 00:12:14,699
+It has a huge impact on performance. 
+This concludes out memory and caches 
+
+173
+00:12:14,699 --> 00:12:16,530
+section, and I'll see you soon. 
+

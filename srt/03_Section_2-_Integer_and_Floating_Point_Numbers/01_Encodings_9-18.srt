@@ -1,0 +1,569 @@
+1
+00:00:00,001 --> 00:00:06,557
+[MUSIC]. 
+
+2
+00:00:06,557 --> 00:00:11,467
+Let's go back to our road map and look at 
+the next topic that we'll be covering. 
+
+3
+00:00:11,467 --> 00:00:17,453
+we're going to focus next on integers and 
+floats, the representation of numbers in 
+
+4
+00:00:17,453 --> 00:00:21,446
+in memory. 
+That's going to be an important precursor 
+
+5
+00:00:21,446 --> 00:00:25,390
+before we can man, look at all the 
+instructions for manipulating that data 
+
+6
+00:00:25,390 --> 00:00:29,139
+values. 
+So this section is going to cover the 
+
+7
+00:00:29,139 --> 00:00:34,100
+representation of integers. 
+Both signed and unsigned. 
+
+8
+00:00:34,100 --> 00:00:38,270
+And how we treat integers and c. 
+talk about some shifting and signed 
+
+9
+00:00:38,270 --> 00:00:43,460
+extension operations that will be 
+important for arithmetic. 
+
+10
+00:00:43,460 --> 00:00:48,490
+And then we'll close with a section on 
+floating point numbers. 
+
+11
+00:00:48,490 --> 00:00:52,856
+basically, how do we represent binary 
+numbers that are fractions rather than 
+
+12
+00:00:52,856 --> 00:00:56,846
+just integers? 
+And then, we'll get into a little bit of 
+
+13
+00:00:56,846 --> 00:01:01,520
+detail on the IEEE floating point 
+standard for floating point numbers. 
+
+14
+00:01:01,520 --> 00:01:05,740
+And how we do floating point operations. 
+And the rounding that they entail. 
+
+15
+00:01:05,740 --> 00:01:08,610
+As well as look at floating point numbers 
+and see. 
+
+16
+00:01:08,610 --> 00:01:11,070
+There's a lot more to floating point 
+numbers. 
+
+17
+00:01:11,070 --> 00:01:16,310
+And we, we'll leave a lot of those topics 
+to the text to cover. 
+
+18
+00:01:16,310 --> 00:01:21,287
+but we will do some of the basics. 
+But before we get to integers Just wanted 
+
+19
+00:01:21,287 --> 00:01:25,740
+to talk about a encoding problems in 
+general. 
+
+20
+00:01:25,740 --> 00:01:32,624
+So suppose we have a 52 card deck. 
+A, you know, the typical playing card 
+
+21
+00:01:32,624 --> 00:01:40,238
+setup with 13 cards of each suit 
+organized into four different suits. 
+
+22
+00:01:40,238 --> 00:01:45,012
+and we want to figure out how to 
+represent these in binary numbers how do 
+
+23
+00:01:45,012 --> 00:01:49,632
+we use zeros and ones to represent all 
+these cards, well we could start by 
+
+24
+00:01:49,632 --> 00:01:54,714
+thinking about the operations we want to 
+be able to do on the cards so we probably 
+
+25
+00:01:54,714 --> 00:02:03,180
+want to be able to tell if a card is 
+higher than another. 
+
+26
+00:02:03,180 --> 00:02:07,212
+or if they're the same suit that might 
+help us think about the kind of encoding 
+
+27
+00:02:07,212 --> 00:02:11,055
+we have, lets take a look at some 
+examples, so heres a very simple encoding 
+
+28
+00:02:11,055 --> 00:02:15,213
+to start with we have 52 different cards, 
+so lets use 52 different bits, with bit 
+
+29
+00:02:15,213 --> 00:02:21,800
+corresponding to the card that we haev 
+set to one. 
+
+30
+00:02:21,800 --> 00:02:25,890
+So that would let us use 52 bits of a 64 
+bit word, let's say. 
+
+31
+00:02:25,890 --> 00:02:31,884
+In what's called a one hot encoding. 
+And meaning that there's only going to be 
+
+32
+00:02:31,884 --> 00:02:35,450
+one bit set to one, all the others will 
+be set to zero. 
+
+33
+00:02:35,450 --> 00:02:43,800
+So we can have the first bit represent 
+lets say the ace of clubs. 
+
+34
+00:02:43,800 --> 00:02:47,740
+Okay and the next bit represents the two 
+of clubs and so on. 
+
+35
+00:02:47,740 --> 00:02:51,732
+What are some of the drawbacks to this? 
+Well it's going to be really hard to 
+
+36
+00:02:51,732 --> 00:02:58,180
+compare values and suits because we have 
+individual bits throughout those 52. 
+
+37
+00:02:58,180 --> 00:03:02,401
+where we have to look for the value in 
+the suit of the card and we sure have a 
+
+38
+00:03:02,401 --> 00:03:07,970
+large number of bits to represent 1 card 
+an entire 64 bit word. 
+
+39
+00:03:07,970 --> 00:03:12,325
+This is called a 1 hatting code where 
+only 1 bit is on another possibility to 
+
+40
+00:03:12,325 --> 00:03:16,345
+do do a 2 hotting coding where we might 
+use 4 bits to represent the suit and 
+
+41
+00:03:16,345 --> 00:03:23,370
+another 13 bits to represent the 13 
+possible values of the card. 
+
+42
+00:03:23,370 --> 00:03:27,560
+So now two bits would be set to one. 
+So the fir-, the first bit in the suit 
+
+43
+00:03:27,560 --> 00:03:32,528
+might be set, to indicate the suit clubs 
+and the, the first bit in the value might 
+
+44
+00:03:32,528 --> 00:03:38,270
+be set to indicate an ace. 
+okay. 
+
+45
+00:03:38,270 --> 00:03:41,338
+So now it's a lot easier to tell if two 
+cards are of the same suit, because 
+
+46
+00:03:41,338 --> 00:03:45,830
+they'll have the same 4 bits here. 
+And, we can tell, if a card is greater 
+
+47
+00:03:45,830 --> 00:03:51,610
+than another, by looking at the position 
+of the 1 in the remaining 13 bits. 
+
+48
+00:03:51,610 --> 00:03:55,354
+But that's still a bit cumbersome. 
+It's easier to compare suits and values 
+
+49
+00:03:55,354 --> 00:03:59,640
+but it's still a large number of bits. 
+in this case 17. 
+
+50
+00:03:59,640 --> 00:04:03,138
+This is what's called a two-hot encoding 
+now, because we have two bits set to one 
+
+51
+00:04:03,138 --> 00:04:07,046
+for each card. 
+Let's continue with this exercise and 
+
+52
+00:04:07,046 --> 00:04:10,360
+look at two possibly better 
+representations. 
+
+53
+00:04:10,360 --> 00:04:14,826
+we could just do a binary encoding of all 
+52 cards, we only need 6 bits to 
+
+54
+00:04:14,826 --> 00:04:19,523
+represent 64 diferent numbers so we can 
+take care of 52 in just 6 bits, that 
+
+55
+00:04:19,523 --> 00:04:24,143
+would allow us to fit a card into just a 
+bit and use the low order 6 bits to do 
+
+56
+00:04:24,143 --> 00:04:29,960
+that. 
+So that's kind of nice. 
+
+57
+00:04:29,960 --> 00:04:33,723
+It all fits in one byte. 
+and it's much smaller than the one or 
+
+58
+00:04:33,723 --> 00:04:37,562
+two-hot encoding. 
+But how can we make the value comparisons 
+
+59
+00:04:37,562 --> 00:04:41,290
+easier? 
+the suit comparisons easier. 
+
+60
+00:04:41,290 --> 00:04:45,194
+we're still going to have all the cards 
+numbered from one to 50 bit, one to 52, 
+
+61
+00:04:45,194 --> 00:04:49,652
+and that will not make it easy to do 
+those comparisons. 
+
+62
+00:04:49,652 --> 00:04:54,409
+so we can do something that's a bit of a 
+hybrid, we can use two bits for the suit, 
+
+63
+00:04:54,409 --> 00:04:59,630
+four bits for the value. 
+Two bits for the suit because we have 
+
+64
+00:04:59,630 --> 00:05:03,977
+four possible suits, so we need four 
+possible binary bit patterns here, 00, 
+
+65
+00:05:03,977 --> 00:05:09,320
+01, 10 and 11. 
+One and then four bits for the value. 
+
+66
+00:05:09,320 --> 00:05:14,830
+Because the card can be anything from an 
+ace to a king 13 different values. 
+
+67
+00:05:14,830 --> 00:05:19,252
+Okay so this makes it now easy to still 
+do that suit comparison, and just check 
+
+68
+00:05:19,252 --> 00:05:24,895
+if a number is smaller or greater than 
+another take away the value. 
+
+69
+00:05:24,895 --> 00:05:28,441
+Okay. 
+So, let's take a look at how we would 
+
+70
+00:05:28,441 --> 00:05:32,490
+implement these operations if we were 
+doing it in in C. 
+
+71
+00:05:32,490 --> 00:05:37,590
+So, if we wanted to check if 2 cards are 
+of the same suit, what we would do is 
+
+72
+00:05:37,590 --> 00:05:43,780
+have 2 bytes representing each card, 
+Okay? 
+
+73
+00:05:43,780 --> 00:05:48,030
+Maybe an array to represent a five card 
+hand. 
+
+74
+00:05:48,030 --> 00:05:54,170
+We would take two cards out of the hand 
+and ask if they're the same suit. 
+
+75
+00:05:54,170 --> 00:05:58,930
+And this function sameSuitP is 
+implemented here below. 
+
+76
+00:05:58,930 --> 00:06:01,850
+It returns a boolean value just zero or 
+one. 
+
+77
+00:06:02,870 --> 00:06:09,034
+And takes the two cards as, arguments. 
+What it does, you'll notice, is, it takes 
+
+78
+00:06:09,034 --> 00:06:14,210
+the first card, and does a bit wise and 
+with the suit mask. 
+
+79
+00:06:14,210 --> 00:06:18,265
+What is the suit mask? 
+The suit mask is a special value set to 
+
+80
+00:06:18,265 --> 00:06:21,970
+hex 3, 0. 
+Why hex 3, 0? 
+
+81
+00:06:21,970 --> 00:06:28,788
+Well that corresponds to 00110000. 
+You'll notice that when we do a bit wise 
+
+82
+00:06:28,788 --> 00:06:37,460
+and with this mask, we will only have non 
+zero results for these two bits. 
+
+83
+00:06:37,460 --> 00:06:41,160
+All the other bits will necessarily be 
+zero. 
+
+84
+00:06:41,160 --> 00:06:46,040
+Because we have a 0 here and 0 ended with 
+anything will result in a 0. 
+
+85
+00:06:46,040 --> 00:06:50,968
+So this will essentially extract the 
+value of the suit form the card 
+
+86
+00:06:50,968 --> 00:06:55,751
+representation. 
+It will only have a nonzero value 
+
+87
+00:06:55,751 --> 00:07:01,423
+possibly in these 2 bits okay. 
+So, then we can do an exclusive OR with 
+
+88
+00:07:01,423 --> 00:07:07,860
+the suit of the other card. 
+Okay and why do we do an exclusive OR? 
+
+89
+00:07:07,860 --> 00:07:12,252
+Well remember, an exclusive OR says 
+either one is true or the other is true 
+
+90
+00:07:12,252 --> 00:07:16,490
+but not both. 
+Okay? 
+
+91
+00:07:16,490 --> 00:07:20,993
+So, we would only get a perfect zero 
+result If these two suits matched 
+
+92
+00:07:20,993 --> 00:07:25,496
+exactly, in other words, they had the 
+same zeros and ones in these two 
+
+93
+00:07:25,496 --> 00:07:32,935
+locations, if they have that, then the 
+result will be all zeros. 
+
+94
+00:07:32,935 --> 00:07:39,015
+And that's a bouillon false, and by 
+taking the complement of it logically, we 
+
+95
+00:07:39,015 --> 00:07:45,650
+can say then that, tho, those two cards 
+match. 
+
+96
+00:07:45,650 --> 00:07:47,760
+That our result is true. 
+Okay. 
+
+97
+00:07:49,070 --> 00:07:52,409
+So what we actually implemented here was 
+the opposite of the x or by using the 
+
+98
+00:07:52,409 --> 00:07:56,700
+not. 
+In otehr words, we said, rather are the 
+
+99
+00:07:56,700 --> 00:08:02,200
+two suits different bits. 
+We, we're asking, are they the same bits? 
+
+100
+00:08:02,200 --> 00:08:07,624
+By just doing the compliment of the X0. 
+All right, that would have been the same 
+
+101
+00:08:07,624 --> 00:08:12,928
+as saying this using the equals, equals 
+boylean operator that says these 2 things 
+
+102
+00:08:12,928 --> 00:08:17,764
+exactly match I just showed you what we 
+could do with the boylean operators 
+
+103
+00:08:17,764 --> 00:08:22,931
+Alright. 
+Let's take a look now at comparing the 
+
+104
+00:08:22,931 --> 00:08:26,146
+values of two cards. 
+Again we have our array of five cards, 
+
+105
+00:08:26,146 --> 00:08:29,320
+our hand. 
+And we compare two cards, card1 and 
+
+106
+00:08:29,320 --> 00:08:33,064
+card2. 
+So which has the greater value? 
+
+107
+00:08:33,064 --> 00:08:39,784
+Is card1 a greater value than card2? 
+So you'll notice here what we're going to 
+
+108
+00:08:39,784 --> 00:08:47,530
+do is Apply a different mask to the card. 
+This mask is value 0f, the value mask. 
+
+109
+00:08:47,530 --> 00:08:52,298
+It has a one in the low order four bits. 
+So we're getting f-, the low order four 
+
+110
+00:08:52,298 --> 00:08:56,550
+bits, which represent the value and 
+zeroing the suit. 
+
+111
+00:08:56,550 --> 00:09:00,255
+And the way we get the suit zeroed is by 
+applying the logical AND with a mask that 
+
+112
+00:09:00,255 --> 00:09:06,674
+has zeros in these positions. 
+So now the result won't necessarily be 
+
+113
+00:09:06,674 --> 00:09:11,633
+there and if we compare 1 of those 
+extracted values to the other we can 
+
+114
+00:09:11,633 --> 00:09:18,663
+simply get the greater relationship 
+between the 2. 
+

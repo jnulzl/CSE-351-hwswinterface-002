@@ -1,0 +1,608 @@
+1
+23:59:59,500 --> 00:00:04,916
+[MUSIC]. 
+
+2
+00:00:04,916 --> 00:00:10,868
+We're now starting a new section. 
+We're going to be seeing how to manage 
+
+3
+00:00:10,868 --> 00:00:14,305
+memory. 
+How, how to further allocate memory as 
+
+4
+00:00:14,305 --> 00:00:18,193
+they run, so they can use it for their 
+data structures. 
+
+5
+00:00:18,193 --> 00:00:20,990
+'Kay? 
+So this section is a little long. 
+
+6
+00:00:20,990 --> 00:00:23,720
+It has quite a few parts to it. 
+Okay? 
+
+7
+00:00:23,720 --> 00:00:26,888
+We're going to start with a, with a quick 
+intro right now and then we're going to 
+
+8
+00:00:26,888 --> 00:00:31,487
+see how dynamic memory allocation works. 
+How and the reason we need dynamic memory 
+
+9
+00:00:31,487 --> 00:00:34,415
+allocation, is because the size and 
+number of data structures may be only 
+
+10
+00:00:34,415 --> 00:00:37,310
+known at run time, dynamically. 
+'Kay? 
+
+11
+00:00:38,980 --> 00:00:41,780
+And then we're going to see how we 
+implement that, that dynamic memory 
+
+12
+00:00:41,780 --> 00:00:45,593
+location in a number of ways. 
+We're going to look at something called 
+
+13
+00:00:45,593 --> 00:00:49,163
+garbage collection which automates a lot 
+of the memory management process from the 
+
+14
+00:00:49,163 --> 00:00:53,356
+programmer's point of view. 
+And then we're going to see how memory 
+
+15
+00:00:53,356 --> 00:00:57,164
+related bugs really can make your life 
+hard and how, what are some of the common 
+
+16
+00:00:57,164 --> 00:01:02,605
+memory related bugs you see. 
+that happening so you can avoid them in 
+
+17
+00:01:02,605 --> 00:01:04,247
+your code. 
+Kay? 
+
+18
+00:01:04,247 --> 00:01:08,188
+So what is Dynamic Memory Allocation? 
+The first thing to realize is that it's 
+
+19
+00:01:08,188 --> 00:01:11,818
+often impossible for a program to know 
+how much memory it's going to need, until 
+
+20
+00:01:11,818 --> 00:01:16,350
+it's actually running. 
+Let me give you an example. 
+
+21
+00:01:16,350 --> 00:01:20,610
+Suppose that you write a piece of code 
+that takes whatever the user's typing on 
+
+22
+00:01:20,610 --> 00:01:26,880
+the keyboards and stores it in memory. 
+Well, until the program runs, it doesn't 
+
+23
+00:01:26,880 --> 00:01:30,974
+know how much the user's going to type. 
+So it doesn't know how much memory it's 
+
+24
+00:01:30,974 --> 00:01:32,800
+going to need. 
+'Kay? 
+
+25
+00:01:32,800 --> 00:01:36,520
+So and therefore, it's not going to 
+locate it on the stack. 
+
+26
+00:01:36,520 --> 00:01:40,296
+So we're going to, we're going to 
+allocate this in a pa, in the region of 
+
+27
+00:01:40,296 --> 00:01:44,860
+the, the memory layout of the program 
+called the heap. 
+
+28
+00:01:44,860 --> 00:01:47,701
+'Kay? 
+So the heap is where dynamically 
+
+29
+00:01:47,701 --> 00:01:51,858
+allocated memory goes. 
+It's a region of the heap that where when 
+
+30
+00:01:51,858 --> 00:01:56,625
+programs allocate memory dynamically, 
+that's where it's allocated from. 
+
+31
+00:01:56,625 --> 00:01:59,178
+'Kay? 
+So the programmers use dynamic memory 
+
+32
+00:01:59,178 --> 00:02:03,468
+allocators such that it can acquire 
+memory at run time. 
+
+33
+00:02:03,468 --> 00:02:07,476
+They can acquire pieces of it's address 
+base at run time to store data. 
+
+34
+00:02:07,476 --> 00:02:09,753
+'Kay? 
+Again, this is for data structures that's 
+
+35
+00:02:09,753 --> 00:02:13,489
+only known at run time. 
+For anything that's known statically, it 
+
+36
+00:02:13,489 --> 00:02:17,300
+can allocate this in, in a different part 
+of memory. 
+
+37
+00:02:17,300 --> 00:02:21,223
+We're talking about the heap is 
+everything that's allocated explicity. 
+
+38
+00:02:21,223 --> 00:02:23,120
+'Kay? 
+And we going to be using something called 
+
+39
+00:02:23,120 --> 00:02:27,172
+malloc as a dynamic memory allocated 
+which I'm sure you've seen. 
+
+40
+00:02:27,172 --> 00:02:32,485
+So the dynamic memory allocators, they 
+manage this part of the other space, as I 
+
+41
+00:02:32,485 --> 00:02:39,470
+said, called the heap, at this region 
+here of your address base. 
+
+42
+00:02:39,470 --> 00:02:44,774
+That's where all of your regions of 
+memory are allocated with, with malloc 
+
+43
+00:02:44,774 --> 00:02:48,815
+go. 
+So let me tell a little bit more about 
+
+44
+00:02:48,815 --> 00:02:51,116
+the allocators. 
+Kay? 
+
+45
+00:02:51,116 --> 00:02:54,522
+So as I said, the allocators maintain a, 
+a heap. 
+
+46
+00:02:54,522 --> 00:02:57,667
+Right? 
+The heap is a collection of blocks. 
+
+47
+00:02:57,667 --> 00:03:00,329
+'Kay? 
+They can be of different sizes, and these 
+
+48
+00:03:00,329 --> 00:03:03,846
+blocks can either be free or allocated. 
+'Kay? 
+
+49
+00:03:03,846 --> 00:03:08,202
+So, and these blocks reside in the heap, 
+and the heap region itself might have to 
+
+50
+00:03:08,202 --> 00:03:11,699
+grow. 
+Because if the program uses a lot of 
+
+51
+00:03:11,699 --> 00:03:15,010
+memory, the region's set aside, the 
+region of the other space set aside. 
+
+52
+00:03:15,010 --> 00:03:19,105
+So the heap might not be large enough so 
+the process has to request to the 
+
+53
+00:03:19,105 --> 00:03:23,389
+operating system more chunks of the 
+address, of the virtual address space, to 
+
+54
+00:03:23,389 --> 00:03:27,324
+to have the heap there. 
+'Kay? 
+
+55
+00:03:27,324 --> 00:03:31,690
+So C application objects are typically 
+smaller than pages. 
+
+56
+00:03:31,690 --> 00:03:34,527
+The allocator manages blocks within 
+pages. 
+
+57
+00:03:34,527 --> 00:03:36,875
+'Kay? 
+So but that's not a restriction, 
+
+58
+00:03:36,875 --> 00:03:41,565
+applications could have objects much 
+bigger than pages, but typically they are 
+
+59
+00:03:41,565 --> 00:03:45,032
+not. 
+So the allocator, so this is not done by 
+
+60
+00:03:45,032 --> 00:03:48,464
+the operating system. 
+This allocator runs in user space and 
+
+61
+00:03:48,464 --> 00:03:53,909
+manages the actual smaller blocks then, 
+that's that's, that forms the heap. 
+
+62
+00:03:53,909 --> 00:03:56,321
+'Kay? 
+So there's two basic types of allocators, 
+
+63
+00:03:56,321 --> 00:04:00,347
+called the Explicit allocator, where 
+applications both allocates blocks and 
+
+64
+00:04:00,347 --> 00:04:04,161
+frees the block. 
+That's, that's what malloc and free does 
+
+65
+00:04:04,161 --> 00:04:06,495
+in C. 
+That's explicit because the program 
+
+66
+00:04:06,495 --> 00:04:09,491
+explicitly requests, and explicitly free 
+up them. 
+
+67
+00:04:09,491 --> 00:04:12,215
+There's also something called Implicit 
+allocator. 
+
+68
+00:04:13,310 --> 00:04:16,901
+So in thi, using this allocator the 
+application request memory, allocates 
+
+69
+00:04:16,901 --> 00:04:21,057
+memory, but does not free, because that's 
+done automatically. 
+
+70
+00:04:21,057 --> 00:04:23,382
+'Kay? 
+And this is what garbage collection is in 
+
+71
+00:04:23,382 --> 00:04:26,622
+say, Java ML and Lisp. 
+So you are going to be looking at the 
+
+72
+00:04:26,622 --> 00:04:29,550
+malloc package, this is part of the 
+standard C library, and here's what 
+
+73
+00:04:29,550 --> 00:04:33,283
+malloc does. 
+Malloc receives a size of the parameter, 
+
+74
+00:04:33,283 --> 00:04:37,570
+that's the size of the block that's going 
+to be allocated. 
+
+75
+00:04:37,570 --> 00:04:40,258
+And it returns a pointer that doesn't 
+have a type, because we don't know what, 
+
+76
+00:04:40,258 --> 00:04:42,920
+what kind of data is going to be there.? 
+'Kay? 
+
+77
+00:04:42,920 --> 00:04:47,936
+So, if it's successful it, it returns a 
+pointer to the new memory block, that has 
+
+78
+00:04:47,936 --> 00:04:51,053
+at least size bytes. 
+'Kay? 
+
+79
+00:04:51,053 --> 00:04:53,550
+And if the size is equal 0, it returns 
+NULL. 
+
+80
+00:04:53,550 --> 00:04:55,781
+'Kay? 
+Because then, why are you allocating if 
+
+81
+00:04:55,781 --> 00:04:57,410
+the size is 0? 
+Right? 
+
+82
+00:04:57,410 --> 00:05:01,820
+Now, so, and if the, if malloc cannot 
+find enough free memory to, to allocate 
+
+83
+00:05:01,820 --> 00:05:07,580
+the requested block, it returns NULL and 
+sets an error number. 
+
+84
+00:05:07,580 --> 00:05:13,118
+So you know why that happened. 
+And now, free doesn't return anything, 
+
+85
+00:05:13,118 --> 00:05:16,590
+but it takes a parameter of pointer p, 
+that is a pointer to the beginning of a 
+
+86
+00:05:16,590 --> 00:05:19,960
+block. 
+'Kay? 
+
+87
+00:05:19,960 --> 00:05:24,717
+So and p must come from a previous call 
+to malloc or realloc, but a realloc just 
+
+88
+00:05:24,717 --> 00:05:29,800
+resizes the, the size of a block. 
+'Kay? 
+
+89
+00:05:29,800 --> 00:05:34,486
+And what free does, it returns this block 
+pointed by p, back to the available pool, 
+
+90
+00:05:34,486 --> 00:05:41,250
+so it could be used in the future. 
+So let me give you an example. 
+
+91
+00:05:41,250 --> 00:05:45,430
+by the way, the, the other functions are 
+also calloc that is a new another version 
+
+92
+00:05:45,430 --> 00:05:48,993
+of malloc that sets the allocated block 
+to 0. 
+
+93
+00:05:48,993 --> 00:05:51,317
+Realloc just resizes the block. 
+And sbrk is using internally by the 
+
+94
+00:05:51,317 --> 00:05:53,076
+allocator to grow or shrink to size of 
+the heap, that's the system call. 
+
+95
+00:05:53,076 --> 00:05:57,699
+'Kay? 
+So now I'm going to give you an example. 
+
+96
+00:05:57,699 --> 00:06:05,289
+Suppose I have my function called foo 
+here it has two parameters int n and int 
+
+97
+00:06:05,289 --> 00:06:14,110
+m, and what we are doing here, and there 
+is a pointer p here. 
+
+98
+00:06:14,110 --> 00:06:18,862
+When we call malloc, what malloc's going 
+to do is going to get in, and multiplied 
+
+99
+00:06:18,862 --> 00:06:24,207
+it by the size of int, its going to 
+allocate an array of int. 
+
+100
+00:06:24,207 --> 00:06:26,965
+'Kay? 
+So this is an int, and its going to have 
+
+101
+00:06:26,965 --> 00:06:30,370
+in elements. 
+So the size of this array is, n 
+
+102
+00:06:30,370 --> 00:06:36,070
+multiplied by the size of int's, and 
+that's what we passed some malloc. 
+
+103
+00:06:36,070 --> 00:06:38,340
+It's the number of bytes we want to 
+allocate. 
+
+104
+00:06:38,340 --> 00:06:42,309
+And since we're going to be stored int's, 
+storing int's, we cast the pointer 
+
+105
+00:06:42,309 --> 00:06:48,371
+returned by malloc, to a pointer to a, a 
+pointer to an integer, to an int star. 
+
+106
+00:06:48,371 --> 00:06:50,546
+'Kay? 
+So if p is NULL, that means there was a 
+
+107
+00:06:50,546 --> 00:06:53,868
+problem with malloc, and the process 
+exits. 
+
+108
+00:06:53,868 --> 00:06:57,569
+All right? 
+Malloc may, may not have found enough 
+
+109
+00:06:57,569 --> 00:07:01,156
+free memory. 
+But if it, if it doesn't, if it's not 
+
+110
+00:07:01,156 --> 00:07:06,460
+new, that means that right here we have a 
+valid pointer starting p. 
+
+111
+00:07:06,460 --> 00:07:11,998
+So now we can execute a loop that just 
+populates that this, this array here with 
+
+112
+00:07:11,998 --> 00:07:16,740
+0, 1, and so on. 
+'Kay? 
+
+113
+00:07:16,740 --> 00:07:19,730
+So, but now let's say that this wasn't 
+enough. 
+
+114
+00:07:19,730 --> 00:07:24,977
+So we could do, we could call realloc. 
+Which retakes p, the original block, the 
+
+115
+00:07:24,977 --> 00:07:29,462
+pointer original block as a parameter, 
+and takes a new size, and what it does is 
+
+116
+00:07:29,462 --> 00:07:34,915
+it just resizes the block. 
+It returns a new pointer. 
+
+117
+00:07:34,915 --> 00:07:38,530
+Okay? 
+Which might not be the same. 
+
+118
+00:07:38,530 --> 00:07:42,807
+So, and now we can go and extend it. 
+We can write more elements so, so realloc 
+
+119
+00:07:42,807 --> 00:07:47,780
+just extends the array here. 
+And then we can go and start using these 
+
+120
+00:07:47,780 --> 00:07:51,205
+again. 
+And now we're going to print a new array, 
+
+121
+00:07:51,205 --> 00:07:53,440
+and so on. 
+'Kay? 
+
+122
+00:07:53,440 --> 00:07:54,020
+See you soon. 
+

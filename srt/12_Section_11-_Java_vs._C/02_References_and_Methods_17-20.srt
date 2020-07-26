@@ -1,0 +1,1085 @@
+1
+00:00:05,656 --> 00:00:07,537
+[MUSIC]. 
+Now that we've seen how basic data types 
+
+2
+00:00:07,537 --> 00:00:11,584
+are represented in Java, let's turn our 
+attention to the differences between 
+
+3
+00:00:11,584 --> 00:00:17,350
+pointers and references be pointers in C 
+and references in Java. 
+
+4
+00:00:17,350 --> 00:00:20,840
+We're going to take a look at that in 
+much more detail than we have so far. 
+
+5
+00:00:20,840 --> 00:00:25,500
+And then we're also going to look at how 
+we organized the code for our objects in 
+
+6
+00:00:25,500 --> 00:00:28,790
+Java. 
+Where do we find the methods associated 
+
+7
+00:00:28,790 --> 00:00:32,740
+with each of the objects? 
+Pointers to fields in C we've seen 
+
+8
+00:00:32,740 --> 00:00:40,020
+before, just in the last video actually. 
+and we've seen that the common construct 
+
+9
+00:00:40,020 --> 00:00:45,016
+is to have a pointer to a struct 
+de-reference it add an offset to a 
+
+10
+00:00:45,016 --> 00:00:49,480
+particular field. 
+And this is such a common situation of 
+
+11
+00:00:49,480 --> 00:00:55,100
+referencing a field in an object to, to 
+which we have a pointer to a struct to 
+
+12
+00:00:55,100 --> 00:00:57,740
+which we have a pointer. 
+That we have a shorthand in C, r->a. 
+
+13
+00:00:57,740 --> 00:01:03,500
+Okay? 
+Which encapsulates that de-reference 
+
+14
+00:01:03,500 --> 00:01:06,080
+there. 
+In Java, since all variables are 
+
+15
+00:01:06,080 --> 00:01:11,760
+references to objects we don't have to 
+worry about that explicit de-reference. 
+
+16
+00:01:11,760 --> 00:01:16,200
+Instead we always de-reference by 
+default, so we can use a simpler 
+
+17
+00:01:16,200 --> 00:01:21,850
+notation, just r.a to refer to a field 
+within an object. 
+
+18
+00:01:21,850 --> 00:01:23,680
+Alright? 
+But the thing to remember is that what's 
+
+19
+00:01:23,680 --> 00:01:29,470
+actually going on here, is we are taking 
+the reference or pointer to the object 
+
+20
+00:01:29,470 --> 00:01:36,700
+going to to that location, adding the 
+offset, and finding that field that way. 
+
+21
+00:01:38,440 --> 00:01:43,650
+Let's take a look at how we do casting in 
+C, and contrast that to what we do in 
+
+22
+00:01:43,650 --> 00:01:49,280
+what we can do in Java. 
+this is an example of code from a memory 
+
+23
+00:01:49,280 --> 00:01:53,219
+allocation program similar to the, to the 
+things that we've been talking about in 
+
+24
+00:01:53,219 --> 00:01:56,900
+the previous section. 
+And uh, [COUGH] what we're going to do 
+
+25
+00:01:56,900 --> 00:02:01,374
+here is take a pointer to a block of 
+memory. 
+
+26
+00:02:01,374 --> 00:02:06,137
+we're going to cast it as a simple 
+pointer a byte pointer. 
+
+27
+00:02:06,137 --> 00:02:12,330
+add in offset of number of bytes. 
+this will point us to a new location in 
+
+28
+00:02:12,330 --> 00:02:16,675
+memory. 
+And then recast that as, of, a, a 
+
+29
+00:02:16,675 --> 00:02:23,560
+structive type block info. 
+Now the reason we do this, is this would 
+
+30
+00:02:23,560 --> 00:02:27,000
+be a case, for example, we have a block 
+of memory. 
+
+31
+00:02:27,000 --> 00:02:31,680
+And we want to break it into two blocks, 
+because we want to allocate one to 
+
+32
+00:02:31,680 --> 00:02:34,435
+something, and have the remaining block 
+left over. 
+
+33
+00:02:34,435 --> 00:02:40,010
+so remember that our block definitions 
+included a couple of a few variables. 
+
+34
+00:02:40,010 --> 00:02:44,750
+the first one in integer to represent the 
+size and the tags of the block. 
+
+35
+00:02:44,750 --> 00:02:49,540
+And then two pointers to the next and 
+previous blocks in memory. 
+
+36
+00:02:49,540 --> 00:02:55,280
+So the way this ends up looking in in our 
+memory, is we started off with a pointer 
+
+37
+00:02:55,280 --> 00:02:58,625
+tool block that had those three fields at 
+the front. 
+
+38
+00:02:58,625 --> 00:03:02,310
+Alright? 
+The two pointers and the size and tag. 
+
+39
+00:03:02,310 --> 00:03:12,330
+And we've now offset that by some number 
+of bytes x and created a new area in 
+
+40
+00:03:12,330 --> 00:03:18,078
+memory. 
+That we're going to interpret as a as a 
+
+41
+00:03:18,078 --> 00:03:23,380
+BlockInfo struct. 
+this is equi-, the casting is equivalent 
+
+42
+00:03:23,380 --> 00:03:27,555
+to putting a lens over the memory, and 
+saying, look at this memory at this 
+
+43
+00:03:27,555 --> 00:03:31,340
+location. 
+We are going to view that as a BlockInfo. 
+
+44
+00:03:31,340 --> 00:03:37,660
+so that means we will interpret the bits 
+in memory in the first four bytes as the 
+
+45
+00:03:37,660 --> 00:03:42,580
+size in tag, and the next four bytes as 
+the next pointer, and the next four bytes 
+
+46
+00:03:42,580 --> 00:03:47,620
+as the previous pointer. 
+It's purely a reinterpretation of whats 
+
+47
+00:03:47,620 --> 00:03:49,720
+is in memory. 
+And then of course we have to make sure 
+
+48
+00:03:49,720 --> 00:03:54,540
+to put the right values there, the right 
+bits there to really be those pointers in 
+
+49
+00:03:54,540 --> 00:03:57,990
+that size. 
+Okay, but we can do this to any region of 
+
+50
+00:03:57,990 --> 00:04:01,720
+memory, and cast it into any struct we 
+want. 
+
+51
+00:04:01,720 --> 00:04:07,220
+All we're doing is instructing the system 
+to view that memory in that way. 
+
+52
+00:04:07,220 --> 00:04:13,440
+To look at it through that lens. 
+In Java on the other hand we can only 
+
+53
+00:04:13,440 --> 00:04:18,850
+have pointers or references to objects. 
+We cannot just point to an arbitrary part 
+
+54
+00:04:18,850 --> 00:04:22,110
+of memory. 
+So in, in this case I want to show an 
+
+55
+00:04:22,110 --> 00:04:27,100
+example of a, of a, object hierarchy. 
+We started off with our main object. 
+
+56
+00:04:27,100 --> 00:04:32,610
+We defined the parent object, and then 
+two sub-classes of that called sister and 
+
+57
+00:04:32,610 --> 00:04:34,840
+brother. 
+Okay? 
+
+58
+00:04:34,840 --> 00:04:40,959
+this code fragment here shows things that 
+are legal and illegal in Java. 
+
+59
+00:04:40,959 --> 00:04:46,400
+the ones that are bad are shown in red. 
+but let's take a look at the beginning of 
+
+60
+00:04:46,400 --> 00:04:49,259
+this code. 
+We've just defined three objects here, 
+
+61
+00:04:49,259 --> 00:04:54,060
+one of type parent, one of type sister, 
+and one of type brother using the new 
+
+62
+00:04:54,060 --> 00:04:58,260
+construct, and assigned them to a 
+variable of that type. 
+
+63
+00:04:58,260 --> 00:05:02,190
+Pretty straight forward, okay. 
+Now let's take a look at our first cast. 
+
+64
+00:05:02,190 --> 00:05:08,910
+We've created a new object called sister, 
+but put it into a pointer or a reference 
+
+65
+00:05:08,910 --> 00:05:12,600
+to an object of type parent. 
+And that's okay. 
+
+66
+00:05:12,600 --> 00:05:16,390
+Why is that okay? 
+Well, because sister inherits everything 
+
+67
+00:05:16,390 --> 00:05:19,430
+from parent. 
+So it has all of parents feels and 
+
+68
+00:05:19,430 --> 00:05:28,770
+methods so we can still use all those 
+things if we refer to the object as a 
+
+69
+00:05:28,770 --> 00:05:32,702
+parent. 
+So it can, we can get away with that. 
+
+70
+00:05:32,702 --> 00:05:38,570
+as an example if we went in the other 
+direction, if we had created a new 
+
+71
+00:05:38,570 --> 00:05:43,850
+parent, and try to put it into a variable 
+of type sister, we have a problem. 
+
+72
+00:05:43,850 --> 00:05:47,870
+Because sister has things that parent 
+doesn't have. 
+
+73
+00:05:47,870 --> 00:05:51,990
+So when we try to cast that parent as 
+sister, we're missing some things. 
+
+74
+00:05:51,990 --> 00:05:56,800
+What are we missing? 
+Well, at the very least we're missing 
+
+75
+00:05:56,800 --> 00:05:59,930
+this variable hers that is expected to be 
+in a sister object. 
+
+76
+00:05:59,930 --> 00:06:02,740
+Parent didn't have that. 
+Parent only had address. 
+
+77
+00:06:04,280 --> 00:06:08,590
+also there might be some methods that go 
+along with the, with the object sister, 
+
+78
+00:06:08,590 --> 00:06:13,850
+that we wouldn't be inheriting either. 
+So, that is the wrong direction to be 
+
+79
+00:06:13,850 --> 00:06:19,740
+able to do a cast. 
+let's take a look at another example, 
+
+80
+00:06:19,740 --> 00:06:23,790
+just above this one. 
+If we create a new object called brother, 
+
+81
+00:06:23,790 --> 00:06:26,540
+try to cast that as a sister, that 
+doesn't work either. 
+
+82
+00:06:26,540 --> 00:06:30,160
+And the reason in this case is, of 
+course, that brother also has a different 
+
+83
+00:06:30,160 --> 00:06:36,030
+variable called his, that we don't know 
+where to put if we move it to the type 
+
+84
+00:06:36,030 --> 00:06:39,900
+sister. 
+so not only is it missing hers but, it 
+
+85
+00:06:39,900 --> 00:06:43,630
+has this other thing his, that sister 
+doesn't know what to deal with what to do 
+
+86
+00:06:43,630 --> 00:06:44,214
+with. 
+Okay. 
+
+87
+00:06:44,214 --> 00:06:51,789
+let's take a look at yet another one. 
+here you'll notice that we've taken our, 
+
+88
+00:06:51,789 --> 00:06:57,220
+our Parent object tried to cast it as 
+Brother, and assigned it to a Brother 
+
+89
+00:06:57,220 --> 00:07:00,365
+variable. 
+well that's not going to work either 
+
+90
+00:07:00,365 --> 00:07:06,330
+because Brother that Parent object does 
+not contain all the elements of Brother. 
+
+91
+00:07:06,330 --> 00:07:09,390
+It's missing the variable his in this 
+case. 
+
+92
+00:07:10,710 --> 00:07:15,540
+Here's one that does work. 
+If we take a Parent object, cast it as 
+
+93
+00:07:15,540 --> 00:07:20,630
+Sister, and then assign it to another 
+variable of type Sister. 
+
+94
+00:07:20,630 --> 00:07:25,710
+Why does that one work? 
+Well, this one turns out to work because 
+
+95
+00:07:25,710 --> 00:07:31,960
+this original object, p2, started out as 
+something of type Sister. 
+
+96
+00:07:31,960 --> 00:07:40,440
+You'll notice that p2 was assigned p1. 
+And p1 was originally an object of type 
+
+97
+00:07:40,440 --> 00:07:46,220
+Sister, that was cast as a Parent. 
+But it started it's life as an object of 
+
+98
+00:07:46,220 --> 00:07:50,190
+type Sister. 
+So that it has everything a Sister needs, 
+
+99
+00:07:50,190 --> 00:07:54,430
+a Sister object needs. 
+And so that for, therefore, that cast 
+
+100
+00:07:54,430 --> 00:07:56,930
+works out. 
+So you can see things can get pretty 
+
+101
+00:07:56,930 --> 00:08:02,350
+elaborate in Java but the basic idea is 
+that, to be able to do a cast the objects 
+
+102
+00:08:02,350 --> 00:08:06,770
+have to be compatible. 
+They have to have the same variables in 
+
+103
+00:08:06,770 --> 00:08:15,030
+both types, and the same methods 
+available so that they can be converted. 
+
+104
+00:08:17,640 --> 00:08:20,760
+Let's take a look at objects in Java in a 
+little bit more detail. 
+
+105
+00:08:20,760 --> 00:08:24,405
+We're going to run through this example 
+for a couple of slides here. 
+
+106
+00:08:24,405 --> 00:08:32,120
+we've defined the class called Point. 
+It has two fields x and y coordinates. 
+
+107
+00:08:32,120 --> 00:08:36,490
+It has a constructor, a function that is 
+called, or a method that is called 
+
+108
+00:08:36,490 --> 00:08:39,800
+whenever we create a new object of this 
+type. 
+
+109
+00:08:39,800 --> 00:08:45,370
+And what this one does is just initialize 
+that those coordinates at the 0. 
+
+110
+00:08:45,370 --> 00:08:52,460
+It also has a method called samePlace, 
+which takes one argument another point. 
+
+111
+00:08:52,460 --> 00:08:56,000
+And compares the x-coordinates and 
+y-coordinates, and sees that they're the 
+
+112
+00:08:56,000 --> 00:09:01,950
+same logically adding them together. 
+When we create a new one of these Points, 
+
+113
+00:09:01,950 --> 00:09:07,350
+this is what it would look like in our 
+code, we would say new Point object. 
+
+114
+00:09:07,350 --> 00:09:13,140
+And this would cause a memory allocation 
+to find a place to create this object. 
+
+115
+00:09:13,140 --> 00:09:17,390
+Namely a place to store these two 
+variables that it's going to need. 
+
+116
+00:09:17,390 --> 00:09:24,990
+and it's going to return a reference to 
+this new location in memory, this new 
+
+117
+00:09:24,990 --> 00:09:30,530
+object. 
+And then run the point constructor code 
+
+118
+00:09:30,530 --> 00:09:34,020
+on that object. 
+that will cause those variables to be 
+
+119
+00:09:34,020 --> 00:09:39,130
+initialized, and then that reference will 
+be stored in the variable newPoint, which 
+
+120
+00:09:39,130 --> 00:09:42,390
+is of type Point. 
+So these are compatible. 
+
+121
+00:09:44,070 --> 00:09:47,850
+So, let's review that again. 
+Whene, when we call new, what's happened 
+
+122
+00:09:47,850 --> 00:09:51,770
+is we've allocated space for the data 
+field, in this case x and y. 
+
+123
+00:09:51,770 --> 00:09:57,720
+But we've also done one other thing. 
+Here's x and y, those two doubles that we 
+
+124
+00:09:57,720 --> 00:10:00,840
+needed. 
+But we've also allocated a pointer at the 
+
+125
+00:10:00,840 --> 00:10:05,000
+beginning of the object. 
+To what's called a v table or virtual 
+
+126
+00:10:05,000 --> 00:10:09,150
+table. 
+The v table is shared across the v table 
+
+127
+00:10:09,150 --> 00:10:13,930
+pointer is the same for all the objects 
+of this class, all the points we might 
+
+128
+00:10:13,930 --> 00:10:16,660
+create. 
+What it does is it points to another 
+
+129
+00:10:16,660 --> 00:10:23,210
+region in memory, where we've stored the 
+pointers to the code we need for this 
+
+130
+00:10:23,210 --> 00:10:26,290
+type of object. 
+In this case, there were two pieces of 
+
+131
+00:10:26,290 --> 00:10:29,540
+code, two methods. 
+One was the constructor. 
+
+132
+00:10:29,540 --> 00:10:34,670
+So we need a pointer to the constructor 
+code, and then samePlace. 
+
+133
+00:10:34,670 --> 00:10:37,390
+We need a pointer to the code for that 
+method. 
+
+134
+00:10:39,190 --> 00:10:43,070
+You'll notice that this is using a level 
+of indirection, actually two levels. 
+
+135
+00:10:43,070 --> 00:10:48,580
+inside of the object that we've 
+allocated, we've left a pointer so that 
+
+136
+00:10:48,580 --> 00:10:52,550
+we can get to the table of pointers to 
+the code. 
+
+137
+00:10:52,550 --> 00:10:57,250
+That's one level of indirection. 
+Then when we go to that location in 
+
+138
+00:10:57,250 --> 00:11:02,070
+memory, we'll find another pointer 
+another level of indirection, to the code 
+
+139
+00:11:02,070 --> 00:11:04,920
+for the constructor, to the code from 
+samePlace. 
+
+140
+00:11:04,920 --> 00:11:08,065
+And by convention, we always put the 
+pointer by the constructor first. 
+
+141
+00:11:08,065 --> 00:11:13,480
+'Kay? 
+Once we're done with the object if we 
+
+142
+00:11:13,480 --> 00:11:17,069
+don't need it any more in our code, and 
+lose all references to it. 
+
+143
+00:11:17,069 --> 00:11:21,870
+Our garbage collection routines will find 
+it, find this place in memory, and say 
+
+144
+00:11:21,870 --> 00:11:25,840
+doesn't, nothing seems to be referencing 
+it, we can reclaim this space, so we can 
+
+145
+00:11:25,840 --> 00:11:30,020
+use it for other things. 
+And it will take back the space that had 
+
+146
+00:11:30,020 --> 00:11:34,670
+been allocated for the object. 
+However, the space allocated for the v 
+
+147
+00:11:34,670 --> 00:11:38,930
+table will continue to reside in memory, 
+because we might create a new point 
+
+148
+00:11:38,930 --> 00:11:42,430
+sometime later. 
+This space remember, is not reclaimed for 
+
+149
+00:11:42,430 --> 00:11:44,740
+the object. 
+That's a space that is allocated once, 
+
+150
+00:11:44,740 --> 00:11:52,785
+for every object of this type. 
+They will all be pointing to the same 
+
+151
+00:11:52,785 --> 00:11:58,060
+vtable. 
+Alright, next step let's say we created 
+
+152
+00:11:58,060 --> 00:12:04,000
+this new point. 
+We've we have a place in memory for its x 
+
+153
+00:12:04,000 --> 00:12:07,540
+and y variables and we have a vtable 
+pointer. 
+
+154
+00:12:07,540 --> 00:12:12,620
+And now what we're going to do is call 
+this object constructor, that piece of, 
+
+155
+00:12:12,620 --> 00:12:18,126
+that first method, that piece of code 
+that is going to run on to initialize 
+
+156
+00:12:18,126 --> 00:12:21,580
+this object. 
+To do that, what we're going to do is 
+
+157
+00:12:21,580 --> 00:12:27,835
+call the function constructor with a 
+single argument, which is going to be the 
+
+158
+00:12:27,835 --> 00:12:31,805
+pointer to the object we've just 
+allocated in memory. 
+
+159
+00:12:31,805 --> 00:12:34,250
+Okay? 
+which contain those, that contains those 
+
+160
+00:12:34,250 --> 00:12:42,740
+two fields. 
+The Constructor code is going to run with 
+
+161
+00:12:42,740 --> 00:12:47,430
+a pointer to this location. 
+So it will know that x is the very next 
+
+162
+00:12:47,430 --> 00:12:50,580
+element, and that y is the one after 
+that. 
+
+163
+00:12:50,580 --> 00:12:56,355
+And the compiler will set things up so 
+that those offsets are appropriately 
+
+164
+00:12:56,355 --> 00:13:00,959
+calculated, and we can put the 0 values 
+in those two locations. 
+
+165
+00:13:02,160 --> 00:13:04,930
+Now, where do the, where does the code 
+for the other methods go? 
+
+166
+00:13:04,930 --> 00:13:10,100
+how do we find that? 
+Well, methods in Java are just functions, 
+
+167
+00:13:10,100 --> 00:13:15,330
+as in C, but as you've noticed from the 
+previous slide, there's an argument 
+
+168
+00:13:15,330 --> 00:13:18,120
+that's implicit. 
+Although we had defined constructor 
+
+169
+00:13:18,120 --> 00:13:22,350
+without any arguments, the constructor 
+without any arguments, we did give it an 
+
+170
+00:13:22,350 --> 00:13:25,420
+argument which was the newly allocated 
+space in memory. 
+
+171
+00:13:27,420 --> 00:13:33,110
+This pointer is always refered to by the 
+name "this" in Java, that's a built in 
+
+172
+00:13:33,110 --> 00:13:38,810
+keyword that says we're talking about the 
+reference to the current object. 
+
+173
+00:13:40,070 --> 00:13:42,580
+Alright? 
+So, all of our methods really have this 
+
+174
+00:13:42,580 --> 00:13:48,410
+as the first argument. 
+So the, the methods samePlace, which was 
+
+175
+00:13:48,410 --> 00:13:54,890
+defined with a single argument p. 
+Really has two arguments, this and P. 
+
+176
+00:13:54,890 --> 00:14:01,354
+so, this two pointers, point to those two 
+objects in in memory. 
+
+177
+00:14:01,354 --> 00:14:04,392
+And if we had equivalent C code, it would 
+look like this. 
+
+178
+00:14:04,392 --> 00:14:09,520
+we would follow this pointer to the 
+element x, the p pointer to the element 
+
+179
+00:14:09,520 --> 00:14:16,140
+x, compare those two. 
+Do the same thing for the y's, and then 
+
+180
+00:14:16,140 --> 00:14:19,973
+do the logical and. 
+Okay, so this is how we find the 
+
+181
+00:14:19,973 --> 00:14:23,680
+variables. 
+And, the way we go about finding the code 
+
+182
+00:14:23,680 --> 00:14:31,224
+is through the vtable Pointer. 
+How do we subclass an object? 
+
+183
+00:14:31,224 --> 00:14:37,520
+Well, here you'll notice I've created a 
+new class called PtSubClass, that extends 
+
+184
+00:14:37,520 --> 00:14:40,280
+Point. 
+It has a couple of different things from 
+
+185
+00:14:40,280 --> 00:14:44,390
+Point. 
+One, it has a new element called 
+
+186
+00:14:44,390 --> 00:14:49,250
+aNewField. 
+it also overrides the samePlace method 
+
+187
+00:14:49,250 --> 00:14:53,020
+that we had previously defined for 
+points. 
+
+188
+00:14:53,020 --> 00:14:57,850
+And, it has a totally new method called 
+sayHi. 
+
+189
+00:14:57,850 --> 00:15:03,890
+So where does this new new element go, 
+this new integer, aNewField? 
+
+190
+00:15:03,890 --> 00:15:08,170
+And where does the pointer to the two 
+other methods the code for the two 
+
+191
+00:15:08,170 --> 00:15:10,312
+methods go. 
+How do we find those? 
+
+192
+00:15:10,312 --> 00:15:14,370
+Alright? 
+So, what we're going to is just add these 
+
+193
+00:15:14,370 --> 00:15:20,625
+fields and pointers on to the ends of the 
+object in memory, and to the end of the 
+
+194
+00:15:20,625 --> 00:15:24,480
+vtable. 
+So let's take a look at what the, the map 
+
+195
+00:15:24,480 --> 00:15:28,720
+in memory is going to look like. 
+Our new object is going to look just like 
+
+196
+00:15:28,720 --> 00:15:33,090
+Point, except that it has an extra nth at 
+the end. 
+
+197
+00:15:33,090 --> 00:15:37,890
+So when we allocate space for this 
+object, we need a little bit more space 
+
+198
+00:15:37,890 --> 00:15:42,620
+to also be able to store aNewField. 
+The reason we pack it on at the end, is 
+
+199
+00:15:42,620 --> 00:15:48,590
+that if we ever want to cast this as a 
+Point, we don't have to worry about the 
+
+200
+00:15:48,590 --> 00:15:51,660
+offsets being different than they were 
+before. 
+
+201
+00:15:51,660 --> 00:15:55,042
+so that x and y are still in the same 
+relative positions. 
+
+202
+00:15:55,042 --> 00:16:01,320
+The vtable for this object is going to be 
+different than the v.table for the 
+
+203
+00:16:01,320 --> 00:16:07,390
+previous object. 
+this vtable has three elements, not two, 
+
+204
+00:16:07,390 --> 00:16:13,480
+because we have a Constructor, we have 
+samePlace, but we also have sayHi. 
+
+205
+00:16:13,480 --> 00:16:16,860
+Now, where do we point to? 
+Well, Constructor is just going to 
+
+206
+00:16:16,860 --> 00:16:20,640
+inherit the previous Constructor. 
+We didn't change that at all. 
+
+207
+00:16:20,640 --> 00:16:26,390
+So, this is going to be a pointer to the 
+same region of code, the same routine 
+
+208
+00:16:26,390 --> 00:16:30,700
+that we had for Point. 
+samePlace, though, is going to point to 
+
+209
+00:16:30,700 --> 00:16:36,275
+this new code that we're using to 
+override the old version of samePlace. 
+
+210
+00:16:36,275 --> 00:16:42,004
+And sayHi will of course point to a 
+totally different area. 
+
+211
+00:16:42,004 --> 00:16:47,250
+So, we've tacked on a new field at the 
+end of the object definition, extra space 
+
+212
+00:16:47,250 --> 00:16:53,320
+and memory for that. 
+we have a new vtable for Point subclass. 
+
+213
+00:16:53,320 --> 00:16:57,470
+It is not the same vtable as Point, 
+because this has different methods 
+
+214
+00:16:57,470 --> 00:17:02,830
+associated with it. 
+however, we are re-using, the code for 
+
+215
+00:17:02,830 --> 00:17:07,628
+the Constructor by pointing to the same, 
+procedure in memory. 
+
+216
+00:17:07,628 --> 00:17:14,590
+samePlace points to a new piece of code, 
+of, for this new samePlace and, of 
+
+217
+00:17:14,590 --> 00:17:20,800
+course, we have a pointer for the new 
+code for sayHi. 
+

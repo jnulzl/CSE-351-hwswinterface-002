@@ -1,0 +1,1699 @@
+1
+00:00:00,0 --> 00:00:05,216
+[MUSIC]. 
+
+2
+00:00:05,216 --> 00:00:09,839
+Hello again, everyone, so let's, let's 
+continue our, our section on basis of 
+
+3
+00:00:09,839 --> 00:00:14,740
+architecture and machine programming. 
+First, let's start with a definition. 
+
+4
+00:00:14,740 --> 00:00:18,516
+So what is ar-, what is architecture? 
+Well, architecture, which is the same 
+
+5
+00:00:18,516 --> 00:00:21,961
+thing as instruction set architecture, 
+are the parts of the processor design 
+
+6
+00:00:21,961 --> 00:00:25,738
+that one needs to understand to write 
+assembly code. 
+
+7
+00:00:25,738 --> 00:00:27,326
+'Kay. 
+Remember, it's the harder software 
+
+8
+00:00:27,326 --> 00:00:30,252
+interface, really. 
+It's the harder of the harder software 
+
+9
+00:00:30,252 --> 00:00:32,950
+interface. 
+And another way of thinking about it, 
+
+10
+00:00:32,950 --> 00:00:36,872
+it's what's directly visible to software. 
+If it's visible to software it means that 
+
+11
+00:00:36,872 --> 00:00:39,222
+you have to know about it when writing 
+code. 
+
+12
+00:00:39,222 --> 00:00:43,139
+'Kay. 
+Now the microarchitecture, on the other 
+
+13
+00:00:43,139 --> 00:00:48,130
+hand, are details of how the architecture 
+is implemented. 
+
+14
+00:00:48,130 --> 00:00:50,524
+This is more details of how the 
+instructions of that architecture is 
+
+15
+00:00:50,524 --> 00:00:53,594
+implemented. 
+'Kay, so let me, let's just think through 
+
+16
+00:00:53,594 --> 00:00:57,352
+some examples here. 
+So As we saw briefly, we are going to see 
+
+17
+00:00:57,352 --> 00:01:01,317
+more detail later in the course, a cache 
+is a very, is a very fast piece of memory 
+
+18
+00:01:01,317 --> 00:01:07,125
+that lies inside the processor. 
+It happens to hold recently accessed 
+
+19
+00:01:07,125 --> 00:01:08,372
+data. 
+'Kay. 
+
+20
+00:01:08,372 --> 00:01:13,875
+So now is cache size architecture? 
+Well, it's not directly visible to 
+
+21
+00:01:13,875 --> 00:01:16,410
+software. 
+That means that it's not Part of it is 
+
+22
+00:01:16,410 --> 00:01:19,470
+used by software but it's not directly 
+visible, the size is not directly 
+
+23
+00:01:19,470 --> 00:01:23,40
+visible, so it's not part of the 
+architecture. 
+
+24
+00:01:23,40 --> 00:01:26,263
+How about core frequency? 
+Well, core frequency is also not 
+
+25
+00:01:26,263 --> 00:01:31,145
+something that software knows explicitly. 
+Software doesn't care all that much about 
+
+26
+00:01:31,145 --> 00:01:33,647
+total frequency is. 
+The user does because it make the 
+
+27
+00:01:33,647 --> 00:01:36,595
+processor faster. 
+But when writing Assembly code, you don't 
+
+28
+00:01:36,595 --> 00:01:39,430
+know, and there's nothing in the ISA that 
+refers to that. 
+
+29
+00:01:39,430 --> 00:01:45,276
+So this also what's what, what's core 
+frequency, core frequency is part of the 
+
+30
+00:01:45,276 --> 00:01:49,997
+micro Architecture, or the 
+implementation. 
+
+31
+00:01:49,997 --> 00:01:52,826
+'Kay? 
+So and the number of registers, well, the 
+
+32
+00:01:52,826 --> 00:01:56,956
+number of registers is something that you 
+need to know, because you're going to use 
+
+33
+00:01:56,956 --> 00:02:00,950
+registers explicitly in our assembly 
+code. 
+
+34
+00:02:00,950 --> 00:02:04,850
+So number of registers is part of the 
+ISA, therefore is really part of the 
+
+35
+00:02:04,850 --> 00:02:11,240
+architecture. 
+'Kay. 
+
+36
+00:02:11,240 --> 00:02:14,555
+So now, with that in mind, let's, let's 
+look at assembly program where its view 
+
+37
+00:02:14,555 --> 00:02:17,818
+of you system 'kay? 
+Here we have the CPU the central 
+
+38
+00:02:17,818 --> 00:02:21,350
+processing unit, and there're 3 important 
+things. 
+
+39
+00:02:21,350 --> 00:02:23,94
+That an assembly programmer needs to 
+know. 
+
+40
+00:02:23,94 --> 00:02:27,124
+First, there's this special register, 
+called the program counter, 'kay, and 
+
+41
+00:02:27,124 --> 00:02:31,30
+program counter holds the address, it 
+holds the address of the structure of 
+
+42
+00:02:31,30 --> 00:02:36,510
+what it's going to execute next. 
+One instruction after the other. 
+
+43
+00:02:36,510 --> 00:02:40,998
+And the program counter tells which 
+instructions going to be executed next. 
+
+44
+00:02:40,998 --> 00:02:44,14
+'Kay? 
+By the way, it's also called EIP in I-32, 
+
+45
+00:02:44,14 --> 00:02:49,6
+and IP stands for Instruction Pointer, 
+and E's called Extended Instruction 
+
+46
+00:02:49,6 --> 00:02:53,189
+Pointer. 
+And Now, 
+
+47
+00:02:53,189 --> 00:02:56,685
+In R, RIP. 
+IP, in this case, also means instruction 
+
+48
+00:02:56,685 --> 00:02:58,858
+point in x86-64. 
+'Kay. 
+
+49
+00:02:58,858 --> 00:03:01,774
+'Cuz it's just names for the program 
+counter. 
+
+50
+00:03:01,774 --> 00:03:07,67
+now, there's also a bunch of registers 
+that are just used by the assembly code 
+
+51
+00:03:07,67 --> 00:03:10,964
+directly. 
+And by the way, these these registers to 
+
+52
+00:03:10,964 --> 00:03:13,686
+hold data. 
+Essentially, a piece of very very very 
+
+53
+00:03:13,686 --> 00:03:19,78
+fast memory that is, that is addressed. 
+explicitly by your assembly codes. 
+
+54
+00:03:19,78 --> 00:03:23,950
+'Kay? 
+And now, we also have, condition codes. 
+
+55
+00:03:23,950 --> 00:03:27,940
+In condition codes, it's, 
+It essentially tells you the result of 
+
+56
+00:03:27,940 --> 00:03:31,20
+some, of the status of some operations 
+that was just executed by the 
+
+57
+00:03:31,20 --> 00:03:34,258
+instructions. 
+For example it tells you whether or not 
+
+58
+00:03:34,258 --> 00:03:36,310
+there was an overflow. 
+'Kay. 
+
+59
+00:03:36,310 --> 00:03:39,200
+It also tells you what, if you're wanting 
+to do a comparison. 
+
+60
+00:03:39,200 --> 00:03:42,494
+So you're going to compare whether a 
+system registers a lower value than 
+
+61
+00:03:42,494 --> 00:03:45,929
+another register. 
+The result of this comparison is set as a 
+
+62
+00:03:45,929 --> 00:03:48,140
+condition code. 
+'Kay. 
+
+63
+00:03:48,140 --> 00:03:51,829
+So now in now on this side here we have 
+memory. 
+
+64
+00:03:51,829 --> 00:03:56,910
+And memory, well memory is meant to hold 
+data and codes. 
+
+65
+00:03:56,910 --> 00:03:58,490
+That includes the operating system as 
+well. 
+
+66
+00:03:58,490 --> 00:04:02,380
+Also, there's a piece of specialty data 
+structure called a stack. 
+
+67
+00:04:02,380 --> 00:04:03,700
+Which we're going to see later in the 
+class. 
+
+68
+00:04:03,700 --> 00:04:06,64
+It's very very important for program 
+execution. 
+
+69
+00:04:06,64 --> 00:04:09,784
+Now, the bottom line here is, that we 
+look here, we have the CPU, here we have 
+
+70
+00:04:09,784 --> 00:04:13,324
+memory, the CPU sends adresses to memory 
+when it wants to read data into 
+
+71
+00:04:13,324 --> 00:04:18,516
+registers. 
+In the memory, gets data, sends data back 
+
+72
+00:04:18,516 --> 00:04:21,900
+to the CPU that puts it in registers. 
+'Kay? 
+
+73
+00:04:21,900 --> 00:04:25,700
+Orders an operation with it. 
+Now the CPU also can sense data to 
+
+74
+00:04:25,700 --> 00:04:28,667
+memory. 
+It can get data from registers and say 
+
+75
+00:04:28,667 --> 00:04:31,930
+like, hey memory store this data for me. 
+'Kay? 
+
+76
+00:04:31,930 --> 00:04:36,17
+Now another thing that's very, very 
+important is that instructions themselves 
+
+77
+00:04:36,17 --> 00:04:40,740
+like object Code also known as object 
+code, comes from memory. 
+
+78
+00:04:40,740 --> 00:04:43,790
+It's stored in memory, so that means that 
+the processor has to fetch these 
+
+79
+00:04:43,790 --> 00:04:47,324
+instructions from memory in order to 
+execute them, 'kay? 
+
+80
+00:04:47,324 --> 00:04:51,36
+And memory is just an array of bytes that 
+has, you know, and each byte has an 
+
+81
+00:04:51,36 --> 00:04:54,516
+address, essentially a table, a very 
+large table of bytes, where you can 
+
+82
+00:04:54,516 --> 00:04:58,740
+access them directly. 
+'Kay. 
+
+83
+00:04:58,740 --> 00:05:04,44
+So now let's look at how we turn C code, 
+high level C code into Object code, 'kay, 
+
+84
+00:05:04,44 --> 00:05:08,390
+into machine code. 
+So here are the steps. 
+
+85
+00:05:08,390 --> 00:05:10,343
+So in this example here we have, you 
+know, two source code files, these are .C 
+
+86
+00:05:10,343 --> 00:05:12,974
+files that have codes Code or text 
+written in the C language 'kay. 
+
+87
+00:05:12,974 --> 00:05:15,82
+Now you are going to use a compiler, GCC 
+is a popular source compiler that that 
+
+88
+00:05:15,82 --> 00:05:16,818
+we're going to use in this class, and 
+it's very, it's used by a number of 
+
+89
+00:05:16,818 --> 00:05:20,138
+people. 
+Now you are going to use a compiler, GCC 
+
+90
+00:05:20,138 --> 00:05:24,560
+is a popular source compiler that that 
+we're going to use in this class, and 
+
+91
+00:05:24,560 --> 00:05:29,100
+it's very, it's used by a number of 
+people. 
+
+92
+00:05:29,100 --> 00:05:33,258
+And what this compiler is doing, it's 
+taking two C files As input, it's going 
+
+93
+00:05:33,258 --> 00:05:37,164
+to compile them and produce a single 
+object file, that is what the minus O is 
+
+94
+00:05:37,164 --> 00:05:43,86
+doing here. 
+So, test the output, produce a binary 
+
+95
+00:05:43,86 --> 00:05:50,810
+file p that holds the resulting machine 
+code from the source code. 
+
+96
+00:05:50,810 --> 00:05:54,210
+So now going to the steps we start with 
+what we call the text. 
+
+97
+00:05:54,210 --> 00:05:56,480
+That's the text of your program, the 
+source code. 
+
+98
+00:05:56,480 --> 00:05:57,800
+You run through a compiler. 
+'Kay. 
+
+99
+00:05:57,800 --> 00:06:01,460
+And if you use the minus S option. 
+'Kay. 
+
+100
+00:06:01,460 --> 00:06:05,681
+So you're going to produce dot S files 
+that hold the assembly code generated by 
+
+101
+00:06:05,681 --> 00:06:08,520
+the compiler. 
+'Kay? 
+
+102
+00:06:08,520 --> 00:06:11,510
+Now, you can. 
+Now you're going to use the assembler. 
+
+103
+00:06:11,510 --> 00:06:14,437
+We saw this before. 
+The assembler takes assembly code, and 
+
+104
+00:06:14,437 --> 00:06:18,903
+produces binary or machine code, 'kay? 
+And what it's doing here is, it's getting 
+
+105
+00:06:18,903 --> 00:06:24,746
+this, this example here. 
+Getting the, the, the, the p1.s and p2.s. 
+
+106
+00:06:24,746 --> 00:06:29,168
+And translating them into binary machine 
+code equivalent to the input assembly 
+
+107
+00:06:29,168 --> 00:06:30,677
+code. 
+'kay. 
+
+108
+00:06:30,677 --> 00:06:34,967
+So, in the final step there is something 
+called the linker, that what it does is 
+
+109
+00:06:34,967 --> 00:06:38,927
+it gets the object code, it has some 
+symbolic names in them and links with 
+
+110
+00:06:38,927 --> 00:06:43,10
+libraries. 
+And what are libraries? 
+
+111
+00:06:43,10 --> 00:06:47,258
+Libraries are essentially a collection of 
+precompiled code that's available for use 
+
+112
+00:06:47,258 --> 00:06:51,80
+in user code. 
+For example, things like to print. 
+
+113
+00:06:51,80 --> 00:06:54,980
+Print values on the screen to access 
+operating system services and so on. 
+
+114
+00:06:54,980 --> 00:06:58,390
+this all resides in libraries. 
+And the linker gets together the object 
+
+115
+00:06:58,390 --> 00:07:02,350
+program, links links it with the 
+libraries and produces a final executable 
+
+116
+00:07:02,350 --> 00:07:07,876
+program, that what you can type and and 
+run in the comment prompt. 
+
+117
+00:07:07,876 --> 00:07:11,120
+'Kay? 
+And in this case here, we're also using 
+
+118
+00:07:11,120 --> 00:07:14,508
+an optimization. 
+This minus a 1 here is just telling the 
+
+119
+00:07:14,508 --> 00:07:18,254
+couple, hey apply some optimization to 
+our code when generating it. 
+
+120
+00:07:18,254 --> 00:07:21,914
+'Kay? 
+so, let me, let's, let's see one example 
+
+121
+00:07:21,914 --> 00:07:25,530
+of, of alternazation from a C to 
+assembly. 
+
+122
+00:07:25,530 --> 00:07:29,260
+Here we have a C code very simple code 
+sum. 
+
+123
+00:07:29,260 --> 00:07:35,180
+That takes two integers as, as input. 
+perform x and y, adds them, puts in a 
+
+124
+00:07:35,180 --> 00:07:39,740
+variable called t, and then returns t. 
+'Kay? 
+
+125
+00:07:39,740 --> 00:07:42,300
+So it means when you execute a sum and 
+pass parameters it's going to return the 
+
+126
+00:07:42,300 --> 00:07:45,903
+sum of those two values. 
+And that's the, sum is the name of the 
+
+127
+00:07:45,903 --> 00:07:49,738
+function, and now when we generate our 
+assembly code what we have here the name 
+
+128
+00:07:49,738 --> 00:07:54,600
+of the function, and colon. 
+Saying that the function starts there. 
+
+129
+00:07:54,600 --> 00:07:58,0
+And we're going to see this in detail 
+more but you know, this instructions here 
+
+130
+00:07:58,0 --> 00:08:02,920
+move data between two, this instruction 
+is moving data betwen two registers. 
+
+131
+00:08:02,920 --> 00:08:05,824
+This one is reading data from memory, 
+more specifically it's reading one of the 
+
+132
+00:08:05,824 --> 00:08:11,45
+parameters. 
+And this, this is where we're actually 
+
+133
+00:08:11,45 --> 00:08:13,890
+doing the addition with the other 
+parameter. 
+
+134
+00:08:13,890 --> 00:08:18,48
+And and now we, we are positioned tor 
+result in this return instruction here 
+
+135
+00:08:18,48 --> 00:08:22,144
+just returns from the execution of your 
+function. 
+
+136
+00:08:22,144 --> 00:08:24,330
+'Kay, it goes back to the caller of the 
+function. 
+
+137
+00:08:24,330 --> 00:08:27,157
+'Kay. 
+And the way you would obtain this, I 
+
+138
+00:08:27,157 --> 00:08:31,79
+mentioned this briefly briefly before, is 
+the compiler, minus S, tells the compiler 
+
+139
+00:08:31,79 --> 00:08:35,225
+to produce assembly code. 
+When you give a .c file it is going to 
+
+140
+00:08:35,225 --> 00:08:39,644
+produce an equivalent file that is now a 
+.s to host the assembly code. 
+
+141
+00:08:39,644 --> 00:08:43,392
+Great. 
+So, now, there's three basic kinds of 
+
+142
+00:08:43,392 --> 00:08:48,138
+assembly instructions, 'kay? 
+There are instructions that, that perform 
+
+143
+00:08:48,138 --> 00:08:50,565
+arithmetic. 
+Things like addition, substraction, and 
+
+144
+00:08:50,565 --> 00:08:53,352
+so on. 
+Both on register data as well as memory 
+
+145
+00:08:53,352 --> 00:08:57,438
+data. 
+And there's one type, the other type of 
+
+146
+00:08:57,438 --> 00:09:01,854
+instructions that, instructions that move 
+data between memory and the register, 
+
+147
+00:09:01,854 --> 00:09:07,10
+because they could load data from memory 
+into a register, 'kay. 
+
+148
+00:09:07,10 --> 00:09:10,420
+There's also instructions that get data 
+from a register and stores it into 
+
+149
+00:09:10,420 --> 00:09:13,472
+memory. 
+'Kay, that's the second category. 
+
+150
+00:09:13,472 --> 00:09:18,160
+So, transfer between memory, data 
+transfer between memory and registers. 
+
+151
+00:09:18,160 --> 00:09:21,856
+And finally the third category of, the 
+third basic category of instructions is 
+
+152
+00:09:21,856 --> 00:09:27,240
+ones that control, that transfer control. 
+And control here means what instruction's 
+
+153
+00:09:27,240 --> 00:09:31,288
+being executed at any given time. 
+So the flow of control is the flow of 
+
+154
+00:09:31,288 --> 00:09:34,230
+instructions that are being executed. 
+'Kay? 
+
+155
+00:09:34,230 --> 00:09:36,975
+This is when, when you do a jump, 
+essential jump, you execute your program 
+
+156
+00:09:36,975 --> 00:09:38,600
+here[SOUND]. 
+'Kay? 
+
+157
+00:09:38,600 --> 00:09:41,279
+So some of you can just Jump at a 
+different part of your program and you 
+
+158
+00:09:41,279 --> 00:09:44,560
+can jump back and continue executing. 
+'Kay? 
+
+159
+00:09:44,560 --> 00:09:47,926
+So and this is very useful, because when 
+you have something like an if in your 
+
+160
+00:09:47,926 --> 00:09:51,394
+program, if something that's actually 
+making a decision of whether or not you 
+
+161
+00:09:51,394 --> 00:09:55,476
+should jump to a different part of your 
+code. 
+
+162
+00:09:55,476 --> 00:09:58,734
+OKay. 
+So, with that in mind now that we know 
+
+163
+00:09:58,734 --> 00:10:03,970
+the basic types of instructions, let's 
+look at the basic data types in Assembly. 
+
+164
+00:10:03,970 --> 00:10:09,792
+So now for Assembly, you essentially have 
+words, you have units of data that it 
+
+165
+00:10:09,792 --> 00:10:15,865
+would be one, two, or four bytes, in the 
+case of I32. 
+
+166
+00:10:15,865 --> 00:10:22,593
+Or also eight bytes in the, in the 64 in 
+the, in the 64 bit ISA case. 
+
+167
+00:10:22,593 --> 00:10:25,595
+'Kay. 
+So in this integer data holds both data 
+
+168
+00:10:25,595 --> 00:10:31,890
+values like really program data in the 
+form of integers, as well as addresses. 
+
+169
+00:10:31,890 --> 00:10:37,21
+And note that data in assembly is 
+essentially untyped. 
+
+170
+00:10:37,21 --> 00:10:42,421
+OKay so, so that means it is a register, 
+could hold, an integer of a certain width 
+
+171
+00:10:42,421 --> 00:10:48,20
+or it could also hold a register. 
+The registry doesn't really know it 
+
+172
+00:10:48,20 --> 00:10:51,200
+depends on how you use it, that's going 
+to depend on whether it's going to be 
+
+173
+00:10:51,200 --> 00:10:57,220
+seen as an address or as a data value. 
+So the other data type most ISA's today 
+
+174
+00:10:57,220 --> 00:11:01,370
+support floating point operations in the 
+ISA. 
+
+175
+00:11:01,370 --> 00:11:06,407
+So that means now, in floating point it 
+is how things special registers, in the, 
+
+176
+00:11:06,407 --> 00:11:10,409
+in the processor. 
+Means that implicitly there is a data 
+
+177
+00:11:10,409 --> 00:11:13,790
+type you know a floating point is a data 
+type that is that programmer writing 
+
+178
+00:11:13,790 --> 00:11:19,534
+assembly has to be aware of. 
+Is, now what about aggregate data types, 
+
+179
+00:11:19,534 --> 00:11:24,150
+aggregate data types in assembly? 
+Is there such a thing? 
+
+180
+00:11:24,150 --> 00:11:28,428
+No, in fact, for assembly everything is 
+just a continuously, it's no, memory is 
+
+181
+00:11:28,428 --> 00:11:33,289
+flat, and there's no notion of arrays. 
+You have to implement it by hand, by 
+
+182
+00:11:33,289 --> 00:11:36,655
+laying out the data and memory properly 
+and then accessing it in a way that makes 
+
+183
+00:11:36,655 --> 00:11:40,950
+it look like an array. 
+OKay. 
+
+184
+00:11:40,950 --> 00:11:45,156
+So we talked about object code before. 
+Remember that the assembler translates 
+
+185
+00:11:45,156 --> 00:11:48,990
+assembly codes into object code, binary 
+codes. 
+
+186
+00:11:48,990 --> 00:11:51,437
+And here's an example. 
+Like, remember the sum function that we 
+
+187
+00:11:51,437 --> 00:11:55,552
+just saw that adds two numbers? 
+Well, these are the bytes that compose 
+
+188
+00:11:55,552 --> 00:12:00,399
+the machine code for the sum function. 
+'Kay? 
+
+189
+00:12:00,399 --> 00:12:03,155
+Cause that suppose to be total of 13 
+bytes, and there's a bunch of 
+
+190
+00:12:03,155 --> 00:12:06,532
+instructions encoded there. 
+you know, some instructions take only 1 
+
+191
+00:12:06,532 --> 00:12:09,490
+bytes, some other instructions take 2 
+bytes, other takes 3 bytes and so on. 
+
+192
+00:12:09,490 --> 00:12:14,226
+And this is also saying that where the, 
+the, the, the code is located in memory 
+
+193
+00:12:14,226 --> 00:12:20,757
+starts at address, at this address here. 
+Ok, this is where it starts and this is 
+
+194
+00:12:20,757 --> 00:12:26,652
+also saying that it's first, the address 
+of the first byte here of this function. 
+
+195
+00:12:26,652 --> 00:12:28,968
+Okay? 
+So, as you see, it's actually not obvious 
+
+196
+00:12:28,968 --> 00:12:32,98
+where the instructions start. 
+And then, because they have different 
+
+197
+00:12:32,98 --> 00:12:35,691
+sizes, and you have to decode them in 
+order to understand what they do. 
+
+198
+00:12:35,691 --> 00:12:38,955
+'Kay? 
+So now I mentioned this before briefly 
+
+199
+00:12:38,955 --> 00:12:44,135
+that what the linker does is essentially 
+it resolves some symbolic names that are 
+
+200
+00:12:44,135 --> 00:12:50,110
+embedded into your object code. 
+And also links what's missing like if 
+
+201
+00:12:50,110 --> 00:12:54,70
+your code happens to use some system 
+library functions like malloc to allocate 
+
+202
+00:12:54,70 --> 00:12:59,572
+memory or print stuff on the screen. 
+this has to be linked, you know, your 
+
+203
+00:12:59,572 --> 00:13:03,316
+code has to point to the right place in 
+this library. 
+
+204
+00:13:03,316 --> 00:13:07,270
+All right so let me show you an example 
+of a machine instruction here again. 
+
+205
+00:13:07,270 --> 00:13:11,174
+So remember that in our sum function we 
+had this statement here, int t equals x 
+
+206
+00:13:11,174 --> 00:13:14,630
+plus y. 
+Which just adds, x and y, and put into 
+
+207
+00:13:14,630 --> 00:13:17,850
+variable t. 
+Well there's an add here so it's only 
+
+208
+00:13:17,850 --> 00:13:21,270
+natural that in our assembly code there 
+will be something that looks like an add. 
+
+209
+00:13:21,270 --> 00:13:25,750
+And that's the instructions in the middle 
+by the compiler to implement that that 
+
+210
+00:13:25,750 --> 00:13:28,380
+expression. 
+'Kay? 
+
+211
+00:13:28,380 --> 00:13:32,840
+So the C Code here, we are trying to add 
+two integers and an assembly code. 
+
+212
+00:13:32,840 --> 00:13:35,616
+What we are doing is we're adding two 
+four-byte intergers. 
+
+213
+00:13:35,616 --> 00:13:38,681
+'Kay. 
+So, in by the way, note that is the same 
+
+214
+00:13:38,681 --> 00:13:42,128
+instruction whether it's signed or 
+unsigned. 
+
+215
+00:13:42,128 --> 00:13:46,123
+'Kay, so Gaetano told you about signed 
+and unsigned integers, right? 
+
+216
+00:13:46,123 --> 00:13:48,829
+So, you, you know about that now but the 
+instructions doesn't know whether it's 
+
+217
+00:13:48,829 --> 00:13:52,245
+adding a, a signed number or not. 
+So, now in. 
+
+218
+00:13:52,245 --> 00:13:55,950
+So, here are the operators of our 
+operation. 
+
+219
+00:13:55,950 --> 00:14:01,212
+So, we are doing this addition here. 
+Right, x plus y. 
+
+220
+00:14:01,212 --> 00:14:05,360
+Now x, has to be somewhere. 
+And in this case it happens to be stored 
+
+221
+00:14:05,360 --> 00:14:10,370
+in a register called eax. 
+That's one of the registers offered in 
+
+222
+00:14:10,370 --> 00:14:13,771
+the x86 ISA. 
+And that's why it's on the perimeters in 
+
+223
+00:14:13,771 --> 00:14:17,528
+this function here. 
+In, in, in, in thiis instruction. 
+
+224
+00:14:17,528 --> 00:14:22,110
+So now, y, the variable y here, happens 
+to be locating the memory. 
+
+225
+00:14:22,110 --> 00:14:24,295
+'Kay. 
+So it's locating the memory that is 
+
+226
+00:14:24,295 --> 00:14:28,12
+represented by the contents of register 
+ebp, which is the base point that's 
+
+227
+00:14:28,12 --> 00:14:33,119
+stacked base pointer. 
+Plus eight, so what's going to do is 
+
+228
+00:14:33,119 --> 00:14:37,84
+this, using this expression telling the 
+processor that okay, one or the other 
+
+229
+00:14:37,84 --> 00:14:41,967
+operands in this addition happens to be a 
+starting memory. 
+
+230
+00:14:41,967 --> 00:14:45,688
+And it's eight bytes away from the 
+address contains In the register in 
+
+231
+00:14:45,688 --> 00:14:50,508
+register ebp. 
+Great, okay, so now in t, here, which is 
+
+232
+00:14:50,508 --> 00:14:56,878
+where the result of our of our addition 
+goes, also happens to be a register, 
+
+233
+00:14:56,878 --> 00:15:03,98
+which is eax. 
+In fact we eax is both an operand as well 
+
+234
+00:15:03,98 --> 00:15:07,156
+as a destination of the operation. 
+'Kay? 
+
+235
+00:15:07,156 --> 00:15:12,484
+So, and now, okay, this instruction here, 
+that's the assembly instruction, and it 
+
+236
+00:15:12,484 --> 00:15:18,720
+became three bytes in in our object code, 
+in our machine code. 
+
+237
+00:15:18,720 --> 00:15:21,328
+And it happens to be stored in this 
+address here. 
+
+238
+00:15:21,328 --> 00:15:23,369
+Great. 
+Alright. 
+
+239
+00:15:23,369 --> 00:15:26,879
+So now, as you saw it, it's very hard to 
+tell from the, from machine code unless, 
+
+240
+00:15:26,879 --> 00:15:32,120
+you know, you really really can keep your 
+distance to everything in your head. 
+
+241
+00:15:32,120 --> 00:15:35,64
+It's hard to disassemble the code in your 
+mind, to look at, to look at the bytes 
+
+242
+00:15:35,64 --> 00:15:39,550
+that correspond to your binary code and 
+think about what instructions they do. 
+
+243
+00:15:39,550 --> 00:15:42,13
+That's why there's this thing, there's 
+this process called disassembling. 
+
+244
+00:15:42,13 --> 00:15:45,978
+What disassembling does is it gets the 
+bits, the, the, the, the bits from your, 
+
+245
+00:15:45,978 --> 00:15:50,505
+from your machine codes. 
+And maps them back to the original 
+
+246
+00:15:50,505 --> 00:15:52,690
+assembly code. 
+'Kay? 
+
+247
+00:15:52,690 --> 00:15:56,289
+So if you remember before I showed you 
+the bytes that composed the, the sum 
+
+248
+00:15:56,289 --> 00:15:59,616
+function. 
+And here all the bytes, all the 13 bytes 
+
+249
+00:15:59,616 --> 00:16:02,166
+here. 
+And then this first byte here, 55, just 
+
+250
+00:16:02,166 --> 00:16:05,611
+happens to map into this instruction 
+called push that pushes something to the 
+
+251
+00:16:05,611 --> 00:16:08,820
+stack. 
+'Kay. 
+
+252
+00:16:08,820 --> 00:16:13,260
+And now these two bytes here in my 
+machine code happens to match this move 
+
+253
+00:16:13,260 --> 00:16:18,170
+instruction that moves data between two 
+registers. 
+
+254
+00:16:18,170 --> 00:16:21,508
+'Kay? 
+So and the way you do this, but it is 
+
+255
+00:16:21,508 --> 00:16:27,715
+this, this tool, this utility in your in 
+your Linux installation. 
+
+256
+00:16:27,715 --> 00:16:31,128
+Called objdump. 
+Just, it dumps the object, it gets the 
+
+257
+00:16:31,128 --> 00:16:35,684
+object and, and dumps its disassembled 
+assembly[LAUGH], in, into the screen so 
+
+258
+00:16:35,684 --> 00:16:39,790
+you can see. 
+'Kay, so it's very useful for you to 
+
+259
+00:16:39,790 --> 00:16:45,250
+examine code and I encourage you to run 
+this command, man one objdump. 
+
+260
+00:16:45,250 --> 00:16:48,715
+It's going to tell you how to use this 
+tool. 
+
+261
+00:16:48,715 --> 00:16:52,809
+'Kay? 
+So 'kay. 
+
+262
+00:16:52,809 --> 00:16:55,882
+Now, here's another way, this is just a 
+different way of looking at this. 
+
+263
+00:16:55,882 --> 00:16:57,588
+I said, this is just a different 
+formatting. 
+
+264
+00:16:57,588 --> 00:17:00,348
+Now, it's showing that all of the 
+addresses now are just relative to sum, 
+
+265
+00:17:00,348 --> 00:17:03,251
+that's where sum starts. 
+So you can can see that this one is one 
+
+266
+00:17:03,251 --> 00:17:05,560
+byte away from sum. 
+And so on. 
+
+267
+00:17:05,560 --> 00:17:08,884
+'Kay? 
+and this is what you get if you did this 
+
+268
+00:17:08,884 --> 00:17:13,978
+assembly, with a GDB, debugger. 
+'Kay? 
+
+269
+00:17:13,978 --> 00:17:17,670
+Great. 
+So, what can be disassemble? 
+
+270
+00:17:17,670 --> 00:17:21,258
+Well, anything that can be treated, that 
+can be interpreted as executable code can 
+
+271
+00:17:21,258 --> 00:17:23,244
+be disassembled. 
+'Kay? 
+
+272
+00:17:23,244 --> 00:17:26,355
+So, you might try to get any random piece 
+of binary data in this assembly to 
+
+273
+00:17:26,355 --> 00:17:30,0
+disassemble. 
+You might not get valid instructions. 
+
+274
+00:17:30,0 --> 00:17:35,112
+'Kay, so what makes sense to disassemble 
+is essentially parts of, parts of of your 
+
+275
+00:17:35,112 --> 00:17:41,70
+memory, right, that happen to store 
+really binary code, 'kay? 
+
+276
+00:17:41,70 --> 00:17:43,842
+So essentially, anything that can be 
+interpreted as executable code can be 
+
+277
+00:17:43,842 --> 00:17:46,520
+disassembled. 
+OKay, so now I know I've already 
+
+278
+00:17:46,520 --> 00:17:50,406
+mentioned registers before, but I just 
+want to spend one, like a little bit of 
+
+279
+00:17:50,406 --> 00:17:55,843
+time[INAUDIBLE] what is a register. 
+So a register is just a location in the 
+
+280
+00:17:55,843 --> 00:18:00,372
+CPU that stores a small amount of data. 
+In fact, one of the reasons that 
+
+281
+00:18:00,372 --> 00:18:03,560
+registers are so fast Is because they are 
+small. 
+
+282
+00:18:03,560 --> 00:18:06,740
+The speed of light is limited, right? 
+So if the speed of light is limited, you 
+
+283
+00:18:06,740 --> 00:18:09,710
+make it small, it means you can make it 
+very, very, very, if things are small, 
+
+284
+00:18:09,710 --> 00:18:13,250
+you can make it very, very fast. 
+'Kay? 
+
+285
+00:18:13,250 --> 00:18:16,400
+So in register, ours is very fast 
+locations, but they're very small that 
+
+286
+00:18:16,400 --> 00:18:19,318
+happen to be inside the, the, the 
+processor. 
+
+287
+00:18:19,318 --> 00:18:21,523
+And, you know, as we go into some of this 
+assembly programming we'll see that 
+
+288
+00:18:21,523 --> 00:18:25,623
+registers just appear everywhere. 
+And they happen to be really precious 
+
+289
+00:18:25,623 --> 00:18:29,180
+because you only have a handful of them, 
+especially in x86. 
+
+290
+00:18:29,180 --> 00:18:33,897
+So let's see why. 
+'Kay, so we have IA32 has eight 
+
+291
+00:18:33,897 --> 00:18:36,370
+registers. 
+'Kay. 
+
+292
+00:18:36,370 --> 00:18:40,390
+Have six slices that are called general 
+purpose, you know, that can hold any data 
+
+293
+00:18:40,390 --> 00:18:43,708
+you want. 
+And there's like two special purpose 
+
+294
+00:18:43,708 --> 00:18:47,884
+registers, one that holds a pointer to 
+the stack, and one that holds the pointed 
+
+295
+00:18:47,884 --> 00:18:52,200
+to the base of the stack. 
+'Kay, so here's 
+
+296
+00:18:52,200 --> 00:18:55,828
+So the origin is mostly obsolete. 
+But wait to see that this is to be called 
+
+297
+00:18:55,828 --> 00:18:57,960
+eax. 
+Because it's suppose to be accumulate. 
+
+298
+00:18:57,960 --> 00:19:00,409
+And a lot of searches does accumulate to 
+eax. 
+
+299
+00:19:00,409 --> 00:19:03,540
+But if don't have to use it like this. 
+This is just mostly[UNKNOWN] attention. 
+
+300
+00:19:03,540 --> 00:19:07,164
+But you can really use them anyway. 
+Except for the stack pointer and a base 
+
+301
+00:19:07,164 --> 00:19:09,840
+pointer that really have special meaning, 
+'kay? 
+
+302
+00:19:09,840 --> 00:19:13,710
+And you use them on, a-, as they were 
+intended. 
+
+303
+00:19:13,710 --> 00:19:19,400
+Now, so in I, in I32, these registers 
+here are what? 
+
+304
+00:19:19,400 --> 00:19:24,280
+four by 32, 32 bits wide. 
+'Kay? 
+
+305
+00:19:24,280 --> 00:19:27,496
+So now in but that's not, that doesn't 
+mean it can only access all four bytes at 
+
+306
+00:19:27,496 --> 00:19:31,30
+a time, it can, there's some[UNKNOWN] 
+to[INAUDIBLE] . 
+
+307
+00:19:31,30 --> 00:19:35,239
+So if you use just percent ax, what 
+you're referring to is only this part of 
+
+308
+00:19:35,239 --> 00:19:38,730
+your eax register. 
+And even more you can reference only 
+
+309
+00:19:38,730 --> 00:19:40,512
+specific byte, if you, if you use this 
+name in your assembly code percent you 
+
+310
+00:19:40,512 --> 00:19:42,730
+are just referring to this byte of the 
+EAX registers. 
+
+311
+00:19:42,730 --> 00:19:45,660
+And the same thing for the other 
+registers as well. 
+
+312
+00:19:45,660 --> 00:19:50,920
+'Kay? 
+Except that, you know, for these 
+
+313
+00:19:50,920 --> 00:20:02,590
+registers you can only access half half 
+order, half register. 
+
+314
+00:20:02,590 --> 00:20:07,180
+So now, let's see how x86-64 registers 
+look like. 
+
+315
+00:20:07,180 --> 00:20:11,320
+Well, not surprisingly, now, again, what 
+happened was, you have eax here. 
+
+316
+00:20:11,320 --> 00:20:16,140
+Which is and the other IA 32 registers 
+are also available. 
+
+317
+00:20:16,140 --> 00:20:19,550
+But they're the only part of larger 
+registers because these here are a, for 
+
+318
+00:20:19,550 --> 00:20:22,750
+example rax happens to be, what, 64 bits. 
+'Kay? 
+
+319
+00:20:22,750 --> 00:20:29,126
+And this one here inside is 32 bits. 
+'Kay? 
+
+320
+00:20:29,126 --> 00:20:33,944
+And the same thing for the other ones. 
+Now the nice thing about this, is that 
+
+321
+00:20:33,944 --> 00:20:36,600
+you preserve backward compatibility. 
+Isn't that great? 
+
+322
+00:20:36,600 --> 00:20:40,224
+So now just happen to. 
+You have the same names and then now 
+
+323
+00:20:40,224 --> 00:20:46,274
+since ratios are bigger, now they have to 
+super set to divisional other ones. 
+
+324
+00:20:46,274 --> 00:20:52,323
+But i6, doesn't end there. 
+i6 64 also gives you extra registers. 
+
+325
+00:20:52,323 --> 00:20:56,947
+Now we have all these other registers for 
+general purpose use that can also be used 
+
+326
+00:20:56,947 --> 00:21:02,90
+by your assembly codes. 
+Great. 
+
+327
+00:21:02,90 --> 00:21:05,354
+So to, to summarize and end this, this 
+section, we saw what is the Instruction 
+
+328
+00:21:05,354 --> 00:21:08,580
+Set Architecture? 
+It defines the system's state and all the 
+
+329
+00:21:08,580 --> 00:21:10,940
+instructions that are available to 
+software. 
+
+330
+00:21:10,940 --> 00:21:15,648
+We talked a little bit about the history 
+of Intel processors and AMD as well. 
+
+331
+00:21:15,648 --> 00:21:17,819
+And we looked at how C relates to 
+assembly and machine code, we gave some 
+
+332
+00:21:17,819 --> 00:21:22,142
+initial examples. 
+And we talked about x86 registers, which 
+
+333
+00:21:22,142 --> 00:21:29,390
+is really at the, the heart of assembly 
+programming in x86. 
+
+334
+00:21:29,390 --> 00:21:32,729
+And the thing I want you to remember is 
+that they have a very, very limited 
+
+335
+00:21:32,729 --> 00:21:35,697
+number, and some of them have special 
+meaning, so not all of them are 
+
+336
+00:21:35,697 --> 00:21:39,500
+general-purpose. 
+'Kay? 
+
+337
+00:21:39,500 --> 00:21:41,554
+Thank you. 
+Now that concludes, this concludes our 
+
+338
+00:21:41,554 --> 00:21:44,95
+section. 
+Now we're going to, to see next section 
+
+339
+00:21:44,95 --> 00:21:47,359
+we're going to start looking at the 
+specifics of how to write x86 assembly 
+
+340
+00:21:47,359 --> 00:21:50,433
+code. 
+Thank you and see you soon. 
+

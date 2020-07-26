@@ -1,0 +1,800 @@
+1
+00:00:05,931 --> 00:00:07,341
+[MUSIC]. 
+We've come to the last section of the 
+
+2
+00:00:07,341 --> 00:00:10,428
+course. 
+this at this stage we 're going to talk 
+
+3
+00:00:10,428 --> 00:00:17,080
+about how higher level languages like 
+Java are implemented in computer systems. 
+
+4
+00:00:17,080 --> 00:00:21,230
+And we're going to leverage the knowledge 
+we have about how things are done using 
+
+5
+00:00:21,230 --> 00:00:24,800
+C. 
+what we focused on as our language so 
+
+6
+00:00:24,800 --> 00:00:28,620
+far. 
+So we're going to start that process by 
+
+7
+00:00:28,620 --> 00:00:32,560
+going back to the very beginning and sort 
+of replaying the course at a much faster 
+
+8
+00:00:32,560 --> 00:00:36,525
+pace. 
+And not just talk about how data 
+
+9
+00:00:36,525 --> 00:00:42,700
+representations, pointers, and references 
+procedures or methods in the case of Java 
+
+10
+00:00:42,700 --> 00:00:46,180
+are represented in a, in this higher 
+level language. 
+
+11
+00:00:46,180 --> 00:00:50,840
+And we're also going to talk a little bit 
+about virtual machines, a special runtime 
+
+12
+00:00:50,840 --> 00:00:55,700
+system we use for languages like java 
+which are interpretted and not compiled 
+
+13
+00:00:55,700 --> 00:00:59,020
+directly. 
+So we'll get, as I said we're going to do 
+
+14
+00:00:59,020 --> 00:01:03,740
+this really quick this time. 
+because we have a lot more background to 
+
+15
+00:01:03,740 --> 00:01:08,950
+base things on now. 
+So let's start turning out attention to 
+
+16
+00:01:08,950 --> 00:01:11,540
+Java. 
+Before we do that just to make a meta 
+
+17
+00:01:11,540 --> 00:01:16,415
+point about this this lecture, is none of 
+things we're going to talk about here are 
+
+18
+00:01:16,415 --> 00:01:20,240
+guaranteed by Java. 
+What we're doing here is just trying to 
+
+19
+00:01:20,240 --> 00:01:25,990
+understand one implementation of a higher 
+level language so we can get a sense for 
+
+20
+00:01:25,990 --> 00:01:33,020
+what the basic underlying concepts are. 
+useful ways to think about our programs 
+
+21
+00:01:33,020 --> 00:01:38,970
+and what is going on underneath, but none 
+of, none of what you hear in this set of 
+
+22
+00:01:38,970 --> 00:01:42,420
+videos. 
+In this section should you take to be the 
+
+23
+00:01:42,420 --> 00:01:45,810
+gospel truth about a particular 
+implementation. 
+
+24
+00:01:47,489 --> 00:01:51,370
+Let's begin by looking at how data is 
+represented in Java. 
+
+25
+00:01:51,370 --> 00:01:56,220
+integers, floats doubles, all those 
+things all those numbers that we were 
+
+26
+00:01:56,220 --> 00:02:00,480
+looking at before in the beginning of the 
+course and see or represented exactly the 
+
+27
+00:02:00,480 --> 00:02:03,680
+same way in Java. 
+there's no differences there. 
+
+28
+00:02:03,680 --> 00:02:08,520
+And yes a Java has pointers as well, 
+however, there are some differences 
+
+29
+00:02:08,520 --> 00:02:11,380
+there. 
+in Java pointers are referred to as 
+
+30
+00:02:11,380 --> 00:02:15,230
+references. 
+And there not quite as general as a, C 
+
+31
+00:02:15,230 --> 00:02:18,806
+pointers are. 
+remember with C we could point to any 
+
+32
+00:02:18,806 --> 00:02:23,990
+byte in memory, any arbitrary address. 
+We'll see that in Java our references are 
+
+33
+00:02:23,990 --> 00:02:28,140
+always pointing to the start of an 
+object, the start of a data structure. 
+
+34
+00:02:28,140 --> 00:02:36,010
+So not quite as general as C pointers. 
+Just like in C, null is typically 
+
+35
+00:02:36,010 --> 00:02:39,600
+represented as a 0. 
+and we're going to review characters and 
+
+36
+00:02:39,600 --> 00:02:45,570
+strings, arrays and objects. 
+So let's start with looking at characters 
+
+37
+00:02:45,570 --> 00:02:51,550
+and strings in Java. 
+the first thing to to note is that the 
+
+38
+00:02:51,550 --> 00:02:57,750
+character set that a Java uses has two 
+bites per character rather then one. 
+
+39
+00:02:57,750 --> 00:03:01,904
+Rather then using the Latin alphabet 
+focused ASCII encoding. 
+
+40
+00:03:01,904 --> 00:03:07,300
+we use two byte unit code characters 
+which allow us to represent many more the 
+
+41
+00:03:07,300 --> 00:03:12,640
+world's alphabets. 
+So it's much more general modern computer 
+
+42
+00:03:12,640 --> 00:03:17,030
+code for all the character sets that are 
+out there. 
+
+43
+00:03:17,030 --> 00:03:24,510
+So the other difference is that unlike in 
+C where strings are bounded by a special 
+
+44
+00:03:24,510 --> 00:03:29,770
+byte that has a null or a zero in it as 
+in this example here. 
+
+45
+00:03:29,770 --> 00:03:33,150
+You'll notice the strings ends when we 
+hit the zero. 
+
+46
+00:03:33,150 --> 00:03:36,980
+We don't know in advance how long the 
+string is going to be. 
+
+47
+00:03:36,980 --> 00:03:41,960
+We often have to read the entire string. 
+And keep checking every byte as we read 
+
+48
+00:03:41,960 --> 00:03:45,120
+it to know when we get to the end. 
+when we get to that zero. 
+
+49
+00:03:45,120 --> 00:03:49,590
+On the other hand, in Java, the first 
+four bytes are an integer that has the 
+
+50
+00:03:49,590 --> 00:03:53,220
+length of the string represented as as a 
+number. 
+
+51
+00:03:53,220 --> 00:03:59,383
+in this case the number six for the six 
+pairs of Unicode bytes. 
+
+52
+00:03:59,383 --> 00:04:08,620
+for the six characters in CSE351. 
+Okay, so, a, with a, with java at the 
+
+53
+00:04:08,620 --> 00:04:11,450
+very beginning we know the length of the 
+string already. 
+
+54
+00:04:11,450 --> 00:04:16,040
+That first thing we read is an integer 
+that tells us how long it is and how far 
+
+55
+00:04:16,040 --> 00:04:20,580
+we'll need to go. 
+The same approach carries through into 
+
+56
+00:04:20,580 --> 00:04:25,330
+arrays. 
+you'll notice that arrays in Java have an 
+
+57
+00:04:25,330 --> 00:04:29,140
+integer at the very beginning that tells 
+us how many elements there are in the 
+
+58
+00:04:29,140 --> 00:04:32,929
+array. 
+Another difference in arrays in Java, is 
+
+59
+00:04:32,929 --> 00:04:39,480
+that they're already initialized to 0. 
+and unlike in C, where the array is 
+
+60
+00:04:39,480 --> 00:04:43,620
+placed at some locations in memory and 
+it's starting values are whatever was 
+
+61
+00:04:43,620 --> 00:04:46,490
+there. 
+Whatever bits were currently at those 
+
+62
+00:04:46,490 --> 00:04:50,980
+memory locations. 
+instead in Java there's a special effort 
+
+63
+00:04:50,980 --> 00:04:54,940
+made to put zeroes there to start. 
+So that we know that whenever we read a 
+
+64
+00:04:54,940 --> 00:04:57,638
+value for the first time, it will in 
+fact, be a zero. 
+
+65
+00:04:57,638 --> 00:05:06,550
+That nice first value there, the length 
+of the array is accessed by a special 
+
+66
+00:05:06,550 --> 00:05:12,110
+method called length. 
+That we can call on the array and that 
+
+67
+00:05:12,110 --> 00:05:17,060
+will return the value of that field. 
+So that anytime we can find out how big 
+
+68
+00:05:17,060 --> 00:05:22,200
+this array is. 
+And why is that there, what can that do 
+
+69
+00:05:22,200 --> 00:05:25,730
+for us. 
+Well what's, what happens in Java is 
+
+70
+00:05:25,730 --> 00:05:29,235
+every time we access an array, every time 
+we index an array. 
+
+71
+00:05:29,235 --> 00:05:35,300
+we actually go and take, you know in this 
+case, for example, let's say we had 
+
+72
+00:05:35,300 --> 00:05:40,610
+written array three. 
+we will actually go and take that value 
+
+73
+00:05:40,610 --> 00:05:47,838
+three and compare it against this one 
+stored at the very first position in the 
+
+74
+00:05:47,838 --> 00:05:50,960
+object. 
+And make sure that we're not addressing a 
+
+75
+00:05:50,960 --> 00:05:56,900
+location that's out of bounds. 
+an, an element of the array that is 
+
+76
+00:05:56,900 --> 00:06:02,460
+actually defined. 
+in this case 3 is definitely okay, it 
+
+77
+00:06:02,460 --> 00:06:07,750
+really corresponds to this element right 
+here and we can go ahead and read that. 
+
+78
+00:06:07,750 --> 00:06:12,778
+If we had put a 7 here then that would've 
+been somewhere out here. 
+
+79
+00:06:12,778 --> 00:06:18,170
+in C and we would've just generated an, 
+an address and read whatever was at that 
+
+80
+00:06:18,170 --> 00:06:21,510
+memory location. 
+In Java on the other hand, we compare 
+
+81
+00:06:21,510 --> 00:06:25,110
+that seven against the five and say, well 
+we're clearly out of bounds. 
+
+82
+00:06:25,110 --> 00:06:30,550
+Let's throw an exception and and cause 
+the program to stop because we're clearly 
+
+83
+00:06:30,550 --> 00:06:37,520
+addressing something in an incorrect way. 
+So this is one nice advantage of writing 
+
+84
+00:06:37,520 --> 00:06:41,130
+Java programs that we get these extra 
+bound checks for free. 
+
+85
+00:06:41,130 --> 00:06:45,800
+That means that there's extra code 
+executing that we didn't bother to write 
+
+86
+00:06:45,800 --> 00:06:51,460
+to check that bound but was inserted for 
+us automatically in the Java 
+
+87
+00:06:51,460 --> 00:06:54,464
+implementation to do that bounds 
+checking. 
+
+88
+00:06:54,464 --> 00:07:03,010
+Okay, let's take a look at data 
+structures in Java, or objects as they're 
+
+89
+00:07:03,010 --> 00:07:10,240
+referred to. 
+the difference between structs in C and 
+
+90
+00:07:10,240 --> 00:07:16,490
+objects in Java, is that objects can only 
+include primitive data types. 
+
+91
+00:07:16,490 --> 00:07:21,310
+Not composite data types. 
+So for example, you'll remember maybe 
+
+92
+00:07:21,310 --> 00:07:25,790
+this example that we used before. 
+Here we have a struct that has an integer 
+
+93
+00:07:25,790 --> 00:07:31,350
+as its first element, and then an array 
+of three ints as its second element. 
+
+94
+00:07:31,350 --> 00:07:37,550
+That's not a primitive structure or 
+primitive data type, that's a composite 
+
+95
+00:07:37,550 --> 00:07:40,930
+data type, it actually consists of three 
+integers. 
+
+96
+00:07:40,930 --> 00:07:46,430
+And then another primitive data type that 
+is a pointer, okay? 
+
+97
+00:07:46,430 --> 00:07:54,735
+when we access these in C, what we can do 
+is allocate some space for for the, the 
+
+98
+00:07:54,735 --> 00:08:00,360
+struct. 
+Get a pointer to that region of memory, 
+
+99
+00:08:00,360 --> 00:08:06,130
+and then we can refer to it using that 
+arrow notation which says, hey take that 
+
+100
+00:08:06,130 --> 00:08:11,270
+pointer, dereference it, offset by the 
+amount that you need to offset to get to 
+
+101
+00:08:11,270 --> 00:08:17,500
+the various pieces of the, of the struct 
+and assign a new value to them. 
+
+102
+00:08:17,500 --> 00:08:22,390
+And you'll notice that we can not only 
+reference a, but we can reference an 
+
+103
+00:08:22,390 --> 00:08:27,590
+element within a, and assign a value to 
+one element of the array. 
+
+104
+00:08:27,590 --> 00:08:32,425
+here, we're assigning an address of 
+another struct to that pointer. 
+
+105
+00:08:32,425 --> 00:08:36,270
+Okay. 
+So, in memory, this looks like. 
+
+106
+00:08:37,960 --> 00:08:42,620
+An integer, followed by three more 
+integers that represent the array, a, and 
+
+107
+00:08:42,620 --> 00:08:47,840
+then another four bytes that are the 
+pointer, that is the third element. 
+
+108
+00:08:47,840 --> 00:08:52,640
+Let's see what that looks like in Java. 
+You'll notice that in Java, yes, we do 
+
+109
+00:08:52,640 --> 00:09:01,150
+have the integer as the first element and 
+the reference to another object a pointer 
+
+110
+00:09:01,150 --> 00:09:06,630
+like thing, as the third element, but in 
+the middle we don't have the actual array 
+
+111
+00:09:06,630 --> 00:09:13,490
+of three integers, we have a pointer to a 
+new structure that is an array of three 
+
+112
+00:09:13,490 --> 00:09:18,394
+integers, so rather than actually 
+representing the three integers there. 
+
+113
+00:09:18,394 --> 00:09:22,540
+We actually just represent a pointer to 
+the array. 
+
+114
+00:09:23,870 --> 00:09:27,180
+So to, let's just take a look at that 
+map. 
+
+115
+00:09:27,180 --> 00:09:32,400
+So here in this case, our memory has our 
+four byte integer at the beginning, our 
+
+116
+00:09:32,400 --> 00:09:40,670
+four byte pointer to an array and another 
+four byte reference to another object. 
+
+117
+00:09:40,670 --> 00:09:46,010
+So that pointer a is not the actual 
+array, but rather points off to a region 
+
+118
+00:09:46,010 --> 00:09:50,850
+of memory where the array is stored. 
+Here are the three ints, but remember 
+
+119
+00:09:50,850 --> 00:09:53,200
+they're preceded by the length of the 
+array. 
+
+120
+00:09:53,200 --> 00:09:56,310
+So there's an extra integer there at the 
+beginning. 
+
+121
+00:09:56,310 --> 00:09:59,030
+That tells us how many elements there are 
+to this array. 
+
+122
+00:09:59,030 --> 00:10:06,030
+When we reference them in code, when we 
+reference the struct in code you'll 
+
+123
+00:10:06,030 --> 00:10:08,130
+notice theres a slightly different 
+syntax. 
+
+124
+00:10:08,130 --> 00:10:15,520
+We don't bother doing malloc to call the 
+memory allocation to get us a space in 
+
+125
+00:10:15,520 --> 00:10:20,270
+memory. 
+We use the keyword new which is actually 
+
+126
+00:10:20,270 --> 00:10:26,080
+something that does that malloc for us 
+and creates a new space in memory, in 
+
+127
+00:10:26,080 --> 00:10:33,720
+this case two new spaces in memory. 
+One for the first level of the struct and 
+
+128
+00:10:33,720 --> 00:10:39,060
+then one for one of, another area for the 
+composite data type that makes up that 
+
+129
+00:10:39,060 --> 00:10:44,110
+that struct. 
+That extra array that has to be created 
+
+130
+00:10:44,110 --> 00:10:47,499
+and it initializes these, this pointer to 
+point to that array. 
+
+131
+00:10:49,220 --> 00:10:53,520
+The references to the elements are very 
+similar to what we did in C, but you'll 
+
+132
+00:10:53,520 --> 00:10:55,420
+notice that we've changed the notation a 
+little bit. 
+
+133
+00:10:55,420 --> 00:10:59,910
+Instead of the arrow, we just used a dot. 
+It's it's a little bit shorter, easier to 
+
+134
+00:10:59,910 --> 00:11:04,710
+read, and since we're always using a 
+reference that's to the start of an 
+
+135
+00:11:04,710 --> 00:11:08,840
+object. 
+we implicitly do the do reference so we 
+
+136
+00:11:08,840 --> 00:11:16,020
+don't bother with that extra step, and 
+can just use the dot notation. 
+
+137
+00:11:16,020 --> 00:11:20,250
+Alright, so you've seen a, a little bit 
+about these pointers, let's see, a, what 
+
+138
+00:11:20,250 --> 00:11:24,490
+that implications that has. 
+So a pointer in C, again, can point to 
+
+139
+00:11:24,490 --> 00:11:28,150
+any memory address. 
+In, in Java though, it can only point to 
+
+140
+00:11:28,150 --> 00:11:31,980
+the beginning of an object. 
+only it's first element, not, it cannot 
+
+141
+00:11:31,980 --> 00:11:35,060
+point to the middle of it. 
+So what implications does this have? 
+
+142
+00:11:35,060 --> 00:11:39,270
+Well you, here's our struct again and 
+you'll notice here we're calling a 
+
+143
+00:11:39,270 --> 00:11:44,150
+function with one element of the array 
+that makes up that struct and we can do 
+
+144
+00:11:44,150 --> 00:11:49,560
+that with a single expression. 
+We go to that struct, look at its a 
+
+145
+00:11:49,560 --> 00:11:53,040
+array, and then the second element of 
+that array. 
+
+146
+00:11:53,040 --> 00:11:58,040
+And the address of that element, and can 
+pass that on to the function. 
+
+147
+00:11:58,040 --> 00:12:03,380
+So in this case what we're doing is 
+passing a pointer to that function, some 
+
+148
+00:12:03,380 --> 00:12:09,860
+fun As an argument and that ar, that 
+argument points to a particular integer 
+
+149
+00:12:09,860 --> 00:12:13,310
+in the middle of that array. 
+In Java, we can't do that. 
+
+150
+00:12:13,310 --> 00:12:16,060
+Remember our pointers? 
+Our references can only go to the 
+
+151
+00:12:16,060 --> 00:12:20,430
+beginning of an object so, we actually 
+have to specify it in two parts. 
+
+152
+00:12:20,430 --> 00:12:26,158
+First, we have to say the array Address 
+and then, which element of the array. 
+
+153
+00:12:26,158 --> 00:12:30,210
+we, because we can't point to the middle 
+of the array directly. 
+
+154
+00:12:30,210 --> 00:12:35,430
+So remember, that's what our struct looks 
+like in our object looks like in memory. 
+
+155
+00:12:35,430 --> 00:12:41,240
+These two discontiguous parts, and we 
+cannot generate a pointer to the middle 
+
+156
+00:12:41,240 --> 00:12:47,400
+of that array so the way we have to do it 
+is by pointing first to the array by 
+
+157
+00:12:47,400 --> 00:12:53,690
+getting that pointer stored at this 
+location, and then providing an index 
+
+158
+00:12:53,690 --> 00:12:58,845
+that tells us which element to the array 
+we want, and that index will be compared 
+
+159
+00:12:58,845 --> 00:13:03,650
+against the length of the array and 
+checked for us. 
+
+160
+00:13:03,650 --> 00:13:06,630
+to make sure that we're not over stepping 
+the bounds. 
+

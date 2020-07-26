@@ -1,0 +1,474 @@
+1
+00:00:00,383 --> 00:00:05,607
+[MUSIC]. 
+
+2
+00:00:05,607 --> 00:00:09,828
+Now that we've seen how to represent 
+floating point numbers let's take a look 
+
+3
+00:00:09,828 --> 00:00:13,791
+at what it means to do operations on 
+them. 
+
+4
+00:00:13,791 --> 00:00:17,599
+Unlike the representation for integers, 
+it is important to remember that the 
+
+5
+00:00:17,599 --> 00:00:21,780
+representation for floating point numbers 
+is not exact. 
+
+6
+00:00:21,780 --> 00:00:25,920
+Meaning that we're always approximating 
+the real mathematical value, because we 
+
+7
+00:00:25,920 --> 00:00:30,880
+have a finite representation. 
+That mantissa doesn't go on forever. 
+
+8
+00:00:30,880 --> 00:00:37,960
+It stops after 23 bits or even after 52 
+bits in the extended notation. 
+
+9
+00:00:37,960 --> 00:00:43,160
+So, the way we go about doing operations 
+in floating point, the basic idea is to 
+
+10
+00:00:43,160 --> 00:00:48,040
+do the exact operation first and then 
+rounded to fit inside of a resulting 
+
+11
+00:00:48,040 --> 00:00:56,566
+floating point number representation. 
+So, for example here, if we're doing x + 
+
+12
+00:00:56,566 --> 00:01:02,611
+y, first let's try to do that addition as 
+exactly as possible, and then we try to 
+
+13
+00:01:02,611 --> 00:01:11,270
+fit into a 32 bit representation by 
+rounding if necessary. 
+
+14
+00:01:11,270 --> 00:01:14,040
+And the same thing with the 
+multiplication. 
+
+15
+00:01:14,040 --> 00:01:20,870
+Now these operations require some 
+adjustments to, to happen. 
+
+16
+00:01:20,870 --> 00:01:24,714
+So for example, when we're adding 
+numbers, because the exponents could be 
+
+17
+00:01:24,714 --> 00:01:28,542
+wildly different. 
+We have to make sure to first adjust the 
+
+18
+00:01:28,542 --> 00:01:32,510
+fractions so that they line up with the 
+binary points in the right, in the same 
+
+19
+00:01:32,510 --> 00:01:39,640
+location so that we can do an addition. 
+Fine, in multiplication we have a 
+
+20
+00:01:39,640 --> 00:01:43,010
+different problem. 
+We don't have to worry about aligning the 
+
+21
+00:01:43,010 --> 00:01:46,730
+fractions, but we do have to be sure that 
+when we add the x exponents we get an 
+
+22
+00:01:46,730 --> 00:01:52,587
+exponent that is still within range. 
+And we could very easily go out of range 
+
+23
+00:01:52,587 --> 00:01:56,119
+if we multiply two numbers with large 
+exponents. 
+
+24
+00:01:56,119 --> 00:01:59,759
+So the basic idea then for floating point 
+operations is the first compute that 
+
+25
+00:01:59,759 --> 00:02:05,710
+exact result, and then round to make the 
+result fit into the desired precision. 
+
+26
+00:02:05,710 --> 00:02:09,994
+we might have possible overflow if the 
+exponent is too large, and we might have 
+
+27
+00:02:09,994 --> 00:02:14,404
+to drop some least significant bits in 
+the significand, if our fraction gets too 
+
+28
+00:02:14,404 --> 00:02:20,097
+long. 
+For example, if we do a, a, an addition 
+
+29
+00:02:20,097 --> 00:02:26,641
+between two numbers of very different 
+exponents. 
+
+30
+00:02:26,641 --> 00:02:29,060
+Okay. 
+So, that's the basic idea. 
+
+31
+00:02:29,060 --> 00:02:32,390
+Now how do we get this rounding done. 
+Well, there's so many choices for how to 
+
+32
+00:02:32,390 --> 00:02:37,889
+do rounding. 
+This table illustrates five possibilities 
+
+33
+00:02:37,889 --> 00:02:44,661
+using dollar amounts at the top here. 
+And you'll notice that you know, there's 
+
+34
+00:02:44,661 --> 00:02:48,693
+some fairly easy to explain ones, like 
+round towards zero, always go towards 
+
+35
+00:02:48,693 --> 00:02:52,461
+zero. 
+So another one is to go towards negative 
+
+36
+00:02:52,461 --> 00:02:56,305
+infinity, because we're always going to 
+go towards the negative rather than 
+
+37
+00:02:56,305 --> 00:03:01,800
+towards zero in the middle of the 
+positive and the negative numbers. 
+
+38
+00:03:01,800 --> 00:03:07,416
+And then always round up towards positive 
+infinity always moving in one direction 
+
+39
+00:03:07,416 --> 00:03:11,344
+there. 
+Another possibility is to round to the 
+
+40
+00:03:11,344 --> 00:03:15,990
+nearest value. 
+In this case, the nearest dollar amount. 
+
+41
+00:03:15,990 --> 00:03:19,950
+But you can see we going to have some 
+problems when we're right in the middle 
+
+42
+00:03:19,950 --> 00:03:24,770
+which is the nearest. 
+so, that's always difficult to define. 
+
+43
+00:03:24,770 --> 00:03:31,440
+Another possibility is round towards even 
+towards the even number that's closest. 
+
+44
+00:03:31,440 --> 00:03:34,755
+And why is that interesting? 
+Well, that's interesting because that 
+
+45
+00:03:34,755 --> 00:03:38,605
+kind of makes sure that the rounding goes 
+towards and in the up direction half the 
+
+46
+00:03:38,605 --> 00:03:42,798
+time and the down direction the other 
+half the time. 
+
+47
+00:03:42,798 --> 00:03:46,454
+Okay. 
+so if we can repeatedly round results of 
+
+48
+00:03:46,454 --> 00:03:51,490
+our operations, these errors are going to 
+start to accumulate. 
+
+49
+00:03:51,490 --> 00:03:55,333
+And if we also round in the same 
+direction, we can introduce a statistical 
+
+50
+00:03:55,333 --> 00:04:02,260
+bias into our set of values. 
+So to avoid this the[UNKNOWN] floating 
+
+51
+00:04:02,260 --> 00:04:10,050
+point standards uses a rounding mechanism 
+closest to round-to-even. 
+
+52
+00:04:10,050 --> 00:04:14,649
+And that's to get about half of them 
+rounding up half the time, and half of 
+
+53
+00:04:14,649 --> 00:04:21,160
+the time rounding down. 
+to avoid that bias if we repeatedly round 
+
+54
+00:04:21,160 --> 00:04:24,965
+the numbers. 
+All right, some other mathematical 
+
+55
+00:04:24,965 --> 00:04:30,990
+properties of floating point operations. 
+if an overflow of the exponent occurs, 
+
+56
+00:04:30,990 --> 00:04:36,684
+our hardware, our unit that does the 
+operation has to notice that and make the 
+
+57
+00:04:36,684 --> 00:04:44,184
+result be positive or negative infinity. 
+floats that start off with the value 
+
+58
+00:04:44,184 --> 00:04:48,876
+positive or negative infinity, or not a 
+number, can, can be used in operations, 
+
+59
+00:04:48,876 --> 00:04:55,300
+but the results usually end up staying 
+positive or negative infinity. 
+
+60
+00:04:55,300 --> 00:04:59,099
+So again our hardware has to design to 
+detect these situations. 
+
+61
+00:05:00,410 --> 00:05:05,140
+Detect these numbers and do something 
+different than it would otherwise do. 
+
+62
+00:05:05,140 --> 00:05:09,755
+This makes the design of floating point 
+units in CPUs one of the hardest jobs of 
+
+63
+00:05:09,755 --> 00:05:14,910
+of the, the logic design of the machine 
+itself. 
+
+64
+00:05:14,910 --> 00:05:18,830
+Another important thing to remember, and 
+this is important as programmers now, 
+
+65
+00:05:18,830 --> 00:05:22,694
+floating point operations are not always 
+associative or distributive because of 
+
+66
+00:05:22,694 --> 00:05:27,539
+that rounding. 
+So, we can't always just re-order the 
+
+67
+00:05:27,539 --> 00:05:31,886
+operations as we're used to doing in 
+mathematics, or with integers for that 
+
+68
+00:05:31,886 --> 00:05:36,196
+matter. 
+with floating point values we cannot do 
+
+69
+00:05:36,196 --> 00:05:39,580
+that. 
+Here's some a little example. 
+
+70
+00:05:39,580 --> 00:05:44,860
+For example, if we add a small number to 
+a really large number, and then subtract 
+
+71
+00:05:44,860 --> 00:05:51,844
+that large number, we would expect to 
+get, that little number back. 
+
+72
+00:05:51,844 --> 00:05:56,119
+However, what we find is that, that 
+result is not equal to doing the 
+
+73
+00:05:56,119 --> 00:06:02,798
+operations in a slightly different order. 
+Because when we add that little number to 
+
+74
+00:06:02,798 --> 00:06:06,758
+the large number, it is so little we 
+cannot actually fit it into the 
+
+75
+00:06:06,758 --> 00:06:11,274
+representation. 
+In other words, because we have to 
+
+76
+00:06:11,274 --> 00:06:16,670
+represent this large number, we end up 
+taking up all of the significant bits. 
+
+77
+00:06:16,670 --> 00:06:22,325
+and adding on a 3.14 in this case just 
+doesn't register in the 23 bits we have 
+
+78
+00:06:22,325 --> 00:06:27,497
+available. 
+So that when we go and subract that large 
+
+79
+00:06:27,497 --> 00:06:31,350
+number again, we're going to just get 
+zero, okay. 
+
+80
+00:06:31,350 --> 00:06:36,579
+While in this case, we first do the, we, 
+we do this operation first, in the 
+
+81
+00:06:36,579 --> 00:06:42,962
+parentheses, that yields a zero. 
+But then when we add that to 3.14 we're 
+
+82
+00:06:42,962 --> 00:06:48,570
+left with 3.14, so the results are not 
+equal, on the two sides here. 
+
+83
+00:06:48,570 --> 00:06:53,420
+another example is when we have 
+multiplication. 
+
+84
+00:06:53,420 --> 00:06:57,545
+Again we take a large number, and 
+subtract a large number, that's a zero. 
+
+85
+00:06:57,545 --> 00:07:02,561
+So when we multiply that zero times a 
+large number, we'll expect to get a zero 
+
+86
+00:07:02,561 --> 00:07:08,140
+result. 
+However, if we do this operation, just 
+
+87
+00:07:08,140 --> 00:07:13,016
+applying the distributive law. 
+First we multiply the two the 1 times 
+
+88
+00:07:13,016 --> 00:07:17,436
+te-, times 10 to the 20th times the first 
+number in the parenthesis, and then we 
+
+89
+00:07:17,436 --> 00:07:21,788
+multiply it times the second number in 
+the, the parenthesis before doing the 
+
+90
+00:07:21,788 --> 00:07:27,397
+difference. 
+Well, these values are going to be so 
+
+91
+00:07:27,397 --> 00:07:32,875
+large they might overflow. 
+And when we end up when we end up looking 
+
+92
+00:07:32,875 --> 00:07:40,950
+at the results of those multiplications, 
+they might just be positive infinity. 
+
+93
+00:07:40,950 --> 00:07:44,630
+And infinity minus infinity is still 
+infinity. 
+
+94
+00:07:44,630 --> 00:07:50,180
+According to most hardware units, so this 
+would not work out either with any, with 
+
+95
+00:07:50,180 --> 00:07:55,250
+an equal comparison. 
+These would not yield the same result. 
+

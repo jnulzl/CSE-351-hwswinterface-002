@@ -1,0 +1,915 @@
+1
+00:00:06,220 --> 00:00:09,390
+It's time to move on to another section 
+of our course. 
+
+2
+00:00:09,390 --> 00:00:12,600
+this time we're going to talk about 
+arrays and structs. 
+
+3
+00:00:12,600 --> 00:00:16,848
+Namely, how we represent some more 
+interesting data structures in our 
+
+4
+00:00:16,848 --> 00:00:20,970
+memory. 
+so we're going to move beyond just simple 
+
+5
+00:00:20,970 --> 00:00:25,594
+integers and floats and characters but 
+talk about arrays of values and and 
+
+6
+00:00:25,594 --> 00:00:30,620
+complex structures that involve multiple 
+elements. 
+
+7
+00:00:30,620 --> 00:00:34,980
+that's what we call structs in the C 
+language. 
+
+8
+00:00:34,980 --> 00:00:40,716
+Okay, so to outline this section. 
+we're going to start off on arrays and 
+
+9
+00:00:40,716 --> 00:00:45,550
+how we access them in memory. 
+the various elements of the arrays. 
+
+10
+00:00:45,550 --> 00:00:48,783
+And then we'll talk about 
+multi-dimensional arrays, as well as 
+
+11
+00:00:48,783 --> 00:00:52,780
+multi-level arrays and the differences 
+between the two. 
+
+12
+00:00:52,780 --> 00:00:56,720
+then we'll move on to talk about other 
+kinds of data structures and memory. 
+
+13
+00:00:56,720 --> 00:01:02,635
+And how they're aligned to to the 
+appropriate addresses to to optimize 
+
+14
+00:01:02,635 --> 00:01:06,560
+memory access. 
+Okay, so let's get started. 
+
+15
+00:01:06,560 --> 00:01:11,388
+We'll begin with arrays, and the basic 
+idea behind arrays is that they have 
+
+16
+00:01:11,388 --> 00:01:18,126
+elements of a certain type. 
+In this case, using the, the T of course, 
+
+17
+00:01:18,126 --> 00:01:25,215
+the array has a name A. 
+And then it has a number of elements or a 
+
+18
+00:01:25,215 --> 00:01:29,725
+length. 
+And this, this leads to a contiguously 
+
+19
+00:01:29,725 --> 00:01:36,750
+allocated region of memory that is of 
+size N times the size of that data type. 
+
+20
+00:01:36,750 --> 00:01:42,110
+So if these were ints it would be four 
+times n in bytes. 
+
+21
+00:01:42,110 --> 00:01:46,750
+because ints are 4 bytes each. 
+So let's take a look at some examples. 
+
+22
+00:01:46,750 --> 00:01:53,430
+Here's a character array called string 
+that has 12 elements. 
+
+23
+00:01:53,430 --> 00:01:58,580
+And you'll notice that each is one byte. 
+And they're allocated one right after the 
+
+24
+00:01:58,580 --> 00:02:02,544
+other in memory. 
+here we have an array of ints with five 
+
+25
+00:02:02,544 --> 00:02:07,890
+elements called val and of course, it 
+take up 20 bytes in memory from some 
+
+26
+00:02:07,890 --> 00:02:15,319
+starting address. 
+a double array of course the elements are 
+
+27
+00:02:15,319 --> 00:02:18,425
+8 bytes each. 
+But they're always contiguous. 
+
+28
+00:02:18,425 --> 00:02:20,612
+Okay? 
+Always right next to each other in 
+
+29
+00:02:20,612 --> 00:02:23,448
+memory. 
+And of course for pointers we have a 
+
+30
+00:02:23,448 --> 00:02:28,322
+difference depending on, whether we're on 
+a 32 bit or 64 bit architecture. 
+
+31
+00:02:28,322 --> 00:02:35,666
+In in one case the pointers are eight 4 
+bytes, in the other case they are 8 
+
+32
+00:02:35,666 --> 00:02:44,014
+bytes, the size of the addresses. 
+Okay, so continuing with this let's take 
+
+33
+00:02:44,014 --> 00:02:50,160
+a look at a little example here we have a 
+five element array called val. 
+
+34
+00:02:50,160 --> 00:02:58,110
+And it has the following integers stored 
+in it, 9,8,1,9,5. 
+
+35
+00:02:58,110 --> 00:03:01,360
+That happens to be the zip code for the 
+University of Washington. 
+
+36
+00:03:01,360 --> 00:03:05,150
+Okay let's take a look at how we might 
+reference these values. 
+
+37
+00:03:05,150 --> 00:03:09,180
+We'll start off with an example of val 
+sub four. 
+
+38
+00:03:09,180 --> 00:03:15,028
+so we are actually looking here for the 
+fifth element of the array, because the 
+
+39
+00:03:15,028 --> 00:03:21,307
+indices start at zero, okay. 
+So although, here we put a five for the 
+
+40
+00:03:21,307 --> 00:03:26,235
+total number, the actual index of the 
+last element of the array is n minus 1 
+
+41
+00:03:26,235 --> 00:03:31,500
+val sub 4. 
+And its type of course, is going to be an 
+
+42
+00:03:31,500 --> 00:03:36,200
+int because these are all ints in this 
+array. 
+
+43
+00:03:36,200 --> 00:03:41,064
+So, the value in this case is going to be 
+the number five that last five that we 
+
+44
+00:03:41,064 --> 00:03:47,969
+see at the address x plus 16. 
+the next example, just using the word 
+
+45
+00:03:47,969 --> 00:03:53,215
+val, the name of the array, is going to 
+give us an address, an address to the 
+
+46
+00:03:53,215 --> 00:03:59,791
+starting point of the array. 
+So that'll be the value x, wherever we 
+
+47
+00:03:59,791 --> 00:04:06,574
+happen to start the array in memory. 
+Val plus one is also a pointer because 
+
+48
+00:04:06,574 --> 00:04:12,300
+val is an address when we add 1 to it, we 
+do pointer arithmetic. 
+
+49
+00:04:12,300 --> 00:04:19,580
+these are of type int, so we will add 4 
+to x, and so that value is x plus 4. 
+
+50
+00:04:19,580 --> 00:04:24,760
+continuing on we have the address of the 
+second element of the array. 
+
+51
+00:04:24,760 --> 00:04:29,660
+The second index of the array rather, or 
+the third element, and that would be x 
+
+52
+00:04:29,660 --> 00:04:34,542
+plus 8, okay? 
+again because we start the indices at 
+
+53
+00:04:34,542 --> 00:04:37,850
+zero. 
+Val five, now val five is not really in 
+
+54
+00:04:37,850 --> 00:04:42,022
+our array, it's outside the bounds of our 
+array. 
+
+55
+00:04:42,022 --> 00:04:47,678
+The last index should have been four. 
+But C doesn't care about that, it'll just 
+
+56
+00:04:47,678 --> 00:04:54,670
+do the address computation the same old 
+way and just go to that memory location. 
+
+57
+00:04:54,670 --> 00:04:58,958
+So in this case, it'll take the starting 
+address of val multiplied at 5 by 4 and 
+
+58
+00:04:58,958 --> 00:05:04,110
+add 20 to that starting address. 
+So it'll really go to whatever memory 
+
+59
+00:05:04,110 --> 00:05:09,140
+location is after the end of the array 
+and who knows what is there. 
+
+60
+00:05:09,140 --> 00:05:14,111
+So we have an unknown value. 
+It's totally dependent on whatever is in 
+
+61
+00:05:14,111 --> 00:05:18,335
+that memory location. 
+Okay let's take a look at the next 
+
+62
+00:05:18,335 --> 00:05:23,293
+example, we're doing val plus one inside 
+the parenthesis, that's again that 
+
+63
+00:05:23,293 --> 00:05:28,752
+address x plus 4. 
+And then, we're differencing it with the 
+
+64
+00:05:28,752 --> 00:05:33,780
+star operator, so we're saying what is 
+the value at x plus 4. 
+
+65
+00:05:33,780 --> 00:05:37,880
+And of course the value at x plus 4 is 
+the integer 8. 
+
+66
+00:05:37,880 --> 00:05:43,441
+And then finally our last example val 
+plus i, an arbitrary index again that is 
+
+67
+00:05:43,441 --> 00:05:49,644
+multiplied by 4 to yield the address x 
+plus 4 times i. 
+
+68
+00:05:49,644 --> 00:05:53,510
+All right, so that's pretty 
+straightforward. 
+
+69
+00:05:53,510 --> 00:05:57,224
+Let's take a look at a larger example. 
+Here we've defined three arrays, with 
+
+70
+00:05:57,224 --> 00:06:03,174
+five values each. 
+You'll notice that the type of the arrays 
+
+71
+00:06:03,174 --> 00:06:10,912
+is this zip dig for zip digit. 
+And that's a type that was defined in c 
+
+72
+00:06:10,912 --> 00:06:16,936
+as b an integer array of five elements. 
+Okay, so that's just so that we have a 
+
+73
+00:06:16,936 --> 00:06:21,090
+shorthand for defining a new data type 
+that then we can just use to declare 
+
+74
+00:06:21,090 --> 00:06:26,100
+values. 
+So we have these three arrays of five 
+
+75
+00:06:26,100 --> 00:06:29,790
+elements each. 
+They're represented in memory to look 
+
+76
+00:06:29,790 --> 00:06:34,970
+like this and here I've shown them 
+actually one right after the other. 
+
+77
+00:06:34,970 --> 00:06:41,100
+You'll notice that address is 16 36 and 
+56 just following each other in memory. 
+
+78
+00:06:41,100 --> 00:06:46,333
+Of course, there's no guarantee that that 
+will actually happen. 
+
+79
+00:06:46,333 --> 00:06:50,240
+That's just how I drew out this example, 
+okay? 
+
+80
+00:06:50,240 --> 00:06:55,535
+So let's take a look at some address 
+computations on this array. 
+
+81
+00:06:55,535 --> 00:07:01,469
+here we have a simple C procedure called 
+get digit, okay, it takes two arguments 
+
+82
+00:07:01,469 --> 00:07:08,340
+in array and the index of the digit we 
+want in that array. 
+
+83
+00:07:08,340 --> 00:07:17,270
+So something like uw 3 for the 3rd digit 
+of the uw zip code. 
+
+84
+00:07:17,270 --> 00:07:21,692
+So the way we go about figuring out what 
+that value is, is we just take the name 
+
+85
+00:07:21,692 --> 00:07:30,260
+of the array, and index it with the other 
+parameter, the other argument z sub dig. 
+
+86
+00:07:30,260 --> 00:07:34,250
+In in assembly code this turns into a 
+very simple expression. 
+
+87
+00:07:34,250 --> 00:07:38,735
+you'll notice here that we have just a 
+simple move instruction for for doing 
+
+88
+00:07:38,735 --> 00:07:42,840
+that. 
+It's moving a value into the registered 
+
+89
+00:07:42,840 --> 00:07:48,030
+eax because that will be the return value 
+of this procedure. 
+
+90
+00:07:48,030 --> 00:07:51,525
+And what does it return? 
+Well, it's going to do an address 
+
+91
+00:07:51,525 --> 00:07:55,098
+computation. 
+It's going to use what is currently an 
+
+92
+00:07:55,098 --> 00:08:02,400
+eax and we're assuming that's the value 
+of the second parameter digit. 
+
+93
+00:08:02,400 --> 00:08:06,575
+It's going to multiply that by 4, so 4 
+times digit. 
+
+94
+00:08:06,575 --> 00:08:12,341
+Okay, and then add that to edx which is 
+the value of the first parameter, the 
+
+95
+00:08:12,341 --> 00:08:19,280
+address of the, the first starting 
+address of the array Z. 
+
+96
+00:08:19,280 --> 00:08:26,242
+Okay, so that is the address. 
+And then, the, the parentheses around it 
+
+97
+00:08:26,242 --> 00:08:31,832
+imply a de-reference that we're going to 
+go to that location, and get the value 
+
+98
+00:08:31,832 --> 00:08:39,259
+there and put it into eax. 
+Let's take a look at some other examples 
+
+99
+00:08:39,259 --> 00:08:45,260
+of accessing these arrays. 
+Let's take a look at uw sub three. 
+
+100
+00:08:45,260 --> 00:08:48,925
+What would we expect that to be? 
+Well, we expect to go to the uw array 
+
+101
+00:08:48,925 --> 00:08:53,100
+here, okay. 
+And sub 3 means the fourth element so 
+
+102
+00:08:53,100 --> 00:08:58,908
+it's not the nine, not the eight, not the 
+nine but it is the second nine at address 
+
+103
+00:08:58,908 --> 00:09:04,418
+of 48. 
+Okay and in fact we can compute that by 
+
+104
+00:09:04,418 --> 00:09:09,836
+taking the starting address of the array 
+36 and adding 4 times 3 the size of an 
+
+105
+00:09:09,836 --> 00:09:17,806
+int times the index. 
+Okay, the value there of course is nine 
+
+106
+00:09:17,806 --> 00:09:25,161
+and that is guaranteed to be that value, 
+in terms of it's organization and memory. 
+
+107
+00:09:25,161 --> 00:09:30,173
+Let's try uw6, now of course, that is off 
+the end of our array. 
+
+108
+00:09:30,173 --> 00:09:35,070
+We don't have a seven element array. 
+We have a five element array. 
+
+109
+00:09:35,070 --> 00:09:39,100
+But the address computation proceeds as 
+before, this time we get an address of 
+
+110
+00:09:39,100 --> 00:09:42,950
+60, which happens to have the value four 
+in it. 
+
+111
+00:09:42,950 --> 00:09:49,840
+But you'll notice that it's really part 
+of the ucb address the ucb array. 
+
+112
+00:09:49,840 --> 00:09:52,927
+And, of course, there is no guarantee 
+that that array is in the location that 
+
+113
+00:09:52,927 --> 00:09:57,054
+I've shown it to be in. 
+It could have been allocated anywhere in 
+
+114
+00:09:57,054 --> 00:10:00,190
+memory, so that's absolutely not a 
+guaranteed result. 
+
+115
+00:10:00,190 --> 00:10:03,270
+In fact anytime that we go outside the 
+bounds of the array, we have no 
+
+116
+00:10:03,270 --> 00:10:09,590
+guarantees as to what the value will be. 
+Let's do uw minus one. 
+
+117
+00:10:09,590 --> 00:10:13,748
+That's an interesting index, but the 
+address computation just uses it the same 
+
+118
+00:10:13,748 --> 00:10:19,346
+way this time we get an address of 32. 
+the value there is three in the cmu zip 
+
+119
+00:10:19,346 --> 00:10:22,945
+code array and again that is not 
+guaranteed because it's dependent on the 
+
+120
+00:10:22,945 --> 00:10:28,742
+arrangement of these in memory. 
+Similarly with cmu 15 we're now going off 
+
+121
+00:10:28,742 --> 00:10:32,940
+to a part of memory I haven't even drawn. 
+So, who knows what's there. 
+
+122
+00:10:32,940 --> 00:10:37,580
+And of course, there is no guarantee. 
+Alright, so the thing to remember is that 
+
+123
+00:10:37,580 --> 00:10:41,600
+there is no bounce checking in C and the 
+location of each separate array in memory 
+
+124
+00:10:41,600 --> 00:10:47,405
+is not something that is guaranteed by 
+this, by the run time system. 
+
+125
+00:10:47,405 --> 00:10:51,570
+Let's go on to look at a slightly more 
+complex example. 
+
+126
+00:10:51,570 --> 00:10:57,297
+In this case we have a function zd2int 
+which takes an array of type zip digits 
+
+127
+00:10:57,297 --> 00:11:03,750
+and turns it into an integer. 
+So, for example the uw array that had 
+
+128
+00:11:03,750 --> 00:11:09,798
+9,8,1,9,5 as the five digits would now if 
+given as an argument to this function, 
+
+129
+00:11:09,798 --> 00:11:16,080
+would return the integer 98,195. 
+How do we do that? 
+
+130
+00:11:16,080 --> 00:11:21,334
+Well, it's a simple loop that goes and 
+looks at each digit, multiplying it by 10 
+
+131
+00:11:21,334 --> 00:11:25,422
+each time. 
+so that we use the digits as a ten 
+
+132
+00:11:25,422 --> 00:11:32,250
+thousandths column, thousandths column, 
+hundredths column, tens column and so on. 
+
+133
+00:11:32,250 --> 00:11:37,150
+So the way we're going to do that is by 
+getting that first digit. 
+
+134
+00:11:37,150 --> 00:11:44,824
+and accumulating a result in a variable. 
+So you'll see in the first case when the 
+
+135
+00:11:44,824 --> 00:11:50,101
+loop runs here with I equal to zero. 
+We'll add, we'll index z sub zero, the 
+
+136
+00:11:50,101 --> 00:11:54,252
+first digit. 
+Okay, and we will add that to ten times 
+
+137
+00:11:54,252 --> 00:12:02,518
+the zi, which initially is also zero. 
+So the result here would be zi equals 9 
+
+138
+00:12:02,518 --> 00:12:10,492
+if we are doing the uw array. 
+Okay the next time around of course we'll 
+
+139
+00:12:10,492 --> 00:12:18,270
+multiply this 9 by 10, so it'll be 90 
+plus the second digit. 
+
+140
+00:12:18,270 --> 00:12:23,960
+Which will now have the index z sub 1. 
+And we'll see an eight here so we'll get 
+
+141
+00:12:23,960 --> 00:12:27,762
+98. 
+Alright, and then the next time around 
+
+142
+00:12:27,762 --> 00:12:33,010
+it'll will be 98 times 10 plus the next 
+digit, which is of course a 1 to yield 
+
+143
+00:12:33,010 --> 00:12:37,680
+981 and so on. 
+You get the idea. 
+
+144
+00:12:37,680 --> 00:12:40,120
+Alright, so how does this look in 
+assembly code? 
+
+145
+00:12:40,120 --> 00:12:46,140
+What we see here is that we've had our 
+compiler do one important transformation, 
+
+146
+00:12:46,140 --> 00:12:52,130
+actually a couple. 
+But the most significant one is that 
+
+147
+00:12:52,130 --> 00:12:57,265
+rather than using this loop index and 
+doing an address computation each time, 
+
+148
+00:12:57,265 --> 00:13:02,716
+what it's done is it's taken the starting 
+address of the array and then just adds 
+
+149
+00:13:02,716 --> 00:13:09,659
+to that as we go down each element to the 
+array. 
+
+150
+00:13:09,659 --> 00:13:16,091
+And by adding 1, using the construct z++, 
+nc to indicate an increment by one, it's 
+
+151
+00:13:16,091 --> 00:13:23,300
+essentially adding four each time because 
+they're ints. 
+
+152
+00:13:23,300 --> 00:13:28,820
+Okay, and so the other transformation is 
+it's taken our four loop, and transformed 
+
+153
+00:13:28,820 --> 00:13:33,860
+it into a do loop with the test at the 
+end to see whether we've reached the last 
+
+154
+00:13:33,860 --> 00:13:44,250
+address of the array. 
+Okay, so that's our our transform C code. 
+
+155
+00:13:44,250 --> 00:13:49,670
+And now, we can go on to see the actual 
+assembly code that's generated. 
+
+156
+00:13:49,670 --> 00:13:54,427
+So, I've listed here the, where the 
+variables are stored, in which registers 
+
+157
+00:13:54,427 --> 00:13:58,470
+and the computations that need to be 
+done. 
+
+158
+00:13:58,470 --> 00:14:02,718
+And you'll notice that the main 
+computation is 10 times a digit plus the 
+
+159
+00:14:02,718 --> 00:14:07,326
+next digit 10 times the current 
+accumulated value plus the next digit and 
+
+160
+00:14:07,326 --> 00:14:12,150
+that's been a factored a little bit to 
+look like that instead and let's see why 
+
+161
+00:14:12,150 --> 00:14:19,254
+that's happening. 
+Alright, so our first instruction 
+
+162
+00:14:19,254 --> 00:14:25,704
+basically just clears a a register so it 
+can represent that starting accumulation 
+
+163
+00:14:25,704 --> 00:14:31,405
+of our result. 
+then the next thing we do is compute the 
+
+164
+00:14:31,405 --> 00:14:36,410
+end of the array since we had a fixed 
+size loop that went around five times we 
+
+165
+00:14:36,410 --> 00:14:41,646
+know that the end of the array will be 
+four elements down so we just do z plus 4 
+
+166
+00:14:41,646 --> 00:14:49,836
+as the end of the address. 
+And that gets translated to of course, 16 
+
+167
+00:14:49,836 --> 00:14:54,077
+because of the size of int. 
+All right, the next thing that we do is 
+
+168
+00:14:54,077 --> 00:15:00,716
+start doing some arithmetic to do our 
+computation in the body of the loop. 
+
+169
+00:15:00,716 --> 00:15:05,942
+And you'll notice here that first we use 
+an effective address instruction to 
+
+170
+00:15:05,942 --> 00:15:10,949
+compute 5 times zi. 
+That's convenient to do, because we can 
+
+171
+00:15:10,949 --> 00:15:15,621
+do a power of 2 times a value plus the 
+value again, which gives us 5 times the 
+
+172
+00:15:15,621 --> 00:15:21,816
+original value, alright? 
+And then we get the value of the next 
+
+173
+00:15:21,816 --> 00:15:27,340
+digit by differencing the address Z. 
+remember that star Z is represented by 
+
+174
+00:15:27,340 --> 00:15:30,800
+those parentheses around the value in the 
+register ecx. 
+
+175
+00:15:30,800 --> 00:15:33,180
+So it says to dereference that as an 
+address. 
+
+176
+00:15:33,180 --> 00:15:41,370
+And then we add those together but 
+further multiplying that five times zi by 
+
+177
+00:15:41,370 --> 00:15:48,110
+another two. 
+And the way we do that is 2 times that 
+
+178
+00:15:48,110 --> 00:15:55,112
+value plus the star z and take that 
+result and put it into eax. 
+
+179
+00:15:55,112 --> 00:15:57,920
+Okay, so we're ready for the next time 
+around the loop. 
+
+180
+00:15:59,150 --> 00:16:02,426
+Of course, we then do the test of the 
+loop comparing whether we're at the last 
+
+181
+00:16:02,426 --> 00:16:07,283
+address. 
+And if we are, we continue on, and if 
+
+182
+00:16:07,283 --> 00:16:12,990
+we're not, we loop back around to this 
+label L59. 
+
+183
+00:16:12,990 --> 00:16:17,943
+All right, so that is the assembly code, 
+implementation of, of this. 
+

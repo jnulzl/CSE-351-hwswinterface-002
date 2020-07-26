@@ -1,0 +1,679 @@
+1
+00:00:00,025 --> 00:00:04,564
+[MUSIC] Hello again. 
+Now that we know how to implement 
+
+2
+00:00:04,564 --> 00:00:09,667
+conditions in assembly, let's see how we 
+implement loops, which is going to 
+
+3
+00:00:09,667 --> 00:00:15,238
+involve conditionals. 
+So here I show you a simple example of a 
+
+4
+00:00:15,238 --> 00:00:19,272
+while loop that keeps executing the loop 
+body. 
+
+5
+00:00:19,272 --> 00:00:23,880
+As long as the condition holds, and in 
+this case the condition is, while sum is 
+
+6
+00:00:23,880 --> 00:00:30,902
+not equal to 0 it keeps executing, okay. 
+and when sum is no longer not equal to 0, 
+
+7
+00:00:30,902 --> 00:00:36,966
+it, the, the loop is going to stop. 
+So, the important thing to note here in 
+
+8
+00:00:36,966 --> 00:00:40,446
+our implementation of a loop in, in, in 
+assembly is first, there's a con, 
+
+9
+00:00:40,446 --> 00:00:45,610
+unconditional jump here that jumps to the 
+beginning of the loop. 
+
+10
+00:00:45,610 --> 00:00:50,200
+And second, there's another jump here 
+that determines when the loop is done. 
+
+11
+00:00:50,200 --> 00:00:53,470
+When this, in other words, when this 
+condition no longer is satisfied. 
+
+12
+00:00:53,470 --> 00:00:55,912
+So when that happens, we're going to jump 
+to the end of the loop, because the loop 
+
+13
+00:00:55,912 --> 00:00:58,670
+is done. 
+So we're going to jump past the loop. 
+
+14
+00:00:58,670 --> 00:01:02,020
+'Kay, and how the compiler transforms 
+implements, other loops should be 
+
+15
+00:01:02,020 --> 00:01:05,178
+straightforward. 
+The only trick is where you put the 
+
+16
+00:01:05,178 --> 00:01:08,535
+conditional branch. 
+At the top, you're going to put either at 
+
+17
+00:01:08,535 --> 00:01:11,780
+the top of the loop, or at the bottom of 
+the loop. 
+
+18
+00:01:11,780 --> 00:01:15,250
+For example, if you're to implement four, 
+i equals 0. 
+
+19
+00:01:15,250 --> 00:01:21,375
+It's going to be looping to i let's see y 
+is greater than 100 or equal. 
+
+20
+00:01:21,375 --> 00:01:25,660
+And you're going to keep implement 
+incrementing i. 
+
+21
+00:01:25,660 --> 00:01:28,900
+So before the loop starts, we're going to 
+set i to zero. 
+
+22
+00:01:28,900 --> 00:01:32,580
+We're going to have a condition that 
+checks while i is less than 100. 
+
+23
+00:01:32,580 --> 00:01:36,410
+And in the body of the loop, we'll keep 
+incrementing i. 
+
+24
+00:01:36,410 --> 00:01:39,230
+And then we'll jump out of the loop, as 
+long as this condition is no longer 
+
+25
+00:01:39,230 --> 00:01:43,010
+satisfied. 
+So let's start with an example. 
+
+26
+00:01:43,010 --> 00:01:47,426
+Start with a do-while example. 
+The way do, do-whiles work is you have 
+
+27
+00:01:47,426 --> 00:01:51,152
+here's, here's an example: we say do, and 
+then the loop body and then we check our 
+
+28
+00:01:51,152 --> 00:01:55,204
+condition. 
+So the loop, the, the first iteration of 
+
+29
+00:01:55,204 --> 00:01:59,080
+the loop is always executed, no matter 
+what. 
+
+30
+00:01:59,080 --> 00:02:01,560
+Because you know, we're going to execute 
+at least once before we evaluate the 
+
+31
+00:02:01,560 --> 00:02:04,906
+condition. 
+If the condition is true we just going to 
+
+32
+00:02:04,906 --> 00:02:09,514
+jump back to the beginning of the loop. 
+Now we can look this in the form of 
+
+33
+00:02:09,514 --> 00:02:12,234
+Goto's right? 
+And it's pretty simple, we have a label 
+
+34
+00:02:12,234 --> 00:02:16,142
+at the beginning of the loop. 
+We're going to execute the body of the 
+
+35
+00:02:16,142 --> 00:02:18,690
+loop. 
+Evaluate the loop condition. 
+
+36
+00:02:18,690 --> 00:02:22,326
+If it's true, we jump back to the 
+beginning of the loop. 
+
+37
+00:02:22,326 --> 00:02:25,940
+And if it's no longer true, this, this 
+goto loop is not going to happen. 
+
+38
+00:02:25,940 --> 00:02:29,560
+So that means we're going to jump, get 
+out of the loop. 
+
+39
+00:02:29,560 --> 00:02:33,300
+Note that we have what we call backwards 
+branch, branching backwards to continue 
+
+40
+00:02:33,300 --> 00:02:37,587
+the loop. 
+And only take this backward branch while 
+
+41
+00:02:37,587 --> 00:02:42,870
+the condition holds. 
+So let's see how we compile this example. 
+
+42
+00:02:42,870 --> 00:02:46,980
+Here we have our loop using the Go To 
+version, okay. 
+
+43
+00:02:46,980 --> 00:02:50,930
+And here's our assembly version on the 
+right. 
+
+44
+00:02:50,930 --> 00:02:57,062
+This is just setting eax to 1, and 
+loading x into edx. 
+
+45
+00:02:57,062 --> 00:03:03,220
+and this is, this .L11 is just a label 
+for the beginning of the loop. 
+
+46
+00:03:03,220 --> 00:03:06,440
+Here we're executing the multiplying 
+structure for this multiply here. 
+
+47
+00:03:06,440 --> 00:03:09,180
+We are decrementing x with this 
+instruction. 
+
+48
+00:03:09,180 --> 00:03:14,336
+And now, we are comparing, whether edx 
+how it compares to one. 
+
+49
+00:03:14,336 --> 00:03:17,608
+Okay. 
+So, now if this compares and says edx is 
+
+50
+00:03:17,608 --> 00:03:22,305
+greater than one, we're going to execute 
+the loop we're going to jump up to dot L 
+
+51
+00:03:22,305 --> 00:03:28,300
+11, otherwise we're going to jump out of 
+the loop, okay? 
+
+52
+00:03:28,300 --> 00:03:32,403
+That's pretty simple right? 
+So here's how to think about "Do-While" 
+
+53
+00:03:32,403 --> 00:03:36,307
+translations in general here is the C 
+code, we go to the Goto Version, we going 
+
+54
+00:03:36,307 --> 00:03:40,984
+to have a label the beginning. 
+And we're going to have a lift that 
+
+55
+00:03:40,984 --> 00:03:43,973
+checks whether the tasks for the loop 
+holds and if it holds, we just back to 
+
+56
+00:03:43,973 --> 00:03:47,009
+the beginning of the loop. 
+Pretty simple, right. 
+
+57
+00:03:47,009 --> 00:03:48,136
+So let's see how whiles, while loops work 
+now. 
+
+58
+00:03:48,136 --> 00:03:51,727
+There's, there's likely different. 
+Know that now we have while at the top, 
+
+59
+00:03:51,727 --> 00:03:57,208
+this is no longer do while loop, it's a 
+while loop which means that even if for 
+
+60
+00:03:57,208 --> 00:04:05,593
+the first iteration, we have to check 
+whether it needs to be executed. 
+
+61
+00:04:05,593 --> 00:04:07,207
+Or not. 
+Okay? 
+
+62
+00:04:07,207 --> 00:04:11,629
+So, what this is doing while x is greater 
+than one, we're going to execute the body 
+
+63
+00:04:11,629 --> 00:04:15,630
+of the loop here. 
+And now, the biggest difference here is 
+
+64
+00:04:15,630 --> 00:04:19,100
+this, that you might have noticed, is 
+this go to middle here. 
+
+65
+00:04:19,100 --> 00:04:22,072
+What is middel doing? 
+Well, middle is the middle of the loop 
+
+66
+00:04:22,072 --> 00:04:25,915
+and that's where the condition to jump 
+back to the beginning of the loop is 
+
+67
+00:04:25,915 --> 00:04:28,866
+evaluated. 
+Okay? 
+
+68
+00:04:28,866 --> 00:04:31,887
+So, we jump to the middle before 
+executing the first intsr, the first 
+
+69
+00:04:31,887 --> 00:04:35,173
+iteration, precisely because we need to 
+evaluate it to see even the, to see 
+
+70
+00:04:35,173 --> 00:04:39,710
+whether even a first iteration needs to 
+be executed. 
+
+71
+00:04:39,710 --> 00:04:42,602
+And if so, it jumps to loop, and it keeps 
+going. 
+
+72
+00:04:42,602 --> 00:04:45,661
+Okay. 
+So do we think about this, the first 
+
+73
+00:04:45,661 --> 00:04:48,503
+situation jumps over the loop body 
+because we don't want to execute it 
+
+74
+00:04:48,503 --> 00:04:53,300
+unless the expression holds. 
+The expression for the loop evaluates. 
+
+75
+00:04:53,300 --> 00:05:01,143
+So let's look an example here. 
+So similarly to the do while, we have The 
+
+76
+00:05:01,143 --> 00:05:06,050
+do while example. 
+We have multiplication that's 
+
+77
+00:05:06,050 --> 00:05:10,264
+implementing this multiplication here. 
+The decrement here which is implementing 
+
+78
+00:05:10,264 --> 00:05:14,022
+it's decrementing x. 
+now, here this is where the comparison 
+
+79
+00:05:14,022 --> 00:05:17,160
+happens. 
+We're comparing edx with, with one. 
+
+80
+00:05:17,160 --> 00:05:21,200
+And if it's greater than, we jump back to 
+the beginning of the loop. 
+
+81
+00:05:21,200 --> 00:05:24,440
+The main difference here is that now we 
+have. 
+
+82
+00:05:24,440 --> 00:05:30,420
+A jump to where the condition is, right 
+here, where, where the condition check 
+
+83
+00:05:30,420 --> 00:05:34,528
+is. 
+Alright, so that's how we implement while 
+
+84
+00:05:34,528 --> 00:05:40,294
+by just jumping over the, the body of the 
+loop compared to do while. 
+
+85
+00:05:41,720 --> 00:05:43,840
+Now let's see how you implement of for 
+loop. 
+
+86
+00:05:43,840 --> 00:05:47,670
+A for loop essentially has bounds in the 
+number of iterations of the loop. 
+
+87
+00:05:47,670 --> 00:05:52,269
+And in this example here, we are doing we 
+are implementing a function that raise, 
+
+88
+00:05:52,269 --> 00:05:57,870
+that takes x and p as parameters and 
+computes x raised to the p power. 
+
+89
+00:05:57,870 --> 00:06:04,432
+It computes this value here, x Raised to 
+p. 
+
+90
+00:06:04,432 --> 00:06:06,678
+Okay. 
+So there's a clever algorithm here that 
+
+91
+00:06:06,678 --> 00:06:10,510
+exploits a bit representation of p. 
+That encourage you to stop and take a 
+
+92
+00:06:10,510 --> 00:06:12,552
+look. 
+It's, it's really great. 
+
+93
+00:06:12,552 --> 00:06:17,165
+and so it's pretty clever. 
+And so the way it works is it takes as 
+
+94
+00:06:17,165 --> 00:06:22,071
+many steps as the number of bits in p. 
+The number, the numbers of bits, bits 
+
+95
+00:06:22,071 --> 00:06:26,622
+necessary to represent P, okay? 
+And then for every bit of P that's set to 
+
+96
+00:06:26,622 --> 00:06:30,070
+one, we're going to the multiplication 
+and keep doing it again. 
+
+97
+00:06:30,070 --> 00:06:32,360
+And that's why it's called the Square and 
+Multiply. 
+
+98
+00:06:32,360 --> 00:06:35,832
+I don't want to get into the details of 
+how exactly it works and why it works, 
+
+99
+00:06:35,832 --> 00:06:41,720
+but encourage you to stop, take a look at 
+the slides and and think about it, okay? 
+
+100
+00:06:41,720 --> 00:06:44,830
+Here's how we can think about our For 
+example I just showed you. 
+
+101
+00:06:44,830 --> 00:06:47,240
+So here's the, the code that I have just 
+showed you. 
+
+102
+00:06:47,240 --> 00:06:52,130
+And here is a general form of four loops. 
+And the general form looks as follows. 
+
+103
+00:06:52,130 --> 00:06:56,162
+There's an init expression that's 
+executed in the beginning of the, before 
+
+104
+00:06:56,162 --> 00:06:58,500
+the loop starts. 
+Kay? 
+
+105
+00:06:58,500 --> 00:07:02,390
+So that's what we have here. 
+And the test expression is the expression 
+
+106
+00:07:02,390 --> 00:07:06,210
+that determines whether the loop keeps 
+going or not. 
+
+107
+00:07:06,210 --> 00:07:12,506
+And, so, in our example here, is whether 
+P is not equal to zero. 
+
+108
+00:07:12,506 --> 00:07:15,158
+And then there's the update part, that 
+happens at the end of the loop. 
+
+109
+00:07:15,158 --> 00:07:20,320
+So, in our example is P equals P shifted 
+right by one. 
+
+110
+00:07:20,320 --> 00:07:24,240
+That's the update part of our, of our 
+report. 
+
+111
+00:07:24,240 --> 00:07:30,354
+And the, obviously this is the body of. 
+And one way to make you understand how, 
+
+112
+00:07:30,354 --> 00:07:34,922
+how for loops are translated is to 
+translate them to while loops. 
+
+113
+00:07:34,922 --> 00:07:36,948
+Okay? 
+So, here's a general form that I just 
+
+114
+00:07:36,948 --> 00:07:40,056
+showed you. 
+You can think about an, a while version 
+
+115
+00:07:40,056 --> 00:07:45,386
+of that loop by executing the init 
+expression at the beginning of the loop. 
+
+116
+00:07:45,386 --> 00:07:50,076
+We have a while loop that executes while 
+the tasks expression ports. 
+
+117
+00:07:50,076 --> 00:07:54,236
+We execute the body of the loop, okay, 
+and then at the end, right after the body 
+
+118
+00:07:54,236 --> 00:07:58,526
+you execute the update for what we call 
+the induction variable, and then when we 
+
+119
+00:07:58,526 --> 00:08:05,066
+go from a while we can again do the goto 
+version that we had before. 
+
+120
+00:08:05,066 --> 00:08:07,872
+Okay? 
+So, and note that the main difference 
+
+121
+00:08:07,872 --> 00:08:11,610
+here is that now we have init, here, and 
+we have update. 
+
+122
+00:08:11,610 --> 00:08:18,059
+That's the main difference between for, 
+and a while. 
+
+123
+00:08:18,059 --> 00:08:20,579
+So, let's see how we apply this to the 
+example that I just showed you in the 
+
+124
+00:08:20,579 --> 00:08:26,118
+previous slide. 
+So here's the general version of the loop 
+
+125
+00:08:26,118 --> 00:08:30,798
+and the goto version, here's the code of 
+our example and note that the Init here 
+
+126
+00:08:30,798 --> 00:08:36,054
+now appears in the beginning, even before 
+you evaluate the expression, whether the 
+
+127
+00:08:36,054 --> 00:08:42,946
+loop keeps going or not. 
+So now we have to go to middle here, the 
+
+128
+00:08:42,946 --> 00:08:45,981
+same thing we had in while. 
+That's where we're going to jump to 
+
+129
+00:08:45,981 --> 00:08:49,120
+evaluate whether the condition holds, 
+okay? 
+
+130
+00:08:49,120 --> 00:08:51,958
+And then if the condition holds, we jump 
+to the beginning of the loop, to execute 
+
+131
+00:08:51,958 --> 00:08:56,230
+the body, which is what we have here. 
+Okay? 
+
+132
+00:08:56,230 --> 00:08:59,728
+And now there's one extra step. 
+So, we have the init here, the, the, 
+
+133
+00:08:59,728 --> 00:09:03,882
+sorry the update. 
+the update for the induction variable now 
+
+134
+00:09:03,882 --> 00:09:07,694
+happens at the end of the body of the 
+loop right there. 
+
+135
+00:09:07,694 --> 00:09:10,540
+So it looks, looks very similar to a y 
+loop. 
+
+136
+00:09:10,540 --> 00:09:11,563
+See you next time. 
+
